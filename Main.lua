@@ -21,18 +21,12 @@ require("Lib.CoroutineExt")
 --     end, 1, 5):Start()
 -- end, 30, 1):Start()
 
--- coroutine.start(function ()
---     for i = 1, 10, 1 do
---         print("Good", i, Time.Time, Time.Frame)
---         coroutine.step()
---     end
--- end)
-
-local c = coroutine.create(function ()
-    print("run in co")
+coroutine.start(function ()
+    for i = 1, 10, 1 do
+        print("Good", i, Time.Time, Time.Frame)
+        -- coroutine.step()
+    end
 end)
-
-coroutine.resume(c)
 
 -- main loop
 local dt = Time.Delta

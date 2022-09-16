@@ -5,17 +5,24 @@ local c2t = setmetatable({}, { __mode = "kv" })
 
 function coroutine.start(f, ...)
     local c = coroutine.create(f)
+    print("coroutine created")
 
     if coroutine.running() == nil then
+        print("running coroutine is nil")
         local success, msg = coroutine.resume(c, ...)
+        print("resume coroutine done")
         if not success then
+            print("resume coroutine not success")
             print(msg)
         end
     else
+        print("running coroutine is not nil")
         local args = { ... }
         local timer = FrameTimer.new(function()
+            print("running coroutine frametimer call")
             c2t[c] = nil
             local success, msg = coroutine.resume(c, unpack(args))
+            print("running coroutine called", success, msg)
             if not success then
                 timer:Stop()
                 print(msg)

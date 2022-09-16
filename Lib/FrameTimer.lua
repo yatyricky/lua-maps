@@ -13,10 +13,12 @@ end
 
 function cls:Start()
     if self.running then
+        print("zxcv running")
         return
     end
 
     if self.loops == 0 then
+        print("zxcv loops == 0")
         return
     end
 
@@ -34,16 +36,25 @@ function cls:Stop()
 end
 
 function cls:_update(dt)
+    print("zxcv frame update")
     if not self.running then
+        print("zxcv not running return")
         return
     end
 
     self.frames = self.frames - 1
+    print("zxcv self.frames is ", self.frames)
     if self.frames <= 0 then
-        self.func()
+        print("zxcv self.frames <0  callback")
+        if not cls.called then
+            self.func()
+            cls.called = true
+        end
+        
 
         if self.loops > 0 then
             self.loops = self.loops - 1
+            print("zxcv loops is", self.loops)
             if self.loops == 0 then
                 self:Stop()
                 return

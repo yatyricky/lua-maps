@@ -1,4 +1,4 @@
---lua-bundler:000009108
+--lua-bundler:000009701
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -78,17 +78,24 @@ local c2t = setmetatable({}, { __mode = "kv" })
 
 function coroutine.start(f, ...)
     local c = coroutine.create(f)
+    print("coroutine created")
 
     if coroutine.running() == nil then
+        print("running coroutine is nil")
         local success, msg = coroutine.resume(c, ...)
+        print("resume coroutine done")
         if not success then
+            print("resume coroutine not success")
             print(msg)
         end
     else
+        print("running coroutine is not nil")
         local args = { ... }
         local timer = FrameTimer.new(function()
+            print("running coroutine frametimer call")
             c2t[c] = nil
             local success, msg = coroutine.resume(c, unpack(args))
+            print("running coroutine called", success, msg)
             if not success then
                 timer:Stop()
                 print(msg)
@@ -255,10 +262,12 @@ end
 
 function cls:Start()
     if self.running then
+        print("zxcv running")
         return
     end
 
     if self.loops == 0 then
+        print("zxcv loops == 0")
         return
     end
 
@@ -276,16 +285,25 @@ function cls:Stop()
 end
 
 function cls:_update(dt)
+    print("zxcv frame update")
     if not self.running then
+        print("zxcv not running return")
         return
     end
 
     self.frames = self.frames - 1
+    print("zxcv self.frames is ", self.frames)
     if self.frames <= 0 then
-        self.func()
+        print("zxcv self.frames <0  callback")
+        if not cls.called then
+            self.func()
+            cls.called = true
+        end
+        
 
         if self.loops > 0 then
             self.loops = self.loops - 1
+            print("zxcv loops is", self.loops)
             if self.loops == 0 then
                 self:Stop()
                 return
@@ -393,18 +411,12 @@ require("Lib.CoroutineExt")
 --     end, 1, 5):Start()
 -- end, 30, 1):Start()
 
--- coroutine.start(function ()
---     for i = 1, 10, 1 do
---         print("Good", i, Time.Time, Time.Frame)
---         coroutine.step()
---     end
--- end)
-
-local c = coroutine.create(function ()
-    print("run in co")
+coroutine.start(function ()
+    for i = 1, 10, 1 do
+        print("Good", i, Time.Time, Time.Frame)
+        -- coroutine.step()
+    end
 end)
-
-coroutine.resume(c)
 
 -- main loop
 local dt = Time.Delta
