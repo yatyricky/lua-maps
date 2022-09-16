@@ -1,4 +1,4 @@
---lua-bundler:000009701
+--lua-bundler:000009375
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -74,28 +74,31 @@ __modules["Lib.CoroutineExt"]={loader=function()
 local Timer = require("Lib.Timer")
 local FrameTimer = require("Lib.FrameTimer")
 
+local c_create = coroutine.create
+local c_running = coroutine.running
+local c_resume = coroutine.resume
+local c_yield = coroutine.yield
+local t_pack = table.pack
+local t_unpack = table.unpack
+local print = print
+
 local c2t = setmetatable({}, { __mode = "kv" })
 
 function coroutine.start(f, ...)
-    local c = coroutine.create(f)
-    print("coroutine created")
+    local c = c_create(f)
+    local r = c_running()
 
-    if coroutine.running() == nil then
-        print("running coroutine is nil")
-        local success, msg = coroutine.resume(c, ...)
-        print("resume coroutine done")
+    if r == nil then
+        local success, msg = c_resume(c, ...)
         if not success then
-            print("resume coroutine not success")
             print(msg)
         end
     else
-        print("running coroutine is not nil")
-        local args = { ... }
-        local timer = FrameTimer.new(function()
-            print("running coroutine frametimer call")
+        local args = t_pack(...)
+        local timer
+        timer = FrameTimer.new(function()
             c2t[c] = nil
-            local success, msg = coroutine.resume(c, unpack(args))
-            print("running coroutine called", success, msg)
+            local success, msg = c_resume(c, t_unpack(args))
             if not success then
                 timer:Stop()
                 print(msg)
@@ -109,13 +112,13 @@ function coroutine.start(f, ...)
 end
 
 function coroutine.wait(t)
-    local c = coroutine.running()
-    local timer = nil
+    local c = c_running()
+    local timer
 
     local function action()
         c2t[c] = nil
 
-        local success, msg = coroutine.resume(c)
+        local success, msg = c_resume(c)
         if not success then
             timer:Stop()
             print(msg)
@@ -125,17 +128,17 @@ function coroutine.wait(t)
     timer = Timer.new(action, t, 1)
     c2t[c] = timer
     timer:Start()
-    coroutine.yield()
+    c_yield()
 end
 
 function coroutine.step(t)
-    local c = coroutine.running()
-    local timer = nil
+    local c = c_running()
+    local timer
 
     local function action()
         c2t[c] = nil
 
-        local success, msg = coroutine.resume(c)
+        local success, msg = c_resume(c)
         if not success then
             timer:Stop()
             print(msg)
@@ -145,7 +148,7 @@ function coroutine.step(t)
     timer = FrameTimer.new(action, t or 1, 1)
     c2t[c] = timer
     timer:Start()
-    coroutine.yield()
+    c_yield()
 end
 
 function coroutine.stop(c)
@@ -160,6 +163,13 @@ end}
 
 __modules["Lib.Event"]={loader=function()
 require("Lib.class")
+
+local t_insert = table.insert
+local t_concat = table.concat
+local s_format = string.format
+local next = next
+local pairs = pairs
+local tostring = tostring
 
 ---@class Event
 local cls = class("Event")
@@ -204,23 +214,14 @@ function cls:Emit(data)
     end
 end
 
-local function f2s(func)
-    local info = debug.getinfo(func, "S")
-    if info.what == "C" then
-        return "CFunc:" .. so
-    else
-        return string.format("%s:%s-%s", info.source, info.linedefined, info.lastlinedefined)
-    end
-end
-
 function cls:ToString()
     local sb = {}
     for context, map in pairs(self._handlers) do
         for listener, _ in pairs(map) do
-            table.insert(sb, string.format("%s -> %s", tostring(context), f2s(listener)))
+            t_insert(sb, s_format("%s -> %s", tostring(context), tostring(listener)))
         end
     end
-    return table.concat(sb, ",")
+    return t_concat(sb, ",")
 end
 
 return cls
@@ -249,6 +250,9 @@ end}
 __modules["Lib.FrameTimer"]={loader=function()
 local FrameUpdate = require("Lib.EventCenter").FrameUpdate
 
+local pcall = pcall
+local print = print
+
 local cls = class("FrameTimer")
 
 function cls:ctor(func, count, loops)
@@ -262,12 +266,10 @@ end
 
 function cls:Start()
     if self.running then
-        print("zxcv running")
         return
     end
 
     if self.loops == 0 then
-        print("zxcv loops == 0")
         return
     end
 
@@ -284,36 +286,39 @@ function cls:Stop()
     FrameUpdate:Off(self, cls._update)
 end
 
-function cls:_update(dt)
-    print("zxcv frame update")
+function cls:_update(_)
     if not self.running then
-        print("zxcv not running return")
         return
     end
 
     self.frames = self.frames - 1
-    print("zxcv self.frames is ", self.frames)
     if self.frames <= 0 then
-        print("zxcv self.frames <0  callback")
-        if not cls.called then
-            self.func()
-            cls.called = true
+        local s, m = pcall(self.func)
+        if not s then
+            print(m)
         end
-        
 
         if self.loops > 0 then
             self.loops = self.loops - 1
-            print("zxcv loops is", self.loops)
             if self.loops == 0 then
                 self:Stop()
                 return
             end
         end
+
         self.frames = self.frames + self.count
     end
 end
 
 return cls
+
+end}
+
+__modules["Lib.MathExt"]={loader=function()
+function math.fuzzyEquals(a, b, precision)
+    precision = precision or 0.000001
+    return (a == b) or math.abs(a - b) < precision
+end
 
 end}
 
@@ -327,8 +332,9 @@ cls.Frame = 0
 cls.Delta = 1 / 30
 
 FrameBegin:On(cls, function(_, dt)
-    cls.Time = cls.Time + dt
-    cls.Frame = cls.Frame + 1
+    local f = cls.Frame + 1
+    cls.Frame = f
+    cls.Time = f * dt
 end)
 
 return cls
@@ -337,6 +343,7 @@ end}
 
 __modules["Lib.Timer"]={loader=function()
 local FrameUpdate = require("Lib.EventCenter").FrameUpdate
+require("Lib.MathExt")
 
 local cls = class("Timer")
 
@@ -369,7 +376,7 @@ function cls:_update(dt)
     end
 
     self.time = self.time - dt
-    if self.time <= 1e-14 then
+    if self.time <= 0.000001 then
         self.func()
 
         if self.loops > 0 then
@@ -396,33 +403,33 @@ local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
 
--- local tminus = 5
--- local tm = Timer.new(function()
---     print(tminus, "@", Time.Time)
---     tminus = tminus - 1
--- end, 1, 5)
--- tm:Start()
-
--- local ftc = 5
--- local ft = FrameTimer.new(function ()
---     FrameTimer.new(function ()
---         print("frame", ftc, "@", Time.Time, Time.Frame)
---         ftc = ftc - 1
---     end, 1, 5):Start()
--- end, 30, 1):Start()
-
-coroutine.start(function ()
-    for i = 1, 10, 1 do
-        print("Good", i, Time.Time, Time.Frame)
-        -- coroutine.step()
-    end
-end)
-
 -- main loop
 local dt = Time.Delta
-TimerStart(CreateTimer(), dt, true, function ()
+TimerStart(CreateTimer(), dt, true, function()
     FrameBegin:Emit(dt)
     FrameUpdate:Emit(dt)
+end)
+
+local tminus = 5
+local tm = Timer.new(function()
+    print(tminus, "@", Time.Time)
+    tminus = tminus - 1
+end, 1, 5)
+tm:Start()
+
+local ftc = 5
+local ft = FrameTimer.new(function ()
+    FrameTimer.new(function ()
+        print("frame", ftc, "@", Time.Time, Time.Frame)
+        ftc = ftc - 1
+    end, 1, 5):Start()
+end, 30, 1):Start()
+
+coroutine.start(function()
+    for i = 1, 10, 1 do
+        print("Good", i, Time.Time, Time.Frame)
+        coroutine.wait(1)
+    end
 end)
 
 end}

@@ -7,8 +7,9 @@ cls.Frame = 0
 cls.Delta = 1 / 30
 
 FrameBegin:On(cls, function(_, dt)
-    cls.Time = cls.Time + dt
-    cls.Frame = cls.Frame + 1
+    local f = cls.Frame + 1
+    cls.Frame = f
+    cls.Time = f * dt
 end)
 
 return cls

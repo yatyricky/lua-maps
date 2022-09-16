@@ -1,5 +1,8 @@
 local FrameUpdate = require("Lib.EventCenter").FrameUpdate
 
+local pcall = pcall
+local print = print
+
 local cls = class("FrameTimer")
 
 function cls:ctor(func, count, loops)
@@ -13,12 +16,10 @@ end
 
 function cls:Start()
     if self.running then
-        print("zxcv running")
         return
     end
 
     if self.loops == 0 then
-        print("zxcv loops == 0")
         return
     end
 
@@ -35,31 +36,26 @@ function cls:Stop()
     FrameUpdate:Off(self, cls._update)
 end
 
-function cls:_update(dt)
-    print("zxcv frame update")
+function cls:_update(_)
     if not self.running then
-        print("zxcv not running return")
         return
     end
 
     self.frames = self.frames - 1
-    print("zxcv self.frames is ", self.frames)
     if self.frames <= 0 then
-        print("zxcv self.frames <0  callback")
-        if not cls.called then
-            self.func()
-            cls.called = true
+        local s, m = pcall(self.func)
+        if not s then
+            print(m)
         end
-        
 
         if self.loops > 0 then
             self.loops = self.loops - 1
-            print("zxcv loops is", self.loops)
             if self.loops == 0 then
                 self:Stop()
                 return
             end
         end
+
         self.frames = self.frames + self.count
     end
 end

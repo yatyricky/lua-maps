@@ -1,28 +1,31 @@
 local Timer = require("Lib.Timer")
 local FrameTimer = require("Lib.FrameTimer")
 
+local c_create = coroutine.create
+local c_running = coroutine.running
+local c_resume = coroutine.resume
+local c_yield = coroutine.yield
+local t_pack = table.pack
+local t_unpack = table.unpack
+local print = print
+
 local c2t = setmetatable({}, { __mode = "kv" })
 
 function coroutine.start(f, ...)
-    local c = coroutine.create(f)
-    print("coroutine created")
+    local c = c_create(f)
+    local r = c_running()
 
-    if coroutine.running() == nil then
-        print("running coroutine is nil")
-        local success, msg = coroutine.resume(c, ...)
-        print("resume coroutine done")
+    if r == nil then
+        local success, msg = c_resume(c, ...)
         if not success then
-            print("resume coroutine not success")
             print(msg)
         end
     else
-        print("running coroutine is not nil")
-        local args = { ... }
-        local timer = FrameTimer.new(function()
-            print("running coroutine frametimer call")
+        local args = t_pack(...)
+        local timer
+        timer = FrameTimer.new(function()
             c2t[c] = nil
-            local success, msg = coroutine.resume(c, unpack(args))
-            print("running coroutine called", success, msg)
+            local success, msg = c_resume(c, t_unpack(args))
             if not success then
                 timer:Stop()
                 print(msg)
@@ -36,13 +39,13 @@ function coroutine.start(f, ...)
 end
 
 function coroutine.wait(t)
-    local c = coroutine.running()
-    local timer = nil
+    local c = c_running()
+    local timer
 
     local function action()
         c2t[c] = nil
 
-        local success, msg = coroutine.resume(c)
+        local success, msg = c_resume(c)
         if not success then
             timer:Stop()
             print(msg)
@@ -52,17 +55,17 @@ function coroutine.wait(t)
     timer = Timer.new(action, t, 1)
     c2t[c] = timer
     timer:Start()
-    coroutine.yield()
+    c_yield()
 end
 
 function coroutine.step(t)
-    local c = coroutine.running()
-    local timer = nil
+    local c = c_running()
+    local timer
 
     local function action()
         c2t[c] = nil
 
-        local success, msg = coroutine.resume(c)
+        local success, msg = c_resume(c)
         if not success then
             timer:Stop()
             print(msg)
@@ -72,7 +75,7 @@ function coroutine.step(t)
     timer = FrameTimer.new(action, t or 1, 1)
     c2t[c] = timer
     timer:Start()
-    coroutine.yield()
+    c_yield()
 end
 
 function coroutine.stop(c)

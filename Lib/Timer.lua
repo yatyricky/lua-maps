@@ -1,4 +1,5 @@
 local FrameUpdate = require("Lib.EventCenter").FrameUpdate
+require("Lib.MathExt")
 
 local cls = class("Timer")
 
@@ -31,7 +32,7 @@ function cls:_update(dt)
     end
 
     self.time = self.time - dt
-    if self.time <= 1e-14 then
+    if self.time <= 0.000001 then
         self.func()
 
         if self.loops > 0 then

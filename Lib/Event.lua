@@ -1,5 +1,12 @@
 require("Lib.class")
 
+local t_insert = table.insert
+local t_concat = table.concat
+local s_format = string.format
+local next = next
+local pairs = pairs
+local tostring = tostring
+
 ---@class Event
 local cls = class("Event")
 
@@ -43,23 +50,14 @@ function cls:Emit(data)
     end
 end
 
-local function f2s(func)
-    local info = debug.getinfo(func, "S")
-    if info.what == "C" then
-        return "CFunc:" .. so
-    else
-        return string.format("%s:%s-%s", info.source, info.linedefined, info.lastlinedefined)
-    end
-end
-
 function cls:ToString()
     local sb = {}
     for context, map in pairs(self._handlers) do
         for listener, _ in pairs(map) do
-            table.insert(sb, string.format("%s -> %s", tostring(context), f2s(listener)))
+            t_insert(sb, s_format("%s -> %s", tostring(context), tostring(listener)))
         end
     end
-    return table.concat(sb, ",")
+    return t_concat(sb, ",")
 end
 
 return cls
