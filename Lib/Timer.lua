@@ -32,7 +32,7 @@ function cls:_update(dt)
     end
 
     self.time = self.time - dt
-    if self.time <= 0.000001 then
+    if self.time <= 0.00001 then
         self.func()
 
         if self.loops > 0 then

@@ -4,21 +4,28 @@
 --- DateTime: 9/17/2022 1:46 PM
 ---
 
+local Event = require("Event")
+local EventCenter = require("Lib.EventCenter")
+
 ---@class ItemSystem
 local cls = class("ItemSystem")
 
+EventCenter.PlayerUnitPickupItem = Event.new()
+
 function cls:ctor()
-    local trigger = CreateTrigger
+    local trigger = CreateTrigger()
     local i = 0
     while i < bj_MAX_PLAYER_SLOTS do
         TriggerRegisterPlayerUnitEvent(trigger, Player(i), EVENT_PLAYER_UNIT_PICKUP_ITEM, nil)
         i = i + 1
     end
+
     TriggerAddCondition(trigger, Condition(function()
-        local item = GetManipulatedItem()
-        local itemId = GetItemTypeId(item)
-        local unit = GetTriggerUnit()
-        print(GetUnitName(unit), "got", GetItemName(item))
+        EventCenter.PlayerUnitPickupItem:Emit({
+            item = GetManipulatedItem(),
+            unit = GetTriggerUnit(),
+            player = GetTriggerPlayer()
+        })
         return false
     end))
 end
