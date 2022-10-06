@@ -1,6 +1,17 @@
 local Event = require("Event")
 local EventCenter = require("Lib.EventCenter")
-local Vector2 = require("Lib.Vector2")
+
+---@class ISpellData
+---@field abilityId integer
+---@field caster unit
+---@field target unit
+---@field x real
+---@field y real
+---@field item item
+---@field destructable destructable
+---@field finished boolean
+---@field interrupted ISpellData
+---@field _effectDone boolean
 
 ---@class SpellSystem
 local cls = class("SpellSystem")
@@ -13,20 +24,76 @@ EventCenter.PlayerUnitSpellEndCast = Event.new()
 
 function cls:ctor()
     self:_register(EVENT_PLAYER_UNIT_SPELL_CHANNEL, function()
-        self:_onChannel()
+        local data = self:_initSpellData()
+        self:_invoke(self._channelHandlers, data)
     end)
+
     self:_register(EVENT_PLAYER_UNIT_SPELL_CAST, function()
-        self:_onCast()
+        local data = self.castTab[GetTriggerUnit()]
+        self:_invoke(self._channelHandlers, data)
     end)
+
     self:_register(EVENT_PLAYER_UNIT_SPELL_EFFECT, function()
-        self:_onEffect()
+        local data = self.castTab[GetTriggerUnit()]
+        if data and not data._effectDone then
+            data._effectDone = true
+            self:_invoke(self._effectHandlers, data)
+        end
     end)
+
     self:_register(EVENT_PLAYER_UNIT_SPELL_FINISH, function()
-        self:_onFinish()
+        local data = self.castTab[GetTriggerUnit()]
+        data.finished = true
+        self:_invoke(self._finishHandlers, data)
     end)
+
     self:_register(EVENT_PLAYER_UNIT_SPELL_ENDCAST, function()
-        self:_onEndCast()
+        local data = self.castTab[GetTriggerUnit()]
+        self:_invoke(self._endCastHandlers, data)
+        if data.interrupted then
+            self.castTab[data.caster] = data.interrupted
+        else
+            self.castTab[data.caster] = nil
+        end
     end)
+
+    self.castTab = {} ---@type table<unit, ISpellData>
+
+    self._channelHandlers = {}
+    self._castHandlers = {}
+    self._effectHandlers = {}
+    self._finishHandlers = {}
+    self._endCastHandlers = {}
+
+    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellChannel)
+    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellCast)
+    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellEffect)
+    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellFinish)
+    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellEndCast)
+end
+
+---@param data ISpellData
+function cls:_invoke(handlers, data)
+    local tab = handlers[0]
+    if tab then
+        for _, listener in ipairs(tab) do
+            if listener.ctx then
+                listener.handler(listener.ctx, data)
+            else
+                listener.handler(data)
+            end
+        end
+    end
+    tab = handlers[data.abilityId]
+    if tab then
+        for _, listener in ipairs(tab) do
+            if listener.ctx then
+                listener.handler(listener.ctx, data)
+            else
+                listener.handler(data)
+            end
+        end
+    end
 end
 
 function cls:_register(event, callback)
@@ -35,8 +102,8 @@ function cls:_register(event, callback)
     TriggerAddAction(trigger, callback)
 end
 
-local function _getSpellData()
-    local data = {}
+function cls:_initSpellData()
+    local data = {} ---@type ISpellData
     data.abilityId = GetSpellAbilityId()
     data.caster = GetTriggerUnit()
     data.target = GetSpellTargetUnit()
@@ -59,28 +126,38 @@ local function _getSpellData()
             end
         end
     end
-    --set s.interrupt=spellEvent.casterTable[s.CastingUnit]
+    data.interrupted = self.castTab[data.caster]
+    self.castTab[data.caster] = data
     return data
 end
 
-function cls:_onChannel()
-    EventCenter.PlayerUnitSpellChannel:Emit(_getSpellData())
+function cls:_registerSpell(data, tab)
+    local listeners = tab[data.id]
+    if listeners == nil then
+        listeners = {}
+        tab[data.id] = listeners
+    end
+    table.insert(listeners, data)
 end
 
-function cls:_onCast()
-    EventCenter.PlayerUnitSpellCast:Emit(_getSpellData())
+function cls:_registerSpellChannel(data)
+    self:_registerSpell(data, self._channelHandlers)
 end
 
-function cls:_onEffect()
-    EventCenter.PlayerUnitSpellEffect:Emit(_getSpellData())
+function cls:_registerSpellCast(data)
+    self:_registerSpell(data, self._castHandlers)
 end
 
-function cls:_onFinish()
-
+function cls:_registerSpellEffect(data)
+    self:_registerSpell(data, self._effectHandlers)
 end
 
-function cls:_onEndCast()
+function cls:_registerSpellFinish(data)
+    self:_registerSpell(data, self._finishHandlers)
+end
 
+function cls:_registerSpellEndCast(data)
+    self:_registerSpell(data, self._endCastHandlers)
 end
 
 return cls

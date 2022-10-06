@@ -7,27 +7,79 @@
 local Event = require("Event")
 local EventCenter = require("Lib.EventCenter")
 
+EventCenter.PlayerUnitPickupItem = Event.new()
+
+---@class EventRegisterItemRecipeData
+---@field result item
+---@field recipe table<item, integer>
+
+---@class EventRegisterItemRecipe : Event
+---@field data EventRegisterItemRecipeData
+EventCenter.RegisterItemRecipe = Event.new()
+
 ---@class ItemSystem
 local cls = class("ItemSystem")
 
-EventCenter.PlayerUnitPickupItem = Event.new()
-
 function cls:ctor()
     local trigger = CreateTrigger()
-    local i = 0
-    while i < bj_MAX_PLAYER_SLOTS do
-        TriggerRegisterPlayerUnitEvent(trigger, Player(i), EVENT_PLAYER_UNIT_PICKUP_ITEM, nil)
-        i = i + 1
+    TriggerRegisterAnyUnitEventBJ(trigger, EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    TriggerAddAction(trigger, function()
+        local item = GetManipulatedItem()
+        local unit = GetTriggerUnit()
+        local player = GetTriggerPlayer()
+        EventCenter.PlayerUnitPickupItem:Emit({
+            item = item,
+            unit = unit,
+            player = player
+        })
+        self:_mergeItems(item, unit, player)
+    end)
+
+    self._recipes = {} ---@type table<item, table<item, integer>[]> key=result, key2=ingredient value2=ingredient count
+    self._ingredients = {} ---@type table<item, table<item, integer>> key=ingredient key2=result value2=1
+    EventCenter.RegisterItemRecipe:On(self, cls._registerItemRecipe)
+end
+
+function cls:_collectItemsInSlot(unit)
+    local t = {}
+    for i = 0, 5 do
+        local item = UnitItemInSlot(unit, i)
+        if item then
+            table.addNum(t, item, 1)
+        end
+    end
+    return t
+end
+
+function cls:_mergeItems(item, unit, player)
+    local results = self._ingredients[item]
+    if not results then
+        return
     end
 
-    TriggerAddCondition(trigger, Condition(function()
-        EventCenter.PlayerUnitPickupItem:Emit({
-            item = GetManipulatedItem(),
-            unit = GetTriggerUnit(),
-            player = GetTriggerPlayer()
-        })
-        return false
-    end))
+    local own = self:_collectItemsInSlot(unit)
+    for result, _ in pairs(results) do
+
+    end
+end
+
+---@param data EventRegisterItemRecipeData
+function cls:_registerItemRecipe(data)
+    local options = self._recipes[data.result]
+    if not options then
+        options = {}
+        self._recipes[data.result] = options
+    end
+    table.insert(options, data.recipe)
+
+    for k, _ in pairs(data.recipe) do
+        local ingredient = self._ingredients[k]
+        if not ingredient then
+            ingredient = {}
+            self._ingredients[k] = ingredient
+        end
+        ingredient[data.result] = 1
+    end
 end
 
 return cls
