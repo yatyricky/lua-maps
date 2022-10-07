@@ -18,6 +18,7 @@ end)
 
 require("System.ItemSystem").new()
 require("System.SpellSystem").new()
+require("System.MeleeGameSystem").new()
 
 EventCenter.PlayerUnitPickupItem:On({}, function(context, data)
     print(GetUnitName(data.unit), "got", GetItemName(data.item))
