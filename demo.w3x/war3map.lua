@@ -1,4 +1,4 @@
---lua-bundler:000010293
+--lua-bundler:000019598
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -322,6 +322,26 @@ end
 
 end}
 
+__modules["Lib.TableExt"]={loader=function()
+---Add v to k of tab, in place. tab will be mutated.
+---@generic K
+---@param tab table<K, number>
+---@param k K
+---@param v number
+---@return number result
+function table.addNum(tab, k, v)
+    local r = tab[k]
+    if r == nil then
+        r = v
+    else
+        r = r + v
+    end
+    tab[k] = r
+    return r
+end
+
+end}
+
 __modules["Lib.Time"]={loader=function()
 local FrameBegin = require("Lib.EventCenter").FrameBegin
 
@@ -376,7 +396,7 @@ function cls:_update(dt)
     end
 
     self.time = self.time - dt
-    if self.time <= 0.000001 then
+    if self.time <= 0.00001 then
         self.func()
 
         if self.loops > 0 then
@@ -394,6 +414,61 @@ return cls
 
 end}
 
+__modules["Lib.Utils"]={loader=function()
+local m_floor = math.floor
+local s_sub = string.sub
+
+local cls = {}
+
+local ccMap = ""
+        .. "................"
+        .. "................"
+        .. " !\"#$%&'()*+,-./"
+        .. "0123456789:;<=>?"
+        .. "@ABCDEFGHIJKLMNO"
+        .. "PQRSTUVWXYZ[\\]^_"
+        .. "`abcdefghijklmno"
+        .. "pqrstuvwxyz{|}~."
+        .. "................"
+        .. "................"
+        .. "................"
+        .. "................"
+        .. "................"
+        .. "................"
+        .. "................"
+        .. "................"
+
+function cls.CCFour(value)
+    local d1 = m_floor(value / 16777216)
+    value = value - d1 * 16777216
+    d1 = d1 + 1
+    local d2 = m_floor(value / 65536)
+    value = value - d2 * 65536
+    d2 = d2 + 1
+    local d3 = m_floor(value / 256)
+    value = value - d3 * 256
+    d3 = d3 + 1
+    value = value + 1
+    return s_sub(ccMap, d1, d1) .. s_sub(ccMap, d2, d2) .. s_sub(ccMap, d3, d3) .. s_sub(ccMap, value, value)
+end
+
+return cls
+
+
+end}
+
+__modules["Lib.Vector2"]={loader=function()
+local cls = class("Vector2")
+
+function cls:ctor(x,y)
+    self.x = x or 0
+    self.y = y or 0
+end
+
+return cls
+
+end}
+
 __modules["Main"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local FrameBegin = EventCenter.FrameBegin
@@ -401,6 +476,7 @@ local FrameUpdate = EventCenter.FrameUpdate
 local Timer = require("Lib.Timer")
 local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
+local Utils = require("Lib.Utils")
 require("Lib.CoroutineExt")
 
 -- main loop
@@ -412,32 +488,54 @@ end)
 
 -- main logic
 
-local ItemSystem = require("System.ItemSystem")
-ItemSystem.new()
+require("System.ItemSystem").new()
+require("System.SpellSystem").new()
 
---local tminus = 5
---local tm = Timer.new(function()
---    print(tminus, "@", Time.Time)
---    tminus = tminus - 1
---end, 1, 5)
---tm:Start()
---
---local ftc = 5
---local ft = FrameTimer.new(function ()
---    FrameTimer.new(function ()
---        print("frame", ftc, "@", Time.Time, Time.Frame)
---        ftc = ftc - 1
---    end, 1, 5):Start()
---end, 30, 1):Start()
---
---coroutine.start(function()
---    for i = 1, 10, 1 do
---        print("Good", i, Time.Time, Time.Frame)
---        coroutine.wait(1)
---    end
---end)
+EventCenter.PlayerUnitPickupItem:On({}, function(context, data)
+    print(GetUnitName(data.unit), "got", GetItemName(data.item))
+end)
 
-print("fuck this!")
+EventCenter.RegisterPlayerUnitSpellChannel:Emit({
+    id = FourCC("AHds"),
+    handler = function(data)
+        print(GetUnitName(data.caster), "cast", Utils.CCFour(data.abilityId))
+    end,
+})
+
+EventCenter.RegisterPlayerUnitSpellChannel:Emit({
+    id = 0,
+    handler = function(data)
+        print(GetUnitName(data.caster), "channel any", Utils.CCFour(data.abilityId))
+    end,
+})
+
+EventCenter.RegisterPlayerUnitSpellCast:Emit({
+    id = 0,
+    handler = function(data)
+        print(GetUnitName(data.caster), "cast any", Utils.CCFour(data.abilityId))
+    end,
+})
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = 0,
+    handler = function(data)
+        print(GetUnitName(data.caster), "effect any", Utils.CCFour(data.abilityId))
+    end,
+})
+
+EventCenter.RegisterPlayerUnitSpellFinish:Emit({
+    id = 0,
+    handler = function(data)
+        print(GetUnitName(data.caster), "finish any", Utils.CCFour(data.abilityId))
+    end,
+})
+
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = 0,
+    handler = function(data)
+        print(GetUnitName(data.caster), "end_cast any", Utils.CCFour(data.abilityId))
+    end,
+})
 
 end}
 
@@ -448,23 +546,249 @@ __modules["System.ItemSystem"]={loader=function()
 --- DateTime: 9/17/2022 1:46 PM
 ---
 
+local Event = require("Lib.Event")
+local EventCenter = require("Lib.EventCenter")
+
+EventCenter.PlayerUnitPickupItem = Event.new()
+
+---@class EventRegisterItemRecipeData
+---@field result item
+---@field recipe table<item, integer>
+
+---@class EventRegisterItemRecipe : Event
+---@field data EventRegisterItemRecipeData
+EventCenter.RegisterItemRecipe = Event.new()
+
 ---@class ItemSystem
 local cls = class("ItemSystem")
 
 function cls:ctor()
     local trigger = CreateTrigger()
-    local i = 0
-    while i < bj_MAX_PLAYER_SLOTS do
-        TriggerRegisterPlayerUnitEvent(trigger, Player(i), EVENT_PLAYER_UNIT_PICKUP_ITEM, nil)
-        i = i + 1
-    end
-    TriggerAddCondition(trigger, Condition(function()
+    TriggerRegisterAnyUnitEventBJ(trigger, EVENT_PLAYER_UNIT_PICKUP_ITEM)
+    TriggerAddAction(trigger, function()
         local item = GetManipulatedItem()
-        local itemId = GetItemTypeId(item)
         local unit = GetTriggerUnit()
-        print(GetUnitName(unit), "got", GetItemName(item))
-        return false
-    end))
+        local player = GetTriggerPlayer()
+        EventCenter.PlayerUnitPickupItem:Emit({
+            item = item,
+            unit = unit,
+            player = player
+        })
+        self:_mergeItems(item, unit, player)
+    end)
+
+    self._recipes = {} ---@type table<item, table<item, integer>[]> key=result, key2=ingredient value2=ingredient count
+    self._ingredients = {} ---@type table<item, table<item, integer>> key=ingredient key2=result value2=1
+    EventCenter.RegisterItemRecipe:On(self, cls._registerItemRecipe)
+end
+
+function cls:_collectItemsInSlot(unit)
+    local t = {}
+    for i = 0, 5 do
+        local item = UnitItemInSlot(unit, i)
+        if item then
+            table.addNum(t, item, 1)
+        end
+    end
+    return t
+end
+
+function cls:_mergeItems(item, unit, player)
+    local results = self._ingredients[item]
+    if not results then
+        return
+    end
+
+    local own = self:_collectItemsInSlot(unit)
+    for result, _ in pairs(results) do
+
+    end
+end
+
+---@param data EventRegisterItemRecipeData
+function cls:_registerItemRecipe(data)
+    local options = self._recipes[data.result]
+    if not options then
+        options = {}
+        self._recipes[data.result] = options
+    end
+    table.insert(options, data.recipe)
+
+    for k, _ in pairs(data.recipe) do
+        local ingredient = self._ingredients[k]
+        if not ingredient then
+            ingredient = {}
+            self._ingredients[k] = ingredient
+        end
+        ingredient[data.result] = 1
+    end
+end
+
+return cls
+
+end}
+
+__modules["System.SpellSystem"]={loader=function()
+local Event = require("Lib.Event")
+local EventCenter = require("Lib.EventCenter")
+
+---@class ISpellData
+---@field abilityId integer
+---@field caster unit
+---@field target unit
+---@field x real
+---@field y real
+---@field item item
+---@field destructable destructable
+---@field finished boolean
+---@field interrupted ISpellData
+---@field _effectDone boolean
+
+---@class SpellSystem
+local cls = class("SpellSystem")
+
+EventCenter.RegisterPlayerUnitSpellChannel = Event.new()
+EventCenter.RegisterPlayerUnitSpellCast = Event.new()
+EventCenter.RegisterPlayerUnitSpellEffect = Event.new()
+EventCenter.RegisterPlayerUnitSpellFinish = Event.new()
+EventCenter.RegisterPlayerUnitSpellEndCast = Event.new()
+
+function cls:ctor()
+    self:_register(EVENT_PLAYER_UNIT_SPELL_CHANNEL, function()
+        local data = self:_initSpellData()
+        self:_invoke(self._channelHandlers, data)
+    end)
+
+    self:_register(EVENT_PLAYER_UNIT_SPELL_CAST, function()
+        local data = self.castTab[GetTriggerUnit()]
+        self:_invoke(self._castHandlers, data)
+    end)
+
+    self:_register(EVENT_PLAYER_UNIT_SPELL_EFFECT, function()
+        local data = self.castTab[GetTriggerUnit()]
+        if data and not data._effectDone then
+            data._effectDone = true
+            self:_invoke(self._effectHandlers, data)
+        end
+    end)
+
+    self:_register(EVENT_PLAYER_UNIT_SPELL_FINISH, function()
+        local data = self.castTab[GetTriggerUnit()]
+        data.finished = true
+        self:_invoke(self._finishHandlers, data)
+    end)
+
+    self:_register(EVENT_PLAYER_UNIT_SPELL_ENDCAST, function()
+        local data = self.castTab[GetTriggerUnit()]
+        self:_invoke(self._endCastHandlers, data)
+        if data.interrupted then
+            self.castTab[data.caster] = data.interrupted
+        else
+            self.castTab[data.caster] = nil
+        end
+    end)
+
+    self.castTab = {} ---@type table<unit, ISpellData>
+
+    self._channelHandlers = {}
+    self._castHandlers = {}
+    self._effectHandlers = {}
+    self._finishHandlers = {}
+    self._endCastHandlers = {}
+
+    EventCenter.RegisterPlayerUnitSpellChannel:On(self, cls._registerSpellChannel)
+    EventCenter.RegisterPlayerUnitSpellCast:On(self, cls._registerSpellCast)
+    EventCenter.RegisterPlayerUnitSpellEffect:On(self, cls._registerSpellEffect)
+    EventCenter.RegisterPlayerUnitSpellFinish:On(self, cls._registerSpellFinish)
+    EventCenter.RegisterPlayerUnitSpellEndCast:On(self, cls._registerSpellEndCast)
+end
+
+---@param data ISpellData
+function cls:_invoke(handlers, data)
+    local tab = handlers[0]
+    if tab then
+        for _, listener in ipairs(tab) do
+            if listener.ctx then
+                listener.handler(listener.ctx, data)
+            else
+                listener.handler(data)
+            end
+        end
+    end
+    tab = handlers[data.abilityId]
+    if tab then
+        for _, listener in ipairs(tab) do
+            if listener.ctx then
+                listener.handler(listener.ctx, data)
+            else
+                listener.handler(data)
+            end
+        end
+    end
+end
+
+function cls:_register(event, callback)
+    local trigger = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(trigger, event)
+    TriggerAddAction(trigger, callback)
+end
+
+function cls:_initSpellData()
+    local data = {} ---@type ISpellData
+    data.abilityId = GetSpellAbilityId()
+    data.caster = GetTriggerUnit()
+    data.target = GetSpellTargetUnit()
+    if data.target ~= nil then
+        data.x = GetUnitX(data.target)
+        data.y = GetUnitY(data.target)
+    else
+        data.destructable = GetSpellTargetDestructable()
+        if data.destructable ~= nil then
+            data.x = GetDestructableX(data.destructable)
+            data.y = GetDestructableY(data.destructable)
+        else
+            data.item = GetSpellTargetItem()
+            if data.item ~= nil then
+                data.x = GetItemX(data.item)
+                data.y = GetItemY(data.item)
+            else
+                data.x = GetSpellTargetX()
+                data.y = GetSpellTargetY()
+            end
+        end
+    end
+    data.interrupted = self.castTab[data.caster]
+    self.castTab[data.caster] = data
+    return data
+end
+
+function cls:_registerSpell(data, tab)
+    local listeners = tab[data.id]
+    if listeners == nil then
+        listeners = {}
+        tab[data.id] = listeners
+    end
+    table.insert(listeners, data)
+end
+
+function cls:_registerSpellChannel(data)
+    self:_registerSpell(data, self._channelHandlers)
+end
+
+function cls:_registerSpellCast(data)
+    self:_registerSpell(data, self._castHandlers)
+end
+
+function cls:_registerSpellEffect(data)
+    self:_registerSpell(data, self._effectHandlers)
+end
+
+function cls:_registerSpellFinish(data)
+    self:_registerSpell(data, self._finishHandlers)
+end
+
+function cls:_registerSpellEndCast(data)
+    self:_registerSpell(data, self._endCastHandlers)
 end
 
 return cls
@@ -473,6 +797,7 @@ end}
 
 __modules["Main"].loader()
 end
+--lua-bundler:000019598
 
 function InitGlobals()
 end
@@ -490,8 +815,30 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 2336.3, 1897.0, 206.714, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("Hpal"), -1089.7, 0.0, 332.303, FourCC("Hpal"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -1436.1, 535.8, 206.714, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("Hpal"), -1089.7, 0.0, 332.300, FourCC("Hpal"))
+SetHeroLevel(u, 10, false)
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -511.7, 680.3, 337.620, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -465.2, 582.4, 79.038, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -433.6, 492.1, 66.030, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -417.7, 428.8, 124.600, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -413.1, 380.9, 30.587, FourCC("hmpr"))
+end
+
+function CreateUnitsForPlayer1()
+local p = Player(1)
+local u
+local unitID
+local t
+local life
+
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -90.5, 430.9, 329.930, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -54.9, 253.5, 329.930, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -118.7, 682.6, 128.412, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -197.9, 837.6, 254.418, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -387.7, 920.9, 142.189, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -72.9, 103.8, 79.313, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -236.0, 15.1, 199.694, FourCC("hdhw"))
 end
 
 function CreatePlayerBuildings()
@@ -499,6 +846,7 @@ end
 
 function CreatePlayerUnits()
 CreateUnitsForPlayer0()
+CreateUnitsForPlayer1()
 end
 
 function CreateAllUnits()
@@ -529,10 +877,10 @@ CreateAllItems()
 CreateAllUnits()
 InitBlizzard()
 InitGlobals()
-local s,m = pcall(RunBundle)
-    if not s then
-        print(m)
-    end
+local s, m = pcall(RunBundle)
+if not s then
+    print(m)
+end
 end
 
 function config()

@@ -4,7 +4,7 @@
 --- DateTime: 9/17/2022 1:46 PM
 ---
 
-local Event = require("Event")
+local Event = require("Lib.Event")
 local EventCenter = require("Lib.EventCenter")
 
 EventCenter.PlayerUnitPickupItem = Event.new()

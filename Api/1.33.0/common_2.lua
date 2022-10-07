@@ -4580,3 +4580,6 @@ function BlzUnitClearOrders(whichUnit, onlyQueued) end
 ---@return nothing
 function BlzUnitForceStopOrder(whichUnit, clearQueue) end
 
+---@param code string
+---@return integer
+function FourCC(code) end

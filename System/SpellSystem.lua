@@ -1,4 +1,4 @@
-local Event = require("Event")
+local Event = require("Lib.Event")
 local EventCenter = require("Lib.EventCenter")
 
 ---@class ISpellData
@@ -16,11 +16,11 @@ local EventCenter = require("Lib.EventCenter")
 ---@class SpellSystem
 local cls = class("SpellSystem")
 
-EventCenter.PlayerUnitSpellChannel = Event.new()
-EventCenter.PlayerUnitSpellCast = Event.new()
-EventCenter.PlayerUnitSpellEffect = Event.new()
-EventCenter.PlayerUnitSpellFinish = Event.new()
-EventCenter.PlayerUnitSpellEndCast = Event.new()
+EventCenter.RegisterPlayerUnitSpellChannel = Event.new()
+EventCenter.RegisterPlayerUnitSpellCast = Event.new()
+EventCenter.RegisterPlayerUnitSpellEffect = Event.new()
+EventCenter.RegisterPlayerUnitSpellFinish = Event.new()
+EventCenter.RegisterPlayerUnitSpellEndCast = Event.new()
 
 function cls:ctor()
     self:_register(EVENT_PLAYER_UNIT_SPELL_CHANNEL, function()
@@ -30,7 +30,7 @@ function cls:ctor()
 
     self:_register(EVENT_PLAYER_UNIT_SPELL_CAST, function()
         local data = self.castTab[GetTriggerUnit()]
-        self:_invoke(self._channelHandlers, data)
+        self:_invoke(self._castHandlers, data)
     end)
 
     self:_register(EVENT_PLAYER_UNIT_SPELL_EFFECT, function()
@@ -65,11 +65,11 @@ function cls:ctor()
     self._finishHandlers = {}
     self._endCastHandlers = {}
 
-    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellChannel)
-    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellCast)
-    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellEffect)
-    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellFinish)
-    EventCenter.PlayerUnitSpellChannel:On(self, cls._registerSpellEndCast)
+    EventCenter.RegisterPlayerUnitSpellChannel:On(self, cls._registerSpellChannel)
+    EventCenter.RegisterPlayerUnitSpellCast:On(self, cls._registerSpellCast)
+    EventCenter.RegisterPlayerUnitSpellEffect:On(self, cls._registerSpellEffect)
+    EventCenter.RegisterPlayerUnitSpellFinish:On(self, cls._registerSpellFinish)
+    EventCenter.RegisterPlayerUnitSpellEndCast:On(self, cls._registerSpellEndCast)
 end
 
 ---@param data ISpellData
