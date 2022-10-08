@@ -38,3 +38,135 @@ STRING 8
 Force 3
 }
 
+STRING 9
+// Abilities: A000 (死亡之握), Name (Name)
+{
+死亡之握
+}
+
+STRING 10
+// Abilities: A000 (死亡之握), Researchhotkey (Hotkey - Learn)
+{
+R
+}
+
+STRING 11
+// Abilities: A000 (死亡之握), Hotkey (Hotkey - Normal)
+{
+R
+}
+
+STRING 12
+// Abilities: A000 (死亡之握), Tip (Tooltip - Normal)
+{
+Channel
+}
+
+STRING 13
+// Abilities: A000 (死亡之握), Tip (Tooltip - Normal)
+{
+Channel
+}
+
+STRING 14
+// Abilities: A000 (死亡之握), Ubertip (Tooltip - Normal - Extended)
+{
+Channels powerful warding magic.
+}
+
+STRING 15
+// Abilities: A000 (死亡之握), Ubertip (Tooltip - Normal - Extended)
+{
+Channels powerful warding magic.
+}
+
+STRING 16
+// Abilities: A001 (灵界打击), Name (Name)
+{
+灵界打击
+}
+
+STRING 17
+// Abilities: A001 (灵界打击), Researchhotkey (Hotkey - Learn)
+{
+D
+}
+
+STRING 18
+// Abilities: A001 (灵界打击), Hotkey (Hotkey - Normal)
+{
+D
+}
+
+STRING 19
+// Abilities: A001 (灵界打击), Tip (Tooltip - Normal)
+{
+Channel
+}
+
+STRING 20
+// Abilities: A001 (灵界打击), Tip (Tooltip - Normal)
+{
+Channel
+}
+
+STRING 21
+// Abilities: A001 (灵界打击), Ubertip (Tooltip - Normal - Extended)
+{
+Channels powerful warding magic.
+}
+
+STRING 22
+// Abilities: A001 (灵界打击), Ubertip (Tooltip - Normal - Extended)
+{
+Channels powerful warding magic.
+}
+
+STRING 23
+// Abilities: A002 (疫病武器), Name (Name)
+{
+疫病武器
+}
+
+STRING 24
+// Abilities: A003 (亡者大军), Name (Name)
+{
+亡者大军
+}
+
+STRING 25
+// Abilities: A003 (亡者大军), Researchhotkey (Hotkey - Learn)
+{
+T
+}
+
+STRING 26
+// Abilities: A003 (亡者大军), Hotkey (Hotkey - Normal)
+{
+T
+}
+
+STRING 27
+// Abilities: A003 (亡者大军), Tip (Tooltip - Normal)
+{
+Channel
+}
+
+STRING 28
+// Abilities: A003 (亡者大军), Tip (Tooltip - Normal)
+{
+Channel
+}
+
+STRING 29
+// Abilities: A003 (亡者大军), Ubertip (Tooltip - Normal - Extended)
+{
+Channels powerful warding magic.
+}
+
+STRING 30
+// Abilities: A003 (亡者大军), Ubertip (Tooltip - Normal - Extended)
+{
+Channels powerful warding magic.
+}
+
