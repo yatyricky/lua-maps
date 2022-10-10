@@ -39,7 +39,7 @@ end
 ---@param buff BuffBase
 function cls:onNewBuff(buff)
     table.insert(self.buffs, buff)
-    buff:Awake()
+    buff:OnEnable()
 end
 
 return cls

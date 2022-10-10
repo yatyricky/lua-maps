@@ -1,3 +1,5 @@
+require("Lib.clone")
+
 function class(classname, super)
     local superType = type(super)
     local cls

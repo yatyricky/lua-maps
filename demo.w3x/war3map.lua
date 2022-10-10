@@ -1,4 +1,4 @@
---lua-bundler:000020007
+--lua-bundler:000029750
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -20,7 +20,166 @@ local require = function(path)
     end
 end
 
+__modules["Ability.DeathGrip"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local Const = require("Config.Const")
+local Vector2 = require("Lib.Vector2")
+local Utils = require("Lib.Utils")
+local BuffBase = require("Buff.BuffBase")
+local Timer = require("Lib.Timer")
+
+---@class SlowDebuff : BuffBase
+local SlowDebuff = class("SlowDebuff", BuffBase)
+
+function SlowDebuff:ctor(caster, target, duration, interval)
+    SlowDebuff.super.ctor(self, caster, target, duration, interval)
+end
+
+function SlowDebuff:OnEnable()
+    SetUnitMoveSpeed(self.target, 0)
+end
+
+function SlowDebuff:OnDisable()
+    SetUnitMoveSpeed(self.target, GetUnitDefaultMoveSpeed(self.target))
+end
+
+local StepLen = 16
+
+local cls = class("DeathGrip")
+
+function cls:ctor(caster, target)
+    IssueImmediateOrderById(target, Const.OrderId_Stop)
+    PauseUnit(target, true)
+
+    local v1 = Vector2.FromUnit(caster)
+    local v2 = Vector2.FromUnit(target)
+    local norm = v2 - v1
+    local totalLen = norm:GetMagnitude()
+    norm:SetNormalize()
+    local travelled = 0
+    local dest = (norm * 96):Add(v1)
+    totalLen = totalLen - 96
+    Utils.SetUnitFlyable(target)
+    local originalHeight = GetUnitFlyHeight(target)
+    local lightning = AddLightningEx("SPLK", false,
+            v2.x, v2.y, BlzGetUnitZ(target) + originalHeight,
+            v1.x, v1.y, 0)
+    SetUnitPathing(target, false)
+    SetLightningColor(lightning, 0.5, 0, 0.5, 1)
+
+    local sfxPos = (norm * 150):Add(v1)
+    local sfx = AddSpecialEffect("Abilities/Spells/Undead/UndeadMine/UndeadMineCircle.mdl", sfxPos.x, sfxPos.y)
+    BlzSetSpecialEffectScale(sfx, 1.3)
+    BlzSetSpecialEffectColor(sfx, 128, 0, 128)
+    BlzSetSpecialEffectYaw(sfx, math.atan2(norm.y, norm.x))
+
+    coroutine.start(function()
+        while true do
+            coroutine.step()
+            v2:MoveToUnit(target)
+            local dir = dest - v2
+            dir:SetLength(StepLen):Add(v2):UnitMoveTo(target)
+            travelled = travelled + StepLen
+            local height = math.bezier3(math.clamp01(travelled / totalLen), 0, totalLen, 0)
+            SetUnitFlyHeight(target, height, 0)
+            MoveLightningEx(lightning, false,
+                    dir.x, dir.y, BlzGetUnitZ(target) + GetUnitFlyHeight(target),
+                    dest.x, dest.y, 0)
+            if dir:Sub(dest):GetMagnitude() < 96 then
+                break
+            end
+        end
+
+        DestroyLightning(lightning)
+        SetUnitFlyHeight(target, originalHeight, 0)
+        PauseUnit(target, false)
+        SetUnitPathing(target, true)
+
+        local impact = AddSpecialEffectTarget("Abilities/Spells/Undead/AnimateDead/AnimateDeadTarget.mdl", target, "origin")
+        local impactTimer = Timer.new(function()
+            DestroyEffect(impact)
+        end, 2, 1)
+        impactTimer:Start()
+
+        local duration = IsUnitType(target, UNIT_TYPE_HERO) and 2 or 4
+        SlowDebuff.new(caster, target, duration, 999)
+
+        coroutine.wait(duration - 1)
+        DestroyEffect(sfx)
+    end)
+end
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Abilities.DeathGrip.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        cls.new(data.caster, data.target)
+    end
+})
+
+return cls
+
+end}
+
+__modules["Buff.BuffBase"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Time = require("Lib.Time")
+
+---@class BuffBase
+local cls = class("BuffBase")
+
+---@param caster unit
+---@param target unit
+---@param duration real
+---@param interval real
+function cls:ctor(caster, target, duration, interval)
+    self.caster = caster
+    self.target = target
+    self.time = Time.Time
+    self.expire = self.time + duration
+    self.duration = duration
+    self.interval = interval
+    self.nextUpdate = self.time + interval
+    EventCenter.NewBuff:Emit(self)
+end
+
+function cls:OnEnable()
+end
+
+function cls:Update()
+end
+
+function cls:OnDisable()
+end
+
+return cls
+
+end}
+
+__modules["Config.Abilities"]={loader=function()
+local cls = {}
+
+cls.DeathGrip = {
+    ID = FourCC("A000")
+}
+
+return cls
+
+end}
+
+__modules["Config.Const"]={loader=function()
+local cls = {}
+
+cls.OrderId_Stop = 851972
+
+return cls
+
+end}
+
 __modules["Lib.class"]={loader=function()
+require("Lib.clone")
+
 function class(classname, super)
     local superType = type(super)
     local cls
@@ -66,6 +225,30 @@ function class(classname, super)
         end
     end
     return cls
+end
+
+end}
+
+__modules["Lib.clone"]={loader=function()
+---@generic T
+---@param object T
+---@return T
+function clone(object)
+    local lookup_table = {}
+    local function _copy(obj)
+        if type(obj) ~= "table" then
+            return obj
+        elseif lookup_table[obj] then
+            return lookup_table[obj]
+        end
+        local new_table = {}
+        lookup_table[obj] = new_table
+        for key, value in pairs(obj) do
+            new_table[_copy(key)] = _copy(value)
+        end
+        return setmetatable(new_table, getmetatable(obj))
+    end
+    return _copy(object)
 end
 
 end}
@@ -320,6 +503,26 @@ function math.fuzzyEquals(a, b, precision)
     return (a == b) or math.abs(a - b) < precision
 end
 
+---@param t real ratio 0-1
+---@param c1 real
+---@param c2 real
+---@param c3 real
+---@return real
+function math.bezier3(t, c1, c2, c3)
+    local t1 = 1 - t
+    return c1 * t1 * t1  + c2 * 2 * t1 * t  + c3 * t * t
+end
+
+math.clamp = function(value, min, max)
+    return math.min(math.max(min, value), max)
+end
+
+math.clamp01 = function(value)
+    return math.clamp(value, 0, 1)
+end
+
+math.atan2 = Atan2
+
 end}
 
 __modules["Lib.TableExt"]={loader=function()
@@ -452,18 +655,155 @@ function cls.CCFour(value)
     return s_sub(ccMap, d1, d1) .. s_sub(ccMap, d2, d2) .. s_sub(ccMap, d3, d3) .. s_sub(ccMap, value, value)
 end
 
+local AbilIdAmrf = FourCC("Amrf")
+
+function cls.SetUnitFlyable(unit)
+    UnitAddAbility(unit, AbilIdAmrf);
+    UnitRemoveAbility(unit, AbilIdAmrf);
+end
+
 return cls
 
 
 end}
 
 __modules["Lib.Vector2"]={loader=function()
-local cls = class("Vector2")
+local setmetatable = setmetatable
+local type = type
+local rawget = rawget
+local m_sqrt = math.sqrt
 
-function cls:ctor(x,y)
-    self.x = x or 0
-    self.y = y or 0
+local GetUnitX = GetUnitX
+local GetUnitY = GetUnitY
+
+---@class Vector2
+local cls = {}
+
+---@return Vector2
+function cls.new(x, y)
+    return setmetatable({
+        x = x or 0,
+        y = y or 0,
+    }, cls)
 end
+
+local new = cls.new
+
+---@param unit unit
+function cls.FromUnit(unit)
+    return new(GetUnitX(unit), GetUnitY(unit))
+end
+
+---@param unit unit
+function cls:MoveToUnit(unit)
+    self.x = GetUnitX(unit)
+    self.y = GetUnitY(unit)
+    return self
+end
+
+---@param unit unit
+function cls:UnitMoveTo(unit)
+    SetUnitPosition(unit, self.x, self.y)
+    return self
+end
+
+---@param other Vector2
+function cls:SetTo(other)
+    self.x = other.x
+    self.y = other.y
+    return
+end
+
+---@param other Vector2
+function cls:Add(other)
+    self.x = self.x + other.x
+    self.y = self.y + other.y
+    return self
+end
+
+---@param other Vector2
+function cls:Sub(other)
+    self.x = self.x - other.x
+    self.y = self.y - other.y
+    return self
+end
+
+---@param d real
+function cls:Div(d)
+    self.x = self.x / d
+    self.y = self.y / d
+    return self
+end
+
+---@param d real
+function cls:Mul(d)
+    self.x = self.x * d
+    self.y = self.y * d
+    return self
+end
+
+function cls:SetNormalize()
+    local magnitude = self:GetMagnitude()
+
+    if magnitude > 1e-05 then
+        self.x = self.x / magnitude
+        self.y = self.y / magnitude
+    else
+        self.x = 0
+        self.y = 0
+    end
+
+    return self
+end
+
+function cls:SetLength(len)
+    self:SetNormalize():Mul(len)
+    return self
+end
+
+function cls:GetMagnitude()
+    return m_sqrt(self.x * self.x + self.y * self.y)
+end
+
+---@return string
+function cls:tostring()
+    return string.format("(%f,%f)", self.x, self.y)
+end
+
+function cls.__index(_, k)
+    return rawget(cls, k)
+end
+
+function cls.__add(a, b)
+    return new(a.x + b.x, a.y + b.y)
+end
+
+---@return Vector2
+function cls.__sub(a, b)
+    return new(a.x - b.x, a.y - b.y)
+end
+
+function cls.__div(v, d)
+    return new(v.x / d, v.y / d)
+end
+
+function cls.__mul(a, d)
+    if type(d) == "number" then
+        return new(a.x * d, a.y * d)
+    else
+        return new(a * d.x, a * d.y)
+    end
+end
+
+function cls.__unm(v)
+    return new(-v.x, -v.y)
+end
+
+function cls.__eq(a, b)
+    return ((a.x - b.x) ^ 2 + (a.y - b.y) ^ 2) < 9.999999e-11
+end
+
+setmetatable(cls, cls)
 
 return cls
 
@@ -479,6 +819,20 @@ local Time = require("Lib.Time")
 local Utils = require("Lib.Utils")
 require("Lib.CoroutineExt")
 
+local ipairs = ipairs
+local pcall = pcall
+
+local _native_TriggerAddAction = TriggerAddAction
+
+function TriggerAddAction(trigger, action)
+    _native_TriggerAddAction(trigger, function()
+        local s, m = pcall(action)
+        if not s then
+            print(m)
+        end
+    end)
+end
+
 -- main loop
 local dt = Time.Delta
 TimerStart(CreateTimer(), dt, true, function()
@@ -488,55 +842,95 @@ end)
 
 -- main logic
 
-require("System.ItemSystem").new()
-require("System.SpellSystem").new()
-require("System.MeleeGameSystem").new()
+-- game machine
 
-EventCenter.PlayerUnitPickupItem:On({}, function(context, data)
-    print(GetUnitName(data.unit), "got", GetItemName(data.item))
-end)
+---@type SystemBase[]
+local systems = {
+    require("System.ItemSystem").new(),
+    require("System.SpellSystem").new(),
+    require("System.MeleeGameSystem").new(),
+    require("System.BuffSystem").new(),
 
-EventCenter.RegisterPlayerUnitSpellChannel:Emit({
-    id = FourCC("AHds"),
-    handler = function(data)
-        print(GetUnitName(data.caster), "cast", Utils.CCFour(data.abilityId))
-    end,
-})
+    require("System.InitAbilitiesSystem").new(),
+}
 
-EventCenter.RegisterPlayerUnitSpellChannel:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "channel any", Utils.CCFour(data.abilityId))
-    end,
-})
+for _, system in ipairs(systems) do
+    system:Awake()
+end
 
-EventCenter.RegisterPlayerUnitSpellCast:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "cast any", Utils.CCFour(data.abilityId))
-    end,
-})
+for _, system in ipairs(systems) do
+    system:OnEnable()
+end
 
-EventCenter.RegisterPlayerUnitSpellEffect:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "effect any", Utils.CCFour(data.abilityId))
-    end,
-})
+local game = FrameTimer.new(function()
+    for _, system in ipairs(systems) do
+        system:Update(dt)
+    end
+end, 1, -1)
+game:Start()
 
-EventCenter.RegisterPlayerUnitSpellFinish:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "finish any", Utils.CCFour(data.abilityId))
-    end,
-})
+end}
 
-EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "end_cast any", Utils.CCFour(data.abilityId))
-    end,
-})
+__modules["System.BuffSystem"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Event = require("Lib.Event")
+local SystemBase = require("System.SystemBase")
+
+EventCenter.NewBuff = Event.new()
+
+---@class BuffSystem : SystemBase
+local cls = class("BuffSystem", SystemBase)
+
+function cls:ctor()
+    EventCenter.NewBuff:On(self, cls.onNewBuff)
+    self.buffs = {} ---@type BuffBase[]
+end
+
+function cls:Update(dt)
+    local toRemove = {}
+    for i, buff in ipairs(self.buffs) do
+        local time = buff.time + dt
+        buff.time = time
+        if time > buff.expire then
+            table.insert(toRemove, i)
+        else
+            if time >= buff.nextUpdate then
+                buff:Update()
+                buff.nextUpdate = buff.nextUpdate + buff.interval
+            end
+            if time == buff.expire then
+                table.insert(toRemove, i)
+            end
+        end
+    end
+
+    for i = #toRemove, 1, -1 do
+        local removed = table.remove(self.buffs, toRemove[i])
+        removed:OnDisable()
+    end
+end
+
+---@param buff BuffBase
+function cls:onNewBuff(buff)
+    table.insert(self.buffs, buff)
+    buff:OnEnable()
+end
+
+return cls
+
+end}
+
+__modules["System.InitAbilitiesSystem"]={loader=function()
+local SystemBase = require("System.SystemBase")
+
+---@class InitAbilitiesSystem : SystemBase
+local cls = class("InitAbilitiesSystem", SystemBase)
+
+function cls:Awake()
+    require("Ability.DeathGrip")
+end
+
+return cls
 
 end}
 
@@ -549,6 +943,7 @@ __modules["System.ItemSystem"]={loader=function()
 
 local Event = require("Lib.Event")
 local EventCenter = require("Lib.EventCenter")
+local SystemBase = require("System.SystemBase")
 
 EventCenter.PlayerUnitPickupItem = Event.new()
 
@@ -560,8 +955,8 @@ EventCenter.PlayerUnitPickupItem = Event.new()
 ---@field data EventRegisterItemRecipeData
 EventCenter.RegisterItemRecipe = Event.new()
 
----@class ItemSystem
-local cls = class("ItemSystem")
+---@class ItemSystem : SystemBase
+local cls = class("ItemSystem", SystemBase)
 
 function cls:ctor()
     local trigger = CreateTrigger()
@@ -630,7 +1025,10 @@ return cls
 end}
 
 __modules["System.MeleeGameSystem"]={loader=function()
-local cls = class("MeleeGameSystem")
+local SystemBase = require("System.SystemBase")
+
+---@class MeleeGameSystem : SystemBase
+local cls = class("MeleeGameSystem", SystemBase)
 
 function cls:ctor()
     MeleeStartingVisibility()
@@ -650,6 +1048,7 @@ end}
 __modules["System.SpellSystem"]={loader=function()
 local Event = require("Lib.Event")
 local EventCenter = require("Lib.EventCenter")
+local SystemBase = require("System.SystemBase")
 
 ---@class ISpellData
 ---@field abilityId integer
@@ -663,13 +1062,21 @@ local EventCenter = require("Lib.EventCenter")
 ---@field interrupted ISpellData
 ---@field _effectDone boolean
 
----@class SpellSystem
-local cls = class("SpellSystem")
+---@class IRegisterSpellEvent : Event
+---@field Emit fun(arg: { id: integer, handler: (fun(data: ISpellData): void), ctx: table }): void
 
+---@class SpellSystem : SystemBase
+local cls = class("SpellSystem", SystemBase)
+
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellChannel = Event.new()
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellCast = Event.new()
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellEffect = Event.new()
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellFinish = Event.new()
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellEndCast = Event.new()
 
 function cls:ctor()
@@ -814,9 +1221,33 @@ return cls
 
 end}
 
+__modules["System.SystemBase"]={loader=function()
+---@class SystemBase
+local cls = class("SystemBase")
+
+function cls:Awake()
+end
+
+function cls:OnEnable()
+end
+
+---@param dt real
+function cls:Update(dt)
+end
+
+function cls:OnDisable()
+end
+
+function cls:OnDestroy()
+end
+
+return cls
+
+end}
+
 __modules["Main"].loader()
 end
---lua-bundler:000020007
+--lua-bundler:000029750
 
 function InitGlobals()
 end
@@ -834,14 +1265,14 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -1436.1, 535.8, 206.714, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -1148.7, 2131.6, 206.714, FourCC("hdhw"))
 u = BlzCreateUnitWithSkin(p, FourCC("Hpal"), -1089.7, 0.0, 332.300, FourCC("Hpal"))
 SetHeroLevel(u, 10, false)
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -511.7, 680.3, 337.620, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -465.2, 582.4, 79.038, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -433.6, 492.1, 66.030, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -417.7, 428.8, 124.600, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -413.1, 380.9, 30.587, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1225.0, 1133.3, 337.620, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1178.5, 1035.4, 79.038, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1146.8, 945.0, 66.030, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1130.9, 881.8, 124.600, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1126.4, 833.9, 30.587, FourCC("hmpr"))
 u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -1174.0, -187.4, 341.390, FourCC("Udea"))
 SetHeroLevel(u, 10, false)
 end
@@ -853,13 +1284,13 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -90.5, 430.9, 329.930, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -54.9, 253.5, 329.930, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -118.7, 682.6, 128.412, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -197.9, 837.6, 254.418, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -387.7, 920.9, 142.189, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -72.9, 103.8, 79.313, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -236.0, 15.1, 199.694, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 575.0, 1840.7, 329.930, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 610.6, 1663.4, 329.930, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 546.8, 2092.4, 128.412, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 467.6, 2247.5, 254.418, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 277.7, 2330.8, 142.189, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 592.6, 1513.6, 79.313, FourCC("hdhw"))
+u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 429.5, 1424.9, 97.000, FourCC("hdhw"))
 u = BlzCreateUnitWithSkin(p, FourCC("ogru"), -14.4, -58.7, 77.379, FourCC("ogru"))
 u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 16.4, -244.9, 9.306, FourCC("ogru"))
 u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 145.3, 17.0, 227.138, FourCC("ogru"))

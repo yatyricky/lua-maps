@@ -1,0 +1,6 @@
+[Misc]
+MaxBldgSpeed=522.0
+MaxUnitSpeed=522.0
+MinBldgSpeed=0.0
+MinUnitSpeed=0.0
+

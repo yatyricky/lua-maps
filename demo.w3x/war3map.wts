@@ -39,133 +39,133 @@ Force 3
 }
 
 STRING 9
-// Abilities: A000 (死亡之握), Name (Name)
+// 技能: A000 (死亡之握), Name (名字)
 {
 死亡之握
 }
 
 STRING 10
-// Abilities: A000 (死亡之握), Researchhotkey (Hotkey - Learn)
+// 技能: A000 (死亡之握), Researchhotkey (热键 - 学习)
 {
 R
 }
 
 STRING 11
-// Abilities: A000 (死亡之握), Hotkey (Hotkey - Normal)
+// 技能: A000 (死亡之握), Hotkey (热键 - 普通)
 {
 R
 }
 
 STRING 12
-// Abilities: A000 (死亡之握), Tip (Tooltip - Normal)
+// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 13
-// Abilities: A000 (死亡之握), Tip (Tooltip - Normal)
+// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 14
-// Abilities: A000 (死亡之握), Ubertip (Tooltip - Normal - Extended)
+// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
 
 STRING 15
-// Abilities: A000 (死亡之握), Ubertip (Tooltip - Normal - Extended)
+// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
 
 STRING 16
-// Abilities: A001 (灵界打击), Name (Name)
+// 技能: A001 (灵界打击), Name (名字)
 {
 灵界打击
 }
 
 STRING 17
-// Abilities: A001 (灵界打击), Researchhotkey (Hotkey - Learn)
+// 技能: A001 (灵界打击), Researchhotkey (热键 - 学习)
 {
 D
 }
 
 STRING 18
-// Abilities: A001 (灵界打击), Hotkey (Hotkey - Normal)
+// 技能: A001 (灵界打击), Hotkey (热键 - 普通)
 {
 D
 }
 
 STRING 19
-// Abilities: A001 (灵界打击), Tip (Tooltip - Normal)
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 20
-// Abilities: A001 (灵界打击), Tip (Tooltip - Normal)
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 21
-// Abilities: A001 (灵界打击), Ubertip (Tooltip - Normal - Extended)
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
 
 STRING 22
-// Abilities: A001 (灵界打击), Ubertip (Tooltip - Normal - Extended)
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
 
 STRING 23
-// Abilities: A002 (疫病武器), Name (Name)
+// 技能: A002 (疫病武器), Name (名字)
 {
 疫病武器
 }
 
 STRING 24
-// Abilities: A003 (亡者大军), Name (Name)
+// 技能: A003 (亡者大军), Name (名字)
 {
 亡者大军
 }
 
 STRING 25
-// Abilities: A003 (亡者大军), Researchhotkey (Hotkey - Learn)
+// 技能: A003 (亡者大军), Researchhotkey (热键 - 学习)
 {
 T
 }
 
 STRING 26
-// Abilities: A003 (亡者大军), Hotkey (Hotkey - Normal)
+// 技能: A003 (亡者大军), Hotkey (热键 - 普通)
 {
 T
 }
 
 STRING 27
-// Abilities: A003 (亡者大军), Tip (Tooltip - Normal)
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 28
-// Abilities: A003 (亡者大军), Tip (Tooltip - Normal)
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 29
-// Abilities: A003 (亡者大军), Ubertip (Tooltip - Normal - Extended)
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
 
 STRING 30
-// Abilities: A003 (亡者大军), Ubertip (Tooltip - Normal - Extended)
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }

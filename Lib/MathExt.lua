@@ -20,3 +20,5 @@ end
 math.clamp01 = function(value)
     return math.clamp(value, 0, 1)
 end
+
+math.atan2 = Atan2

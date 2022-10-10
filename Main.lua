@@ -8,6 +8,18 @@ local Utils = require("Lib.Utils")
 require("Lib.CoroutineExt")
 
 local ipairs = ipairs
+local pcall = pcall
+
+local _native_TriggerAddAction = TriggerAddAction
+
+function TriggerAddAction(trigger, action)
+    _native_TriggerAddAction(trigger, function()
+        local s, m = pcall(action)
+        if not s then
+            print(m)
+        end
+    end)
+end
 
 -- main loop
 local dt = Time.Delta
@@ -26,6 +38,8 @@ local systems = {
     require("System.SpellSystem").new(),
     require("System.MeleeGameSystem").new(),
     require("System.BuffSystem").new(),
+
+    require("System.InitAbilitiesSystem").new(),
 }
 
 for _, system in ipairs(systems) do
@@ -42,49 +56,3 @@ local game = FrameTimer.new(function()
     end
 end, 1, -1)
 game:Start()
-
-EventCenter.PlayerUnitPickupItem:On({}, function(context, data)
-    print(GetUnitName(data.unit), "got", GetItemName(data.item))
-end)
-
-EventCenter.RegisterPlayerUnitSpellChannel:Emit({
-    id = FourCC("AHds"),
-    handler = function(data)
-        print(GetUnitName(data.caster), "cast", Utils.CCFour(data.abilityId))
-    end,
-})
-
-EventCenter.RegisterPlayerUnitSpellChannel:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "channel any", Utils.CCFour(data.abilityId))
-    end,
-})
-
-EventCenter.RegisterPlayerUnitSpellCast:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "cast any", Utils.CCFour(data.abilityId))
-    end,
-})
-
-EventCenter.RegisterPlayerUnitSpellEffect:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "effect any", Utils.CCFour(data.abilityId))
-    end,
-})
-
-EventCenter.RegisterPlayerUnitSpellFinish:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "finish any", Utils.CCFour(data.abilityId))
-    end,
-})
-
-EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
-    id = 0,
-    handler = function(data)
-        print(GetUnitName(data.caster), "end_cast any", Utils.CCFour(data.abilityId))
-    end,
-})
