@@ -1,5 +1,6 @@
 local Event = require("Lib.Event")
 local EventCenter = require("Lib.EventCenter")
+local SystemBase = require("System.SystemBase")
 
 ---@class ISpellData
 ---@field abilityId integer
@@ -13,13 +14,21 @@ local EventCenter = require("Lib.EventCenter")
 ---@field interrupted ISpellData
 ---@field _effectDone boolean
 
----@class SpellSystem
-local cls = class("SpellSystem")
+---@class IRegisterSpellEvent : Event
+---@field Emit fun(arg: { id: integer, handler: (fun(data: ISpellData): void), ctx: table }): void
 
+---@class SpellSystem : SystemBase
+local cls = class("SpellSystem", SystemBase)
+
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellChannel = Event.new()
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellCast = Event.new()
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellEffect = Event.new()
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellFinish = Event.new()
+---@type IRegisterSpellEvent
 EventCenter.RegisterPlayerUnitSpellEndCast = Event.new()
 
 function cls:ctor()

@@ -35,5 +35,12 @@ function cls.CCFour(value)
     return s_sub(ccMap, d1, d1) .. s_sub(ccMap, d2, d2) .. s_sub(ccMap, d3, d3) .. s_sub(ccMap, value, value)
 end
 
+local AbilIdAmrf = FourCC("Amrf")
+
+function cls.SetUnitFlyable(unit)
+    UnitAddAbility(unit, AbilIdAmrf);
+    UnitRemoveAbility(unit, AbilIdAmrf);
+end
+
 return cls
 

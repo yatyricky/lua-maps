@@ -7,6 +7,8 @@ local Time = require("Lib.Time")
 local Utils = require("Lib.Utils")
 require("Lib.CoroutineExt")
 
+local ipairs = ipairs
+
 -- main loop
 local dt = Time.Delta
 TimerStart(CreateTimer(), dt, true, function()
@@ -16,9 +18,30 @@ end)
 
 -- main logic
 
-require("System.ItemSystem").new()
-require("System.SpellSystem").new()
-require("System.MeleeGameSystem").new()
+-- game machine
+
+---@type SystemBase[]
+local systems = {
+    require("System.ItemSystem").new(),
+    require("System.SpellSystem").new(),
+    require("System.MeleeGameSystem").new(),
+    require("System.BuffSystem").new(),
+}
+
+for _, system in ipairs(systems) do
+    system:Awake()
+end
+
+for _, system in ipairs(systems) do
+    system:OnEnable()
+end
+
+local game = FrameTimer.new(function()
+    for _, system in ipairs(systems) do
+        system:Update(dt)
+    end
+end, 1, -1)
+game:Start()
 
 EventCenter.PlayerUnitPickupItem:On({}, function(context, data)
     print(GetUnitName(data.unit), "got", GetItemName(data.item))

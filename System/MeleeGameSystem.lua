@@ -1,4 +1,7 @@
-local cls = class("MeleeGameSystem")
+local SystemBase = require("System.SystemBase")
+
+---@class MeleeGameSystem : SystemBase
+local cls = class("MeleeGameSystem", SystemBase)
 
 function cls:ctor()
     MeleeStartingVisibility()

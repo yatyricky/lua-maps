@@ -6,6 +6,7 @@
 
 local Event = require("Lib.Event")
 local EventCenter = require("Lib.EventCenter")
+local SystemBase = require("System.SystemBase")
 
 EventCenter.PlayerUnitPickupItem = Event.new()
 
@@ -17,8 +18,8 @@ EventCenter.PlayerUnitPickupItem = Event.new()
 ---@field data EventRegisterItemRecipeData
 EventCenter.RegisterItemRecipe = Event.new()
 
----@class ItemSystem
-local cls = class("ItemSystem")
+---@class ItemSystem : SystemBase
+local cls = class("ItemSystem", SystemBase)
 
 function cls:ctor()
     local trigger = CreateTrigger()
