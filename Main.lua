@@ -1,11 +1,10 @@
 local EventCenter = require("Lib.EventCenter")
 local FrameBegin = EventCenter.FrameBegin
 local FrameUpdate = EventCenter.FrameUpdate
-local Timer = require("Lib.Timer")
 local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
-local Utils = require("Lib.Utils")
 require("Lib.CoroutineExt")
+require("Lib.ArrayExt")
 
 local ipairs = ipairs
 local pcall = pcall

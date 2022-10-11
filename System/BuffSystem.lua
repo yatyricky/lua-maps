@@ -30,15 +30,22 @@ function cls:Update(dt)
         end
     end
 
+    local removedBuffs = {}
     for i = #toRemove, 1, -1 do
         local removed = table.remove(self.buffs, toRemove[i])
         removed:OnDisable()
+        table.insert(removedBuffs, removed)
+    end
+
+    for _, buff in ipairs(removedBuffs) do
+        buff:OnDestroy()
     end
 end
 
 ---@param buff BuffBase
 function cls:onNewBuff(buff)
     table.insert(self.buffs, buff)
+    buff:Awake()
     buff:OnEnable()
 end
 
