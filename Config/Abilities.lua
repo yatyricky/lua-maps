@@ -12,12 +12,12 @@ cls.DeathStrike = {
 cls.PlagueStrike = {
     ID = FourCC("A002"),
     BloodPlagueDuration = { 12, 12, 12, 12 },
-    BloodPlagueData = { 0.04, 0.08, 0.12, 0.16 },
+    BloodPlagueData = { 0.004, 0.008, 0.012, 0.016 },
     FrostPlagueDuration = { 6, 6, 6, 6 },
-    FrostPlagueData = { 10, 15, 20, 25 },
-    UnholyPlagueDuration = { 10, 10, 10, 10 },
+    FrostPlagueData = { 20, 35, 50, 65 },
+    UnholyPlagueDuration = { 10.2, 10.2, 10.2, 10.2 },
     UnholyPlagueInterval = { 2, 2, 2, 2 },
-    UnholyPlagueData = { 2, 4, 6, 8 },
+    UnholyPlagueData = { 4, 8, 12, 16 },
 }
 
 return cls

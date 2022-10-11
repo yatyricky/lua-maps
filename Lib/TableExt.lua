@@ -14,3 +14,7 @@ function table.addNum(tab, k, v)
     tab[k] = r
     return r
 end
+
+function table.any(tab)
+    return next(tab) ~= nil
+end

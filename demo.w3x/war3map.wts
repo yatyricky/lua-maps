@@ -99,25 +99,25 @@ D
 }
 
 STRING 19
-// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 20
-// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 21
-// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
 
 STRING 22
-// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
@@ -146,27 +146,39 @@ STRING 26
 T
 }
 
-STRING 27
-// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
+STRING 31
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
 {
-Channel
+引导
 }
 
-STRING 28
-// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
+STRING 32
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
 {
-Channel
+引导
 }
 
-STRING 29
-// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
+STRING 33
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
 {
-Channels powerful warding magic.
+引导强大的结界魔法。
 }
 
-STRING 30
-// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
+STRING 34
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
 {
-Channels powerful warding magic.
+引导强大的结界魔法。
+}
+
+STRING 35
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 36
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
 }
 

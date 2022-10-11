@@ -1,5 +1,7 @@
 local BuffBase = require("Buff.BuffBase")
 local Abilities = require("Config.Abilities")
+local Utils = require("Lib.Utils")
+local Time = require("Lib.Time")
 
 ---@class FrostPlague : BuffBase
 local cls = class("FrostPlague", BuffBase)
@@ -9,8 +11,11 @@ function cls:Awake()
 end
 
 function cls:OnEnable()
-    self.sfx = AddSpecialEffectTarget("units/undead/PlagueCloud/PlagueCloud.mdl", self.target, "origin")
-    BlzSetSpecialEffectColor(self.sfx, 0, 0, 128)
+    Utils.AddTimedEffectAtUnit("Abilities/Spells/Undead/FrostArmor/FrostArmorDamage.mdl", self.target, "origin", Time.Delta)
+end
+
+function cls:Update()
+    Utils.AddTimedEffectAtUnit("Abilities/Spells/Undead/FrostArmor/FrostArmorDamage.mdl", self.target, "origin", Time.Delta)
 end
 
 function cls:OnDisable()
@@ -18,10 +23,7 @@ function cls:OnDisable()
     local damage = Abilities.PlagueStrike.FrostPlagueData[self.level] * (1 + speedLossPercent)
     UnitDamageTarget(self.caster, self.target, damage, false, true, ATTACK_TYPE_MAGIC, DAMAGE_TYPE_POISON, WEAPON_TYPE_WHOKNOWS)
 
-    DestroyEffect(self.sfx)
-
-    local sfx = AddSpecialEffectTarget("Abilities/Weapons/ZigguratMissile/ZigguratMissile.mdl", self.target, "origin")
-    DestroyEffect(sfx)
+    Utils.AddTimedEffectAtUnit("Abilities/Weapons/ZigguratMissile/ZigguratMissile.mdl", self.target, "origin", Time.Delta)
 end
 
 return cls

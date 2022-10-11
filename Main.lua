@@ -5,6 +5,7 @@ local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
 require("Lib.ArrayExt")
+require("Lib.TableExt")
 
 local ipairs = ipairs
 local pcall = pcall
@@ -37,6 +38,7 @@ local systems = {
     require("System.SpellSystem").new(),
     require("System.MeleeGameSystem").new(),
     require("System.BuffSystem").new(),
+    require("System.DamageSystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
 }

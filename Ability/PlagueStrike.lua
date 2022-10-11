@@ -7,26 +7,30 @@ local UnholyPlague = require("Ability.UnholyPlague")
 
 local cls = class("PlagueStrike")
 
+function cls.applyBloodPlague(caster, target, level)
+    return BloodPlague.new(caster, target, Abilities.PlagueStrike.BloodPlagueDuration[level], 999, { level = level })
+end
+
+function cls.applyFrostPlague(caster, target, level)
+    return FrostPlague.new(caster, target, Abilities.PlagueStrike.FrostPlagueDuration[level], 1, { level = level })
+end
+
+function cls.applyUnholyPlague(caster, target, level)
+    return UnholyPlague.new(caster, target, Abilities.PlagueStrike.UnholyPlagueDuration[level], Abilities.PlagueStrike.UnholyPlagueInterval[level], { level = level })
+end
+
 cls.Plagues = {
     { class = BloodPlague, invoker = cls.applyBloodPlague },
     { class = FrostPlague, invoker = cls.applyFrostPlague },
     { class = UnholyPlague, invoker = cls.applyUnholyPlague },
 }
 
-function cls.applyBloodPlague(caster, target, level)
-    return BloodPlague.new(caster, target, Abilities.PlagueStrike.BloodPlagueDuration[level], 999, { level = level })
-end
-
-function cls.applyFrostPlague(caster, target, level)
-    return BloodPlague.new(caster, target, Abilities.PlagueStrike.FrostPlagueDuration[level], 999, { level = level })
-end
-
-function cls.applyUnholyPlague(caster, target, level)
-    return BloodPlague.new(caster, target, Abilities.PlagueStrike.UnholyPlagueDuration[level], Abilities.PlagueStrike.UnholyPlagueInterval[level], { level = level })
-end
-
 EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isAttack)
     if not isAttack then
+        return
+    end
+
+    if target == nil then
         return
     end
 

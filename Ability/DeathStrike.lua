@@ -33,16 +33,34 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
         -- damage
         local level = GetUnitAbilityLevel(data.caster, data.abilityId)
-        UnitDamageTarget(data.caster, data.target, Abilities.DeathStrike.Damage[level], false, true, ATTACK_TYPE_MAGIC, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_METAL_HEAVY_CHOP)
+        UnitDamageTarget(data.caster, data.target, Abilities.DeathStrike.Damage[level], false, true, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_METAL_HEAVY_SLICE)
 
         -- spread
-        local g = CreateGroup()
-        GroupEnumUnitsInRange(g, GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], Filter(function()
-            if IsUnitEnemy() then
-                
-            end
-        end))
-        DestroyGroup(g)
+        if table.any(existingPlagues) then
+            local color = { r = 0.1, g = 0.7, b = 0.1, a = 1 }
+            local g = CreateGroup()
+            local targetPlayer = GetOwningPlayer(data.target)
+            GroupEnumUnitsInRange(g, GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], Filter(function()
+                local e = GetFilterUnit()
+                if not IsUnit(e, data.target) and IsUnitAlly(e, targetPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not IsUnitDeadBJ(e) then
+                    Utils.AddTimedLightningAtUnits("SPLK", data.caster, e, 0.3, color, false)
+
+                    for _, debuff in ipairs(existingPlagues) do
+                        local current = BuffBase.FindBuffByClassName(e, debuff.__cname)
+                        if current then
+                            current.level = debuff.level
+                            if current.__cname ~= "FrostPlague" then
+                                current.duration = debuff.duration
+                            end
+                        else
+                            debuff.class.new(debuff.caster, e, debuff:GetTimeLeft(), debuff.interval, debuff.awakeData)
+                        end
+                    end
+                end
+                return false
+            end))
+            DestroyGroup(g)
+        end
 
         -- heal
         if count > 0 then

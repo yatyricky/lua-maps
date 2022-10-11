@@ -63,6 +63,7 @@ end
 function cls:_onHeal(data)
     local current = GetUnitState(data.target, UNIT_STATE_LIFE)
     SetWidgetLife(data.target, current + data.amount)
+    print("heals",data.amount)
 end
 
 return cls

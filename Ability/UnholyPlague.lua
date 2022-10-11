@@ -9,7 +9,7 @@ function cls:Awake()
 end
 
 function cls:OnEnable()
-    self.sfx = AddSpecialEffectTarget("units/undead/PlagueCloud/PlagueCloud.mdl", self.target, "origin")
+    self.sfx = AddSpecialEffectTarget("Units/Undead/PlagueCloud/PlagueCloudtarget.mdl", self.target, "overhead")
 end
 
 function cls:Update()

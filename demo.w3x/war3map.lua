@@ -1,4 +1,4 @@
---lua-bundler:000029750
+--lua-bundler:000045967
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -19,6 +19,45 @@ local require = function(path)
         return nil
     end
 end
+
+__modules["Ability.BloodPlague"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local BuffBase = require("Buff.BuffBase")
+local Abilities = require("Config.Abilities")
+local Timer = require("Lib.Timer")
+
+---@class BloodPlague : BuffBase
+local cls = class("BloodPlague", BuffBase)
+
+function cls:Awake()
+    self.level = self.awakeData.level
+end
+
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isAttack)
+    if not isAttack then
+        return
+    end
+
+    local debuff = BuffBase.FindBuffByClassName(target, "BloodPlague")
+    if not debuff then
+        return
+    end
+
+    local maxHp = GetUnitState(target, UNIT_STATE_MAX_LIFE)
+    local damage = maxHp * Abilities.PlagueStrike.BloodPlagueData[debuff.level]
+
+    UnitDamageTarget(caster, target, damage, false, true, ATTACK_TYPE_MAGIC, DAMAGE_TYPE_POISON, WEAPON_TYPE_WHOKNOWS)
+
+    local impact = AddSpecialEffectTarget("Objects/Spawnmodels/Human/HumanBlood/HeroBloodElfBlood.mdl", target, "origin")
+    local impactTimer = Timer.new(function()
+        DestroyEffect(impact)
+    end, 2, 1)
+    impactTimer:Start()
+end)
+
+return cls
+
+end}
 
 __modules["Ability.DeathGrip"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
@@ -122,6 +161,240 @@ return cls
 
 end}
 
+__modules["Ability.DeathStrike"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local Const = require("Config.Const")
+local Vector2 = require("Lib.Vector2")
+local Utils = require("Lib.Utils")
+local BuffBase = require("Buff.BuffBase")
+local Timer = require("Lib.Timer")
+local BloodPlague = require("Ability.BloodPlague")
+local FrostPlague = require("Ability.FrostPlague")
+local UnholyPlague = require("Ability.UnholyPlague")
+
+local cls = class("DeathStrike")
+
+cls.Plagues = {
+    BloodPlague,
+    FrostPlague,
+    UnholyPlague,
+}
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Abilities.DeathStrike.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local count = 0
+        local existingPlagues = {} ---@type BuffBase[]
+        for _, plagueDefine in ipairs(cls.Plagues) do
+            local debuff = BuffBase.FindBuffByClassName(data.target, plagueDefine.__cname)
+            if debuff then
+                table.insert(existingPlagues, debuff)
+                count = count + 1
+            end
+        end
+
+        -- damage
+        local level = GetUnitAbilityLevel(data.caster, data.abilityId)
+        UnitDamageTarget(data.caster, data.target, Abilities.DeathStrike.Damage[level], false, true, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_METAL_HEAVY_SLICE)
+
+        -- spread
+        if table.any(existingPlagues) then
+            local color = { r = 0.1, g = 0.7, b = 0.1, a = 1 }
+            local g = CreateGroup()
+            local targetPlayer = GetOwningPlayer(data.target)
+            GroupEnumUnitsInRange(g, GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], Filter(function()
+                local e = GetFilterUnit()
+                if not IsUnit(e, data.target) and IsUnitAlly(e, targetPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not IsUnitDeadBJ(e) then
+                    Utils.AddTimedLightningAtUnits("SPLK", data.caster, e, 0.3, color, false)
+
+                    for _, debuff in ipairs(existingPlagues) do
+                        local current = BuffBase.FindBuffByClassName(e, debuff.__cname)
+                        if current then
+                            current.level = debuff.level
+                            if current.__cname ~= "FrostPlague" then
+                                current.duration = debuff.duration
+                            end
+                        else
+                            debuff.class.new(debuff.caster, e, debuff:GetTimeLeft(), debuff.interval, debuff.awakeData)
+                        end
+                    end
+                end
+                return false
+            end))
+            DestroyGroup(g)
+        end
+
+        -- heal
+        if count > 0 then
+            EventCenter.Heal:Emit({
+                caster = data.caster,
+                target = data.caster,
+                amount = Abilities.DeathStrike.Heal[level] * count * GetUnitState(data.caster, UNIT_STATE_MAX_LIFE),
+            })
+
+            local healEffect = AddSpecialEffectTarget("Abilities/Spells/Items/AIhe/AIheTarget.mdl", data.caster, "origin")
+            local healEffectTimer = Timer.new(function()
+                DestroyEffect(healEffect)
+            end, 2, 1)
+            healEffectTimer:Start()
+        end
+
+        local impact = AddSpecialEffectTarget("Objects/Spawnmodels/Human/HumanBlood/HeroBloodElfBlood.mdl", data.target, "origin")
+        local impactTimer = Timer.new(function()
+            DestroyEffect(impact)
+        end, 2, 1)
+        impactTimer:Start()
+    end
+})
+
+return cls
+
+end}
+
+__modules["Ability.FrostPlague"]={loader=function()
+local BuffBase = require("Buff.BuffBase")
+local Abilities = require("Config.Abilities")
+local Utils = require("Lib.Utils")
+local Time = require("Lib.Time")
+
+---@class FrostPlague : BuffBase
+local cls = class("FrostPlague", BuffBase)
+
+function cls:Awake()
+    self.level = self.awakeData.level
+end
+
+function cls:OnEnable()
+    Utils.AddTimedEffectAtUnit("Abilities/Spells/Undead/FrostArmor/FrostArmorDamage.mdl", self.target, "origin", Time.Delta)
+end
+
+function cls:Update()
+    Utils.AddTimedEffectAtUnit("Abilities/Spells/Undead/FrostArmor/FrostArmorDamage.mdl", self.target, "origin", Time.Delta)
+end
+
+function cls:OnDisable()
+    local speedLossPercent = math.clamp01(1 - GetUnitMoveSpeed(self.target) / 500)
+    local damage = Abilities.PlagueStrike.FrostPlagueData[self.level] * (1 + speedLossPercent)
+    UnitDamageTarget(self.caster, self.target, damage, false, true, ATTACK_TYPE_MAGIC, DAMAGE_TYPE_POISON, WEAPON_TYPE_WHOKNOWS)
+
+    Utils.AddTimedEffectAtUnit("Abilities/Weapons/ZigguratMissile/ZigguratMissile.mdl", self.target, "origin", Time.Delta)
+end
+
+return cls
+
+end}
+
+__modules["Ability.PlagueStrike"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local BuffBase = require("Buff.BuffBase")
+local BloodPlague = require("Ability.BloodPlague")
+local FrostPlague = require("Ability.FrostPlague")
+local UnholyPlague = require("Ability.UnholyPlague")
+
+local cls = class("PlagueStrike")
+
+function cls.applyBloodPlague(caster, target, level)
+    return BloodPlague.new(caster, target, Abilities.PlagueStrike.BloodPlagueDuration[level], 999, { level = level })
+end
+
+function cls.applyFrostPlague(caster, target, level)
+    return FrostPlague.new(caster, target, Abilities.PlagueStrike.FrostPlagueDuration[level], 1, { level = level })
+end
+
+function cls.applyUnholyPlague(caster, target, level)
+    return UnholyPlague.new(caster, target, Abilities.PlagueStrike.UnholyPlagueDuration[level], Abilities.PlagueStrike.UnholyPlagueInterval[level], { level = level })
+end
+
+cls.Plagues = {
+    { class = BloodPlague, invoker = cls.applyBloodPlague },
+    { class = FrostPlague, invoker = cls.applyFrostPlague },
+    { class = UnholyPlague, invoker = cls.applyUnholyPlague },
+}
+
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isAttack)
+    if not isAttack then
+        return
+    end
+
+    if target == nil then
+        return
+    end
+
+    local abilityLevel = GetUnitAbilityLevel(caster, Abilities.PlagueStrike.ID)
+    if abilityLevel < 1 then
+        return
+    end
+
+    local existingPlagues = {} ---@type BuffBase[]
+    local missingDebuff
+    for _, plagueDefine in ipairs(cls.Plagues) do
+        local debuff = BuffBase.FindBuffByClassName(target, plagueDefine.class.__cname)
+        if not debuff then
+            missingDebuff = plagueDefine
+            break
+        else
+            table.insert(existingPlagues, debuff)
+        end
+    end
+
+    if missingDebuff then
+        missingDebuff.invoker(caster, target, abilityLevel)
+    else
+        ---@param a BuffBase
+        ---@param b BuffBase
+        table.sort(existingPlagues, function(a, b)
+            local lta = a.level < abilityLevel
+            local ltb = b.level < abilityLevel
+            if lta ~= ltb then
+                return lta
+            end
+            return a:GetTimeLeft() < b:GetTimeLeft()
+        end)
+
+        local first = existingPlagues[1]
+        first.level = abilityLevel
+        if first.__cname ~= FrostPlague.__cname then
+            first:ResetDuration()
+        end
+    end
+end)
+
+return cls
+
+end}
+
+__modules["Ability.UnholyPlague"]={loader=function()
+local BuffBase = require("Buff.BuffBase")
+local Abilities = require("Config.Abilities")
+
+---@class UnholyPlague : BuffBase
+local cls = class("UnholyPlague", BuffBase)
+
+function cls:Awake()
+    self.level = self.awakeData.level
+end
+
+function cls:OnEnable()
+    self.sfx = AddSpecialEffectTarget("Units/Undead/PlagueCloud/PlagueCloudtarget.mdl", self.target, "overhead")
+end
+
+function cls:Update()
+    local hpLossPercent = 1 - GetUnitState(self.target, UNIT_STATE_LIFE) / GetUnitState(self.target, UNIT_STATE_MAX_LIFE)
+    local damage = Abilities.PlagueStrike.UnholyPlagueData[self.level] * (1 + hpLossPercent)
+    UnitDamageTarget(self.caster, self.target, damage, false, true, ATTACK_TYPE_MAGIC, DAMAGE_TYPE_POISON, WEAPON_TYPE_WHOKNOWS)
+end
+
+function cls:OnDisable()
+    DestroyEffect(self.sfx)
+end
+
+return cls
+
+end}
+
 __modules["Buff.BuffBase"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Time = require("Lib.Time")
@@ -129,11 +402,26 @@ local Time = require("Lib.Time")
 ---@class BuffBase
 local cls = class("BuffBase")
 
+cls.unitBuffs = {} ---@type table<unit, BuffBase[]>
+
+---@param unit unit
+---@param name string
+function cls.FindBuffByClassName(unit, name)
+    local arr = cls.unitBuffs[unit]
+    if not arr then
+        return nil
+    end
+
+    return array.find(arr, function(_, v)
+        return v.__cname == name
+    end)
+end
+
 ---@param caster unit
 ---@param target unit
 ---@param duration real
 ---@param interval real
-function cls:ctor(caster, target, duration, interval)
+function cls:ctor(caster, target, duration, interval, awakeData)
     self.caster = caster
     self.target = target
     self.time = Time.Time
@@ -141,7 +429,19 @@ function cls:ctor(caster, target, duration, interval)
     self.duration = duration
     self.interval = interval
     self.nextUpdate = self.time + interval
+
+    local unitTab = cls.unitBuffs[target]
+    if not unitTab then
+        unitTab = {}
+        cls.unitBuffs[target] = unitTab
+    end
+    table.insert(unitTab, self)
+
+    self.awakeData = awakeData
     EventCenter.NewBuff:Emit(self)
+end
+
+function cls:Awake()
 end
 
 function cls:OnEnable()
@@ -151,6 +451,26 @@ function cls:Update()
 end
 
 function cls:OnDisable()
+end
+
+function cls:OnDestroy()
+    local unitTab = cls.unitBuffs[self.target]
+    if not array.removeItem(unitTab, self) then
+        print("Remove buff unit failed")
+    end
+end
+
+function cls:ResetDuration(exprTime)
+    exprTime = exprTime or (Time.Time + self.duration)
+    self.expire = exprTime
+end
+
+function cls:GetTimeLeft()
+    return self.expire - self.time
+end
+
+function cls:GetTimeNorm()
+    return math.clamp01(self:GetTimeLeft() / self.duration)
 end
 
 return cls
@@ -163,6 +483,22 @@ local cls = {}
 cls.DeathGrip = {
     ID = FourCC("A000")
 }
+cls.DeathStrike = {
+    ID = FourCC("A001"),
+    Damage = { 80, 120, 160, 200 },
+    Heal = { 0.01, 0.02, 0.03, 0.04 },
+    AOE = { 400, 500, 600, 700 }
+}
+cls.PlagueStrike = {
+    ID = FourCC("A002"),
+    BloodPlagueDuration = { 12, 12, 12, 12 },
+    BloodPlagueData = { 0.004, 0.008, 0.012, 0.016 },
+    FrostPlagueDuration = { 6, 6, 6, 6 },
+    FrostPlagueData = { 40, 70, 100, 130 },
+    UnholyPlagueDuration = { 10.2, 10.2, 10.2, 10.2 },
+    UnholyPlagueInterval = { 2, 2, 2, 2 },
+    UnholyPlagueData = { 4, 8, 12, 16 },
+}
 
 return cls
 
@@ -174,6 +510,54 @@ local cls = {}
 cls.OrderId_Stop = 851972
 
 return cls
+
+end}
+
+__modules["Lib.ArrayExt"]={loader=function()
+local ipairs = ipairs
+
+array = {}
+
+array.add = table.insert
+
+---@generic T
+---@param tab T[]
+---@param item T
+function array.removeItem(tab, item)
+    local c = #tab
+    local i = 1
+    local d = 0
+    local removed = false
+    while i <= c do
+        local it = tab[i]
+        if it == item then
+            d = d + 1
+            removed = true
+        else
+            if d > 0 then
+                tab[i - d] = it
+            end
+        end
+        i = i + 1
+    end
+    for j = 0, d - 1 do
+        tab[c - j] = nil
+    end
+    return removed
+end
+
+---@generic V
+---@param t V[]
+---@param func fun(i: integer, v: V): boolean
+---@return V, integer
+function array.find(t, func)
+    for i, v in ipairs(t) do
+        if func(i, v) == true then
+            return v, i
+        end
+    end
+    return nil, nil
+end
 
 end}
 
@@ -543,6 +927,10 @@ function table.addNum(tab, k, v)
     return r
 end
 
+function table.any(tab)
+    return next(tab) ~= nil
+end
+
 end}
 
 __modules["Lib.Time"]={loader=function()
@@ -618,6 +1006,10 @@ return cls
 end}
 
 __modules["Lib.Utils"]={loader=function()
+local Timer = require("Lib.Timer")
+local FrameTimer = require("Lib.FrameTimer")
+local Time = require("Lib.Time")
+
 local m_floor = math.floor
 local s_sub = string.sub
 
@@ -660,6 +1052,39 @@ local AbilIdAmrf = FourCC("Amrf")
 function cls.SetUnitFlyable(unit)
     UnitAddAbility(unit, AbilIdAmrf);
     UnitRemoveAbility(unit, AbilIdAmrf);
+end
+
+function cls.AddTimedEffectAtUnit(modelName, target, attachPoint, duration)
+    local sfx = AddSpecialEffectTarget(modelName, target, attachPoint)
+    local tm = Timer.new(function()
+        DestroyEffect(sfx)
+    end, duration, 1)
+    tm:Start()
+end
+
+function cls.AddTimedLightningAtUnits(modelName, unit1, unit2, duration, color, checkVisibility)
+    coroutine.start(function()
+        if checkVisibility == nil then
+            checkVisibility = false
+        end
+        local expr = Time.Time + duration
+        local lightning = AddLightningEx(modelName, checkVisibility,
+                GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
+                GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
+        if color then
+            SetLightningColor(lightning, color.r, color.g, color.b, color.a)
+        end
+        while true do
+            coroutine.step()
+            MoveLightningEx(lightning, checkVisibility,
+                    GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
+                    GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
+            if Time.Time >= expr then
+                break
+            end
+        end
+        DestroyLightning(lightning)
+    end)
 end
 
 return cls
@@ -813,11 +1238,11 @@ __modules["Main"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local FrameBegin = EventCenter.FrameBegin
 local FrameUpdate = EventCenter.FrameUpdate
-local Timer = require("Lib.Timer")
 local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
-local Utils = require("Lib.Utils")
 require("Lib.CoroutineExt")
+require("Lib.ArrayExt")
+require("Lib.TableExt")
 
 local ipairs = ipairs
 local pcall = pcall
@@ -850,6 +1275,7 @@ local systems = {
     require("System.SpellSystem").new(),
     require("System.MeleeGameSystem").new(),
     require("System.BuffSystem").new(),
+    require("System.DamageSystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
 }
@@ -904,16 +1330,96 @@ function cls:Update(dt)
         end
     end
 
+    local removedBuffs = {}
     for i = #toRemove, 1, -1 do
         local removed = table.remove(self.buffs, toRemove[i])
         removed:OnDisable()
+        table.insert(removedBuffs, removed)
+    end
+
+    for _, buff in ipairs(removedBuffs) do
+        buff:OnDestroy()
     end
 end
 
 ---@param buff BuffBase
 function cls:onNewBuff(buff)
     table.insert(self.buffs, buff)
+    buff:Awake()
     buff:OnEnable()
+end
+
+return cls
+
+end}
+
+__modules["System.DamageSystem"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Event = require("Lib.Event")
+
+EventCenter.RegisterPlayerUnitDamaging = Event.new()
+EventCenter.RegisterPlayerUnitDamaged = Event.new()
+EventCenter.Heal = Event.new()
+
+local SystemBase = require("System.SystemBase")
+
+---@class DamageSystem : SystemBase
+local cls = class("DamageSystem", SystemBase)
+
+function cls:ctor()
+    cls.super.ctor(self)
+    local damagingTrigger = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(damagingTrigger, EVENT_PLAYER_UNIT_DAMAGED)
+    TriggerAddAction(damagingTrigger, function()
+        self:_response(self._damagingHandlers)
+    end)
+
+    local damagedTrigger = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(damagedTrigger, EVENT_PLAYER_UNIT_DAMAGED)
+    TriggerAddAction(damagedTrigger, function()
+        self:_response(self._damagedHandlers)
+    end)
+
+    --local enterTrigger = CreateTrigger()
+    --TriggerRegisterEnterRegion(enterTrigger, CreateRegion(), Filter(function() return true end))
+    --TriggerAddAction(enterTrigger, function()
+    --    TriggerRegisterUnitEvent(damageTrigger, GetTriggerUnit(), EVENT_UNIT_DAMAGED)
+    --end)
+
+    self._damagingHandlers = {}
+    self._damagedHandlers = {}
+end
+
+function cls:Awake()
+    EventCenter.RegisterPlayerUnitDamaging:On(self, cls._registerDamaging)
+    EventCenter.RegisterPlayerUnitDamaged:On(self, cls._registerDamaged)
+    EventCenter.Heal:On(self, cls._onHeal)
+end
+
+function cls:_registerDamaging(handler)
+    array.add(self._damagingHandlers, handler)
+end
+
+function cls:_registerDamaged(handler)
+    array.add(self._damagedHandlers, handler)
+end
+
+function cls:_response(whichHandlers)
+    local damage = GetEventDamage()
+    local caster = GetEventDamageSource()
+    local target = BlzGetEventDamageTarget()
+    local damageType = BlzGetEventDamageType()
+    local weaponType = BlzGetEventWeaponType()
+    local isAttack = BlzGetEventIsAttack()
+    for _, v in ipairs(whichHandlers) do
+        v(caster, target, damage, weaponType, damageType, isAttack)
+    end
+end
+
+function cls:_onHeal(data)
+    local current = GetUnitState(data.target, UNIT_STATE_LIFE)
+    SetWidgetLife(data.target, current + data.amount)
+    print("heals",data.amount)
 end
 
 return cls
@@ -928,6 +1434,8 @@ local cls = class("InitAbilitiesSystem", SystemBase)
 
 function cls:Awake()
     require("Ability.DeathGrip")
+    require("Ability.DeathStrike")
+    require("Ability.PlagueStrike")
 end
 
 return cls
@@ -1247,7 +1755,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000029750
+--lua-bundler:000045967
 
 function InitGlobals()
 end
@@ -1265,7 +1773,6 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), -1148.7, 2131.6, 206.714, FourCC("hdhw"))
 u = BlzCreateUnitWithSkin(p, FourCC("Hpal"), -1089.7, 0.0, 332.300, FourCC("Hpal"))
 SetHeroLevel(u, 10, false)
 u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1225.0, 1133.3, 337.620, FourCC("hmpr"))
@@ -1284,16 +1791,9 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 575.0, 1840.7, 329.930, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 610.6, 1663.4, 329.930, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 546.8, 2092.4, 128.412, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 467.6, 2247.5, 254.418, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 277.7, 2330.8, 142.189, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 592.6, 1513.6, 79.313, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("hdhw"), 429.5, 1424.9, 97.000, FourCC("hdhw"))
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), -14.4, -58.7, 77.379, FourCC("ogru"))
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 16.4, -244.9, 9.306, FourCC("ogru"))
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 145.3, 17.0, 227.138, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 354.3, -394.1, 145.749, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 192.5, -178.4, 9.306, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 137.6, -459.0, 145.749, FourCC("ogru"))
 end
 
 function CreateNeutralPassiveBuildings()
