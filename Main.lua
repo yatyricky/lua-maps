@@ -6,20 +6,9 @@ local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
 require("Lib.ArrayExt")
 require("Lib.TableExt")
+require("Lib.native")
 
 local ipairs = ipairs
-local pcall = pcall
-
-local _native_TriggerAddAction = TriggerAddAction
-
-function TriggerAddAction(trigger, action)
-    _native_TriggerAddAction(trigger, function()
-        local s, m = pcall(action)
-        if not s then
-            print(m)
-        end
-    end)
-end
 
 -- main loop
 local dt = Time.Delta

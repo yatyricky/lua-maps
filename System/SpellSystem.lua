@@ -108,7 +108,7 @@ end
 function cls:_register(event, callback)
     local trigger = CreateTrigger()
     TriggerRegisterAnyUnitEventBJ(trigger, event)
-    TriggerAddAction(trigger, callback)
+    ExTriggerAddAction(trigger, callback)
 end
 
 function cls:_initSpellData()

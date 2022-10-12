@@ -1,7 +1,5 @@
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local Const = require("Config.Const")
-local Vector2 = require("Lib.Vector2")
 local Utils = require("Lib.Utils")
 local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
@@ -38,10 +36,8 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         -- spread
         if table.any(existingPlagues) then
             local color = { r = 0.1, g = 0.7, b = 0.1, a = 1 }
-            local g = CreateGroup()
             local targetPlayer = GetOwningPlayer(data.target)
-            GroupEnumUnitsInRange(g, GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], Filter(function()
-                local e = GetFilterUnit()
+            ExGroupEnumUnitsInRange(GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], function(e)
                 if not IsUnit(e, data.target) and IsUnitAlly(e, targetPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not IsUnitDeadBJ(e) then
                     Utils.AddTimedLightningAtUnits("SPLK", data.caster, e, 0.3, color, false)
 
@@ -57,9 +53,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                         end
                     end
                 end
-                return false
-            end))
-            DestroyGroup(g)
+            end)
         end
 
         -- heal

@@ -1,5 +1,4 @@
 local Timer = require("Lib.Timer")
-local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
 
 local m_floor = math.floor
