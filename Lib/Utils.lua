@@ -1,5 +1,4 @@
 local Timer = require("Lib.Timer")
-local Time = require("Lib.Time")
 
 local m_floor = math.floor
 local s_sub = string.sub
@@ -45,38 +44,4 @@ function cls.SetUnitFlyable(unit)
     UnitRemoveAbility(unit, AbilIdAmrf);
 end
 
-function cls.AddTimedEffectAtUnit(modelName, target, attachPoint, duration)
-    local sfx = AddSpecialEffectTarget(modelName, target, attachPoint)
-    local tm = Timer.new(function()
-        DestroyEffect(sfx)
-    end, duration, 1)
-    tm:Start()
-end
-
-function cls.AddTimedLightningAtUnits(modelName, unit1, unit2, duration, color, checkVisibility)
-    coroutine.start(function()
-        if checkVisibility == nil then
-            checkVisibility = false
-        end
-        local expr = Time.Time + duration
-        local lightning = AddLightningEx(modelName, checkVisibility,
-                GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
-                GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
-        if color then
-            SetLightningColor(lightning, color.r, color.g, color.b, color.a)
-        end
-        while true do
-            coroutine.step()
-            MoveLightningEx(lightning, checkVisibility,
-                    GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
-                    GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
-            if Time.Time >= expr then
-                break
-            end
-        end
-        DestroyLightning(lightning)
-    end)
-end
-
 return cls
-

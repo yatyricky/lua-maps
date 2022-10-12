@@ -24,6 +24,11 @@ function cls.FromUnit(unit)
     return new(GetUnitX(unit), GetUnitY(unit))
 end
 
+function cls.InsideUnitCircle()
+    local angle = math.random() * math.pi * 2
+    return new(math.cos(angle), math.sin(angle))
+end
+
 ---@param unit unit
 function cls:MoveToUnit(unit)
     self.x = GetUnitX(unit)

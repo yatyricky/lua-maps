@@ -1,4 +1,4 @@
---lua-bundler:000045967
+--lua-bundler:000051352
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -19,6 +19,72 @@ local require = function(path)
         return nil
     end
 end
+
+__modules["Ability.ArmyOfTheDead"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local Vector2 = require("Lib.Vector2")
+local Timer = require("Lib.Timer")
+local Time = require("Lib.Time")
+
+local instances = {} ---@type table<unit, ArmyOfTheDead>
+
+local LesserColor = { r = 0.2, g = 0, b = 0.4, a = 1 }
+local GreaterColor = { r = 0.6, g = 0.15, b = 0.4, a = 1 }
+
+---@class ArmyOfTheDead
+local cls = class("ArmyOfTheDead")
+
+function cls:ctor(caster)
+    local casterPos = Vector2.FromUnit(caster)
+    self.sfxTimer = Timer.new(function()
+        local pos = (Vector2.InsideUnitCircle() * math.random(200, 600)):Add(casterPos)
+        ExAddLightningPosPos("CLSB", casterPos.x, casterPos.y, 200, pos.x, pos.y, 0, math.random() * 0.4 + 0.2, LesserColor)
+        ExAddSpecialEffect("Abilities/Spells/Undead/DeathandDecay/DeathandDecayTarget.mdl", pos.x, pos.y, 0.2 )
+    end, 0.2, -1)
+    self.sfxTimer:Start()
+
+    local player = GetOwningPlayer(caster)
+    self.summonTimer = Timer.new(function()
+        local pos = (Vector2.InsideUnitCircle() * math.random(200, 600)):Add(casterPos)
+        local summoned = CreateUnit(player, FourCC("u000"), pos.x, pos.y, math.random(360))
+        ExAddLightningPosUnit("CLPB", casterPos.x, casterPos.y, 200, summoned, 1, GreaterColor)
+        ExAddSpecialEffectTarget("Abilities/Spells/Undead/AnimateDead/AnimateDeadTarget.mdl", summoned, "origin", 0.1)
+        UnitApplyTimedLife(summoned, "BUan", 40)
+    end, 1, -1)
+    self.summonTimer:Start()
+end
+
+function cls:Stop()
+    self.sfxTimer:Stop()
+    self.summonTimer:Stop()
+end
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Abilities.ArmyOfTheDead.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        instances[data.caster] = cls.new(data.caster, GetUnitAbilityLevel(data.caster, data.abilityId))
+    end
+})
+
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = Abilities.ArmyOfTheDead.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local inst = instances[data.caster]
+        if inst then
+            inst:Stop()
+            instances[data.caster] = nil
+        else
+            print("army of the dead end but no instance")
+        end
+    end
+})
+
+return cls
+
+end}
 
 __modules["Ability.BloodPlague"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
@@ -135,7 +201,7 @@ function cls:ctor(caster, target)
         PauseUnit(target, false)
         SetUnitPathing(target, true)
 
-        local impact = AddSpecialEffectTarget("Abilities/Spells/Undead/AnimateDead/AnimateDeadTarget.mdl", target, "origin")
+        local impact = AddSpecialEffectTarget("Abilities/Spells/Undead/DeathCoil/DeathCoilSpecialArt.mdl", target, "origin")
         local impactTimer = Timer.new(function()
             DestroyEffect(impact)
         end, 2, 1)
@@ -164,8 +230,6 @@ end}
 __modules["Ability.DeathStrike"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local Const = require("Config.Const")
-local Vector2 = require("Lib.Vector2")
 local Utils = require("Lib.Utils")
 local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
@@ -202,12 +266,10 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         -- spread
         if table.any(existingPlagues) then
             local color = { r = 0.1, g = 0.7, b = 0.1, a = 1 }
-            local g = CreateGroup()
             local targetPlayer = GetOwningPlayer(data.target)
-            GroupEnumUnitsInRange(g, GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], Filter(function()
-                local e = GetFilterUnit()
+            ExGroupEnumUnitsInRange(GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], function(e)
                 if not IsUnit(e, data.target) and IsUnitAlly(e, targetPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not IsUnitDeadBJ(e) then
-                    Utils.AddTimedLightningAtUnits("SPLK", data.caster, e, 0.3, color, false)
+                    ExAddLightningUnitUnit("SPLK", data.caster, e, 0.3, color, false)
 
                     for _, debuff in ipairs(existingPlagues) do
                         local current = BuffBase.FindBuffByClassName(e, debuff.__cname)
@@ -221,9 +283,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                         end
                     end
                 end
-                return false
-            end))
-            DestroyGroup(g)
+            end)
         end
 
         -- heal
@@ -267,11 +327,11 @@ function cls:Awake()
 end
 
 function cls:OnEnable()
-    Utils.AddTimedEffectAtUnit("Abilities/Spells/Undead/FrostArmor/FrostArmorDamage.mdl", self.target, "origin", Time.Delta)
+    ExAddSpecialEffectTarget("Abilities/Spells/Undead/FrostArmor/FrostArmorDamage.mdl", self.target, "origin", Time.Delta)
 end
 
 function cls:Update()
-    Utils.AddTimedEffectAtUnit("Abilities/Spells/Undead/FrostArmor/FrostArmorDamage.mdl", self.target, "origin", Time.Delta)
+    ExAddSpecialEffectTarget("Abilities/Spells/Undead/FrostArmor/FrostArmorDamage.mdl", self.target, "origin", Time.Delta)
 end
 
 function cls:OnDisable()
@@ -279,7 +339,7 @@ function cls:OnDisable()
     local damage = Abilities.PlagueStrike.FrostPlagueData[self.level] * (1 + speedLossPercent)
     UnitDamageTarget(self.caster, self.target, damage, false, true, ATTACK_TYPE_MAGIC, DAMAGE_TYPE_POISON, WEAPON_TYPE_WHOKNOWS)
 
-    Utils.AddTimedEffectAtUnit("Abilities/Weapons/ZigguratMissile/ZigguratMissile.mdl", self.target, "origin", Time.Delta)
+    ExAddSpecialEffectTarget("Abilities/Weapons/ZigguratMissile/ZigguratMissile.mdl", self.target, "origin", Time.Delta)
 end
 
 return cls
@@ -494,10 +554,13 @@ cls.PlagueStrike = {
     BloodPlagueDuration = { 12, 12, 12, 12 },
     BloodPlagueData = { 0.004, 0.008, 0.012, 0.016 },
     FrostPlagueDuration = { 6, 6, 6, 6 },
-    FrostPlagueData = { 40, 70, 100, 130 },
+    FrostPlagueData = { 20, 35, 50, 65 },
     UnholyPlagueDuration = { 10.2, 10.2, 10.2, 10.2 },
     UnholyPlagueInterval = { 2, 2, 2, 2 },
     UnholyPlagueData = { 4, 8, 12, 16 },
+}
+cls.ArmyOfTheDead = {
+    ID = FourCC("A003")
 }
 
 return cls
@@ -894,18 +957,160 @@ end
 ---@return real
 function math.bezier3(t, c1, c2, c3)
     local t1 = 1 - t
-    return c1 * t1 * t1  + c2 * 2 * t1 * t  + c3 * t * t
+    return c1 * t1 * t1 + c2 * 2 * t1 * t + c3 * t * t
 end
 
-math.clamp = function(value, min, max)
+function math.clamp(value, min, max)
     return math.min(math.max(min, value), max)
 end
 
-math.clamp01 = function(value)
+function math.clamp01(value)
     return math.clamp(value, 0, 1)
 end
 
 math.atan2 = Atan2
+
+local m_floor = math.floor
+
+function math.round(value)
+    return m_floor(value + 0.5)
+end
+
+end}
+
+__modules["Lib.native"]={loader=function()
+local Time = require("Lib.Time")
+
+local pcall = pcall
+local c_start = coroutine.start
+local c_wait = coroutine.wait
+local c_step = coroutine.step
+local m_round = math.round
+
+local TriggerAddAction = TriggerAddAction
+
+---@param trigger trigger
+---@param action fun(): void
+---@return void
+function ExTriggerAddAction(trigger, action)
+    TriggerAddAction(trigger, function()
+        local s, m = pcall(action)
+        if not s then
+            print(m)
+        end
+    end)
+end
+
+local GroupEnumUnitsInRange = GroupEnumUnitsInRange
+local Filter = Filter
+local GetFilterUnit = GetFilterUnit
+
+local group = CreateGroup()
+
+---@param x real
+---@param y real
+---@param radius real
+---@param callback fun(unit: unit): void
+---@return void
+function ExGroupEnumUnitsInRange(x, y, radius, callback)
+    GroupEnumUnitsInRange(group, x, y, radius, Filter(function()
+        local s, m = pcall(callback, GetFilterUnit())
+        if not s then
+            print(m)
+        end
+        return false
+    end))
+end
+
+local AddSpecialEffectTarget = AddSpecialEffectTarget
+local AddSpecialEffect = AddSpecialEffect
+local BlzSetSpecialEffectColor = BlzSetSpecialEffectColor
+local DestroyEffect = DestroyEffect
+
+function ExAddSpecialEffectTarget(modelName, target, attachPoint, duration)
+    c_start(function()
+        local sfx = AddSpecialEffectTarget(modelName, target, attachPoint)
+        c_wait(duration)
+        DestroyEffect(sfx)
+    end)
+end
+
+function ExAddSpecialEffect(modelName, x, y, duration, color)
+    c_start(function()
+        local sfx = AddSpecialEffect(modelName, x, y)
+        if color then
+            BlzSetSpecialEffectColor(sfx, m_round(color.r * 255), m_round(color.g * 255), m_round(color.b * 255))
+        end
+        c_wait(duration)
+        DestroyEffect(sfx)
+    end)
+end
+
+local AddLightningEx = AddLightningEx
+local SetLightningColor = SetLightningColor
+local MoveLightningEx = MoveLightningEx
+local DestroyLightning = DestroyLightning
+local GetUnitX = GetUnitX
+local GetUnitY = GetUnitY
+local BlzGetUnitZ = BlzGetUnitZ
+local GetUnitFlyHeight = GetUnitFlyHeight
+
+function ExAddLightningPosPos(modelName, x1, y1, z1, x2, y2, z2, duration, color, check)
+    c_start(function()
+        local lightning = AddLightningEx(modelName, check or false, x1, y1, z1, x2, y2, z2)
+        if color then
+            SetLightningColor(lightning, color.r, color.g, color.b, color.a)
+        end
+        c_wait(duration)
+        DestroyLightning(lightning)
+    end)
+end
+
+function ExAddLightningUnitUnit(modelName, unit1, unit2, duration, color, checkVisibility)
+    c_start(function()
+        checkVisibility = checkVisibility or false
+        local expr = Time.Time + duration
+        local lightning = AddLightningEx(modelName, checkVisibility,
+                GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
+                GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
+        if color then
+            SetLightningColor(lightning, color.r, color.g, color.b, color.a)
+        end
+        while true do
+            c_step()
+            MoveLightningEx(lightning, checkVisibility,
+                    GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
+                    GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
+            if Time.Time >= expr then
+                break
+            end
+        end
+        DestroyLightning(lightning)
+    end)
+end
+
+function ExAddLightningPosUnit(modelName, x1, y1, z1, unit2, duration, color, check)
+    c_start(function()
+        check = check or false
+        local expr = Time.Time + duration
+        local lightning = AddLightningEx(modelName, check,
+                x1, y1, z1,
+                GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
+        if color then
+            SetLightningColor(lightning, color.r, color.g, color.b, color.a)
+        end
+        while true do
+            c_step()
+            MoveLightningEx(lightning, check,
+                    x1, y1, z1,
+                    GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
+            if Time.Time >= expr then
+                break
+            end
+        end
+        DestroyLightning(lightning)
+    end)
+end
 
 end}
 
@@ -1007,8 +1212,6 @@ end}
 
 __modules["Lib.Utils"]={loader=function()
 local Timer = require("Lib.Timer")
-local FrameTimer = require("Lib.FrameTimer")
-local Time = require("Lib.Time")
 
 local m_floor = math.floor
 local s_sub = string.sub
@@ -1054,41 +1257,7 @@ function cls.SetUnitFlyable(unit)
     UnitRemoveAbility(unit, AbilIdAmrf);
 end
 
-function cls.AddTimedEffectAtUnit(modelName, target, attachPoint, duration)
-    local sfx = AddSpecialEffectTarget(modelName, target, attachPoint)
-    local tm = Timer.new(function()
-        DestroyEffect(sfx)
-    end, duration, 1)
-    tm:Start()
-end
-
-function cls.AddTimedLightningAtUnits(modelName, unit1, unit2, duration, color, checkVisibility)
-    coroutine.start(function()
-        if checkVisibility == nil then
-            checkVisibility = false
-        end
-        local expr = Time.Time + duration
-        local lightning = AddLightningEx(modelName, checkVisibility,
-                GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
-                GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
-        if color then
-            SetLightningColor(lightning, color.r, color.g, color.b, color.a)
-        end
-        while true do
-            coroutine.step()
-            MoveLightningEx(lightning, checkVisibility,
-                    GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
-                    GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
-            if Time.Time >= expr then
-                break
-            end
-        end
-        DestroyLightning(lightning)
-    end)
-end
-
 return cls
-
 
 end}
 
@@ -1117,6 +1286,11 @@ local new = cls.new
 ---@param unit unit
 function cls.FromUnit(unit)
     return new(GetUnitX(unit), GetUnitY(unit))
+end
+
+function cls.InsideUnitCircle()
+    local angle = math.random() * math.pi * 2
+    return new(math.cos(angle), math.sin(angle))
 end
 
 ---@param unit unit
@@ -1243,20 +1417,9 @@ local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
 require("Lib.ArrayExt")
 require("Lib.TableExt")
+require("Lib.native")
 
 local ipairs = ipairs
-local pcall = pcall
-
-local _native_TriggerAddAction = TriggerAddAction
-
-function TriggerAddAction(trigger, action)
-    _native_TriggerAddAction(trigger, function()
-        local s, m = pcall(action)
-        if not s then
-            print(m)
-        end
-    end)
-end
 
 -- main loop
 local dt = Time.Delta
@@ -1315,17 +1478,21 @@ end
 function cls:Update(dt)
     local toRemove = {}
     for i, buff in ipairs(self.buffs) do
-        local time = buff.time + dt
-        buff.time = time
-        if time > buff.expire then
+        if IsUnitDeadBJ(buff.target) then
             table.insert(toRemove, i)
         else
-            if time >= buff.nextUpdate then
-                buff:Update()
-                buff.nextUpdate = buff.nextUpdate + buff.interval
-            end
-            if time == buff.expire then
+            local time = buff.time + dt
+            buff.time = time
+            if time > buff.expire then
                 table.insert(toRemove, i)
+            else
+                if time >= buff.nextUpdate then
+                    buff:Update()
+                    buff.nextUpdate = buff.nextUpdate + buff.interval
+                end
+                if time == buff.expire then
+                    table.insert(toRemove, i)
+                end
             end
         end
     end
@@ -1370,13 +1537,13 @@ function cls:ctor()
     cls.super.ctor(self)
     local damagingTrigger = CreateTrigger()
     TriggerRegisterAnyUnitEventBJ(damagingTrigger, EVENT_PLAYER_UNIT_DAMAGED)
-    TriggerAddAction(damagingTrigger, function()
+    ExTriggerAddAction(damagingTrigger, function()
         self:_response(self._damagingHandlers)
     end)
 
     local damagedTrigger = CreateTrigger()
     TriggerRegisterAnyUnitEventBJ(damagedTrigger, EVENT_PLAYER_UNIT_DAMAGED)
-    TriggerAddAction(damagedTrigger, function()
+    ExTriggerAddAction(damagedTrigger, function()
         self:_response(self._damagedHandlers)
     end)
 
@@ -1436,6 +1603,7 @@ function cls:Awake()
     require("Ability.DeathGrip")
     require("Ability.DeathStrike")
     require("Ability.PlagueStrike")
+    require("Ability.ArmyOfTheDead")
 end
 
 return cls
@@ -1469,7 +1637,7 @@ local cls = class("ItemSystem", SystemBase)
 function cls:ctor()
     local trigger = CreateTrigger()
     TriggerRegisterAnyUnitEventBJ(trigger, EVENT_PLAYER_UNIT_PICKUP_ITEM)
-    TriggerAddAction(trigger, function()
+    ExTriggerAddAction(trigger, function()
         local item = GetManipulatedItem()
         local unit = GetTriggerUnit()
         local player = GetTriggerPlayer()
@@ -1664,7 +1832,7 @@ end
 function cls:_register(event, callback)
     local trigger = CreateTrigger()
     TriggerRegisterAnyUnitEventBJ(trigger, event)
-    TriggerAddAction(trigger, callback)
+    ExTriggerAddAction(trigger, callback)
 end
 
 function cls:_initSpellData()
@@ -1755,7 +1923,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000045967
+--lua-bundler:000051352
 
 function InitGlobals()
 end
@@ -1773,15 +1941,12 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("Hpal"), -1089.7, 0.0, 332.300, FourCC("Hpal"))
-SetHeroLevel(u, 10, false)
 u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1225.0, 1133.3, 337.620, FourCC("hmpr"))
 u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1178.5, 1035.4, 79.038, FourCC("hmpr"))
 u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1146.8, 945.0, 66.030, FourCC("hmpr"))
 u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1130.9, 881.8, 124.600, FourCC("hmpr"))
 u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1126.4, 833.9, 30.587, FourCC("hmpr"))
 u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -1174.0, -187.4, 341.390, FourCC("Udea"))
-SetHeroLevel(u, 10, false)
 end
 
 function CreateUnitsForPlayer1()

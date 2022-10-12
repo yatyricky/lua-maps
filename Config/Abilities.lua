@@ -19,5 +19,8 @@ cls.PlagueStrike = {
     UnholyPlagueInterval = { 2, 2, 2, 2 },
     UnholyPlagueData = { 4, 8, 12, 16 },
 }
+cls.ArmyOfTheDead = {
+    ID = FourCC("A003")
+}
 
 return cls

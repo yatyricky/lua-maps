@@ -45,13 +45,13 @@ STRING 9
 }
 
 STRING 10
-// 技能: A000 (死亡之握), Researchhotkey (热键 - 学习)
+// 技能: A003 (亡者大军), Researchhotkey (热键 - 学习)
 {
 R
 }
 
 STRING 11
-// 技能: A000 (死亡之握), Hotkey (热键 - 普通)
+// 技能: A003 (亡者大军), Hotkey (热键 - 普通)
 {
 R
 }
@@ -84,18 +84,6 @@ STRING 16
 // 技能: A001 (灵界打击), Name (名字)
 {
 灵界打击
-}
-
-STRING 17
-// 技能: A001 (灵界打击), Researchhotkey (热键 - 学习)
-{
-D
-}
-
-STRING 18
-// 技能: A001 (灵界打击), Hotkey (热键 - 普通)
-{
-D
 }
 
 STRING 19
@@ -134,18 +122,6 @@ STRING 24
 亡者大军
 }
 
-STRING 25
-// 技能: A003 (亡者大军), Researchhotkey (热键 - 学习)
-{
-T
-}
-
-STRING 26
-// 技能: A003 (亡者大军), Hotkey (热键 - 普通)
-{
-T
-}
-
 STRING 31
 // 技能: A001 (灵界打击), Tip (提示工具 - 普通)
 {
@@ -180,5 +156,35 @@ STRING 36
 // 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
 {
 引导强大的结界魔法。
+}
+
+STRING 37
+// 技能: A000 (死亡之握), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 38
+// 技能: A000 (死亡之握), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 39
+// 技能: A001 (灵界打击), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 40
+// 技能: A001 (灵界打击), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 41
+// 技能: A002 (疫病武器), Researchhotkey (热键 - 学习)
+{
+E
 }
 
