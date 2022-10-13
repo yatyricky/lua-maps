@@ -1,5 +1,3 @@
-local Timer = require("Lib.Timer")
-
 local m_floor = math.floor
 local s_sub = string.sub
 
