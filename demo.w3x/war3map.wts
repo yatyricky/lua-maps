@@ -57,25 +57,25 @@ R
 }
 
 STRING 12
-// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 13
-// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
 {
 Channel
 }
 
 STRING 14
-// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
 
 STRING 15
-// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
 {
 Channels powerful warding magic.
 }
@@ -84,30 +84,6 @@ STRING 16
 // 技能: A001 (灵界打击), Name (名字)
 {
 灵界打击
-}
-
-STRING 19
-// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
-{
-Channel
-}
-
-STRING 20
-// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
-{
-Channel
-}
-
-STRING 21
-// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
-{
-Channels powerful warding magic.
-}
-
-STRING 22
-// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
-{
-Channels powerful warding magic.
 }
 
 STRING 23
@@ -186,5 +162,137 @@ STRING 41
 // 技能: A002 (疫病武器), Researchhotkey (热键 - 学习)
 {
 E
+}
+
+STRING 42
+// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
+{
+死亡之握 - [|cffffcc002级|r]
+}
+
+STRING 43
+// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
+{
+死亡之握 - [|cffffcc003级|r]
+}
+
+STRING 44
+// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
+{
+运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续5秒，英雄3秒。
+}
+
+STRING 45
+// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
+{
+运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续6秒，英雄4秒。
+}
+
+STRING 46
+// 技能: A000 (死亡之握), Researchtip (提示工具 - 学习)
+{
+学习死亡之握 - [|cffffcc00%d级|r]
+}
+
+STRING 47
+// 技能: A000 (死亡之握), Researchubertip (提示工具 - 学习 - 扩展)
+{
+运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动。|n|n|cffffcc001级|r - 持续4秒，英雄2秒。|n|cffffcc002级|r - 持续5秒，英雄3秒。|n|cffffcc003级|r - 持续6秒，英雄4秒。
+}
+
+STRING 48
+// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
+{
+死亡之握 - [|cffffcc001级|r]
+}
+
+STRING 49
+// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
+{
+运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续4秒，英雄2秒。
+}
+
+STRING 50
+// 技能: A001 (灵界打击), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 51
+// 技能: A001 (灵界打击), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 52
+// 技能: A002 (疫病武器), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 53
+// 技能: A002 (疫病武器), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 54
+// 技能: A002 (疫病武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 55
+// 技能: A002 (疫病武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 56
+// 技能: A002 (疫病武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 57
+// 技能: A002 (疫病武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 58
+// 技能: A002 (疫病武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 59
+// 技能: A002 (疫病武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 60
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 61
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 62
+// 技能: A003 (亡者大军), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 63
+// 技能: A003 (亡者大军), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
 }
 

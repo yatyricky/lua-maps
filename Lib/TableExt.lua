@@ -18,3 +18,12 @@ end
 function table.any(tab)
     return next(tab) ~= nil
 end
+
+function table.getOrCreateTable(tab, key)
+    local ret = tab[key]
+    if not ret then
+        ret = {}
+        tab[key] = ret
+    end
+    return ret
+end

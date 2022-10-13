@@ -1,6 +1,8 @@
 local FrameUpdate = require("Lib.EventCenter").FrameUpdate
 require("Lib.MathExt")
 
+local pcall = pcall
+
 local cls = class("Timer")
 
 function cls:ctor(func, duration, loops)
@@ -33,7 +35,10 @@ function cls:_update(dt)
 
     self.time = self.time - dt
     if self.time <= 0.00001 then
-        self.func()
+        local s, m = pcall(self.func)
+        if not s then
+            print(m)
+        end
 
         if self.loops > 0 then
             self.loops = self.loops - 1

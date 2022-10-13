@@ -46,7 +46,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                         if current then
                             current.level = debuff.level
                             if current.__cname ~= "FrostPlague" then
-                                current.duration = debuff.duration
+                                current.duration = math.max(debuff.duration, current.duration)
                             end
                         else
                             debuff.class.new(debuff.caster, e, debuff:GetTimeLeft(), debuff.interval, debuff.awakeData)

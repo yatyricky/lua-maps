@@ -5,6 +5,7 @@ local c_start = coroutine.start
 local c_wait = coroutine.wait
 local c_step = coroutine.step
 local m_round = math.round
+local t_insert = table.insert
 
 local TriggerAddAction = TriggerAddAction
 
@@ -130,3 +131,21 @@ function ExAddLightningPosUnit(modelName, x1, y1, z1, unit2, duration, color, ch
         DestroyLightning(lightning)
     end)
 end
+
+--local GetTriggerUnit = GetTriggerUnit
+--
+--local mapArea = CreateRegion()
+--RegionAddRect(mapArea, bj_mapInitialPlayableArea)
+--local enterTrigger = CreateTrigger()
+--local enterMapCalls = {}
+--TriggerRegisterEnterRegion(enterTrigger, mapArea, Filter(function() return true end))
+--ExTriggerAddAction(enterTrigger, function()
+--    local u = GetTriggerUnit()
+--    for _, v in ipairs(enterMapCalls) do
+--        v(u)
+--    end
+--end)
+--function ExTriggerRegisterNewUnit(callback)
+--    t_insert(enterMapCalls, callback)
+--end
+
