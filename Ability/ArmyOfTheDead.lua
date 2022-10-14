@@ -2,7 +2,25 @@ local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local Vector2 = require("Lib.Vector2")
 local Timer = require("Lib.Timer")
-local Time = require("Lib.Time")
+
+--region meta
+
+Abilities.ArmyOfTheDead = {
+    ID = FourCC("A003")
+}
+
+BlzSetAbilityResearchTooltip(Abilities.ArmyOfTheDead.ID, "学习亡者大军 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.ArmyOfTheDead.ID, string.format([[召唤一支食尸鬼军团为你作战。食尸鬼会在你附近的区域横冲直撞，攻击一切它们可以攻击的目标。
+
+|cffffcc001级|r - 召唤6个食尸鬼，每个具有660点生命值。]]
+), 0)
+
+for i = 1, 1 do
+    BlzSetAbilityTooltip(Abilities.ArmyOfTheDead.ID, string.format("亡者大军 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.ArmyOfTheDead.ID, string.format("召唤一支食尸鬼军团为你作战。食尸鬼会在你附近的区域横冲直撞，攻击一切它们可以攻击的目标。召唤6个食尸鬼，每个具有660点生命值。"), i - 1)
+end
+
+--endregion
 
 local instances = {} ---@type table<unit, ArmyOfTheDead>
 

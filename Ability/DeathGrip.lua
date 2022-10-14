@@ -6,6 +6,34 @@ local Utils = require("Lib.Utils")
 local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
 
+--region meta
+
+Abilities.DeathGrip = {
+    ID = FourCC("A000"),
+    Duration = { 4, 5, 6 },
+    DurationHero = { 2, 3, 4 },
+}
+
+BlzSetAbilityResearchTooltip(Abilities.DeathGrip.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathGrip.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动。
+
+|cffffcc001级|r - 持续%s秒，英雄%s秒。
+|cffffcc002级|r - 持续%s秒，英雄%s秒。
+|cffffcc003级|r - 持续%s秒，英雄%s秒。]],
+        Abilities.DeathGrip.Duration[1], Abilities.DeathGrip.DurationHero[1],
+        Abilities.DeathGrip.Duration[2], Abilities.DeathGrip.DurationHero[2],
+        Abilities.DeathGrip.Duration[3], Abilities.DeathGrip.DurationHero[3]
+), 0)
+
+for i = 1, #Abilities.DeathGrip.Duration do
+    BlzSetAbilityTooltip(Abilities.DeathGrip.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathGrip.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒。", Abilities.DeathGrip.Duration[i], Abilities.DeathGrip.DurationHero[i]), i - 1)
+end
+
+--endregion
+
+--region slow debuff
+
 ---@class SlowDebuff : BuffBase
 local SlowDebuff = class("SlowDebuff", BuffBase)
 
@@ -20,6 +48,8 @@ end
 function SlowDebuff:OnDisable()
     SetUnitMoveSpeed(self.target, GetUnitDefaultMoveSpeed(self.target))
 end
+
+--endregion
 
 local StepLen = 16
 

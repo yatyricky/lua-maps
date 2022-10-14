@@ -1,11 +1,37 @@
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local Utils = require("Lib.Utils")
 local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
 local BloodPlague = require("Ability.BloodPlague")
 local FrostPlague = require("Ability.FrostPlague")
 local UnholyPlague = require("Ability.UnholyPlague")
+
+--region meta
+
+Abilities.DeathStrike = {
+    ID = FourCC("A001"),
+    Damage = { 80, 120, 160 },
+    Heal = { 0.08, 0.12, 0.16 },
+    AOE = { 400, 500, 600 },
+}
+
+BlzSetAbilityResearchTooltip(Abilities.DeathStrike.ID, "学习灵界打击 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathStrike.ID, string.format([[致命的攻击，对目标造成一次伤害，并根据目标身上的疾病数量，每有一个便为死亡骑士恢复他最大生命值百分比的效果，并且会将目标身上的所有疾病传染给附近所有敌人。
+
+|cffffcc001级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。
+|cffffcc002级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。
+|cffffcc003级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。]],
+        Abilities.DeathStrike.Damage[1], math.round(Abilities.DeathStrike.Heal[1] * 100), Abilities.DeathStrike.AOE[1],
+        Abilities.DeathStrike.Damage[2], math.round(Abilities.DeathStrike.Heal[2] * 100), Abilities.DeathStrike.AOE[2],
+        Abilities.DeathStrike.Damage[3], math.round(Abilities.DeathStrike.Heal[3] * 100), Abilities.DeathStrike.AOE[3]
+), 0)
+
+for i = 1, #Abilities.DeathStrike.Damage do
+    BlzSetAbilityTooltip(Abilities.DeathStrike.ID, string.format("灵界打击 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathStrike.ID, string.format("致命的攻击，对目标造成%s点伤害，并根据目标身上的疾病数量，每有一个便为死亡骑士恢复他最大生命值的%s%%，并且会将目标身上的所有疾病传染给附近%s范围内所有敌人。", Abilities.DeathStrike.Damage[i], math.round(Abilities.DeathStrike.Heal[i] * 100), Abilities.DeathStrike.AOE[i]), i - 1)
+end
+
+--endregion
 
 local cls = class("DeathStrike")
 

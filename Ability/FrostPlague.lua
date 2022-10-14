@@ -1,6 +1,5 @@
 local BuffBase = require("Buff.BuffBase")
 local Abilities = require("Config.Abilities")
-local Utils = require("Lib.Utils")
 local Time = require("Lib.Time")
 
 ---@class FrostPlague : BuffBase
