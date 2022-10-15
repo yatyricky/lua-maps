@@ -1,4 +1,4 @@
---lua-bundler:000057711
+--lua-bundler:000059156
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -27,6 +27,25 @@ local Vector2 = require("Lib.Vector2")
 local Timer = require("Lib.Timer")
 local Time = require("Lib.Time")
 
+--region meta
+
+Abilities.ArmyOfTheDead = {
+    ID = FourCC("A003")
+}
+
+BlzSetAbilityResearchTooltip(Abilities.ArmyOfTheDead.ID, "学习亡者大军 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.ArmyOfTheDead.ID, string.format([[召唤一支食尸鬼军团为你作战。食尸鬼会在你附近的区域横冲直撞，攻击一切它们可以攻击的目标。
+
+|cffffcc001级|r - 召唤6个食尸鬼，每个具有660点生命值。]]
+), 0)
+
+for i = 1, 1 do
+    BlzSetAbilityTooltip(Abilities.ArmyOfTheDead.ID, string.format("亡者大军 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.ArmyOfTheDead.ID, string.format("召唤一支食尸鬼军团为你作战。食尸鬼会在你附近的区域横冲直撞，攻击一切它们可以攻击的目标。召唤6个食尸鬼，每个具有660点生命值。"), i - 1)
+end
+
+--endregion
+
 local instances = {} ---@type table<unit, ArmyOfTheDead>
 
 local LesserColor = { r = 0.2, g = 0, b = 0.4, a = 1 }
@@ -38,6 +57,7 @@ local cls = class("ArmyOfTheDead")
 function cls:ctor(caster)
     local casterPos = Vector2.FromUnit(caster)
     self.sfxTimer = Timer.new(function()
+        print("sfx", Time.Time)
         local pos = (Vector2.InsideUnitCircle() * math.random(200, 600)):Add(casterPos)
         ExAddLightningPosPos("CLSB", casterPos.x, casterPos.y, 200, pos.x, pos.y, 0, math.random() * 0.4 + 0.2, LesserColor)
         ExAddSpecialEffect("Abilities/Spells/Undead/DeathandDecay/DeathandDecayTarget.mdl", pos.x, pos.y, 0.2)
@@ -46,6 +66,7 @@ function cls:ctor(caster)
 
     local player = GetOwningPlayer(caster)
     self.summonTimer = Timer.new(function()
+        print("summon", Time.Time)
         local pos = (Vector2.InsideUnitCircle() * math.random(200, 600)):Add(casterPos)
         local summoned = CreateUnit(player, FourCC("u000"), pos.x, pos.y, math.random(360))
         ExAddLightningPosUnit("CLPB", casterPos.x, casterPos.y, 200, summoned, 1, GreaterColor)
@@ -64,7 +85,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.ArmyOfTheDead.ID,
     ---@param data ISpellData
     handler = function(data)
-        print("effect?")
+        print("spell effect", Time.Time)
         instances[data.caster] = cls.new(data.caster, GetUnitAbilityLevel(data.caster, data.abilityId))
     end
 })
@@ -73,6 +94,7 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
     id = Abilities.ArmyOfTheDead.ID,
     ---@param data ISpellData
     handler = function(data)
+        print("spell endcast", Time.Time)
         local inst = instances[data.caster]
         if inst then
             inst:Stop()
@@ -135,6 +157,34 @@ local Utils = require("Lib.Utils")
 local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
 
+--region meta
+
+Abilities.DeathGrip = {
+    ID = FourCC("A000"),
+    Duration = { 4, 5, 6 },
+    DurationHero = { 2, 3, 4 },
+}
+
+BlzSetAbilityResearchTooltip(Abilities.DeathGrip.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathGrip.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动。
+
+|cffffcc001级|r - 持续%s秒，英雄%s秒。
+|cffffcc002级|r - 持续%s秒，英雄%s秒。
+|cffffcc003级|r - 持续%s秒，英雄%s秒。]],
+        Abilities.DeathGrip.Duration[1], Abilities.DeathGrip.DurationHero[1],
+        Abilities.DeathGrip.Duration[2], Abilities.DeathGrip.DurationHero[2],
+        Abilities.DeathGrip.Duration[3], Abilities.DeathGrip.DurationHero[3]
+), 0)
+
+for i = 1, #Abilities.DeathGrip.Duration do
+    BlzSetAbilityTooltip(Abilities.DeathGrip.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathGrip.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒。", Abilities.DeathGrip.Duration[i], Abilities.DeathGrip.DurationHero[i]), i - 1)
+end
+
+--endregion
+
+--region slow debuff
+
 ---@class SlowDebuff : BuffBase
 local SlowDebuff = class("SlowDebuff", BuffBase)
 
@@ -149,6 +199,8 @@ end
 function SlowDebuff:OnDisable()
     SetUnitMoveSpeed(self.target, GetUnitDefaultMoveSpeed(self.target))
 end
+
+--endregion
 
 local StepLen = 16
 
@@ -231,12 +283,38 @@ end}
 __modules["Ability.DeathStrike"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local Utils = require("Lib.Utils")
 local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
 local BloodPlague = require("Ability.BloodPlague")
 local FrostPlague = require("Ability.FrostPlague")
 local UnholyPlague = require("Ability.UnholyPlague")
+
+--region meta
+
+Abilities.DeathStrike = {
+    ID = FourCC("A001"),
+    Damage = { 80, 120, 160 },
+    Heal = { 0.08, 0.12, 0.16 },
+    AOE = { 400, 500, 600 },
+}
+
+BlzSetAbilityResearchTooltip(Abilities.DeathStrike.ID, "学习灵界打击 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathStrike.ID, string.format([[致命的攻击，对目标造成一次伤害，并根据目标身上的疾病数量，每有一个便为死亡骑士恢复他最大生命值百分比的效果，并且会将目标身上的所有疾病传染给附近所有敌人。
+
+|cffffcc001级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。
+|cffffcc002级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。
+|cffffcc003级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。]],
+        Abilities.DeathStrike.Damage[1], math.round(Abilities.DeathStrike.Heal[1] * 100), Abilities.DeathStrike.AOE[1],
+        Abilities.DeathStrike.Damage[2], math.round(Abilities.DeathStrike.Heal[2] * 100), Abilities.DeathStrike.AOE[2],
+        Abilities.DeathStrike.Damage[3], math.round(Abilities.DeathStrike.Heal[3] * 100), Abilities.DeathStrike.AOE[3]
+), 0)
+
+for i = 1, #Abilities.DeathStrike.Damage do
+    BlzSetAbilityTooltip(Abilities.DeathStrike.ID, string.format("灵界打击 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathStrike.ID, string.format("致命的攻击，对目标造成%s点伤害，并根据目标身上的疾病数量，每有一个便为死亡骑士恢复他最大生命值的%s%%，并且会将目标身上的所有疾病传染给附近%s范围内所有敌人。", Abilities.DeathStrike.Damage[i], math.round(Abilities.DeathStrike.Heal[i] * 100), Abilities.DeathStrike.AOE[i]), i - 1)
+end
+
+--endregion
 
 local cls = class("DeathStrike")
 
@@ -317,7 +395,6 @@ end}
 __modules["Ability.FrostPlague"]={loader=function()
 local BuffBase = require("Buff.BuffBase")
 local Abilities = require("Config.Abilities")
-local Utils = require("Lib.Utils")
 local Time = require("Lib.Time")
 
 ---@class FrostPlague : BuffBase
@@ -354,6 +431,40 @@ local BuffBase = require("Buff.BuffBase")
 local BloodPlague = require("Ability.BloodPlague")
 local FrostPlague = require("Ability.FrostPlague")
 local UnholyPlague = require("Ability.UnholyPlague")
+
+--region meta
+
+Abilities.PlagueStrike = {
+    ID = FourCC("A002"),
+    BloodPlagueDuration = { 12, 12, 12 },
+    BloodPlagueData = { 0.005, 0.01, 0.015 },
+    FrostPlagueDuration = { 6, 6, 6 },
+    FrostPlagueData = { 30, 45, 60 },
+    UnholyPlagueDuration = { 10.2, 10.2, 10.2 },
+    UnholyPlagueInterval = { 2, 2, 2 },
+    UnholyPlagueData = { 6, 11, 16 },
+}
+
+BlzSetAbilityResearchTooltip(Abilities.PlagueStrike.ID, "学习瘟疫打击 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.PlagueStrike.ID, string.format([[每次攻击都会依次给敌人造成鲜血疾病、冰霜疾病、邪恶疾病的效果。
+鲜血疾病：目标受到攻击时，受到最大生命值百分比伤害。
+冰霜疾病：一段时间后，受到一次冰霜伤害，目标移动速度越低，受到伤害越高。
+邪恶疾病：受到持续的伤害，生命值越低，受到伤害越高。
+
+|cffffcc001级|r - 鲜血疾病持续%s秒，造成最大生命%s%%的伤害；冰霜疾病持续%s秒，造成%s伤害；邪恶疾病持续%s秒，没%s秒造成%s伤害。
+|cffffcc002级|r - 鲜血疾病持续%s秒，造成最大生命%s%%的伤害；冰霜疾病持续%s秒，造成%s伤害；邪恶疾病持续%s秒，没%s秒造成%s伤害。
+|cffffcc003级|r - 鲜血疾病持续%s秒，造成最大生命%s%%的伤害；冰霜疾病持续%s秒，造成%s伤害；邪恶疾病持续%s秒，没%s秒造成%s伤害。]],
+        Abilities.PlagueStrike.BloodPlagueDuration[1], (Abilities.PlagueStrike.BloodPlagueData[1] * 100), Abilities.PlagueStrike.FrostPlagueDuration[1], Abilities.PlagueStrike.FrostPlagueData[1], Abilities.PlagueStrike.UnholyPlagueDuration[1], Abilities.PlagueStrike.UnholyPlagueInterval[1], Abilities.PlagueStrike.UnholyPlagueData[1],
+        Abilities.PlagueStrike.BloodPlagueDuration[2], (Abilities.PlagueStrike.BloodPlagueData[2] * 100), Abilities.PlagueStrike.FrostPlagueDuration[2], Abilities.PlagueStrike.FrostPlagueData[2], Abilities.PlagueStrike.UnholyPlagueDuration[2], Abilities.PlagueStrike.UnholyPlagueInterval[2], Abilities.PlagueStrike.UnholyPlagueData[2],
+        Abilities.PlagueStrike.BloodPlagueDuration[3], (Abilities.PlagueStrike.BloodPlagueData[3] * 100), Abilities.PlagueStrike.FrostPlagueDuration[3], Abilities.PlagueStrike.FrostPlagueData[3], Abilities.PlagueStrike.UnholyPlagueDuration[3], Abilities.PlagueStrike.UnholyPlagueInterval[3], Abilities.PlagueStrike.UnholyPlagueData[3]
+), 0)
+
+for i = 1, #Abilities.PlagueStrike.BloodPlagueDuration do
+    BlzSetAbilityTooltip(Abilities.PlagueStrike.ID, string.format("瘟疫打击 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.PlagueStrike.ID, string.format("每次攻击都会依次给敌人造成鲜血疾病、冰霜疾病、邪恶疾病的效果。鲜血疾病：持续%s秒，目标受到攻击时，受到最大生命值%s%%的伤害。冰霜疾病：%s秒后，受到%s点冰霜伤害，目标移动速度越低，受到伤害越高。邪恶疾病：持续%s秒，每%s秒受到%s点伤害，生命值越低，受到伤害越高。", Abilities.PlagueStrike.BloodPlagueDuration[i], (Abilities.PlagueStrike.BloodPlagueData[i] * 100), Abilities.PlagueStrike.FrostPlagueDuration[i], Abilities.PlagueStrike.FrostPlagueData[i], Abilities.PlagueStrike.UnholyPlagueDuration[i], Abilities.PlagueStrike.UnholyPlagueInterval[i], Abilities.PlagueStrike.UnholyPlagueData[i]), i - 1)
+end
+
+--endregion
 
 local cls = class("PlagueStrike")
 
@@ -539,97 +650,20 @@ return cls
 end}
 
 __modules["Config.Abilities"]={loader=function()
-local cls = {}
+local data = {}
 
-cls.DeathGrip = {
-    ID = FourCC("A000"),
-    Duration = { 4, 5, 6 },
-    DurationHero = { 2, 3, 4 },
-}
-
-BlzSetAbilityResearchTooltip(cls.DeathGrip.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(cls.DeathGrip.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动。
-
-|cffffcc001级|r - 持续%s秒，英雄%s秒。
-|cffffcc002级|r - 持续%s秒，英雄%s秒。
-|cffffcc003级|r - 持续%s秒，英雄%s秒。]],
-        cls.DeathGrip.Duration[1], cls.DeathGrip.DurationHero[1],
-        cls.DeathGrip.Duration[2], cls.DeathGrip.DurationHero[2],
-        cls.DeathGrip.Duration[3], cls.DeathGrip.DurationHero[3]
-), 0)
-
-for i = 1, #cls.DeathGrip.Duration do
-    BlzSetAbilityTooltip(cls.DeathGrip.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
-    BlzSetAbilityExtendedTooltip(cls.DeathGrip.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒。", cls.DeathGrip.Duration[i], cls.DeathGrip.DurationHero[i]), i - 1)
-end
-
-cls.DeathStrike = {
-    ID = FourCC("A001"),
-    Damage = { 80, 120, 160 },
-    Heal = { 0.08, 0.12, 0.16 },
-    AOE = { 400, 500, 600 },
-}
-
-BlzSetAbilityResearchTooltip(cls.DeathStrike.ID, "学习灵界打击 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(cls.DeathStrike.ID, string.format([[致命的攻击，对目标造成一次伤害，并根据目标身上的疾病数量，每有一个便为死亡骑士恢复他最大生命值百分比的效果，并且会将目标身上的所有疾病传染给附近所有敌人。
-
-|cffffcc001级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。
-|cffffcc002级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。
-|cffffcc003级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。]],
-        cls.DeathStrike.Damage[1], math.round(cls.DeathStrike.Heal[1] * 100), cls.DeathStrike.AOE[1],
-        cls.DeathStrike.Damage[2], math.round(cls.DeathStrike.Heal[2] * 100), cls.DeathStrike.AOE[2],
-        cls.DeathStrike.Damage[3], math.round(cls.DeathStrike.Heal[3] * 100), cls.DeathStrike.AOE[3]
-), 0)
-
-for i = 1, #cls.DeathStrike.Damage do
-    BlzSetAbilityTooltip(cls.DeathStrike.ID, string.format("灵界打击 - [|cffffcc00%s级|r]", i), i - 1)
-    BlzSetAbilityExtendedTooltip(cls.DeathStrike.ID, string.format("致命的攻击，对目标造成%s点伤害，并根据目标身上的疾病数量，每有一个便为死亡骑士恢复他最大生命值的%s%%，并且会将目标身上的所有疾病传染给附近%s范围内所有敌人。", cls.DeathStrike.Damage[i], math.round(cls.DeathStrike.Heal[i] * 100), cls.DeathStrike.AOE[i]), i - 1)
-end
-
-cls.PlagueStrike = {
-    ID = FourCC("A002"),
-    BloodPlagueDuration = { 12, 12, 12 },
-    BloodPlagueData = { 0.005, 0.01, 0.015 },
-    FrostPlagueDuration = { 6, 6, 6 },
-    FrostPlagueData = { 30, 45, 60 },
-    UnholyPlagueDuration = { 10.2, 10.2, 10.2 },
-    UnholyPlagueInterval = { 2, 2, 2 },
-    UnholyPlagueData = { 6, 11, 16 },
-}
-
-BlzSetAbilityResearchTooltip(cls.PlagueStrike.ID, "学习瘟疫打击 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(cls.PlagueStrike.ID, string.format([[每次攻击都会依次给敌人造成鲜血疾病、冰霜疾病、邪恶疾病的效果。
-鲜血疾病：目标受到攻击时，受到最大生命值百分比伤害。
-冰霜疾病：一段时间后，受到一次冰霜伤害，目标移动速度越低，受到伤害越高。
-邪恶疾病：受到持续的伤害，生命值越低，受到伤害越高。
-
-|cffffcc001级|r - 鲜血疾病持续%s秒，造成最大生命%s%%的伤害；冰霜疾病持续%s秒，造成%s伤害；邪恶疾病持续%s秒，没%s秒造成%s伤害。
-|cffffcc002级|r - 鲜血疾病持续%s秒，造成最大生命%s%%的伤害；冰霜疾病持续%s秒，造成%s伤害；邪恶疾病持续%s秒，没%s秒造成%s伤害。
-|cffffcc003级|r - 鲜血疾病持续%s秒，造成最大生命%s%%的伤害；冰霜疾病持续%s秒，造成%s伤害；邪恶疾病持续%s秒，没%s秒造成%s伤害。]],
-        cls.PlagueStrike.BloodPlagueDuration[1], (cls.PlagueStrike.BloodPlagueData[1] * 100), cls.PlagueStrike.FrostPlagueDuration[1], cls.PlagueStrike.FrostPlagueData[1], cls.PlagueStrike.UnholyPlagueDuration[1], cls.PlagueStrike.UnholyPlagueInterval[1], cls.PlagueStrike.UnholyPlagueData[1],
-        cls.PlagueStrike.BloodPlagueDuration[2], (cls.PlagueStrike.BloodPlagueData[2] * 100), cls.PlagueStrike.FrostPlagueDuration[2], cls.PlagueStrike.FrostPlagueData[2], cls.PlagueStrike.UnholyPlagueDuration[2], cls.PlagueStrike.UnholyPlagueInterval[2], cls.PlagueStrike.UnholyPlagueData[2],
-        cls.PlagueStrike.BloodPlagueDuration[3], (cls.PlagueStrike.BloodPlagueData[3] * 100), cls.PlagueStrike.FrostPlagueDuration[3], cls.PlagueStrike.FrostPlagueData[3], cls.PlagueStrike.UnholyPlagueDuration[3], cls.PlagueStrike.UnholyPlagueInterval[3], cls.PlagueStrike.UnholyPlagueData[3]
-), 0)
-
-for i = 1, #cls.PlagueStrike.BloodPlagueDuration do
-    BlzSetAbilityTooltip(cls.PlagueStrike.ID, string.format("瘟疫打击 - [|cffffcc00%s级|r]", i), i - 1)
-    BlzSetAbilityExtendedTooltip(cls.PlagueStrike.ID, string.format("每次攻击都会依次给敌人造成鲜血疾病、冰霜疾病、邪恶疾病的效果。鲜血疾病：持续%s秒，目标受到攻击时，受到最大生命值%s%%的伤害。冰霜疾病：%s秒后，受到%s点冰霜伤害，目标移动速度越低，受到伤害越高。邪恶疾病：持续%s秒，每%s秒受到%s点伤害，生命值越低，受到伤害越高。", cls.PlagueStrike.BloodPlagueDuration[i], (cls.PlagueStrike.BloodPlagueData[i] * 100), cls.PlagueStrike.FrostPlagueDuration[i], cls.PlagueStrike.FrostPlagueData[i], cls.PlagueStrike.UnholyPlagueDuration[i], cls.PlagueStrike.UnholyPlagueInterval[i], cls.PlagueStrike.UnholyPlagueData[i]), i - 1)
-end
-
-cls.ArmyOfTheDead = {
-    ID = FourCC("A003")
-}
-
-BlzSetAbilityResearchTooltip(cls.ArmyOfTheDead.ID, "学习亡者大军 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(cls.ArmyOfTheDead.ID, string.format([[召唤一支食尸鬼军团为你作战。食尸鬼会在你附近的区域横冲直撞，攻击一切它们可以攻击的目标。
-
-|cffffcc001级|r - 召唤6个食尸鬼，每个具有660点生命值。]]
-), 0)
-
-for i = 1, 1 do
-    BlzSetAbilityTooltip(cls.ArmyOfTheDead.ID, string.format("亡者大军 - [|cffffcc00%s级|r]", i), i - 1)
-    BlzSetAbilityExtendedTooltip(cls.ArmyOfTheDead.ID, string.format("召唤一支食尸鬼军团为你作战。食尸鬼会在你附近的区域横冲直撞，攻击一切它们可以攻击的目标。召唤6个食尸鬼，每个具有660点生命值。"), i - 1)
-end
+local cls = setmetatable({}, {
+    __index = function(t, k)
+        return data[k]
+    end,
+    __newindex = function(t, k, v)
+        if data[k] then
+            print("Error: duplicate ability name:", k)
+        else
+            data[k] = v
+        end
+    end
+})
 
 return cls
 
@@ -1235,65 +1269,99 @@ end
 end}
 
 __modules["Lib.Time"]={loader=function()
-local FrameBegin = require("Lib.EventCenter").FrameBegin
+local EventCenter =require("Lib.EventCenter")
+local Timer = require("Lib.Timer")
+local FrameBegin = EventCenter.FrameBegin
+local FrameUpdate =EventCenter.FrameUpdate
 
+local TimerGetElapsed = TimerGetElapsed
+
+local FPS = 30
+local TimeTimerInterval = 10
+
+---@class Time
+---@field Time real current time
 local cls = {}
 
-cls.Time = 0
 cls.Frame = 0
-cls.Delta = 1 / 30
+cls.Delta = 1 / FPS
+
+local time = 0
+local timeTimer = Timer.new(function()
+    time = time + TimeTimerInterval
+end, TimeTimerInterval, -1)
+timeTimer:Start()
+local tm = timeTimer.timer
 
 FrameBegin:On(cls, function(_, dt)
     local f = cls.Frame + 1
     cls.Frame = f
-    cls.Time = f * dt
 end)
+
+-- main loop
+local mainLoopTimer = Timer.new(function(dt)
+    FrameBegin:Emit(dt)
+    FrameUpdate:Emit(dt)
+end, cls.Delta, -1)
+mainLoopTimer:Start()
+
+-- cls.Time
+setmetatable(cls, {
+    __index = function()
+        return time + TimerGetElapsed(tm)
+    end
+})
 
 return cls
 
 end}
 
 __modules["Lib.Timer"]={loader=function()
-local FrameUpdate = require("Lib.EventCenter").FrameUpdate
 require("Lib.MathExt")
 
 local pcall = pcall
+local t_insert = table.insert
+local t_remove = table.remove
+
+local PauseTimer = PauseTimer
+local CreateTimer = CreateTimer
+local TimerStart = TimerStart
+local TimerGetElapsed = TimerGetElapsed
+
+local pool = {}
+
+local function getTimer()
+    if #pool == 0 then
+        return CreateTimer()
+    else
+        return t_remove(pool)
+    end
+end
+
+local function cacheTimer(timer)
+    PauseTimer(timer)
+    t_insert(pool, timer)
+end
 
 local cls = class("Timer")
 
 function cls:ctor(func, duration, loops)
+    self.timer = getTimer()
     self.func = func
     self.duration = duration
+    if loops == 0 then
+        loops = 1
+    end
     self.loops = loops
-
-    self.time = duration
-    self.running = false
 end
 
 function cls:Start()
-    if self.loops == 0 then
-        return
-    end
-
-    self.running = true
-    FrameUpdate:On(self, cls._update)
-end
-
-function cls:Stop()
-    self.running = false
-    FrameUpdate:Off(self, cls._update)
-end
-
-function cls:_update(dt)
-    if not self.running then
-        return
-    end
-
-    self.time = self.time - dt
-    if self.time <= 0.00001 then
-        local s, m = pcall(self.func)
+    TimerStart(self.timer, self.duration, self.loops ~= 1, function()
+        local dt = TimerGetElapsed(self.timer)
+        local s, m = pcall(self.func, dt)
         if not s then
             print(m)
+            return
         end
 
         if self.loops > 0 then
@@ -1303,8 +1371,11 @@ function cls:_update(dt)
                 return
             end
         end
-        self.time = self.time + self.duration
-    end
+    end)
+end
+
+function cls:Stop()
+    cacheTimer(self.timer)
 end
 
 return cls
@@ -1508,24 +1579,13 @@ return cls
 end}
 
 __modules["Main"]={loader=function()
-local EventCenter = require("Lib.EventCenter")
-local FrameBegin = EventCenter.FrameBegin
-local FrameUpdate = EventCenter.FrameUpdate
 local FrameTimer = require("Lib.FrameTimer")
-local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
 require("Lib.ArrayExt")
 require("Lib.TableExt")
 require("Lib.native")
 
 local ipairs = ipairs
-
--- main loop
-local dt = Time.Delta
-TimerStart(CreateTimer(), dt, true, function()
-    FrameBegin:Emit(dt)
-    FrameUpdate:Emit(dt)
-end)
 
 -- main logic
 
@@ -1718,7 +1778,6 @@ end
 function cls:_onHeal(data)
     local current = GetUnitState(data.target, UNIT_STATE_LIFE)
     SetWidgetLife(data.target, current + data.amount)
-    print("heals",data.amount)
 end
 
 return cls
@@ -2055,7 +2114,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000057711
+--lua-bundler:000059156
 
 function InitGlobals()
 end

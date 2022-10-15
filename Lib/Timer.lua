@@ -1,43 +1,48 @@
-local FrameUpdate = require("Lib.EventCenter").FrameUpdate
 require("Lib.MathExt")
 
 local pcall = pcall
+local t_insert = table.insert
+local t_remove = table.remove
+
+local PauseTimer = PauseTimer
+local CreateTimer = CreateTimer
+local TimerStart = TimerStart
+local TimerGetElapsed = TimerGetElapsed
+
+local pool = {}
+
+local function getTimer()
+    if #pool == 0 then
+        return CreateTimer()
+    else
+        return t_remove(pool)
+    end
+end
+
+local function cacheTimer(timer)
+    PauseTimer(timer)
+    t_insert(pool, timer)
+end
 
 local cls = class("Timer")
 
 function cls:ctor(func, duration, loops)
+    self.timer = getTimer()
     self.func = func
     self.duration = duration
+    if loops == 0 then
+        loops = 1
+    end
     self.loops = loops
-
-    self.time = duration
-    self.running = false
 end
 
 function cls:Start()
-    if self.loops == 0 then
-        return
-    end
-
-    self.running = true
-    FrameUpdate:On(self, cls._update)
-end
-
-function cls:Stop()
-    self.running = false
-    FrameUpdate:Off(self, cls._update)
-end
-
-function cls:_update(dt)
-    if not self.running then
-        return
-    end
-
-    self.time = self.time - dt
-    if self.time <= 0.00001 then
-        local s, m = pcall(self.func)
+    TimerStart(self.timer, self.duration, self.loops ~= 1, function()
+        local dt = TimerGetElapsed(self.timer)
+        local s, m = pcall(self.func, dt)
         if not s then
             print(m)
+            return
         end
 
         if self.loops > 0 then
@@ -47,8 +52,11 @@ function cls:_update(dt)
                 return
             end
         end
-        self.time = self.time + self.duration
-    end
+    end)
+end
+
+function cls:Stop()
+    cacheTimer(self.timer)
 end
 
 return cls

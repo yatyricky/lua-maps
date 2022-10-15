@@ -1,21 +1,10 @@
-local EventCenter = require("Lib.EventCenter")
-local FrameBegin = EventCenter.FrameBegin
-local FrameUpdate = EventCenter.FrameUpdate
 local FrameTimer = require("Lib.FrameTimer")
-local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
 require("Lib.ArrayExt")
 require("Lib.TableExt")
 require("Lib.native")
 
 local ipairs = ipairs
-
--- main loop
-local dt = Time.Delta
-TimerStart(CreateTimer(), dt, true, function()
-    FrameBegin:Emit(dt)
-    FrameUpdate:Emit(dt)
-end)
 
 -- main logic
 
