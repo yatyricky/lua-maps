@@ -65,7 +65,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             local targetPlayer = GetOwningPlayer(data.target)
             ExGroupEnumUnitsInRange(GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], function(e)
                 if not IsUnit(e, data.target) and IsUnitAlly(e, targetPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not IsUnitDeadBJ(e) then
-                    ExAddLightningUnitUnit("SPLK", data.caster, e, 0.3, color, false)
+                    ExAddLightningUnitUnit("SPLK", data.target, e, 0.3, color, false)
 
                     for _, debuff in ipairs(existingPlagues) do
                         local current = BuffBase.FindBuffByClassName(e, debuff.__cname)
