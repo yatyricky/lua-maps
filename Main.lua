@@ -1,4 +1,5 @@
 local FrameTimer = require("Lib.FrameTimer")
+local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
 require("Lib.ArrayExt")
 require("Lib.TableExt")
@@ -30,9 +31,12 @@ for _, system in ipairs(systems) do
     system:OnEnable()
 end
 
-local game = FrameTimer.new(function()
+local MathRound = MathRound
+
+local game = FrameTimer.new(function(dt)
+    local now = MathRound(Time.Time * 100) * 0.01
     for _, system in ipairs(systems) do
-        system:Update(dt)
+        system:Update(dt, now)
     end
 end, 1, -1)
 game:Start()

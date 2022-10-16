@@ -1,6 +1,7 @@
 local EventCenter = require("Lib.EventCenter")
 local Event = require("Lib.Event")
 local SystemBase = require("System.SystemBase")
+local Time = require("Lib.Time")
 
 EventCenter.NewBuff = Event.new()
 
@@ -12,22 +13,21 @@ function cls:ctor()
     self.buffs = {} ---@type BuffBase[]
 end
 
-function cls:Update(dt)
+function cls:Update(_, now)
     local toRemove = {}
     for i, buff in ipairs(self.buffs) do
-        if IsUnitDeadBJ(buff.target) then
+        if ExIsUnitDead(buff.target) then
             table.insert(toRemove, i)
         else
-            local time = buff.time + dt
-            buff.time = time
-            if time > buff.expire then
+            buff.time = now
+            if now > buff.expire then
                 table.insert(toRemove, i)
             else
-                if time >= buff.nextUpdate then
+                if now >= buff.nextUpdate then
                     buff:Update()
-                    buff.nextUpdate = buff.nextUpdate + buff.interval
+                    buff.nextUpdate = now + buff.interval
                 end
-                if time == buff.expire then
+                if now == buff.expire then
                     table.insert(toRemove, i)
                 end
             end

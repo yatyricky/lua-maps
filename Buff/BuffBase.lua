@@ -26,17 +26,13 @@ end
 function cls:ctor(caster, target, duration, interval, awakeData)
     self.caster = caster
     self.target = target
-    self.time = Time.Time
+    self.time = Time.CeilToNextUpdate(Time.Time)
     self.expire = self.time + duration
     self.duration = duration
     self.interval = interval
     self.nextUpdate = self.time + interval
 
-    local unitTab = cls.unitBuffs[target]
-    if not unitTab then
-        unitTab = {}
-        cls.unitBuffs[target] = unitTab
-    end
+    local unitTab = table.getOrCreateTable(cls.unitBuffs, target)
     table.insert(unitTab, self)
 
     self.awakeData = awakeData
@@ -64,7 +60,7 @@ end
 
 function cls:ResetDuration(exprTime)
     exprTime = exprTime or (Time.Time + self.duration)
-    self.expire = exprTime
+    self.expire = Time.CeilToNextUpdate(exprTime)
 end
 
 function cls:GetTimeLeft()

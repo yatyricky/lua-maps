@@ -5,7 +5,6 @@ local FrameUpdate = EventCenter.FrameUpdate
 
 local TimerGetElapsed = TimerGetElapsed
 
-local FPS = 30
 local TimeTimerInterval = 10
 
 ---@class Time
@@ -13,7 +12,8 @@ local TimeTimerInterval = 10
 local cls = {}
 
 cls.Frame = 0
-cls.Delta = 1 / FPS
+cls.Delta = 0.04
+local delta = cls.Delta
 
 local time = 0
 local timeTimer = Timer.new(function()
@@ -22,7 +22,7 @@ end, TimeTimerInterval, -1)
 timeTimer:Start()
 local tm = timeTimer.timer
 
-FrameBegin:On(cls, function(_, dt)
+FrameBegin:On(cls, function(_, _)
     local f = cls.Frame + 1
     cls.Frame = f
 end)
@@ -40,5 +40,14 @@ setmetatable(cls, {
         return time + TimerGetElapsed(tm)
     end
 })
+
+local MathRound = MathRound
+local m_ceil = math.ceil
+
+function cls.CeilToNextUpdate(timestamp)
+    return MathRound(m_ceil(timestamp / delta) * delta * 100) * 0.01
+end
+
+Time = cls
 
 return cls

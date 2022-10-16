@@ -149,3 +149,8 @@ end
 --    t_insert(enterMapCalls, callback)
 --end
 
+local GetWidgetLife = GetWidgetLife
+
+function ExIsUnitDead(unit)
+    return GetWidgetLife(unit) < 0.406
+end

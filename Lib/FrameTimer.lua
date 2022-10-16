@@ -36,14 +36,14 @@ function cls:Stop()
     FrameUpdate:Off(self, cls._update)
 end
 
-function cls:_update(_)
+function cls:_update(dt)
     if not self.running then
         return
     end
 
     self.frames = self.frames - 1
     if self.frames <= 0 then
-        local s, m = pcall(self.func)
+        local s, m = pcall(self.func, dt)
         if not s then
             print(m)
         end

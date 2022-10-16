@@ -24,7 +24,8 @@ end
 math.atan2 = Atan2
 
 local m_floor = math.floor
+local MathRound = MathRound
 
 function math.round(value)
-    return m_floor(value + 0.5)
+    return MathRound(value)
 end
