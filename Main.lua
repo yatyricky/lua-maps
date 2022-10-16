@@ -1,4 +1,5 @@
 local FrameTimer = require("Lib.FrameTimer")
+require("Lib.Logger")
 require("Lib.CoroutineExt")
 require("Lib.ArrayExt")
 require("Lib.TableExt")
@@ -15,7 +16,7 @@ local systems = {
     require("System.ItemSystem").new(),
     require("System.SpellSystem").new(),
     require("System.MeleeGameSystem").new(),
-    require("System.BuffSystem").new(),
+    --require("System.BuffSystem").new(),
     require("System.DamageSystem").new(),
     --require("System.AbilityEditorSystem").new(),
 
@@ -30,7 +31,7 @@ for _, system in ipairs(systems) do
     system:OnEnable()
 end
 
-local game = FrameTimer.new(function()
+local game = FrameTimer.new(function(dt)
     for _, system in ipairs(systems) do
         system:Update(dt)
     end

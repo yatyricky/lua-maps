@@ -1,6 +1,12 @@
 local EventCenter = require("Lib.EventCenter")
 local Event = require("Lib.Event")
 local SystemBase = require("System.SystemBase")
+local Time = require("Lib.Time")
+
+local ExIsUnitDead = ExIsUnitDead
+local ipairs = ipairs
+local t_insert = table.insert
+local t_remove = table.remove
 
 EventCenter.NewBuff = Event.new()
 
@@ -8,27 +14,30 @@ EventCenter.NewBuff = Event.new()
 local cls = class("BuffSystem", SystemBase)
 
 function cls:ctor()
-    EventCenter.NewBuff:On(self, cls.onNewBuff)
     self.buffs = {} ---@type BuffBase[]
+end
+
+function cls:Awake()
+    EventCenter.NewBuff:On(self, cls.onNewBuff)
 end
 
 function cls:Update(dt)
     local toRemove = {}
     for i, buff in ipairs(self.buffs) do
-        if IsUnitDeadBJ(buff.target) then
-            table.insert(toRemove, i)
+        if ExIsUnitDead(buff.target) then
+            t_insert(toRemove, i)
         else
-            local time = buff.time + dt
+            local time = Time.Time
             buff.time = time
             if time > buff.expire then
-                table.insert(toRemove, i)
+                t_insert(toRemove, i)
             else
                 if time >= buff.nextUpdate then
                     buff:Update()
                     buff.nextUpdate = buff.nextUpdate + buff.interval
                 end
                 if time == buff.expire then
-                    table.insert(toRemove, i)
+                    t_insert(toRemove, i)
                 end
             end
         end
@@ -36,9 +45,9 @@ function cls:Update(dt)
 
     local removedBuffs = {}
     for i = #toRemove, 1, -1 do
-        local removed = table.remove(self.buffs, toRemove[i])
+        local removed = t_remove(self.buffs, toRemove[i])
         removed:OnDisable()
-        table.insert(removedBuffs, removed)
+        t_insert(removedBuffs, removed)
     end
 
     for _, buff in ipairs(removedBuffs) do
@@ -48,7 +57,7 @@ end
 
 ---@param buff BuffBase
 function cls:onNewBuff(buff)
-    table.insert(self.buffs, buff)
+    t_insert(self.buffs, buff)
     buff:Awake()
     buff:OnEnable()
 end

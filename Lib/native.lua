@@ -132,8 +132,8 @@ function ExAddLightningPosUnit(modelName, x1, y1, z1, unit2, duration, color, ch
     end)
 end
 
---local GetTriggerUnit = GetTriggerUnit
---
+local GetTriggerUnit = GetTriggerUnit
+
 --local mapArea = CreateRegion()
 --RegionAddRect(mapArea, bj_mapInitialPlayableArea)
 --local enterTrigger = CreateTrigger()
@@ -149,3 +149,19 @@ end
 --    t_insert(enterMapCalls, callback)
 --end
 
+local unitDeathCalls = {}
+local unitDeathTrigger = CreateTrigger()
+TriggerRegisterAnyUnitEventBJ(unitDeathTrigger, EVENT_PLAYER_UNIT_DEATH)
+ExTriggerAddAction(unitDeathTrigger, function()
+    local u = GetTriggerUnit()
+    for _, v in ipairs(unitDeathCalls) do
+        v(u)
+    end
+end)
+function ExTriggerRegisterUnitDeath(callback)
+    t_insert(unitDeathCalls, callback)
+end
+
+function ExIsUnitDead(unit)
+    return GetWidgetLife(unit) < 0.406
+end

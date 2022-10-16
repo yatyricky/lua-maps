@@ -6,7 +6,7 @@ local cls = setmetatable({}, {
     end,
     __newindex = function(t, k, v)
         if data[k] then
-            print("Error: duplicate ability name:", k)
+            Log("Error: duplicate ability name:", k)
         else
             data[k] = v
         end
