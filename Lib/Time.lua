@@ -22,7 +22,7 @@ end, TimeTimerInterval, -1)
 timeTimer:Start()
 local tm = timeTimer.timer
 
-FrameBegin:On(cls, function(_, _)
+FrameBegin:On(cls, function(_, dt)
     local f = cls.Frame + 1
     cls.Frame = f
 end)
@@ -40,7 +40,5 @@ setmetatable(cls, {
         return time + TimerGetElapsed(tm)
     end
 })
-
-Time = cls
 
 return cls

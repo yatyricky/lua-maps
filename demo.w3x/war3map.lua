@@ -1,4 +1,4 @@
---lua-bundler:000063967
+--lua-bundler:000059156
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -25,6 +25,7 @@ local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local Vector2 = require("Lib.Vector2")
 local Timer = require("Lib.Timer")
+local Time = require("Lib.Time")
 
 --region meta
 
@@ -56,6 +57,7 @@ local cls = class("ArmyOfTheDead")
 function cls:ctor(caster)
     local casterPos = Vector2.FromUnit(caster)
     self.sfxTimer = Timer.new(function()
+        print("sfx", Time.Time)
         local pos = (Vector2.InsideUnitCircle() * math.random(200, 600)):Add(casterPos)
         ExAddLightningPosPos("CLSB", casterPos.x, casterPos.y, 200, pos.x, pos.y, 0, math.random() * 0.4 + 0.2, LesserColor)
         ExAddSpecialEffect("Abilities/Spells/Undead/DeathandDecay/DeathandDecayTarget.mdl", pos.x, pos.y, 0.2)
@@ -64,6 +66,7 @@ function cls:ctor(caster)
 
     local player = GetOwningPlayer(caster)
     self.summonTimer = Timer.new(function()
+        print("summon", Time.Time)
         local pos = (Vector2.InsideUnitCircle() * math.random(200, 600)):Add(casterPos)
         local summoned = CreateUnit(player, FourCC("u000"), pos.x, pos.y, math.random(360))
         ExAddLightningPosUnit("CLPB", casterPos.x, casterPos.y, 200, summoned, 1, GreaterColor)
@@ -82,6 +85,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.ArmyOfTheDead.ID,
     ---@param data ISpellData
     handler = function(data)
+        print("spell effect", Time.Time)
         instances[data.caster] = cls.new(data.caster, GetUnitAbilityLevel(data.caster, data.abilityId))
     end
 })
@@ -90,12 +94,13 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
     id = Abilities.ArmyOfTheDead.ID,
     ---@param data ISpellData
     handler = function(data)
+        print("spell endcast", Time.Time)
         local inst = instances[data.caster]
         if inst then
             inst:Stop()
             instances[data.caster] = nil
         else
-            Log("army of the dead end but no instance")
+            print("army of the dead end but no instance")
         end
     end
 })
@@ -435,7 +440,7 @@ Abilities.PlagueStrike = {
     BloodPlagueData = { 0.005, 0.01, 0.015 },
     FrostPlagueDuration = { 6, 6, 6 },
     FrostPlagueData = { 30, 45, 60 },
-    UnholyPlagueDuration = { 10, 10, 10 },
+    UnholyPlagueDuration = { 10.2, 10.2, 10.2 },
     UnholyPlagueInterval = { 2, 2, 2 },
     UnholyPlagueData = { 6, 11, 16 },
 }
@@ -503,9 +508,7 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
             missingDebuff = plagueDefine
             break
         else
-            if debuff.class.__cname ~= FrostPlague.__cname then
-                table.insert(existingPlagues, debuff)
-            end
+            table.insert(existingPlagues, debuff)
         end
     end
 
@@ -525,7 +528,9 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
 
         local first = existingPlagues[1]
         first.level = abilityLevel
-        first:ResetDuration()
+        if first.__cname ~= FrostPlague.__cname then
+            first:ResetDuration()
+        end
     end
 end)
 
@@ -563,10 +568,8 @@ return cls
 end}
 
 __modules["Buff.BuffBase"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
 local Time = require("Lib.Time")
-local Timer = require("Lib.Timer")
-
-local ExIsUnitDead = ExIsUnitDead
 
 ---@class BuffBase
 local cls = class("BuffBase")
@@ -593,50 +596,22 @@ end
 function cls:ctor(caster, target, duration, interval, awakeData)
     self.caster = caster
     self.target = target
+    self.time = Time.Time
+    self.expire = self.time + duration
     self.duration = duration
     self.interval = interval
-    self.awakeData = awakeData
+    self.nextUpdate = self.time + interval
 
-    self:Awake()
-    self:OnEnable()
-    local ticks = math.floor(duration / interval)
-    local reminder = duration - ticks * interval
-    local timerTicks
-    if ticks > 0 then
-        timerTicks = Timer.new(function(dt)
-            self:_onUpdate(dt)
-        end, interval, ticks)
+    local unitTab = cls.unitBuffs[target]
+    if not unitTab then
+        unitTab = {}
+        cls.unitBuffs[target] = unitTab
     end
-
-    local timerReminder = Timer.new(function(_)
-        self:OnDisable()
-        self:OnDestroy()
-    end, reminder, 1)
-
-    if timerTicks then
-        timerTicks:Next(timerReminder)
-        self.timer = timerTicks
-    else
-        self.timer = timerReminder
-    end
-    self.timer:Start()
-
-    local unitTab = table.getOrCreateTable(cls.unitBuffs, target)
     table.insert(unitTab, self)
-end
 
-ExTriggerRegisterUnitDeath(function(deadUnit)
-    local unitTab = cls.unitBuffs[deadUnit]
-    if unitTab then
-        local len = #unitTab
-        for i = len, 1, -1 do
-            local buff = unitTab[i]
-            buff.timer:Cancel()
-            buff:OnDisable()
-            buff:OnDestroy()
-        end
-    end
-end)
+    self.awakeData = awakeData
+    EventCenter.NewBuff:Emit(self)
+end
 
 function cls:Awake()
 end
@@ -644,8 +619,7 @@ end
 function cls:OnEnable()
 end
 
-function cls:Update(dt)
-    dt = dt
+function cls:Update()
 end
 
 function cls:OnDisable()
@@ -653,94 +627,18 @@ end
 
 function cls:OnDestroy()
     local unitTab = cls.unitBuffs[self.target]
-    if not unitTab then
-        Log("buff onDestroy but unitTab is nil")
-    else
-        if not array.removeItem(unitTab, self) then
-            Log("Remove buff unit failed", self.class.__cname, tostring(self.target), debug.traceback())
-            Log("existing:")
-            for _, v in ipairs(unitTab) do
-                Log(v.class.__cname)
-            end
-        end
+    if not array.removeItem(unitTab, self) then
+        print("Remove buff unit failed")
     end
-end
-
-function cls:_onUpdate(dt)
-    --if ExIsUnitDead(self.target) then
-    --    self.timer:Cancel()
-    --    self.timer = nil
-    --    self:OnDisable()
-    --    print("ondestroy from 2")
-    --    self:OnDestroy()
-    --    return
-    --end
-
-    self:Update(dt)
 end
 
 function cls:ResetDuration(exprTime)
-    local elapsed = self.timer:GetElapsed()
-    if elapsed < 0 then
-        Log("Attempting to reset expired buff")
-        return
-    end
-
-    self.timer:Cancel()
-    self.timer = nil
-    local duration = exprTime and (exprTime - Time.Time) or self.duration
-
-    local firstTick = self.interval - elapsed
-    if firstTick < 0 then
-        Log("interval > elapsed???")
-        return
-    end
-
-    local normalTickDuration = duration - firstTick
-    local head ---@type Timer
-    local curr ---@type Timer
-    if normalTickDuration >= 0 then
-        head = Timer.new(function(dt)
-            self:_onUpdate(dt)
-        end, firstTick, 1)
-        curr = head
-
-        local reminder
-        if normalTickDuration > 0 then
-            local ticks = math.floor(normalTickDuration / self.interval)
-            reminder = normalTickDuration - ticks * self.interval
-            if ticks > 0 then
-                local timerNormalTicks = Timer.new(function(dt)
-                    self:_onUpdate(dt)
-                end, self.interval, ticks)
-                curr:Next(timerNormalTicks)
-                curr = timerNormalTicks
-            end
-        else
-            reminder = normalTickDuration
-        end
-
-        local lastTimer = Timer.new(function(_)
-            self:OnDisable()
-
-            self:OnDestroy()
-        end, reminder, 1)
-        curr:Next(lastTimer)
-        curr = lastTimer
-    else
-        head = Timer.new(function(_)
-            self:OnDisable()
-
-            self:OnDestroy()
-        end, duration, 1)
-    end
-
-    self.timer = head
-    head:Start()
+    exprTime = exprTime or (Time.Time + self.duration)
+    self.expire = exprTime
 end
 
 function cls:GetTimeLeft()
-    return self.timer:GetTimeLeft()
+    return self.expire - self.time
 end
 
 function cls:GetTimeNorm()
@@ -760,7 +658,7 @@ local cls = setmetatable({}, {
     end,
     __newindex = function(t, k, v)
         if data[k] then
-            Log("Error: duplicate ability name:", k)
+            print("Error: duplicate ability name:", k)
         else
             data[k] = v
         end
@@ -1120,14 +1018,14 @@ function cls:Stop()
     FrameUpdate:Off(self, cls._update)
 end
 
-function cls:_update(dt)
+function cls:_update(_)
     if not self.running then
         return
     end
 
     self.frames = self.frames - 1
     if self.frames <= 0 then
-        local s, m = pcall(self.func, dt)
+        local s, m = pcall(self.func)
         if not s then
             print(m)
         end
@@ -1145,17 +1043,6 @@ function cls:_update(dt)
 end
 
 return cls
-
-end}
-
-__modules["Lib.Logger"]={loader=function()
-function Log(...)
-    print(...)
-end
-
-function DebugLog(...)
-    print(...)
-end
 
 end}
 
@@ -1328,8 +1215,8 @@ function ExAddLightningPosUnit(modelName, x1, y1, z1, unit2, duration, color, ch
     end)
 end
 
-local GetTriggerUnit = GetTriggerUnit
-
+--local GetTriggerUnit = GetTriggerUnit
+--
 --local mapArea = CreateRegion()
 --RegionAddRect(mapArea, bj_mapInitialPlayableArea)
 --local enterTrigger = CreateTrigger()
@@ -1345,22 +1232,7 @@ local GetTriggerUnit = GetTriggerUnit
 --    t_insert(enterMapCalls, callback)
 --end
 
-local unitDeathCalls = {}
-local unitDeathTrigger = CreateTrigger()
-TriggerRegisterAnyUnitEventBJ(unitDeathTrigger, EVENT_PLAYER_UNIT_DEATH)
-ExTriggerAddAction(unitDeathTrigger, function()
-    local u = GetTriggerUnit()
-    for _, v in ipairs(unitDeathCalls) do
-        v(u)
-    end
-end)
-function ExTriggerRegisterUnitDeath(callback)
-    t_insert(unitDeathCalls, callback)
-end
 
-function ExIsUnitDead(unit)
-    return GetWidgetLife(unit) < 0.406
-end
 end}
 
 __modules["Lib.TableExt"]={loader=function()
@@ -1397,10 +1269,10 @@ end
 end}
 
 __modules["Lib.Time"]={loader=function()
-local EventCenter = require("Lib.EventCenter")
+local EventCenter =require("Lib.EventCenter")
 local Timer = require("Lib.Timer")
 local FrameBegin = EventCenter.FrameBegin
-local FrameUpdate = EventCenter.FrameUpdate
+local FrameUpdate =EventCenter.FrameUpdate
 
 local TimerGetElapsed = TimerGetElapsed
 
@@ -1421,7 +1293,7 @@ end, TimeTimerInterval, -1)
 timeTimer:Start()
 local tm = timeTimer.timer
 
-FrameBegin:On(cls, function(_, _)
+FrameBegin:On(cls, function(_, dt)
     local f = cls.Frame + 1
     cls.Frame = f
 end)
@@ -1440,8 +1312,6 @@ setmetatable(cls, {
     end
 })
 
-Time = cls
-
 return cls
 
 end}
@@ -1457,7 +1327,6 @@ local PauseTimer = PauseTimer
 local CreateTimer = CreateTimer
 local TimerStart = TimerStart
 local TimerGetElapsed = TimerGetElapsed
-local TimerGetRemaining = TimerGetRemaining
 
 local pool = {}
 
@@ -1474,28 +1343,24 @@ local function cacheTimer(timer)
     t_insert(pool, timer)
 end
 
----@class Timer
 local cls = class("Timer")
 
 function cls:ctor(func, duration, loops)
+    self.timer = getTimer()
     self.func = func
     self.duration = duration
     if loops == 0 then
         loops = 1
     end
     self.loops = loops
-    self.running = false
-    self.nextTimer = nil ---@type Timer
 end
 
 function cls:Start()
-    self.timer = getTimer()
     TimerStart(self.timer, self.duration, self.loops ~= 1, function()
         local dt = TimerGetElapsed(self.timer)
         local s, m = pcall(self.func, dt)
         if not s then
             print(m)
-            self:Stop()
             return
         end
 
@@ -1507,62 +1372,10 @@ function cls:Start()
             end
         end
     end)
-    self.running = true
 end
 
 function cls:Stop()
     cacheTimer(self.timer)
-    self.running = false
-    if self.nextTimer then
-        self.nextTimer:Start()
-    end
-end
-
-function cls:Next(timer)
-    self.nextTimer = timer
-end
-
-function cls:Cancel()
-    if self.running then
-        cacheTimer(self.timer)
-        self.running = false
-    end
-    if self.nextTimer then
-        self.nextTimer:Cancel()
-    end
-end
-
---function cls:GetRemaining()
---    if self.running then
---        return TimerGetRemaining(self.timer)
---    end
---    if self.nextTimer then
---        return self.nextTimer:GetRemaining()
---    end
---    return -1
---end
-
-function cls:GetElapsed()
-    if self.running then
-        return TimerGetElapsed(self.timer)
-    end
-    if self.nextTimer then
-        return self.nextTimer:GetElapsed()
-    end
-    return -1
-end
-
-function cls:GetTimeLeft()
-    local time = TimerGetRemaining(self.timer)
-    if self.loops > 1 then
-        time = time + (self.loops - 1) * self.duration
-    elseif self.loops == -1 then
-        time = time + 9999
-    end
-    if self.nextTimer then
-        time = time + self.nextTimer:GetTimeLeft()
-    end
-    return time
 end
 
 return cls
@@ -1767,7 +1580,6 @@ end}
 
 __modules["Main"]={loader=function()
 local FrameTimer = require("Lib.FrameTimer")
-require("Lib.Logger")
 require("Lib.CoroutineExt")
 require("Lib.ArrayExt")
 require("Lib.TableExt")
@@ -1784,7 +1596,7 @@ local systems = {
     require("System.ItemSystem").new(),
     require("System.SpellSystem").new(),
     require("System.MeleeGameSystem").new(),
-    --require("System.BuffSystem").new(),
+    require("System.BuffSystem").new(),
     require("System.DamageSystem").new(),
     --require("System.AbilityEditorSystem").new(),
 
@@ -1799,7 +1611,7 @@ for _, system in ipairs(systems) do
     system:OnEnable()
 end
 
-local game = FrameTimer.new(function(dt)
+local game = FrameTimer.new(function()
     for _, system in ipairs(systems) do
         system:Update(dt)
     end
@@ -1844,12 +1656,6 @@ __modules["System.BuffSystem"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Event = require("Lib.Event")
 local SystemBase = require("System.SystemBase")
-local Time = require("Lib.Time")
-
-local ExIsUnitDead = ExIsUnitDead
-local ipairs = ipairs
-local t_insert = table.insert
-local t_remove = table.remove
 
 EventCenter.NewBuff = Event.new()
 
@@ -1857,30 +1663,27 @@ EventCenter.NewBuff = Event.new()
 local cls = class("BuffSystem", SystemBase)
 
 function cls:ctor()
-    self.buffs = {} ---@type BuffBase[]
-end
-
-function cls:Awake()
     EventCenter.NewBuff:On(self, cls.onNewBuff)
+    self.buffs = {} ---@type BuffBase[]
 end
 
 function cls:Update(dt)
     local toRemove = {}
     for i, buff in ipairs(self.buffs) do
-        if ExIsUnitDead(buff.target) then
-            t_insert(toRemove, i)
+        if IsUnitDeadBJ(buff.target) then
+            table.insert(toRemove, i)
         else
-            local time = Time.Time
+            local time = buff.time + dt
             buff.time = time
             if time > buff.expire then
-                t_insert(toRemove, i)
+                table.insert(toRemove, i)
             else
                 if time >= buff.nextUpdate then
                     buff:Update()
                     buff.nextUpdate = buff.nextUpdate + buff.interval
                 end
                 if time == buff.expire then
-                    t_insert(toRemove, i)
+                    table.insert(toRemove, i)
                 end
             end
         end
@@ -1888,9 +1691,9 @@ function cls:Update(dt)
 
     local removedBuffs = {}
     for i = #toRemove, 1, -1 do
-        local removed = t_remove(self.buffs, toRemove[i])
+        local removed = table.remove(self.buffs, toRemove[i])
         removed:OnDisable()
-        t_insert(removedBuffs, removed)
+        table.insert(removedBuffs, removed)
     end
 
     for _, buff in ipairs(removedBuffs) do
@@ -1900,7 +1703,7 @@ end
 
 ---@param buff BuffBase
 function cls:onNewBuff(buff)
-    t_insert(self.buffs, buff)
+    table.insert(self.buffs, buff)
     buff:Awake()
     buff:OnEnable()
 end
@@ -2311,7 +2114,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000063967
+--lua-bundler:000059156
 
 function InitGlobals()
 end

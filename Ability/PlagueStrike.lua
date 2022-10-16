@@ -13,7 +13,7 @@ Abilities.PlagueStrike = {
     BloodPlagueData = { 0.005, 0.01, 0.015 },
     FrostPlagueDuration = { 6, 6, 6 },
     FrostPlagueData = { 30, 45, 60 },
-    UnholyPlagueDuration = { 10, 10, 10 },
+    UnholyPlagueDuration = { 10.2, 10.2, 10.2 },
     UnholyPlagueInterval = { 2, 2, 2 },
     UnholyPlagueData = { 6, 11, 16 },
 }
@@ -81,9 +81,7 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
             missingDebuff = plagueDefine
             break
         else
-            if debuff.class.__cname ~= FrostPlague.__cname then
-                table.insert(existingPlagues, debuff)
-            end
+            table.insert(existingPlagues, debuff)
         end
     end
 
@@ -103,7 +101,9 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
 
         local first = existingPlagues[1]
         first.level = abilityLevel
-        first:ResetDuration()
+        if first.__cname ~= FrostPlague.__cname then
+            first:ResetDuration()
+        end
     end
 end)
 

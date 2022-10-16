@@ -72,7 +72,7 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
             inst:Stop()
             instances[data.caster] = nil
         else
-            Log("army of the dead end but no instance")
+            print("army of the dead end but no instance")
         end
     end
 })
