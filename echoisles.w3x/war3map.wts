@@ -1,0 +1,119 @@
+﻿STRING 1
+{
+Player 1
+}
+
+STRING 2
+{
+Force 1
+}
+
+STRING 3
+{
+Player 2
+}
+
+STRING 4
+{
+Echo Isles
+}
+
+STRING 5
+{
+1v1
+}
+
+STRING 6
+{
+Though these islands are surrounded by deep and treacherous waters, they have seen little peace. Many of the creatures dwelling here are refugees from the war. They have nothing left to lose. Don't expect a warm welcome.
+}
+
+STRING 7
+{
+Blizzard Entertainment
+}
+
+STRING 8
+// 技能: A000 (引导), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 9
+// 技能: A000 (引导), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 10
+// 技能: A001 (引导), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 11
+// 技能: A001 (引导), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 12
+// 技能: A003 (引导), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 13
+// 技能: A003 (引导), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 14
+// 技能: A003 (引导), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 15
+// 技能: A003 (引导), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 16
+// 技能: A003 (引导), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 17
+// 技能: A003 (引导), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 18
+// 技能: A003 (引导), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 19
+// 技能: A003 (引导), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 20
+// 技能: A003 (引导), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 21
+// 技能: A003 (引导), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
