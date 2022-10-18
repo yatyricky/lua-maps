@@ -2746,7 +2746,7 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -5460.2, 2279.4, 156.307, FourCC("Udea"))
+u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -4853.2, 2541.0, 156.307, FourCC("Udea"))
 end
 
 function CreateNeutralHostile()
@@ -3038,25 +3038,25 @@ end
 
 function InitCustomPlayerSlots()
 SetPlayerStartLocation(Player(0), 0)
+ForcePlayerStartLocation(Player(0), 0)
 SetPlayerColor(Player(0), ConvertPlayerColor(0))
-SetPlayerRacePreference(Player(0), RACE_PREF_HUMAN)
+SetPlayerRacePreference(Player(0), RACE_PREF_UNDEAD)
 SetPlayerRaceSelectable(Player(0), true)
 SetPlayerController(Player(0), MAP_CONTROL_USER)
 SetPlayerStartLocation(Player(1), 1)
+ForcePlayerStartLocation(Player(1), 1)
 SetPlayerColor(Player(1), ConvertPlayerColor(1))
-SetPlayerRacePreference(Player(1), RACE_PREF_ORC)
+SetPlayerRacePreference(Player(1), RACE_PREF_HUMAN)
 SetPlayerRaceSelectable(Player(1), true)
-SetPlayerController(Player(1), MAP_CONTROL_USER)
+SetPlayerController(Player(1), MAP_CONTROL_COMPUTER)
 end
 
 function InitCustomTeams()
 SetPlayerTeam(Player(0), 0)
-SetPlayerTeam(Player(1), 0)
+SetPlayerTeam(Player(1), 1)
 end
 
 function InitAllyPriorities()
-SetStartLocPrioCount(0, 1)
-SetStartLocPrio(0, 0, 1, MAP_LOC_PRIO_HIGH)
 SetStartLocPrioCount(1, 1)
 SetStartLocPrio(1, 0, 0, MAP_LOC_PRIO_HIGH)
 end
@@ -3086,13 +3086,11 @@ SetMapName("TRIGSTR_004")
 SetMapDescription("TRIGSTR_006")
 SetPlayers(2)
 SetTeams(2)
-SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)
+SetGamePlacement(MAP_PLACEMENT_USE_MAP_SETTINGS)
 DefineStartLocation(0, -5184.0, 2944.0)
 DefineStartLocation(1, 4672.0, 2944.0)
 InitCustomPlayerSlots()
-SetPlayerSlotAvailable(Player(0), MAP_CONTROL_USER)
-SetPlayerSlotAvailable(Player(1), MAP_CONTROL_USER)
-InitGenericPlayerSlots()
+InitCustomTeams()
 InitAllyPriorities()
 end
 
