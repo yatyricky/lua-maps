@@ -28,3 +28,15 @@ STRING 6
 势力 1
 }
 
+STRING 7
+// 技能: A000 (引导), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 8
+// 技能: A000 (引导), Hotkey (热键 - 普通)
+{
+Q
+}
+
