@@ -1,4 +1,4 @@
---lua-bundler:000062584
+--lua-bundler:000063852
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -25,6 +25,7 @@ local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local Vector2 = require("Lib.Vector2")
 local Timer = require("Lib.Timer")
+local Const = require("Config.Const")
 
 --region meta
 
@@ -69,6 +70,7 @@ function cls:ctor(caster)
         ExAddLightningPosUnit("CLPB", casterPos.x, casterPos.y, 200, summoned, 1, GreaterColor)
         ExAddSpecialEffectTarget("Abilities/Spells/Undead/AnimateDead/AnimateDeadTarget.mdl", summoned, "origin", 0.1)
         UnitApplyTimedLife(summoned, FourCC("BUan"), 40)
+        IssuePointOrderById(summoned, Const.OrderId_Attack, GetUnitX(caster), GetUnitY(caster))
     end, 1, -1)
     self.summonTimer:Start()
 end
@@ -151,29 +153,31 @@ local Vector2 = require("Lib.Vector2")
 local Utils = require("Lib.Utils")
 local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
+local PlagueStrike = require("Ability.PlagueStrike")
 
 --region meta
 
 Abilities.DeathGrip = {
     ID = FourCC("A000"),
-    Duration = { 4, 5, 6 },
-    DurationHero = { 2, 3, 4 },
+    Duration = { 9, 12, 15 },
+    DurationHero = { 3, 4, 5 },
+    PlagueLengthen = { 0.1, 0.2, 0.3 },
 }
 
 BlzSetAbilityResearchTooltip(Abilities.DeathGrip.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(Abilities.DeathGrip.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动。
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathGrip.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
 
-|cffffcc001级|r - 持续%s秒，英雄%s秒。
-|cffffcc002级|r - 持续%s秒，英雄%s秒。
-|cffffcc003级|r - 持续%s秒，英雄%s秒。]],
-        Abilities.DeathGrip.Duration[1], Abilities.DeathGrip.DurationHero[1],
-        Abilities.DeathGrip.Duration[2], Abilities.DeathGrip.DurationHero[2],
-        Abilities.DeathGrip.Duration[3], Abilities.DeathGrip.DurationHero[3]
+|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
+|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
+|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
+        Abilities.DeathGrip.Duration[1], Abilities.DeathGrip.DurationHero[1], math.round(Abilities.DeathGrip.PlagueLengthen[1] * 100),
+        Abilities.DeathGrip.Duration[2], Abilities.DeathGrip.DurationHero[2], math.round(Abilities.DeathGrip.PlagueLengthen[2] * 100),
+        Abilities.DeathGrip.Duration[3], Abilities.DeathGrip.DurationHero[3], math.round(Abilities.DeathGrip.PlagueLengthen[3] * 100)
 ), 0)
 
 for i = 1, #Abilities.DeathGrip.Duration do
     BlzSetAbilityTooltip(Abilities.DeathGrip.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
-    BlzSetAbilityExtendedTooltip(Abilities.DeathGrip.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒。", Abilities.DeathGrip.Duration[i], Abilities.DeathGrip.DurationHero[i]), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathGrip.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.DeathGrip.Duration[i], Abilities.DeathGrip.DurationHero[i], math.round(Abilities.DeathGrip.PlagueLengthen[i] * 100)), i - 1)
 end
 
 --endregion
@@ -255,8 +259,15 @@ function cls:ctor(caster, target)
         end, 2, 1)
         impactTimer:Start()
 
-        local duration = IsUnitType(target, UNIT_TYPE_HERO) and 2 or 4
-        SlowDebuff.new(caster, target, duration, 999)
+        local level = GetUnitAbilityLevel(caster, Abilities.DeathGrip.ID)
+        local count = PlagueStrike.GetPlagueCount(target)
+        local duration = (IsUnitType(target, UNIT_TYPE_HERO) and Abilities.DeathGrip.DurationHero[level] or Abilities.DeathGrip.Duration[level]) * (1 + Abilities.DeathGrip.PlagueLengthen[level] * count)
+        local debuff = BuffBase.FindBuffByClassName(target, SlowDebuff.__cname)
+        if debuff then
+            debuff:ResetDuration(Time.Time + duration)
+        else
+            SlowDebuff.new(caster, target, duration, 999)
+        end
 
         coroutine.wait(duration - 1)
         DestroyEffect(sfx)
@@ -278,11 +289,11 @@ end}
 __modules["Ability.DeathStrike"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
 local BloodPlague = require("Ability.BloodPlague")
 local FrostPlague = require("Ability.FrostPlague")
 local UnholyPlague = require("Ability.UnholyPlague")
+local PlagueStrike = require("Ability.PlagueStrike")
 
 --region meta
 
@@ -290,23 +301,22 @@ Abilities.DeathStrike = {
     ID = FourCC("A001"),
     Damage = { 80, 120, 160 },
     Heal = { 0.08, 0.12, 0.16 },
-    AOE = { 400, 500, 600 },
 }
 
 BlzSetAbilityResearchTooltip(Abilities.DeathStrike.ID, "学习灵界打击 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(Abilities.DeathStrike.ID, string.format([[致命的攻击，对目标造成一次伤害，并根据目标身上的疾病数量，每有一个便为死亡骑士恢复他最大生命值百分比的效果，并且会将目标身上的所有疾病传染给附近所有敌人。
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathStrike.ID, string.format([[致命的攻击，对目标造成一次伤害，并根据目标身上的瘟疫数量，每有一个便为死亡骑士恢复他最大生命值百分比的效果，并且会将目标身上的所有瘟疫传染给附近所有敌人。
 
-|cffffcc001级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。
-|cffffcc002级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。
-|cffffcc003级|r - 造成%s点伤害，每个疾病恢复%s%%最大生命值，%s传染范围。]],
-        Abilities.DeathStrike.Damage[1], math.round(Abilities.DeathStrike.Heal[1] * 100), Abilities.DeathStrike.AOE[1],
-        Abilities.DeathStrike.Damage[2], math.round(Abilities.DeathStrike.Heal[2] * 100), Abilities.DeathStrike.AOE[2],
-        Abilities.DeathStrike.Damage[3], math.round(Abilities.DeathStrike.Heal[3] * 100), Abilities.DeathStrike.AOE[3]
+|cffffcc001级|r - 造成%s点伤害，每个瘟疫恢复%s%%最大生命值。
+|cffffcc002级|r - 造成%s点伤害，每个瘟疫恢复%s%%最大生命值。
+|cffffcc003级|r - 造成%s点伤害，每个瘟疫恢复%s%%最大生命值。]],
+        Abilities.DeathStrike.Damage[1], math.round(Abilities.DeathStrike.Heal[1] * 100),
+        Abilities.DeathStrike.Damage[2], math.round(Abilities.DeathStrike.Heal[2] * 100),
+        Abilities.DeathStrike.Damage[3], math.round(Abilities.DeathStrike.Heal[3] * 100)
 ), 0)
 
 for i = 1, #Abilities.DeathStrike.Damage do
     BlzSetAbilityTooltip(Abilities.DeathStrike.ID, string.format("灵界打击 - [|cffffcc00%s级|r]", i), i - 1)
-    BlzSetAbilityExtendedTooltip(Abilities.DeathStrike.ID, string.format("致命的攻击，对目标造成%s点伤害，并根据目标身上的疾病数量，每有一个便为死亡骑士恢复他最大生命值的%s%%，并且会将目标身上的所有疾病传染给附近%s范围内所有敌人。", Abilities.DeathStrike.Damage[i], math.round(Abilities.DeathStrike.Heal[i] * 100), Abilities.DeathStrike.AOE[i]), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathStrike.ID, string.format("致命的攻击，对目标造成%s点伤害，并根据目标身上的瘟疫数量，每有一个便为死亡骑士恢复他最大生命值的%s%%，并且会将目标身上的所有瘟疫传染给附近范围内所有敌人。", Abilities.DeathStrike.Damage[i], math.round(Abilities.DeathStrike.Heal[i] * 100)), i - 1)
 end
 
 --endregion
@@ -323,43 +333,14 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.DeathStrike.ID,
     ---@param data ISpellData
     handler = function(data)
-        local count = 0
-        local existingPlagues = {} ---@type BuffBase[]
-        for _, plagueDefine in ipairs(cls.Plagues) do
-            local debuff = BuffBase.FindBuffByClassName(data.target, plagueDefine.__cname)
-            if debuff then
-                table.insert(existingPlagues, debuff)
-                count = count + 1
-            end
-        end
-
         -- damage
         local level = GetUnitAbilityLevel(data.caster, data.abilityId)
         UnitDamageTarget(data.caster, data.target, Abilities.DeathStrike.Damage[level], false, true, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_METAL_HEAVY_SLICE)
 
         -- spread
-        if table.any(existingPlagues) then
-            local color = { r = 0.1, g = 0.7, b = 0.1, a = 1 }
-            local targetPlayer = GetOwningPlayer(data.target)
-            ExGroupEnumUnitsInRange(GetUnitX(data.target), GetUnitY(data.target), Abilities.DeathStrike.AOE[level], function(e)
-                if not IsUnit(e, data.target) and IsUnitAlly(e, targetPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not IsUnitDeadBJ(e) then
-                    ExAddLightningUnitUnit("SPLK", data.target, e, 0.3, color, false)
+        PlagueStrike.Spread(data.caster, data.target)
 
-                    for _, debuff in ipairs(existingPlagues) do
-                        local current = BuffBase.FindBuffByClassName(e, debuff.__cname)
-                        if current then
-                            current.level = debuff.level
-                            if current.__cname ~= "FrostPlague" then
-                                current.duration = math.max(debuff.duration, current.duration)
-                            end
-                        else
-                            debuff.class.new(debuff.caster, e, debuff:GetTimeLeft(), debuff.interval, debuff.awakeData)
-                        end
-                    end
-                end
-            end)
-        end
-
+        local count = PlagueStrike.GetPlagueCount(data.target)
         -- heal
         if count > 0 then
             EventCenter.Heal:Emit({
@@ -441,6 +422,7 @@ Abilities.PlagueStrike = {
     UnholyPlagueDuration = { 10, 10, 10 },
     UnholyPlagueInterval = { 2, 2, 2 },
     UnholyPlagueData = { 6, 11, 16 },
+    AOE = { 500, 600, 700 },
 }
 
 local DummyAbilityIds = {
@@ -563,6 +545,49 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
     cls.sequence[caster] = seq + 1
     cls.updateDummyAbilities(caster)
 end)
+
+function cls.Spread(caster, target)
+    local existingPlagues = {} ---@type BuffBase[]
+    for _, plagueDefine in ipairs(cls.Plagues) do
+        local debuff = BuffBase.FindBuffByClassName(target, plagueDefine.class.__cname)
+        if debuff then
+            table.insert(existingPlagues, debuff)
+        end
+    end
+    if table.any(existingPlagues) then
+        local color = { r = 0.1, g = 0.7, b = 0.1, a = 1 }
+        local targetPlayer = GetOwningPlayer(target)
+        local level = GetUnitAbilityLevel(caster, Abilities.PlagueStrike.ID)
+        ExGroupEnumUnitsInRange(GetUnitX(target), GetUnitY(target), Abilities.PlagueStrike.AOE[level], function(e)
+            if not IsUnit(e, target) and IsUnitAlly(e, targetPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not ExIsUnitDead(e) then
+                ExAddLightningUnitUnit("SPLK", target, e, 0.3, color, false)
+
+                for _, debuff in ipairs(existingPlagues) do
+                    local current = BuffBase.FindBuffByClassName(e, debuff.__cname)
+                    if current then
+                        current.level = debuff.level
+                        if current.__cname ~= "FrostPlague" then
+                            current.duration = math.max(debuff.duration, current.duration)
+                        end
+                    else
+                        debuff.class.new(debuff.caster, e, debuff:GetTimeLeft(), debuff.interval, debuff.awakeData)
+                    end
+                end
+            end
+        end)
+    end
+end
+
+function cls.GetPlagueCount(target)
+    local count = 0
+    for _, plagueDefine in ipairs(cls.Plagues) do
+        local debuff = BuffBase.FindBuffByClassName(target, plagueDefine.class.__cname)
+        if debuff then
+            count = count + 1
+        end
+    end
+    return count
+end
 
 return cls
 
@@ -699,6 +724,8 @@ __modules["Config.Const"]={loader=function()
 local cls = {}
 
 cls.OrderId_Stop = 851972
+cls.OrderId_Smart = 851971
+cls.OrderId_Attack = 851983
 
 return cls
 
@@ -2226,7 +2253,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000062584
+--lua-bundler:000063852
 
 function InitGlobals()
 end

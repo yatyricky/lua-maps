@@ -19,6 +19,7 @@ Abilities.PlagueStrike = {
     UnholyPlagueDuration = { 10, 10, 10 },
     UnholyPlagueInterval = { 2, 2, 2 },
     UnholyPlagueData = { 6, 11, 16 },
+    AOE = { 500, 600, 700 },
 }
 
 local DummyAbilityIds = {
@@ -141,5 +142,48 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
     cls.sequence[caster] = seq + 1
     cls.updateDummyAbilities(caster)
 end)
+
+function cls.Spread(caster, target)
+    local existingPlagues = {} ---@type BuffBase[]
+    for _, plagueDefine in ipairs(cls.Plagues) do
+        local debuff = BuffBase.FindBuffByClassName(target, plagueDefine.class.__cname)
+        if debuff then
+            table.insert(existingPlagues, debuff)
+        end
+    end
+    if table.any(existingPlagues) then
+        local color = { r = 0.1, g = 0.7, b = 0.1, a = 1 }
+        local targetPlayer = GetOwningPlayer(target)
+        local level = GetUnitAbilityLevel(caster, Abilities.PlagueStrike.ID)
+        ExGroupEnumUnitsInRange(GetUnitX(target), GetUnitY(target), Abilities.PlagueStrike.AOE[level], function(e)
+            if not IsUnit(e, target) and IsUnitAlly(e, targetPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not ExIsUnitDead(e) then
+                ExAddLightningUnitUnit("SPLK", target, e, 0.3, color, false)
+
+                for _, debuff in ipairs(existingPlagues) do
+                    local current = BuffBase.FindBuffByClassName(e, debuff.__cname)
+                    if current then
+                        current.level = debuff.level
+                        if current.__cname ~= "FrostPlague" then
+                            current.duration = math.max(debuff.duration, current.duration)
+                        end
+                    else
+                        debuff.class.new(debuff.caster, e, debuff:GetTimeLeft(), debuff.interval, debuff.awakeData)
+                    end
+                end
+            end
+        end)
+    end
+end
+
+function cls.GetPlagueCount(target)
+    local count = 0
+    for _, plagueDefine in ipairs(cls.Plagues) do
+        local debuff = BuffBase.FindBuffByClassName(target, plagueDefine.class.__cname)
+        if debuff then
+            count = count + 1
+        end
+    end
+    return count
+end
 
 return cls

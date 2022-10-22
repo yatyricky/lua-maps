@@ -5,29 +5,31 @@ local Vector2 = require("Lib.Vector2")
 local Utils = require("Lib.Utils")
 local BuffBase = require("Buff.BuffBase")
 local Timer = require("Lib.Timer")
+local PlagueStrike = require("Ability.PlagueStrike")
 
 --region meta
 
 Abilities.DeathGrip = {
     ID = FourCC("A000"),
-    Duration = { 4, 5, 6 },
-    DurationHero = { 2, 3, 4 },
+    Duration = { 9, 12, 15 },
+    DurationHero = { 3, 4, 5 },
+    PlagueLengthen = { 0.1, 0.2, 0.3 },
 }
 
 BlzSetAbilityResearchTooltip(Abilities.DeathGrip.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(Abilities.DeathGrip.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动。
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathGrip.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
 
-|cffffcc001级|r - 持续%s秒，英雄%s秒。
-|cffffcc002级|r - 持续%s秒，英雄%s秒。
-|cffffcc003级|r - 持续%s秒，英雄%s秒。]],
-        Abilities.DeathGrip.Duration[1], Abilities.DeathGrip.DurationHero[1],
-        Abilities.DeathGrip.Duration[2], Abilities.DeathGrip.DurationHero[2],
-        Abilities.DeathGrip.Duration[3], Abilities.DeathGrip.DurationHero[3]
+|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
+|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
+|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
+        Abilities.DeathGrip.Duration[1], Abilities.DeathGrip.DurationHero[1], math.round(Abilities.DeathGrip.PlagueLengthen[1] * 100),
+        Abilities.DeathGrip.Duration[2], Abilities.DeathGrip.DurationHero[2], math.round(Abilities.DeathGrip.PlagueLengthen[2] * 100),
+        Abilities.DeathGrip.Duration[3], Abilities.DeathGrip.DurationHero[3], math.round(Abilities.DeathGrip.PlagueLengthen[3] * 100)
 ), 0)
 
 for i = 1, #Abilities.DeathGrip.Duration do
     BlzSetAbilityTooltip(Abilities.DeathGrip.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
-    BlzSetAbilityExtendedTooltip(Abilities.DeathGrip.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒。", Abilities.DeathGrip.Duration[i], Abilities.DeathGrip.DurationHero[i]), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathGrip.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.DeathGrip.Duration[i], Abilities.DeathGrip.DurationHero[i], math.round(Abilities.DeathGrip.PlagueLengthen[i] * 100)), i - 1)
 end
 
 --endregion
@@ -109,8 +111,15 @@ function cls:ctor(caster, target)
         end, 2, 1)
         impactTimer:Start()
 
-        local duration = IsUnitType(target, UNIT_TYPE_HERO) and 2 or 4
-        SlowDebuff.new(caster, target, duration, 999)
+        local level = GetUnitAbilityLevel(caster, Abilities.DeathGrip.ID)
+        local count = PlagueStrike.GetPlagueCount(target)
+        local duration = (IsUnitType(target, UNIT_TYPE_HERO) and Abilities.DeathGrip.DurationHero[level] or Abilities.DeathGrip.Duration[level]) * (1 + Abilities.DeathGrip.PlagueLengthen[level] * count)
+        local debuff = BuffBase.FindBuffByClassName(target, SlowDebuff.__cname)
+        if debuff then
+            debuff:ResetDuration(Time.Time + duration)
+        else
+            SlowDebuff.new(caster, target, duration, 999)
+        end
 
         coroutine.wait(duration - 1)
         DestroyEffect(sfx)

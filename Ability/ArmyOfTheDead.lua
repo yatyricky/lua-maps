@@ -2,6 +2,7 @@ local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local Vector2 = require("Lib.Vector2")
 local Timer = require("Lib.Timer")
+local Const = require("Config.Const")
 
 --region meta
 
@@ -46,6 +47,7 @@ function cls:ctor(caster)
         ExAddLightningPosUnit("CLPB", casterPos.x, casterPos.y, 200, summoned, 1, GreaterColor)
         ExAddSpecialEffectTarget("Abilities/Spells/Undead/AnimateDead/AnimateDeadTarget.mdl", summoned, "origin", 0.1)
         UnitApplyTimedLife(summoned, FourCC("BUan"), 40)
+        IssuePointOrderById(summoned, Const.OrderId_Attack, GetUnitX(caster), GetUnitY(caster))
     end, 1, -1)
     self.summonTimer:Start()
 end
