@@ -29,9 +29,10 @@ local DummyAbilityIds = {
 
 BlzSetAbilityResearchTooltip(Abilities.PlagueStrike.ID, "学习瘟疫打击 - [|cffffcc00%d级|r]", 0)
 BlzSetAbilityResearchExtendedTooltip(Abilities.PlagueStrike.ID, string.format([[每次攻击都会依次给敌人造成鲜血瘟疫、冰霜瘟疫、邪恶瘟疫的效果。
+
 鲜血瘟疫：目标受到攻击时，受到最大生命值百分比伤害。
 冰霜瘟疫：一段时间后，受到一次冰霜伤害，目标移动速度越低，受到伤害越高。
-邪恶瘟疫：受到持续的伤害，生命值越低，受到伤害越高。
+邪恶瘟疫：受到持续的伤害，生命值越低，受到伤害越高，可叠加持续时间。
 
 |cffffcc001级|r - 鲜血瘟疫持续%s秒，造成最大生命%s%%的伤害；冰霜瘟疫持续%s秒，造成%s伤害；邪恶瘟疫持续%s秒，每%s秒造成%s伤害。
 |cffffcc002级|r - 鲜血瘟疫持续%s秒，造成最大生命%s%%的伤害；冰霜瘟疫持续%s秒，造成%s伤害；邪恶瘟疫持续%s秒，每%s秒造成%s伤害。
@@ -43,7 +44,11 @@ BlzSetAbilityResearchExtendedTooltip(Abilities.PlagueStrike.ID, string.format([[
 
 for i = 1, #Abilities.PlagueStrike.BloodPlagueDuration do
     local tooltip = string.format("瘟疫打击 - [|cffffcc00%s级|r]", i)
-    local extTooltip = string.format("每次攻击都会依次给敌人造成鲜血瘟疫、冰霜瘟疫、邪恶瘟疫的效果。鲜血瘟疫：持续%s秒，目标受到攻击时，受到最大生命值%s%%的伤害。冰霜瘟疫：%s秒后，受到%s点冰霜伤害，目标移动速度越低，受到伤害越高。邪恶瘟疫：持续%s秒，每%s秒受到%s点伤害，生命值越低，受到伤害越高。", Abilities.PlagueStrike.BloodPlagueDuration[i], (Abilities.PlagueStrike.BloodPlagueData[i] * 100), Abilities.PlagueStrike.FrostPlagueDuration[i], Abilities.PlagueStrike.FrostPlagueData[i], Abilities.PlagueStrike.UnholyPlagueDuration[i], Abilities.PlagueStrike.UnholyPlagueInterval[i], Abilities.PlagueStrike.UnholyPlagueData[i])
+    local extTooltip = string.format([[每次攻击都会依次给敌人造成鲜血瘟疫、冰霜瘟疫、邪恶瘟疫的效果。
+
+鲜血瘟疫：持续%s秒，目标受到攻击时，受到最大生命值%s%%的伤害。
+冰霜瘟疫：%s秒后，受到%s点冰霜伤害，目标移动速度越低，受到伤害越高。
+邪恶瘟疫：持续%s秒，每%s秒受到%s点伤害，生命值越低，受到伤害越高，可叠加持续时间。]], Abilities.PlagueStrike.BloodPlagueDuration[i], (Abilities.PlagueStrike.BloodPlagueData[i] * 100), Abilities.PlagueStrike.FrostPlagueDuration[i], Abilities.PlagueStrike.FrostPlagueData[i], Abilities.PlagueStrike.UnholyPlagueDuration[i], Abilities.PlagueStrike.UnholyPlagueInterval[i], Abilities.PlagueStrike.UnholyPlagueData[i])
     for _, id in ipairs(DummyAbilityIds) do
         BlzSetAbilityTooltip(id, tooltip, i - 1)
         BlzSetAbilityExtendedTooltip(id, extTooltip, i - 1)
