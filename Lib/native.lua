@@ -1,3 +1,4 @@
+require("Lib.TableExt")
 local Time = require("Lib.Time")
 
 local ipairs = ipairs
@@ -8,6 +9,7 @@ local c_wait = coroutine.wait
 local c_step = coroutine.step
 local m_round = math.round
 local t_insert = table.insert
+local t_getOrCreateTable = table.getOrCreateTable
 
 local AddLightningEx = AddLightningEx
 local AddSpecialEffect = AddSpecialEffect
@@ -18,6 +20,8 @@ local DestroyEffect = DestroyEffect
 local DestroyLightning = DestroyLightning
 local Filter = Filter
 local GetFilterUnit = GetFilterUnit
+local GetLearnedSkill = GetLearnedSkill
+local GetLearnedSkillLevel = GetLearnedSkillLevel
 local GetTriggerUnit = GetTriggerUnit
 local GetUnitFlyHeight = GetUnitFlyHeight
 local GetUnitX = GetUnitX
@@ -170,4 +174,30 @@ ExTriggerAddAction(deathTrigger, function()
 end)
 function ExTriggerRegisterUnitDeath(callback)
     t_insert(unitDeathCalls, callback)
+end
+
+local learnTrigger = CreateTrigger()
+local unitLearnCalls = {}
+local anySkillLearnCalls = {}
+TriggerRegisterAnyUnitEventBJ(learnTrigger, EVENT_PLAYER_HERO_SKILL)
+ExTriggerAddAction(learnTrigger, function()
+    local u = GetTriggerUnit()
+    local s = GetLearnedSkill()
+    local l = GetLearnedSkillLevel()
+    local tab = t_getOrCreateTable(unitLearnCalls, s)
+    for _, v in ipairs(tab) do
+        v(u, l, s)
+    end
+    for _, v in ipairs(anySkillLearnCalls) do
+        v(u, l, s)
+    end
+end)
+---@param callback fun(unit: unit, level: integer, skill: integer): void
+function ExTriggerRegisterUnitLearn(id, callback)
+    if id == 0 then
+        t_insert(anySkillLearnCalls, callback)
+    else
+        local tab = t_getOrCreateTable(unitLearnCalls, id)
+        t_insert(tab, callback)
+    end
 end
