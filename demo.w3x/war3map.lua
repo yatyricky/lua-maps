@@ -1,4 +1,4 @@
---lua-bundler:000059394
+--lua-bundler:000060616
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -545,16 +545,19 @@ function cls:Awake()
 end
 
 function cls:OnEnable()
+    print("zxcv onenable", Time.Time)
     self.sfx = AddSpecialEffectTarget("Units/Undead/PlagueCloud/PlagueCloudtarget.mdl", self.target, "overhead")
 end
 
 function cls:Update()
+    print("zxcv update", Time.Time)
     local hpLossPercent = 1 - GetUnitState(self.target, UNIT_STATE_LIFE) / GetUnitState(self.target, UNIT_STATE_MAX_LIFE)
     local damage = Abilities.PlagueStrike.UnholyPlagueData[self.level] * (1 + hpLossPercent)
     UnitDamageTarget(self.caster, self.target, damage, false, true, ATTACK_TYPE_MAGIC, DAMAGE_TYPE_POISON, WEAPON_TYPE_WHOKNOWS)
 end
 
 function cls:OnDisable()
+    print("zxcv ondisable", Time.Time)
     DestroyEffect(self.sfx)
 end
 
@@ -1075,14 +1078,36 @@ end}
 __modules["Lib.native"]={loader=function()
 local Time = require("Lib.Time")
 
+local ipairs = ipairs
 local pcall = pcall
+local print = print
 local c_start = coroutine.start
 local c_wait = coroutine.wait
 local c_step = coroutine.step
 local m_round = math.round
 local t_insert = table.insert
 
+local AddLightningEx = AddLightningEx
+local AddSpecialEffect = AddSpecialEffect
+local AddSpecialEffectTarget = AddSpecialEffectTarget
+local CreateGroup = CreateGroup
+local CreateTrigger = CreateTrigger
+local DestroyEffect = DestroyEffect
+local DestroyLightning = DestroyLightning
+local Filter = Filter
+local GetFilterUnit = GetFilterUnit
+local GetTriggerUnit = GetTriggerUnit
+local GetUnitFlyHeight = GetUnitFlyHeight
+local GetUnitX = GetUnitX
+local GetUnitY = GetUnitY
+local BlzGetUnitZ = BlzGetUnitZ
+local GetWidgetLife = GetWidgetLife
+local GroupEnumUnitsInRange = GroupEnumUnitsInRange
+local MoveLightningEx = MoveLightningEx
+local SetLightningColor = SetLightningColor
+local BlzSetSpecialEffectColor = BlzSetSpecialEffectColor
 local TriggerAddAction = TriggerAddAction
+local TriggerRegisterAnyUnitEventBJ = TriggerRegisterAnyUnitEventBJ
 
 ---@param trigger trigger
 ---@param action fun(): void
@@ -1096,9 +1121,7 @@ function ExTriggerAddAction(trigger, action)
     end)
 end
 
-local GroupEnumUnitsInRange = GroupEnumUnitsInRange
-local Filter = Filter
-local GetFilterUnit = GetFilterUnit
+local ExTriggerAddAction = ExTriggerAddAction
 
 local group = CreateGroup()
 
@@ -1116,11 +1139,6 @@ function ExGroupEnumUnitsInRange(x, y, radius, callback)
         return false
     end))
 end
-
-local AddSpecialEffectTarget = AddSpecialEffectTarget
-local AddSpecialEffect = AddSpecialEffect
-local BlzSetSpecialEffectColor = BlzSetSpecialEffectColor
-local DestroyEffect = DestroyEffect
 
 function ExAddSpecialEffectTarget(modelName, target, attachPoint, duration)
     c_start(function()
@@ -1140,15 +1158,6 @@ function ExAddSpecialEffect(modelName, x, y, duration, color)
         DestroyEffect(sfx)
     end)
 end
-
-local AddLightningEx = AddLightningEx
-local SetLightningColor = SetLightningColor
-local MoveLightningEx = MoveLightningEx
-local DestroyLightning = DestroyLightning
-local GetUnitX = GetUnitX
-local GetUnitY = GetUnitY
-local BlzGetUnitZ = BlzGetUnitZ
-local GetUnitFlyHeight = GetUnitFlyHeight
 
 function ExAddLightningPosPos(modelName, x1, y1, z1, x2, y2, z2, duration, color, check)
     c_start(function()
@@ -1224,10 +1233,21 @@ end
 --    t_insert(enterMapCalls, callback)
 --end
 
-local GetWidgetLife = GetWidgetLife
-
 function ExIsUnitDead(unit)
     return GetWidgetLife(unit) < 0.406
+end
+
+local deathTrigger = CreateTrigger()
+local unitDeathCalls = {}
+TriggerRegisterAnyUnitEventBJ(deathTrigger, EVENT_PLAYER_UNIT_DEATH)
+ExTriggerAddAction(deathTrigger, function()
+    local u = GetTriggerUnit()
+    for _, v in ipairs(unitDeathCalls) do
+        v(u)
+    end
+end)
+function ExTriggerRegisterUnitDeath(callback)
+    t_insert(unitDeathCalls, callback)
 end
 
 end}
@@ -1666,7 +1686,6 @@ __modules["System.BuffSystem"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Event = require("Lib.Event")
 local SystemBase = require("System.SystemBase")
-local Time = require("Lib.Time")
 
 EventCenter.NewBuff = Event.new()
 
@@ -1674,8 +1693,14 @@ EventCenter.NewBuff = Event.new()
 local cls = class("BuffSystem", SystemBase)
 
 function cls:ctor()
-    EventCenter.NewBuff:On(self, cls.onNewBuff)
     self.buffs = {} ---@type BuffBase[]
+end
+
+function cls:Awake()
+    EventCenter.NewBuff:On(self, cls.onNewBuff)
+    ExTriggerRegisterUnitDeath(function(u)
+        self:_onUnitDeath(u)
+    end)
 end
 
 function cls:Update(_, now)
@@ -1716,6 +1741,21 @@ function cls:onNewBuff(buff)
     table.insert(self.buffs, buff)
     buff:Awake()
     buff:OnEnable()
+end
+
+function cls:_onUnitDeath(unit)
+    local toDestroy = {}
+    for i = #self.buffs, 1, -1 do
+        local buff = self.buffs[i]
+        if IsUnit(buff.target, unit) then
+            buff:OnDisable()
+            table.remove(self.buffs, i)
+            table.insert(toDestroy, buff)
+        end
+    end
+    for _, v in ipairs(toDestroy) do
+        v:OnDestroy()
+    end
 end
 
 return cls
@@ -2124,7 +2164,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000059394
+--lua-bundler:000060616
 
 function InitGlobals()
 end

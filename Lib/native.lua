@@ -1,13 +1,35 @@
 local Time = require("Lib.Time")
 
+local ipairs = ipairs
 local pcall = pcall
+local print = print
 local c_start = coroutine.start
 local c_wait = coroutine.wait
 local c_step = coroutine.step
 local m_round = math.round
 local t_insert = table.insert
 
+local AddLightningEx = AddLightningEx
+local AddSpecialEffect = AddSpecialEffect
+local AddSpecialEffectTarget = AddSpecialEffectTarget
+local CreateGroup = CreateGroup
+local CreateTrigger = CreateTrigger
+local DestroyEffect = DestroyEffect
+local DestroyLightning = DestroyLightning
+local Filter = Filter
+local GetFilterUnit = GetFilterUnit
+local GetTriggerUnit = GetTriggerUnit
+local GetUnitFlyHeight = GetUnitFlyHeight
+local GetUnitX = GetUnitX
+local GetUnitY = GetUnitY
+local BlzGetUnitZ = BlzGetUnitZ
+local GetWidgetLife = GetWidgetLife
+local GroupEnumUnitsInRange = GroupEnumUnitsInRange
+local MoveLightningEx = MoveLightningEx
+local SetLightningColor = SetLightningColor
+local BlzSetSpecialEffectColor = BlzSetSpecialEffectColor
 local TriggerAddAction = TriggerAddAction
+local TriggerRegisterAnyUnitEventBJ = TriggerRegisterAnyUnitEventBJ
 
 ---@param trigger trigger
 ---@param action fun(): void
@@ -21,9 +43,7 @@ function ExTriggerAddAction(trigger, action)
     end)
 end
 
-local GroupEnumUnitsInRange = GroupEnumUnitsInRange
-local Filter = Filter
-local GetFilterUnit = GetFilterUnit
+local ExTriggerAddAction = ExTriggerAddAction
 
 local group = CreateGroup()
 
@@ -41,11 +61,6 @@ function ExGroupEnumUnitsInRange(x, y, radius, callback)
         return false
     end))
 end
-
-local AddSpecialEffectTarget = AddSpecialEffectTarget
-local AddSpecialEffect = AddSpecialEffect
-local BlzSetSpecialEffectColor = BlzSetSpecialEffectColor
-local DestroyEffect = DestroyEffect
 
 function ExAddSpecialEffectTarget(modelName, target, attachPoint, duration)
     c_start(function()
@@ -65,15 +80,6 @@ function ExAddSpecialEffect(modelName, x, y, duration, color)
         DestroyEffect(sfx)
     end)
 end
-
-local AddLightningEx = AddLightningEx
-local SetLightningColor = SetLightningColor
-local MoveLightningEx = MoveLightningEx
-local DestroyLightning = DestroyLightning
-local GetUnitX = GetUnitX
-local GetUnitY = GetUnitY
-local BlzGetUnitZ = BlzGetUnitZ
-local GetUnitFlyHeight = GetUnitFlyHeight
 
 function ExAddLightningPosPos(modelName, x1, y1, z1, x2, y2, z2, duration, color, check)
     c_start(function()
@@ -149,8 +155,19 @@ end
 --    t_insert(enterMapCalls, callback)
 --end
 
-local GetWidgetLife = GetWidgetLife
-
 function ExIsUnitDead(unit)
     return GetWidgetLife(unit) < 0.406
+end
+
+local deathTrigger = CreateTrigger()
+local unitDeathCalls = {}
+TriggerRegisterAnyUnitEventBJ(deathTrigger, EVENT_PLAYER_UNIT_DEATH)
+ExTriggerAddAction(deathTrigger, function()
+    local u = GetTriggerUnit()
+    for _, v in ipairs(unitDeathCalls) do
+        v(u)
+    end
+end)
+function ExTriggerRegisterUnitDeath(callback)
+    t_insert(unitDeathCalls, callback)
 end

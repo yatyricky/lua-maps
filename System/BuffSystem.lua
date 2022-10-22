@@ -1,7 +1,6 @@
 local EventCenter = require("Lib.EventCenter")
 local Event = require("Lib.Event")
 local SystemBase = require("System.SystemBase")
-local Time = require("Lib.Time")
 
 EventCenter.NewBuff = Event.new()
 
@@ -9,8 +8,14 @@ EventCenter.NewBuff = Event.new()
 local cls = class("BuffSystem", SystemBase)
 
 function cls:ctor()
-    EventCenter.NewBuff:On(self, cls.onNewBuff)
     self.buffs = {} ---@type BuffBase[]
+end
+
+function cls:Awake()
+    EventCenter.NewBuff:On(self, cls.onNewBuff)
+    ExTriggerRegisterUnitDeath(function(u)
+        self:_onUnitDeath(u)
+    end)
 end
 
 function cls:Update(_, now)
@@ -51,6 +56,21 @@ function cls:onNewBuff(buff)
     table.insert(self.buffs, buff)
     buff:Awake()
     buff:OnEnable()
+end
+
+function cls:_onUnitDeath(unit)
+    local toDestroy = {}
+    for i = #self.buffs, 1, -1 do
+        local buff = self.buffs[i]
+        if IsUnit(buff.target, unit) then
+            buff:OnDisable()
+            table.remove(self.buffs, i)
+            table.insert(toDestroy, buff)
+        end
+    end
+    for _, v in ipairs(toDestroy) do
+        v:OnDestroy()
+    end
 end
 
 return cls
