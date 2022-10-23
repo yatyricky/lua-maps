@@ -21,20 +21,16 @@ end
 function cls:Update(_, now)
     local toRemove = {}
     for i, buff in ipairs(self.buffs) do
-        if ExIsUnitDead(buff.target) then
+        buff.time = now
+        if now > buff.expire then
             table.insert(toRemove, i)
         else
-            buff.time = now
-            if now > buff.expire then
+            if now >= buff.nextUpdate then
+                buff:Update()
+                buff.nextUpdate = now + buff.interval
+            end
+            if now == buff.expire then
                 table.insert(toRemove, i)
-            else
-                if now >= buff.nextUpdate then
-                    buff:Update()
-                    buff.nextUpdate = now + buff.interval
-                end
-                if now == buff.expire then
-                    table.insert(toRemove, i)
-                end
             end
         end
     end
