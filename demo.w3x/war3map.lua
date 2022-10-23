@@ -1,4 +1,4 @@
---lua-bundler:000063852
+--lua-bundler:000064009
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -56,9 +56,10 @@ local cls = class("ArmyOfTheDead")
 
 function cls:ctor(caster)
     local casterPos = Vector2.FromUnit(caster)
+    local casterZ = casterPos:GetTerrainZ()
     self.sfxTimer = Timer.new(function()
         local pos = (Vector2.InsideUnitCircle() * math.random(200, 600)):Add(casterPos)
-        ExAddLightningPosPos("CLSB", casterPos.x, casterPos.y, 200, pos.x, pos.y, 0, math.random() * 0.4 + 0.2, LesserColor)
+        ExAddLightningPosPos("CLSB", casterPos.x, casterPos.y, casterZ + 200, pos.x, pos.y, pos:GetTerrainZ(), math.random() * 0.4 + 0.2, LesserColor)
         ExAddSpecialEffect("Abilities/Spells/Undead/DeathandDecay/DeathandDecayTarget.mdl", pos.x, pos.y, 0.2)
     end, 0.2, -1)
     self.sfxTimer:Start()
@@ -67,7 +68,7 @@ function cls:ctor(caster)
     self.summonTimer = Timer.new(function()
         local pos = (Vector2.InsideUnitCircle() * math.random(200, 600)):Add(casterPos)
         local summoned = CreateUnit(player, FourCC("u000"), pos.x, pos.y, math.random(360))
-        ExAddLightningPosUnit("CLPB", casterPos.x, casterPos.y, 200, summoned, 1, GreaterColor)
+        ExAddLightningPosUnit("CLPB", casterPos.x, casterPos.y, casterZ + 200, summoned, 1, GreaterColor)
         ExAddSpecialEffectTarget("Abilities/Spells/Undead/AnimateDead/AnimateDeadTarget.mdl", summoned, "origin", 0.1)
         UnitApplyTimedLife(summoned, FourCC("BUan"), 40)
         IssuePointOrderById(summoned, Const.OrderId_Attack, GetUnitX(caster), GetUnitY(caster))
@@ -231,6 +232,8 @@ function cls:ctor(caster, target)
     BlzSetSpecialEffectColor(sfx, 128, 0, 128)
     BlzSetSpecialEffectYaw(sfx, math.atan2(norm.y, norm.x))
 
+    PlagueStrike.Spread(caster, target)
+
     coroutine.start(function()
         while true do
             coroutine.step()
@@ -271,6 +274,8 @@ function cls:ctor(caster, target)
 
         coroutine.wait(duration - 1)
         DestroyEffect(sfx)
+
+        PlagueStrike.Spread(caster, target)
     end)
 end
 
@@ -1558,6 +1563,8 @@ local GetUnitY = GetUnitY
 ---@class Vector2
 local cls = {}
 
+cls._loc = Location(0, 0)
+
 ---@return Vector2
 function cls.new(x, y)
     return setmetatable({
@@ -1643,6 +1650,11 @@ end
 function cls:SetLength(len)
     self:SetNormalize():Mul(len)
     return self
+end
+
+function cls:GetTerrainZ()
+    MoveLocation(cls._loc, self.x, self.y)
+    return GetLocationZ(cls._loc)
 end
 
 function cls:GetMagnitude()
@@ -1795,20 +1807,16 @@ end
 function cls:Update(_, now)
     local toRemove = {}
     for i, buff in ipairs(self.buffs) do
-        if ExIsUnitDead(buff.target) then
+        buff.time = now
+        if now > buff.expire then
             table.insert(toRemove, i)
         else
-            buff.time = now
-            if now > buff.expire then
+            if now >= buff.nextUpdate then
+                buff:Update()
+                buff.nextUpdate = now + buff.interval
+            end
+            if now == buff.expire then
                 table.insert(toRemove, i)
-            else
-                if now >= buff.nextUpdate then
-                    buff:Update()
-                    buff.nextUpdate = now + buff.interval
-                end
-                if now == buff.expire then
-                    table.insert(toRemove, i)
-                end
             end
         end
     end
@@ -2253,7 +2261,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000063852
+--lua-bundler:000064009
 
 function InitGlobals()
 end

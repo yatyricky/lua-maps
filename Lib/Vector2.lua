@@ -9,6 +9,8 @@ local GetUnitY = GetUnitY
 ---@class Vector2
 local cls = {}
 
+cls._loc = Location(0, 0)
+
 ---@return Vector2
 function cls.new(x, y)
     return setmetatable({
@@ -94,6 +96,11 @@ end
 function cls:SetLength(len)
     self:SetNormalize():Mul(len)
     return self
+end
+
+function cls:GetTerrainZ()
+    MoveLocation(cls._loc, self.x, self.y)
+    return GetLocationZ(cls._loc)
 end
 
 function cls:GetMagnitude()
