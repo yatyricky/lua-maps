@@ -83,6 +83,8 @@ function cls:ctor(caster, target)
     BlzSetSpecialEffectColor(sfx, 128, 0, 128)
     BlzSetSpecialEffectYaw(sfx, math.atan2(norm.y, norm.x))
 
+    PlagueStrike.Spread(caster, target)
+
     coroutine.start(function()
         while true do
             coroutine.step()
@@ -123,6 +125,8 @@ function cls:ctor(caster, target)
 
         coroutine.wait(duration - 1)
         DestroyEffect(sfx)
+
+        PlagueStrike.Spread(caster, target)
     end)
 end
 
