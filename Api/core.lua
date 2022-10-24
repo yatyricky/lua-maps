@@ -4,3 +4,5 @@
 ---@alias code fun(): nothing
 
 ---@class handle
+
+---@class Nil
