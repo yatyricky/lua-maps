@@ -1,4 +1,4 @@
-local BuffBase = require("Buff.BuffBase")
+local BuffBase = require("Objects.BuffBase")
 local Abilities = require("Config.Abilities")
 
 ---@class UnholyPlague : BuffBase

@@ -3,7 +3,7 @@ local Abilities = require("Config.Abilities")
 local Const = require("Config.Const")
 local Vector2 = require("Lib.Vector2")
 local Utils = require("Lib.Utils")
-local BuffBase = require("Buff.BuffBase")
+local BuffBase = require("Objects.BuffBase")
 local Timer = require("Lib.Timer")
 local PlagueStrike = require("Ability.PlagueStrike")
 

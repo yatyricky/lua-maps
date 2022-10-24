@@ -1,6 +1,6 @@
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local BuffBase = require("Buff.BuffBase")
+local BuffBase = require("Objects.BuffBase")
 local BloodPlague = require("Ability.BloodPlague")
 local FrostPlague = require("Ability.FrostPlague")
 local UnholyPlague = require("Ability.UnholyPlague")

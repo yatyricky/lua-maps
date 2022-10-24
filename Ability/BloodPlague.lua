@@ -1,5 +1,5 @@
 local EventCenter = require("Lib.EventCenter")
-local BuffBase = require("Buff.BuffBase")
+local BuffBase = require("Objects.BuffBase")
 local Abilities = require("Config.Abilities")
 local Timer = require("Lib.Timer")
 
