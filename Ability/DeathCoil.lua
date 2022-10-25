@@ -1,17 +1,17 @@
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local Const = require("Config.Const")
-local Vector2 = require("Lib.Vector2")
-local Utils = require("Lib.Utils")
 local BuffBase = require("Objects.BuffBase")
-local Timer = require("Lib.Timer")
-local PlagueStrike = require("Ability.PlagueStrike")
 local ProjectileBase = require("Objects.ProjectileBase")
+local FesteringWound = require("Ability.FesteringWound")
 
 --region meta
 
 Abilities.DeathCoil = {
     ID = FourCC("A007"),
+    Heal = { 0.4, 0.6, 0.8 },
+    Damage = { 100, 200, 300 },
+    Wounds = { 3, 5, 7 },
+    AmplificationPerStack = 0.05,
 }
 
 --BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
@@ -34,85 +34,29 @@ Abilities.DeathCoil = {
 
 local cls = class("DeathCoil")
 
-function cls:ctor(caster, target)
-    IssueImmediateOrderById(target, Const.OrderId_Stop)
-    PauseUnit(target, true)
-
-    local v1 = Vector2.FromUnit(caster)
-    local v2 = Vector2.FromUnit(target)
-    local norm = v2 - v1
-    local totalLen = norm:GetMagnitude()
-    norm:SetNormalize()
-    local travelled = 0
-    local dest = (norm * 96):Add(v1)
-    totalLen = totalLen - 96
-    Utils.SetUnitFlyable(target)
-    local originalHeight = GetUnitFlyHeight(target)
-    local lightning = AddLightningEx("SPLK", false,
-            v2.x, v2.y, BlzGetUnitZ(target) + originalHeight,
-            v1.x, v1.y, 0)
-    SetUnitPathing(target, false)
-    SetLightningColor(lightning, 0.5, 0, 0.5, 1)
-
-    local sfxPos = (norm * 150):Add(v1)
-    local sfx = AddSpecialEffect("Abilities/Spells/Undead/UndeadMine/UndeadMineCircle.mdl", sfxPos.x, sfxPos.y)
-    BlzSetSpecialEffectScale(sfx, 1.3)
-    BlzSetSpecialEffectColor(sfx, 128, 0, 128)
-    BlzSetSpecialEffectYaw(sfx, math.atan2(norm.y, norm.x))
-
-    PlagueStrike.Spread(caster, target)
-
-    coroutine.start(function()
-        while true do
-            coroutine.step()
-            v2:MoveToUnit(target)
-            local dir = dest - v2
-            dir:SetLength(StepLen):Add(v2):UnitMoveTo(target)
-            travelled = travelled + StepLen
-            local height = math.bezier3(math.clamp01(travelled / totalLen), 0, totalLen, 0)
-            SetUnitFlyHeight(target, height, 0)
-            MoveLightningEx(lightning, false,
-                    dir.x, dir.y, BlzGetUnitZ(target) + GetUnitFlyHeight(target),
-                    dest.x, dest.y, 0)
-            if dir:Sub(dest):GetMagnitude() < 96 then
-                break
-            end
-        end
-
-        DestroyLightning(lightning)
-        SetUnitFlyHeight(target, originalHeight, 0)
-        PauseUnit(target, false)
-        SetUnitPathing(target, true)
-
-        local impact = AddSpecialEffectTarget("Abilities/Spells/Undead/DeathCoil/DeathCoilSpecialArt.mdl", target, "origin")
-        local impactTimer = Timer.new(function()
-            DestroyEffect(impact)
-        end, 2, 1)
-        impactTimer:Start()
-
-        local level = GetUnitAbilityLevel(caster, Abilities.DeathCoil.ID)
-        local count = PlagueStrike.GetPlagueCount(target)
-        local duration = (IsUnitType(target, UNIT_TYPE_HERO) and Abilities.DeathCoil.DurationHero[level] or Abilities.DeathCoil.Duration[level]) * (1 + Abilities.DeathCoil.PlagueLengthen[level] * count)
-        local debuff = BuffBase.FindBuffByClassName(target, SlowDebuff.__cname)
-        if debuff then
-            debuff:ResetDuration(Time.Time + duration)
-        else
-            SlowDebuff.new(caster, target, duration, 999)
-        end
-
-        coroutine.wait(duration - 1)
-        DestroyEffect(sfx)
-
-        PlagueStrike.Spread(caster, target)
-    end)
-end
-
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.DeathCoil.ID,
     ---@param data ISpellData
     handler = function(data)
-        local proj = ProjectileBase.new(data.caster, data.target, "Abilities/Spells/Undead/DeathCoil/DeathCoilMissile.mdl", 600, function()
-            print("onhit!!!!!!")
+        ProjectileBase.new(data.caster, data.target, "Abilities/Spells/Undead/DeathCoil/DeathCoilMissile.mdl", 600, function()
+            local level = GetUnitAbilityLevel(data.caster, data.abilityId)
+            if IsUnitAlly(data.target, GetOwningPlayer(data.caster)) then
+                -- 友军，治疗
+                EventCenter.Heal:Emit({
+                    caster = data.caster,
+                    target = data.target,
+                    amount = Abilities.DeathCoil.Heal[level] * GetUnitState(data.target, UNIT_STATE_MAX_LIFE),
+                })
+            else
+                -- 敌军，伤害+debuff
+                local debuff = BuffBase.FindBuffByClassName(data.target, FesteringWound.__cname)
+                local stack = debuff and debuff.stack or 0
+                local damage = Abilities.DeathCoil.Damage[level] * (1 + Abilities.DeathCoil.AmplificationPerStack * stack)
+                UnitDamageTarget(data.caster, data.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
+            end
+
+            -- sfx
+            ExAddSpecialEffectTarget("Abilities/Spells/Undead/DeathCoil/DeathCoilSpecialArt.mdl", data.target, "origin", 2)
         end, nil)
     end
 })

@@ -66,6 +66,10 @@ function ExGroupEnumUnitsInRange(x, y, radius, callback)
     end))
 end
 
+---@param modelName string
+---@param target unit
+---@param attachPoint string
+---@param duration real
 function ExAddSpecialEffectTarget(modelName, target, attachPoint, duration)
     c_start(function()
         local sfx = AddSpecialEffectTarget(modelName, target, attachPoint)

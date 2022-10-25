@@ -25,8 +25,6 @@ function cls:ctor(caster, target, model, speed, onHit, casterOffset)
     self.caster = caster
     self.onHit = onHit
 
-    print("?????")
-
     EventCenter.NewProjectile:Emit({ inst = self })
 end
 

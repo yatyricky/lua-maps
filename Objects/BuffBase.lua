@@ -31,6 +31,7 @@ function cls:ctor(caster, target, duration, interval, awakeData)
     self.duration = duration
     self.interval = interval
     self.nextUpdate = self.time + interval
+    self.stack = 1
 
     local unitTab = table.getOrCreateTable(cls.unitBuffs, target)
     table.insert(unitTab, self)
@@ -69,6 +70,12 @@ end
 
 function cls:GetTimeNorm()
     return math.clamp01(self:GetTimeLeft() / self.duration)
+end
+
+---叠一层buff
+function cls:IncreaseStack()
+    self.stack = self.stack + 1
+    self:ResetDuration()
 end
 
 return cls
