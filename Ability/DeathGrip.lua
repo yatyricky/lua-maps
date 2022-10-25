@@ -90,7 +90,7 @@ function cls:ctor(caster, target)
             coroutine.step()
             v2:MoveToUnit(target)
             local dir = dest - v2
-            dir:SetLength(StepLen):Add(v2):UnitMoveTo(target)
+            dir:SetMagnitude(StepLen):Add(v2):UnitMoveTo(target)
             travelled = travelled + StepLen
             local height = math.bezier3(math.clamp01(travelled / totalLen), 0, totalLen, 0)
             SetUnitFlyHeight(target, height, 0)

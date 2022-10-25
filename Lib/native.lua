@@ -26,6 +26,7 @@ local GetTriggerUnit = GetTriggerUnit
 local GetUnitFlyHeight = GetUnitFlyHeight
 local GetUnitX = GetUnitX
 local GetUnitY = GetUnitY
+local GroupClear = GroupClear
 local BlzGetUnitZ = BlzGetUnitZ
 local GetWidgetLife = GetWidgetLife
 local GroupEnumUnitsInRange = GroupEnumUnitsInRange
@@ -57,6 +58,7 @@ local group = CreateGroup()
 ---@param callback fun(unit: unit): void
 ---@return void
 function ExGroupEnumUnitsInRange(x, y, radius, callback)
+    GroupClear(group)
     GroupEnumUnitsInRange(group, x, y, radius, Filter(function()
         local s, m = pcall(callback, GetFilterUnit())
         if not s then
@@ -204,4 +206,16 @@ function ExTriggerRegisterUnitLearn(id, callback)
         local tab = t_getOrCreateTable(unitLearnCalls, id)
         t_insert(tab, callback)
     end
+end
+
+function GetStackTrace(oneline_yn)
+    local trace, lastMsg, i, separator = "", "", 5, (oneline_yn and "; ") or "\n"
+    local store = function(msg) lastMsg = msg:sub(1, -3) end --Passed to xpcall to handle the error message. Message is being saved to lastMsg for further use, excluding trailing space and colon.
+    xpcall(error, store, "", 4) --starting at position 4 ensures that the functions "error", "xpcall" and "GetStackTrace" are not included in the trace.
+    while lastMsg:sub(1, 11) == "war3map.lua" or lastMsg:sub(1, 14) == "blizzard.j.lua" do
+        trace = separator .. lastMsg .. trace
+        xpcall(error, store, "", i)
+        i = i + 1
+    end
+    return "Traceback (most recent call last)" .. trace
 end

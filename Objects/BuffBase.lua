@@ -14,7 +14,7 @@ function cls.FindBuffByClassName(unit, name)
         return nil
     end
 
-    return array.find(arr, function(_, v)
+    return table.ifind(arr, function(_, v)
         return v.__cname == name
     end)
 end
@@ -54,7 +54,7 @@ end
 
 function cls:OnDestroy()
     local unitTab = cls.unitBuffs[self.target]
-    if not array.removeItem(unitTab, self) then
+    if not table.removeItem(unitTab, self) then
         print("Remove buff unit failed")
     end
 end
@@ -73,8 +73,12 @@ function cls:GetTimeNorm()
 end
 
 ---叠一层buff
-function cls:IncreaseStack()
-    self.stack = self.stack + 1
+function cls:IncreaseStack(stacks)
+    stacks = stacks or 1
+    if stacks < 0 then
+        return
+    end
+    self.stack = self.stack + stacks
     self:ResetDuration()
 end
 

@@ -519,13 +519,13 @@ STRING 113
 }
 
 STRING 114
-// 技能: A008 (亵渎), Researchhotkey (热键 - 学习)
+// 技能: A009 (死亡缠绕), Unhotkey (热键 - 关闭)
 {
 Q
 }
 
 STRING 115
-// 技能: A008 (亵渎), Hotkey (热键 - 普通)
+// 技能: A009 (死亡缠绕), Researchhotkey (热键 - 学习)
 {
 Q
 }
@@ -603,18 +603,6 @@ STRING 127
 }
 
 STRING 128
-// 技能: A009 (死亡缠绕), Unhotkey (热键 - 关闭)
-{
-Q
-}
-
-STRING 129
-// 技能: A009 (死亡缠绕), Researchhotkey (热键 - 学习)
-{
-Q
-}
-
-STRING 130
 // 技能: A009 (死亡缠绕), Hotkey (热键 - 普通)
 {
 Q
@@ -810,5 +798,17 @@ STRING 162
 // 技能: A00B (黑暗突变), Ubertip (提示工具 - 普通 - 扩展)
 {
 1
+}
+
+STRING 163
+// 技能: A008 (亵渎), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 164
+// 技能: A008 (亵渎), Hotkey (热键 - 普通)
+{
+W
 }
 

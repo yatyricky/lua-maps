@@ -55,7 +55,14 @@ function cls:Start()
     end)
 end
 
+function cls:SetOnStop(onStop)
+    self.onStop = onStop
+end
+
 function cls:Stop()
+    if self.onStop then
+        self.onStop()
+    end
     cacheTimer(self.timer)
 end
 

@@ -93,9 +93,13 @@ function cls:SetNormalize()
     return self
 end
 
-function cls:SetLength(len)
+function cls:SetMagnitude(len)
     self:SetNormalize():Mul(len)
     return self
+end
+
+function cls:Clone()
+    return new(self.x, self.y)
 end
 
 function cls:GetTerrainZ()

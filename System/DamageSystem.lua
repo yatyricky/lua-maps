@@ -41,11 +41,11 @@ function cls:Awake()
 end
 
 function cls:_registerDamaging(handler)
-    array.add(self._damagingHandlers, handler)
+    table.insert(self._damagingHandlers, handler)
 end
 
 function cls:_registerDamaged(handler)
-    array.add(self._damagedHandlers, handler)
+    table.insert(self._damagedHandlers, handler)
 end
 
 function cls:_response(whichHandlers)

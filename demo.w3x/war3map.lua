@@ -1,4 +1,4 @@
---lua-bundler:000070708
+--lua-bundler:000079861
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -158,12 +158,7 @@ end}
 __modules["Ability.DeathCoil"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local Const = require("Config.Const")
-local Vector2 = require("Lib.Vector2")
-local Utils = require("Lib.Utils")
 local BuffBase = require("Objects.BuffBase")
-local Timer = require("Lib.Timer")
-local PlagueStrike = require("Ability.PlagueStrike")
 local ProjectileBase = require("Objects.ProjectileBase")
 local FesteringWound = require("Ability.FesteringWound")
 
@@ -216,6 +211,14 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 local stack = debuff and debuff.stack or 0
                 local damage = Abilities.DeathCoil.Damage[level] * (1 + Abilities.DeathCoil.AmplificationPerStack * stack)
                 UnitDamageTarget(data.caster, data.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
+
+                -- 并叠加溃烂之伤
+                if debuff then
+                    debuff:IncreaseStack(Abilities.DeathCoil.Wounds[level])
+                else
+                    debuff = FesteringWound.new(data.caster, data.target, Abilities.FesteringWound.Duration, 9999, {})
+                    debuff:IncreaseStack(Abilities.DeathCoil.Wounds[level] - 1)
+                end
             end
 
             -- sfx
@@ -223,6 +226,8 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         end, nil)
     end
 })
+
+-- 普通攻击时，目标身上的每层溃烂之伤提供5%的几率立即冷却死亡缠绕并且不消耗法力值。
 
 return cls
 
@@ -321,7 +326,7 @@ function cls:ctor(caster, target)
             coroutine.step()
             v2:MoveToUnit(target)
             local dir = dest - v2
-            dir:SetLength(StepLen):Add(v2):UnitMoveTo(target)
+            dir:SetMagnitude(StepLen):Add(v2):UnitMoveTo(target)
             travelled = travelled + StepLen
             local height = math.bezier3(math.clamp01(travelled / totalLen), 0, totalLen, 0)
             SetUnitFlyHeight(target, height, 0)
@@ -457,12 +462,178 @@ end}
 
 __modules["Ability.Defile"]={loader=function()
 -- 亵渎
+
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local BuffBase = require("Objects.BuffBase")
+local ProjectileBase = require("Objects.ProjectileBase")
+local FesteringWound = require("Ability.FesteringWound")
+local Timer = require("Lib.Timer")
+local Circle = require("Lib.Circle")
+local Vector2 = require("Lib.Vector2")
+
+--region meta
+
+Abilities.Defile = {
+    ID = FourCC("A008"),
+    Interval = 1,
+    Duration = 10,
+    AOE = 256,
+    AOEGrowth = 32,
+    DamageGrowth = 0.1,
+    Damage = { 5, 10, 15 },
+    CleaveTargets = { 2, 4, 6 },
+    FesteringWoundStackPerProc = 1,
+}
+
+--BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
+--BlzSetAbilityResearchExtendedTooltip(Abilities.DeathCoil.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
+--
+--|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
+--|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
+--|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
+--        Abilities.DeathCoil.Duration[1], Abilities.DeathCoil.DurationHero[1], math.round(Abilities.DeathCoil.PlagueLengthen[1] * 100),
+--        Abilities.DeathCoil.Duration[2], Abilities.DeathCoil.DurationHero[2], math.round(Abilities.DeathCoil.PlagueLengthen[2] * 100),
+--        Abilities.DeathCoil.Duration[3], Abilities.DeathCoil.DurationHero[3], math.round(Abilities.DeathCoil.PlagueLengthen[3] * 100)
+--), 0)
+--
+--for i = 1, #Abilities.DeathCoil.Duration do
+--    BlzSetAbilityTooltip(Abilities.DeathCoil.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
+--    BlzSetAbilityExtendedTooltip(Abilities.DeathCoil.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.DeathCoil.Duration[i], Abilities.DeathCoil.DurationHero[i], math.round(Abilities.DeathCoil.PlagueLengthen[i] * 100)), i - 1)
+--end
+
+--endregion
+
+local cls = class("Defile")
+
+function cls.ModifyTerrain(circle)
+    --print("Make blight @", circle:tostring())
+end
+
+function cls.RestoreTerrain(circle)
+    --print("Remove blight @", circle:tostring())
+end
+
+cls.instances = {}
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Abilities.Defile.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local circle = Circle.new(Vector2.new(data.x, data.y), Abilities.Defile.AOE)
+        print("caster is", data.caster)
+        local tab = table.getOrCreateTable(cls.instances, data.caster)
+        table.insert(tab, circle)
+        cls.ModifyTerrain(circle)
+        local casterPlayer = GetOwningPlayer(data.caster)
+        local level = GetUnitAbilityLevel(data.caster, Abilities.Defile.ID)
+        local bonus = 0
+
+        local timer = Timer.new(function()
+            local hasAnyUnit = false
+            ExGroupEnumUnitsInRange(data.x, data.y, circle.r, function(e)
+                if IsUnitEnemy(e, casterPlayer) and not IsUnitType(e, UNIT_TYPE_STRUCTURE) and not IsUnitType(e, UNIT_TYPE_MECHANICAL) and not ExIsUnitDead(e) then
+                    hasAnyUnit = true
+                    -- 并叠加溃烂之伤
+                    local debuff = BuffBase.FindBuffByClassName(e, FesteringWound.__cname)
+                    if debuff then
+                        debuff:IncreaseStack(Abilities.Defile.FesteringWoundStackPerProc)
+                    else
+                        debuff = FesteringWound.new(data.caster, e, Abilities.FesteringWound.Duration, 9999, {})
+                    end
+
+                    -- 造成伤害
+                    local damage = Abilities.Defile.Damage[level] * (1 + bonus)
+                    print("will do ", damage, " to", GetUnitName(e))
+                    UnitDamageTarget(data.caster, e, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
+                end
+            end)
+
+            local newR = circle.r
+            -- 如果有任意敌人站在被亵渎的土地上
+            -- 亵渎面积会扩大，伤害每秒都会提高
+            if hasAnyUnit then
+                newR = newR + Abilities.Defile.AOEGrowth
+                bonus = bonus + Abilities.Defile.DamageGrowth
+            end
+
+            circle = circle:Clone()
+            circle.r = newR
+            table.insert(tab, circle)
+            cls.ModifyTerrain(circle)
+        end, Abilities.Defile.Interval, Abilities.Defile.Duration)
+        timer:Start()
+
+        timer.onStop = function()
+            -- 移除黑水效果
+            for _, v in ipairs(tab) do
+                cls.RestoreTerrain(v)
+            end
+        end
+    end
+})
+
+-- 当你站在自己的亵渎范围内时，你的普通攻击会击中目标附近的其他敌人
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, weaponType, damageType, isAttack)
+    if not isAttack then
+        return
+    end
+
+    if target == nil then
+        return
+    end
+
+    -- 检查是否站在亵渎里面
+    local tab = table.getOrCreateTable(cls.instances, caster)
+    local standingOnDefiledGround = false
+    local vec = Vector2.FromUnit(caster)
+    local circle
+    for i = #tab, 1, -1 do
+        circle = tab[i]
+        if circle:Contains(vec) then
+            standingOnDefiledGround = true
+            break
+        end
+    end
+
+    if not standingOnDefiledGround then
+        return
+    end
+
+    local candidates = {}
+    local targetPlayer = GetOwningPlayer(target)
+    local v1 = Vector2.FromUnit(target)
+    local v2 = Vector2.new(0, 0)
+    ExGroupEnumUnitsInRange(GetUnitX(target), GetUnitY(target), circle.r, function(e)
+        if not IsUnit(e, target) and IsUnitAlly(e, targetPlayer) and not ExIsUnitDead(e) then
+            v2:MoveToUnit(e):Sub(v1)
+            table.insert(candidates, { unit = e, dist = v2:GetMagnitude() })
+        end
+    end)
+    table.sort(candidates, function(a, b)
+        return a.dist < b.dist
+    end)
+
+    local level = GetUnitAbilityLevel(caster, Abilities.Defile.ID)
+    local victims = table.slice(candidates, 1, Abilities.Defile.CleaveTargets[level])
+    for _, v in ipairs(victims) do
+        UnitDamageTarget(caster, v.unit, damage, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_DIVINE, WEAPON_TYPE_WHOKNOWS)
+    end
+end)
+
+return cls
+
 end}
 
 __modules["Ability.FesteringWound"]={loader=function()
 -- 溃烂之伤
 
+local Abilities = require("Config.Abilities")
 local BuffBase = require("Objects.BuffBase")
+
+Abilities.FesteringWound = {
+    Duration = 30,
+}
 
 local cls = class("FesteringWound", BuffBase)
 
@@ -760,50 +931,35 @@ return cls
 end}
 
 __modules["Lib.ArrayExt"]={loader=function()
-local ipairs = ipairs
 
-array = {}
+end}
 
-array.add = table.insert
+__modules["Lib.Circle"]={loader=function()
+---@class Circle
+local cls = class("Circle")
 
----@generic T
----@param tab T[]
----@param item T
-function array.removeItem(tab, item)
-    local c = #tab
-    local i = 1
-    local d = 0
-    local removed = false
-    while i <= c do
-        local it = tab[i]
-        if it == item then
-            d = d + 1
-            removed = true
-        else
-            if d > 0 then
-                tab[i - d] = it
-            end
-        end
-        i = i + 1
-    end
-    for j = 0, d - 1 do
-        tab[c - j] = nil
-    end
-    return removed
+---@param center Vector2
+---@param r real
+function cls:ctor(center, r)
+    self.center = center
+    self.r = r
 end
 
----@generic V
----@param t V[]
----@param func fun(i: integer, v: V): boolean
----@return V, integer
-function array.find(t, func)
-    for i, v in ipairs(t) do
-        if func(i, v) == true then
-            return v, i
-        end
-    end
-    return nil, nil
+---@param v Vector2
+function cls:Contains(v)
+    local dir = v - self.center
+    return dir:GetMagnitude() <= self.r
 end
+
+function cls:Clone()
+    return cls.new(self.center:Clone(), self.r)
+end
+
+function cls:tostring()
+    return string.format("(%s,%s,%s)", self.center.x, self.center.y, self.r)
+end
+
+return cls
 
 end}
 
@@ -1191,6 +1347,7 @@ local GetTriggerUnit = GetTriggerUnit
 local GetUnitFlyHeight = GetUnitFlyHeight
 local GetUnitX = GetUnitX
 local GetUnitY = GetUnitY
+local GroupClear = GroupClear
 local BlzGetUnitZ = BlzGetUnitZ
 local GetWidgetLife = GetWidgetLife
 local GroupEnumUnitsInRange = GroupEnumUnitsInRange
@@ -1222,6 +1379,7 @@ local group = CreateGroup()
 ---@param callback fun(unit: unit): void
 ---@return void
 function ExGroupEnumUnitsInRange(x, y, radius, callback)
+    GroupClear(group)
     GroupEnumUnitsInRange(group, x, y, radius, Filter(function()
         local s, m = pcall(callback, GetFilterUnit())
         if not s then
@@ -1371,9 +1529,27 @@ function ExTriggerRegisterUnitLearn(id, callback)
     end
 end
 
+function GetStackTrace(oneline_yn)
+    local trace, lastMsg, i, separator = "", "", 5, (oneline_yn and "; ") or "\n"
+    local store = function(msg) lastMsg = msg:sub(1, -3) end --Passed to xpcall to handle the error message. Message is being saved to lastMsg for further use, excluding trailing space and colon.
+    xpcall(error, store, "", 4) --starting at position 4 ensures that the functions "error", "xpcall" and "GetStackTrace" are not included in the trace.
+    while lastMsg:sub(1, 11) == "war3map.lua" or lastMsg:sub(1, 14) == "blizzard.j.lua" do
+        trace = separator .. lastMsg .. trace
+        xpcall(error, store, "", i)
+        i = i + 1
+    end
+    return "Traceback (most recent call last)" .. trace
+end
+
 end}
 
 __modules["Lib.TableExt"]={loader=function()
+local ipairs = ipairs
+local t_insert = table.insert
+local m_floor = math.floor
+local m_random = math.random
+local m_clamp = math.clamp
+
 ---Add v to k of tab, in place. tab will be mutated.
 ---@generic K
 ---@param tab table<K, number>
@@ -1396,12 +1572,90 @@ function table.any(tab)
 end
 
 function table.getOrCreateTable(tab, key)
+    --print(GetStackTrace())
     local ret = tab[key]
     if not ret then
         ret = {}
         tab[key] = ret
     end
     return ret
+end
+
+---@generic T
+---@param tab T[]
+---@param n integer count
+---@return T[]
+function table.sample(tab, n)
+    local result = {}
+    local c = 0
+    for _, item in ipairs(tab) do
+        c = c + 1
+        if #result < n then
+            t_insert(result, item)
+        else
+            local s = m_floor(m_random() * c)
+            if s < n then
+                result[s + 1] = item
+            end
+        end
+    end
+    return result
+end
+
+---@generic T
+---@param tab T[]
+---@param item T
+function table.removeItem(tab, item)
+    local c = #tab
+    local i = 1
+    local d = 0
+    local removed = false
+    while i <= c do
+        local it = tab[i]
+        if it == item then
+            d = d + 1
+            removed = true
+        else
+            if d > 0 then
+                tab[i - d] = it
+            end
+        end
+        i = i + 1
+    end
+    for j = 0, d - 1 do
+        tab[c - j] = nil
+    end
+    return removed
+end
+
+---@generic V
+---@param t V[]
+---@param func fun(i: integer, v: V): boolean
+---@return V, integer
+function table.ifind(t, func)
+    for i, v in ipairs(t) do
+        if func(i, v) == true then
+            return v, i
+        end
+    end
+    return nil, nil
+end
+
+---@generic T
+---@param tab T[]
+---@param from number Optional One-based index at which to begin extraction.
+---@param to number Optional One-based index before which to end extraction.
+---@return T[]
+function table.slice(tab, from, to)
+    from = from and m_clamp(from, 1, #tab + 1) or 1
+    to = to and m_clamp(to, 1, #tab) or #tab
+    local result = {}
+    for i = from, to, 1 do
+        if tab[i] then
+            t_insert(result, tab[i])
+        end
+    end
+    return result
 end
 
 end}
@@ -1521,7 +1775,14 @@ function cls:Start()
     end)
 end
 
+function cls:SetOnStop(onStop)
+    self.onStop = onStop
+end
+
 function cls:Stop()
+    if self.onStop then
+        self.onStop()
+    end
     cacheTimer(self.timer)
 end
 
@@ -1674,9 +1935,13 @@ function cls:SetNormalize()
     return self
 end
 
-function cls:SetLength(len)
+function cls:SetMagnitude(len)
     self:SetNormalize():Mul(len)
     return self
+end
+
+function cls:Clone()
+    return new(self.x, self.y)
 end
 
 function cls:GetTerrainZ()
@@ -1796,7 +2061,7 @@ function cls.FindBuffByClassName(unit, name)
         return nil
     end
 
-    return array.find(arr, function(_, v)
+    return table.ifind(arr, function(_, v)
         return v.__cname == name
     end)
 end
@@ -1836,7 +2101,7 @@ end
 
 function cls:OnDestroy()
     local unitTab = cls.unitBuffs[self.target]
-    if not array.removeItem(unitTab, self) then
+    if not table.removeItem(unitTab, self) then
         print("Remove buff unit failed")
     end
 end
@@ -1855,8 +2120,12 @@ function cls:GetTimeNorm()
 end
 
 ---叠一层buff
-function cls:IncreaseStack()
-    self.stack = self.stack + 1
+function cls:IncreaseStack(stacks)
+    stacks = stacks or 1
+    if stacks < 0 then
+        return
+    end
+    self.stack = self.stack + stacks
     self:ResetDuration()
 end
 
@@ -1891,8 +2160,6 @@ function cls:ctor(caster, target, model, speed, onHit, casterOffset)
     self.target = target
     self.caster = caster
     self.onHit = onHit
-
-    print("?????")
 
     EventCenter.NewProjectile:Emit({ inst = self })
 end
@@ -2053,11 +2320,11 @@ function cls:Awake()
 end
 
 function cls:_registerDamaging(handler)
-    array.add(self._damagingHandlers, handler)
+    table.insert(self._damagingHandlers, handler)
 end
 
 function cls:_registerDamaged(handler)
-    array.add(self._damagedHandlers, handler)
+    table.insert(self._damagedHandlers, handler)
 end
 
 function cls:_response(whichHandlers)
@@ -2096,6 +2363,7 @@ function cls:Awake()
 
     -- 邪DK
     require("Ability.DeathCoil")
+    require("Ability.Defile")
 end
 
 return cls
@@ -2470,7 +2738,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000070708
+--lua-bundler:000079861
 
 function InitGlobals()
 end

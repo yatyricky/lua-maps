@@ -12,6 +12,7 @@ function cls:Awake()
 
     -- 邪DK
     require("Ability.DeathCoil")
+    require("Ability.Defile")
 end
 
 return cls
