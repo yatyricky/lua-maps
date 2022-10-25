@@ -53,6 +53,14 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 local stack = debuff and debuff.stack or 0
                 local damage = Abilities.DeathCoil.Damage[level] * (1 + Abilities.DeathCoil.AmplificationPerStack * stack)
                 UnitDamageTarget(data.caster, data.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
+
+                -- 并叠加溃烂之伤
+                if debuff then
+                    debuff:IncreaseStack(Abilities.DeathCoil.Wounds[level])
+                else
+                    debuff = FesteringWound.new(data.caster, data.target, Abilities.FesteringWound.Duration, 9999, {})
+                    debuff:IncreaseStack(Abilities.DeathCoil.Wounds[level] - 1)
+                end
             end
 
             -- sfx
@@ -60,5 +68,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         end, nil)
     end
 })
+
+-- 普通攻击时，目标身上的每层溃烂之伤提供5%的几率立即冷却死亡缠绕并且不消耗法力值。
 
 return cls
