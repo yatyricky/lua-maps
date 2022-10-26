@@ -111,3 +111,15 @@ function table.slice(tab, from, to)
     end
     return result
 end
+
+---@generic K, V
+---@param source table<K, V> | V[]
+---@param copy table<K, V> | V[]
+---@return table<K, V> | V[]
+function table.shallow(source, copy)
+    copy = copy or {}
+    for k, v in pairs(source) do
+        copy[k] = v
+    end
+    return copy
+end

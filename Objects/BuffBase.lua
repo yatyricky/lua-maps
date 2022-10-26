@@ -82,4 +82,12 @@ function cls:IncreaseStack(stacks)
     self:ResetDuration()
 end
 
+function cls:DecreaseStack(stacks)
+    stacks = stacks or 1
+    self.stack = self.stack - stacks
+    if self.stack <= 0 then
+        EventCenter.KillBuff:Emit(self)
+    end
+end
+
 return cls

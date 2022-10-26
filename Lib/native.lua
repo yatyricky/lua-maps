@@ -148,22 +148,20 @@ function ExAddLightningPosUnit(modelName, x1, y1, z1, unit2, duration, color, ch
     end)
 end
 
---local GetTriggerUnit = GetTriggerUnit
---
---local mapArea = CreateRegion()
---RegionAddRect(mapArea, bj_mapInitialPlayableArea)
---local enterTrigger = CreateTrigger()
---local enterMapCalls = {}
---TriggerRegisterEnterRegion(enterTrigger, mapArea, Filter(function() return true end))
---ExTriggerAddAction(enterTrigger, function()
---    local u = GetTriggerUnit()
---    for _, v in ipairs(enterMapCalls) do
---        v(u)
---    end
---end)
---function ExTriggerRegisterNewUnit(callback)
---    t_insert(enterMapCalls, callback)
---end
+local mapArea = CreateRegion()
+RegionAddRect(mapArea, bj_mapInitialPlayableArea)
+local enterTrigger = CreateTrigger()
+local enterMapCalls = {}
+TriggerRegisterEnterRegion(enterTrigger, mapArea, Filter(function() return true end))
+ExTriggerAddAction(enterTrigger, function()
+    local u = GetTriggerUnit()
+    for _, v in ipairs(enterMapCalls) do
+        v(u)
+    end
+end)
+function ExTriggerRegisterNewUnit(callback)
+    t_insert(enterMapCalls, callback)
+end
 
 function ExIsUnitDead(unit)
     return GetWidgetLife(unit) < 0.406

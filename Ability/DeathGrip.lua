@@ -6,6 +6,7 @@ local Utils = require("Lib.Utils")
 local BuffBase = require("Objects.BuffBase")
 local Timer = require("Lib.Timer")
 local PlagueStrike = require("Ability.PlagueStrike")
+local RootDebuff = require("Ability.RootDebuff")
 
 --region meta
 
@@ -30,25 +31,6 @@ BlzSetAbilityResearchExtendedTooltip(Abilities.DeathGrip.ID, string.format([[运
 for i = 1, #Abilities.DeathGrip.Duration do
     BlzSetAbilityTooltip(Abilities.DeathGrip.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
     BlzSetAbilityExtendedTooltip(Abilities.DeathGrip.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.DeathGrip.Duration[i], Abilities.DeathGrip.DurationHero[i], math.round(Abilities.DeathGrip.PlagueLengthen[i] * 100)), i - 1)
-end
-
---endregion
-
---region slow debuff
-
----@class SlowDebuff : BuffBase
-local SlowDebuff = class("SlowDebuff", BuffBase)
-
-function SlowDebuff:ctor(caster, target, duration, interval)
-    SlowDebuff.super.ctor(self, caster, target, duration, interval)
-end
-
-function SlowDebuff:OnEnable()
-    SetUnitMoveSpeed(self.target, 0)
-end
-
-function SlowDebuff:OnDisable()
-    SetUnitMoveSpeed(self.target, GetUnitDefaultMoveSpeed(self.target))
 end
 
 --endregion
@@ -116,11 +98,11 @@ function cls:ctor(caster, target)
         local level = GetUnitAbilityLevel(caster, Abilities.DeathGrip.ID)
         local count = PlagueStrike.GetPlagueCount(target)
         local duration = (IsUnitType(target, UNIT_TYPE_HERO) and Abilities.DeathGrip.DurationHero[level] or Abilities.DeathGrip.Duration[level]) * (1 + Abilities.DeathGrip.PlagueLengthen[level] * count)
-        local debuff = BuffBase.FindBuffByClassName(target, SlowDebuff.__cname)
+        local debuff = BuffBase.FindBuffByClassName(target, RootDebuff.__cname)
         if debuff then
             debuff:ResetDuration(Time.Time + duration)
         else
-            SlowDebuff.new(caster, target, duration, 999)
+            RootDebuff.new(caster, target, duration, 999)
         end
 
         coroutine.wait(duration - 1)

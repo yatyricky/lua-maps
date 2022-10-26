@@ -11,8 +11,14 @@ function cls:Awake()
     require("Ability.ArmyOfTheDead")
 
     -- 邪DK
+    require("Ability.FesteringWound")
     require("Ability.DeathCoil")
     require("Ability.Defile")
+    require("Ability.Apocalypse")
+    require("Ability.DarkTransformation")
+    require("Ability.MonstrousBlow")
+    require("Ability.ShamblingRush")
+    require("Ability.PutridBulwark")
 end
 
 return cls
