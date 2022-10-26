@@ -13,7 +13,7 @@ function cls:Awake()
     -- 邪DK
     require("Ability.FesteringWound")
     require("Ability.DeathCoil")
-    --require("Ability.Defile")
+    require("Ability.Defile")
     --require("Ability.Apocalypse")
     --require("Ability.DarkTransformation")
     --require("Ability.MonstrousBlow")
