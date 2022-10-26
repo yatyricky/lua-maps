@@ -2,17 +2,26 @@
 
 自定义英雄对战地图打电脑系列视频。技能设计主要来源为评论区。
 
-## 3. 奶骑
+## 4. 奶骑
 
 - 灵感来源：魔兽世界
 - 视频链接：规划中
+
+圣光术、黎明之光、道标、神圣复仇者
+
+## 3. 武器战
+
+- 灵感来源：魔兽世界
+- 视频链接：规划中
+
+怒火聚焦、致死打击、破战者、天神下凡
 
 ## 2. 邪DK
 
 - 灵感来源：魔兽世界
 - 视频链接：制作中
 
-### 溃烂之伤【自带被动】
+### 【自带被动】溃烂之伤
 
 ![icon_festering_wound](textures/spell_yorsahj_bloodboil_purpleoil.jpg)
 
@@ -50,7 +59,17 @@
 
 ![icon_apocalypse](textures/artifactability_unholydeathknight_deathsembrace.jpg)
 
-引爆目标身上的所有溃烂之伤，造成一次攻击伤害，并召唤一只邪恶石像鬼进入战场，其属性由溃烂之伤的数量决定。
+引爆目标身上的所有溃烂之伤，造成一次攻击伤害，并召唤一只具有100点生命值、10点攻击力、麻痹毒液攻击的邪恶石像鬼进入战场，每层溃烂之伤可以为石像鬼提供额外属性。
+
+- 1级 - 造成1.2倍的攻击伤害，每层溃烂之伤提供10点生命值和1点攻击力
+- 2级 - 造成1.8倍的攻击伤害，每层溃烂之伤提供17点生命值和2点攻击力
+- 3级 - 造成2.5倍的攻击伤害，每层溃烂之伤提供25点生命值和3点攻击力
+
+### 【邪恶石像鬼】麻痹毒液
+
+![icon_apocalypse](textures/spell_nature_nullifydisease.jpg)
+
+攻击使目标减速33%。
 
 ### 黑暗突变
 
@@ -60,23 +79,27 @@
 
 对一个食尸鬼施展，可以将其转化为一个拥有1800生命值的憎恶，并获得4个全新的强力技能。
 
-### 横扫爪击【被动】
+### 【憎恶】【被动】横扫爪击
 
 ![icon_ghoul_cleave](textures/spell_deathknight_thrash_ghoul.jpg)
 
 60%的顺劈斩。
 
-### 蛮兽打击
+### 【憎恶】蛮兽打击
+
+![icon_monstrous_blow](textures/spell_frost_stun.jpg)
 
 一次野蛮的攻击，对目标造成150点伤害并使其昏迷2秒。
 
-### 蹒跚冲锋
+### 【憎恶】蹒跚冲锋
 
 ![icon_shambling_rush](textures/spell_shadow_skull.jpg)
 
 向敌人冲锋，打断其正在施放的法术并使其不能移动，持续6秒。
 
-### 腐臭壁垒
+### 【憎恶】腐臭壁垒
+
+![icon_putrid_bulwark](textures/spell_shadow_raisedead.jpg)
 
 发出固守咆哮，受到的所有伤害降低50%，持续10秒。
 
