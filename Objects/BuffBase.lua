@@ -79,12 +79,14 @@ function cls:IncreaseStack(stacks)
         return
     end
     self.stack = self.stack + stacks
+    print("increase stack:", stacks, "new", self.stack, self.target)
     self:ResetDuration()
 end
 
 function cls:DecreaseStack(stacks)
     stacks = stacks or 1
     self.stack = self.stack - stacks
+    print("decrease stack:", stacks, "new", self.stack, self.target)
     if self.stack <= 0 then
         EventCenter.KillBuff:Emit(self)
     end

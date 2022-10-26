@@ -12,23 +12,37 @@ Abilities.DeathCoil = {
     Damage = { 100, 200, 300 },
     Wounds = { 3, 5, 7 },
     AmplificationPerStack = 0.05,
+    ProcPerStack = 0.05,
+    ManaCost = 100,
 }
 
---BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
---BlzSetAbilityResearchExtendedTooltip(Abilities.DeathCoil.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
---
---|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
---        Abilities.DeathCoil.Duration[1], Abilities.DeathCoil.DurationHero[1], math.round(Abilities.DeathCoil.PlagueLengthen[1] * 100),
---        Abilities.DeathCoil.Duration[2], Abilities.DeathCoil.DurationHero[2], math.round(Abilities.DeathCoil.PlagueLengthen[2] * 100),
---        Abilities.DeathCoil.Duration[3], Abilities.DeathCoil.DurationHero[3], math.round(Abilities.DeathCoil.PlagueLengthen[3] * 100)
---), 0)
---
---for i = 1, #Abilities.DeathCoil.Duration do
---    BlzSetAbilityTooltip(Abilities.DeathCoil.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
---    BlzSetAbilityExtendedTooltip(Abilities.DeathCoil.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.DeathCoil.Duration[i], Abilities.DeathCoil.DurationHero[i], math.round(Abilities.DeathCoil.PlagueLengthen[i] * 100)), i - 1)
---end
+BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡缠绕 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathCoil.ID, string.format([[释放邪恶的能量，对一个敌对目标造成点伤害，或者为一个友方亡灵目标恢复生命值。目标身上的每层溃烂之伤会为死亡缠绕增幅|cffff8c005%%|r。并叠加溃烂之伤。普通攻击时，目标身上的每层溃烂之伤提供|cffff8c00%s%%|r的几率立即冷却死亡缠绕并且不消耗法力值。
+
+|cff99ccff施法距离|r - 700
+|cff99ccff法力消耗|r - %s点
+|cff99ccff冷却时间|r - 8秒
+
+|cffffcc001级|r - 恢复|cffff8c00%s%%|r生命值，造成|cffff8c00%s|r点伤害，叠加|cffff8c00%s|r层溃烂之伤。
+|cffffcc002级|r - 恢复|cffff8c00%s%%|r生命值，造成|cffff8c00%s|r点伤害，叠加|cffff8c00%s|r层溃烂之伤。
+|cffffcc003级|r - 恢复|cffff8c00%s%%|r生命值，造成|cffff8c00%s|r点伤害，叠加|cffff8c00%s|r层溃烂之伤。]],
+        math.round(Abilities.DeathCoil.ProcPerStack * 100), Abilities.DeathCoil.ManaCost,
+        math.round(Abilities.DeathCoil.Heal[1] * 100), Abilities.DeathCoil.Damage[1], Abilities.DeathCoil.Wounds[1],
+        math.round(Abilities.DeathCoil.Heal[2] * 100), Abilities.DeathCoil.Damage[2], Abilities.DeathCoil.Wounds[2],
+        math.round(Abilities.DeathCoil.Heal[3] * 100), Abilities.DeathCoil.Damage[3], Abilities.DeathCoil.Wounds[3]
+), 0)
+
+for i = 1, #Abilities.DeathCoil.Heal do
+    BlzSetAbilityTooltip(Abilities.DeathCoil.ID, string.format("死亡缠绕 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathCoil.ID, string.format(
+            [[释放邪恶的能量，对一个敌对目标造成|cffff8c00%s|r点伤害，或者为一个友方亡灵目标恢复|cffff8c00%s%%|r生命值。目标身上的每层溃烂之伤会为死亡缠绕增幅|cffff8c005%%|r。并叠加|cffff8c00%s|r层溃烂之伤。普通攻击时，目标身上的每层溃烂之伤提供|cffff8c005%%|r的几率立即冷却死亡缠绕并且不消耗法力值。
+
+|cff99ccff施法距离|r - 700
+|cff99ccff法力消耗|r - 100点
+|cff99ccff冷却时间|r - 8秒]],
+            Abilities.DeathCoil.Damage[i], math.round(Abilities.DeathCoil.Heal[i] * 100), Abilities.DeathCoil.Wounds[i]),
+            i - 1)
+end
 
 --endregion
 
@@ -69,6 +83,38 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     end
 })
 
--- 普通攻击时，目标身上的每层溃烂之伤提供5%的几率立即冷却死亡缠绕并且不消耗法力值。
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = Abilities.DeathCoil.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local level = GetUnitAbilityLevel(data.caster, data.abilityId)
+        BlzSetUnitAbilityManaCost(data.caster, Abilities.DeathCoil.ID, level - 1, Abilities.DeathCoil.ManaCost)
+        IssueImmediateOrder(data.caster, "slowoff")
+    end
+})
+
+-- 普通攻击时，目标身上的每层溃烂之伤提供5%%的几率立即冷却死亡缠绕并且不消耗法力值。
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isAttack)
+    if not isAttack then
+        return
+    end
+
+    local level = GetUnitAbilityLevel(caster, Abilities.DeathCoil.ID)
+    if level <= 0 then
+        return
+    end
+
+    local debuff = BuffBase.FindBuffByClassName(target, FesteringWound.__cname)
+    if not debuff then
+        return
+    end
+
+    local chance = math.random() < debuff.stack * Abilities.DeathCoil.ProcPerStack
+    if chance then
+        BlzEndUnitAbilityCooldown(caster, Abilities.DeathCoil.ID)
+        BlzSetUnitAbilityManaCost(caster, Abilities.DeathCoil.ID, level - 1, 0)
+        IssueImmediateOrder(caster, "slowon")
+    end
+end)
 
 return cls

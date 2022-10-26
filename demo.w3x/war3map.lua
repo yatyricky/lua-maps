@@ -1,4 +1,4 @@
---lua-bundler:000099750
+--lua-bundler:000102429
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -284,23 +284,37 @@ Abilities.DeathCoil = {
     Damage = { 100, 200, 300 },
     Wounds = { 3, 5, 7 },
     AmplificationPerStack = 0.05,
+    ProcPerStack = 0.05,
+    ManaCost = 100,
 }
 
---BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
---BlzSetAbilityResearchExtendedTooltip(Abilities.DeathCoil.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
---
---|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
---        Abilities.DeathCoil.Duration[1], Abilities.DeathCoil.DurationHero[1], math.round(Abilities.DeathCoil.PlagueLengthen[1] * 100),
---        Abilities.DeathCoil.Duration[2], Abilities.DeathCoil.DurationHero[2], math.round(Abilities.DeathCoil.PlagueLengthen[2] * 100),
---        Abilities.DeathCoil.Duration[3], Abilities.DeathCoil.DurationHero[3], math.round(Abilities.DeathCoil.PlagueLengthen[3] * 100)
---), 0)
---
---for i = 1, #Abilities.DeathCoil.Duration do
---    BlzSetAbilityTooltip(Abilities.DeathCoil.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
---    BlzSetAbilityExtendedTooltip(Abilities.DeathCoil.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.DeathCoil.Duration[i], Abilities.DeathCoil.DurationHero[i], math.round(Abilities.DeathCoil.PlagueLengthen[i] * 100)), i - 1)
---end
+BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡缠绕 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.DeathCoil.ID, string.format([[释放邪恶的能量，对一个敌对目标造成点伤害，或者为一个友方亡灵目标恢复生命值。目标身上的每层溃烂之伤会为死亡缠绕增幅|cffff8c005%%|r。并叠加溃烂之伤。普通攻击时，目标身上的每层溃烂之伤提供|cffff8c00%s%%|r的几率立即冷却死亡缠绕并且不消耗法力值。
+
+|cff99ccff施法距离|r - 700
+|cff99ccff法力消耗|r - %s点
+|cff99ccff冷却时间|r - 8秒
+
+|cffffcc001级|r - 恢复|cffff8c00%s%%|r生命值，造成|cffff8c00%s|r点伤害，叠加|cffff8c00%s|r层溃烂之伤。
+|cffffcc002级|r - 恢复|cffff8c00%s%%|r生命值，造成|cffff8c00%s|r点伤害，叠加|cffff8c00%s|r层溃烂之伤。
+|cffffcc003级|r - 恢复|cffff8c00%s%%|r生命值，造成|cffff8c00%s|r点伤害，叠加|cffff8c00%s|r层溃烂之伤。]],
+        math.round(Abilities.DeathCoil.ProcPerStack * 100), Abilities.DeathCoil.ManaCost,
+        math.round(Abilities.DeathCoil.Heal[1] * 100), Abilities.DeathCoil.Damage[1], Abilities.DeathCoil.Wounds[1],
+        math.round(Abilities.DeathCoil.Heal[2] * 100), Abilities.DeathCoil.Damage[2], Abilities.DeathCoil.Wounds[2],
+        math.round(Abilities.DeathCoil.Heal[3] * 100), Abilities.DeathCoil.Damage[3], Abilities.DeathCoil.Wounds[3]
+), 0)
+
+for i = 1, #Abilities.DeathCoil.Heal do
+    BlzSetAbilityTooltip(Abilities.DeathCoil.ID, string.format("死亡缠绕 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.DeathCoil.ID, string.format(
+            [[释放邪恶的能量，对一个敌对目标造成|cffff8c00%s|r点伤害，或者为一个友方亡灵目标恢复|cffff8c00%s%%|r生命值。目标身上的每层溃烂之伤会为死亡缠绕增幅|cffff8c005%%|r。并叠加|cffff8c00%s|r层溃烂之伤。普通攻击时，目标身上的每层溃烂之伤提供|cffff8c005%%|r的几率立即冷却死亡缠绕并且不消耗法力值。
+
+|cff99ccff施法距离|r - 700
+|cff99ccff法力消耗|r - 100点
+|cff99ccff冷却时间|r - 8秒]],
+            Abilities.DeathCoil.Damage[i], math.round(Abilities.DeathCoil.Heal[i] * 100), Abilities.DeathCoil.Wounds[i]),
+            i - 1)
+end
 
 --endregion
 
@@ -341,7 +355,39 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     end
 })
 
--- 普通攻击时，目标身上的每层溃烂之伤提供5%的几率立即冷却死亡缠绕并且不消耗法力值。
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = Abilities.DeathCoil.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local level = GetUnitAbilityLevel(data.caster, data.abilityId)
+        BlzSetUnitAbilityManaCost(data.caster, Abilities.DeathCoil.ID, level - 1, Abilities.DeathCoil.ManaCost)
+        IssueImmediateOrder(data.caster, "slowoff")
+    end
+})
+
+-- 普通攻击时，目标身上的每层溃烂之伤提供5%%的几率立即冷却死亡缠绕并且不消耗法力值。
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isAttack)
+    if not isAttack then
+        return
+    end
+
+    local level = GetUnitAbilityLevel(caster, Abilities.DeathCoil.ID)
+    if level <= 0 then
+        return
+    end
+
+    local debuff = BuffBase.FindBuffByClassName(target, FesteringWound.__cname)
+    if not debuff then
+        return
+    end
+
+    local chance = math.random() < debuff.stack * Abilities.DeathCoil.ProcPerStack
+    if chance then
+        BlzEndUnitAbilityCooldown(caster, Abilities.DeathCoil.ID)
+        BlzSetUnitAbilityManaCost(caster, Abilities.DeathCoil.ID, level - 1, 0)
+        IssueImmediateOrder(caster, "slowon")
+    end
+end)
 
 return cls
 
@@ -728,15 +774,38 @@ local BuffBase = require("Objects.BuffBase")
 local Abilities = require("Config.Abilities")
 local Timer = require("Lib.Timer")
 
+--region meta
+
 Abilities.FesteringWound = {
-    ID = FourCC("xxxx"),
+    ID = FourCC("A00A"),
     Duration = 30,
     Damage = 15,
     Mana = 3,
 }
 
+BlzSetAbilityTooltip(Abilities.FesteringWound.ID, "溃烂之伤", 0)
+BlzSetAbilityExtendedTooltip(Abilities.FesteringWound.ID, string.format(
+        [[死亡骑士的普通攻击会导致目标身上的一层溃烂之伤爆发，造成|cffff8c00%s|r点额外伤害并为死亡骑士恢复|cffff8c00%s|r点法力值。
+
+|cff99ccff持续时间|r - %s秒]],
+        Abilities.FesteringWound.Damage, Abilities.FesteringWound.Mana, Abilities.FesteringWound.Duration),
+        0)
+
+--endregion
+
 ---@class FesteringWound : BuffBase
 local cls = class("FesteringWound", BuffBase)
+
+function cls:OnEnable()
+    print("apply:", self.stack, self.target)
+    self.sfx = AddSpecialEffectTarget("Abilities/Spells/Other/Parasite/ParasiteTarget.mdl", self.target, "overhead")
+    --BlzSetSpecialEffectColor(self.sfx, 255, 128, 0)
+end
+
+function cls:OnDisable()
+    print("removed", self.target)
+    DestroyEffect(self.sfx)
+end
 
 function cls:Burst(stacks)
     stacks = stacks or 1
@@ -750,6 +819,8 @@ function cls:Burst(stacks)
     local mana = Abilities.FesteringWound.Mana * stacks
     UnitDamageTarget(self.caster, self.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
     SetUnitState(self.caster, UNIT_STATE_MANA, GetUnitState(self.caster, UNIT_STATE_MANA) + mana)
+
+    ExAddSpecialEffectTarget("Abilities/Spells/Undead/ReplenishMana/ReplenishManaCaster.mdl", self.caster, "origin", 0.1)
 
     self:DecreaseStack(stacks)
 end
@@ -2528,12 +2599,14 @@ function cls:IncreaseStack(stacks)
         return
     end
     self.stack = self.stack + stacks
+    print("increase stack:", stacks, "new", self.stack, self.target)
     self:ResetDuration()
 end
 
 function cls:DecreaseStack(stacks)
     stacks = stacks or 1
     self.stack = self.stack - stacks
+    print("decrease stack:", stacks, "new", self.stack, self.target)
     if self.stack <= 0 then
         EventCenter.KillBuff:Emit(self)
     end
@@ -2920,12 +2993,12 @@ function cls:Awake()
     -- 邪DK
     require("Ability.FesteringWound")
     require("Ability.DeathCoil")
-    require("Ability.Defile")
-    require("Ability.Apocalypse")
-    require("Ability.DarkTransformation")
-    require("Ability.MonstrousBlow")
-    require("Ability.ShamblingRush")
-    require("Ability.PutridBulwark")
+    --require("Ability.Defile")
+    --require("Ability.Apocalypse")
+    --require("Ability.DarkTransformation")
+    --require("Ability.MonstrousBlow")
+    --require("Ability.ShamblingRush")
+    --require("Ability.PutridBulwark")
 end
 
 return cls
@@ -3300,110 +3373,106 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000099750
+--lua-bundler:000102429
 
 function InitGlobals()
 end
 
 function CreateAllItems()
-local itemID
-
-BlzCreateItemWithSkin(FourCC("rlif"), -883.4, -107.4, FourCC("rlif"))
+    local itemID
+    BlzCreateItemWithSkin(FourCC("rlif"), -883.4, -107.4, FourCC("rlif"))
 end
 
 function CreateUnitsForPlayer0()
-local p = Player(0)
-local u
-local unitID
-local t
-local life
-
-u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -1107.0, -243.8, 48.710, FourCC("Udea"))
-SetHeroLevel(u, 10, false)
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1225.0, 1133.3, 337.620, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1178.5, 1035.4, 79.038, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1146.8, 945.0, 66.030, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1130.9, 881.8, 124.600, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1126.4, 833.9, 30.587, FourCC("hmpr"))
+    local p = Player(0)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -1107.0, -243.8, 48.710, FourCC("Udea"))
+    SetHeroLevel(u, 10, false)
+    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1225.0, 1133.3, 337.620, FourCC("hmpr"))
+    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1178.5, 1035.4, 79.038, FourCC("hmpr"))
+    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1146.8, 945.0, 66.030, FourCC("hmpr"))
+    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1130.9, 881.8, 124.600, FourCC("hmpr"))
+    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1126.4, 833.9, 30.587, FourCC("hmpr"))
 end
 
 function CreateUnitsForPlayer1()
-local p = Player(1)
-local u
-local unitID
-local t
-local life
-
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 354.3, -394.1, 145.749, FourCC("ogru"))
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 192.5, -178.4, 9.306, FourCC("ogru"))
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 137.6, -459.0, 145.749, FourCC("ogru"))
+    local p = Player(1)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 354.3, -394.1, 145.749, FourCC("ogru"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 192.5, -178.4, 9.306, FourCC("ogru"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 137.6, -459.0, 145.749, FourCC("ogru"))
 end
 
 function CreateNeutralPassiveBuildings()
-local p = Player(PLAYER_NEUTRAL_PASSIVE)
-local u
-local unitID
-local t
-local life
-
-u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -2560.0, 320.0, 270.000, FourCC("ngol"))
-SetResourceAmount(u, 12500)
-u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 2880.0, 640.0, 270.000, FourCC("ngol"))
-SetResourceAmount(u, 12500)
-u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -192.0, 2368.0, 270.000, FourCC("ngol"))
-SetResourceAmount(u, 12500)
-u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 512.0, -3264.0, 270.000, FourCC("ngol"))
-SetResourceAmount(u, 12500)
+    local p = Player(PLAYER_NEUTRAL_PASSIVE)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -2560.0, 320.0, 270.000, FourCC("ngol"))
+    SetResourceAmount(u, 12500)
+    u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 2880.0, 640.0, 270.000, FourCC("ngol"))
+    SetResourceAmount(u, 12500)
+    u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -192.0, 2368.0, 270.000, FourCC("ngol"))
+    SetResourceAmount(u, 12500)
+    u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 512.0, -3264.0, 270.000, FourCC("ngol"))
+    SetResourceAmount(u, 12500)
 end
 
 function CreatePlayerBuildings()
 end
 
 function CreatePlayerUnits()
-CreateUnitsForPlayer0()
-CreateUnitsForPlayer1()
+    CreateUnitsForPlayer0()
+    CreateUnitsForPlayer1()
 end
 
 function CreateAllUnits()
-CreateNeutralPassiveBuildings()
-CreatePlayerBuildings()
-CreatePlayerUnits()
+    CreateNeutralPassiveBuildings()
+    CreatePlayerBuildings()
+    CreatePlayerUnits()
 end
 
 function InitCustomPlayerSlots()
-SetPlayerStartLocation(Player(0), 0)
-SetPlayerColor(Player(0), ConvertPlayerColor(0))
-SetPlayerRacePreference(Player(0), RACE_PREF_HUMAN)
-SetPlayerRaceSelectable(Player(0), true)
-SetPlayerController(Player(0), MAP_CONTROL_USER)
-SetPlayerStartLocation(Player(1), 1)
-SetPlayerColor(Player(1), ConvertPlayerColor(1))
-SetPlayerRacePreference(Player(1), RACE_PREF_ORC)
-SetPlayerRaceSelectable(Player(1), true)
-SetPlayerController(Player(1), MAP_CONTROL_COMPUTER)
+    SetPlayerStartLocation(Player(0), 0)
+    SetPlayerColor(Player(0), ConvertPlayerColor(0))
+    SetPlayerRacePreference(Player(0), RACE_PREF_HUMAN)
+    SetPlayerRaceSelectable(Player(0), true)
+    SetPlayerController(Player(0), MAP_CONTROL_USER)
+    SetPlayerStartLocation(Player(1), 1)
+    SetPlayerColor(Player(1), ConvertPlayerColor(1))
+    SetPlayerRacePreference(Player(1), RACE_PREF_ORC)
+    SetPlayerRaceSelectable(Player(1), true)
+    SetPlayerController(Player(1), MAP_CONTROL_COMPUTER)
 end
 
 function InitCustomTeams()
-SetPlayerTeam(Player(0), 0)
-SetPlayerTeam(Player(1), 1)
+    SetPlayerTeam(Player(0), 0)
+    SetPlayerTeam(Player(1), 1)
 end
 
 function InitAllyPriorities()
-SetStartLocPrioCount(1, 2)
-SetStartLocPrio(1, 0, 0, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(1, 2)
+    SetStartLocPrio(1, 0, 0, MAP_LOC_PRIO_HIGH)
 end
 
 function main()
-SetCameraBounds(-3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
-SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
-NewSoundEnvironment("Default")
-SetAmbientDaySound("LordaeronSummerDay")
-SetAmbientNightSound("LordaeronSummerNight")
-SetMapMusic("Music", true, 0)
-CreateAllItems()
-CreateAllUnits()
-InitBlizzard()
-InitGlobals()
+    SetCameraBounds(-3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+    SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
+    NewSoundEnvironment("Default")
+    SetAmbientDaySound("LordaeronSummerDay")
+    SetAmbientNightSound("LordaeronSummerNight")
+    SetMapMusic("Music", true, 0)
+    CreateAllItems()
+    CreateAllUnits()
+    InitBlizzard()
+    InitGlobals()
 local s, m = pcall(RunBundle)
 if not s then
     print(m)
@@ -3411,15 +3480,15 @@ end
 end
 
 function config()
-SetMapName("TRIGSTR_001")
-SetMapDescription("TRIGSTR_003")
-SetPlayers(2)
-SetTeams(2)
-SetGamePlacement(MAP_PLACEMENT_USE_MAP_SETTINGS)
-DefineStartLocation(0, -1984.0, -128.0)
-DefineStartLocation(1, 2368.0, 320.0)
-InitCustomPlayerSlots()
-InitCustomTeams()
-InitAllyPriorities()
+    SetMapName("TRIGSTR_001")
+    SetMapDescription("TRIGSTR_003")
+    SetPlayers(2)
+    SetTeams(2)
+    SetGamePlacement(MAP_PLACEMENT_USE_MAP_SETTINGS)
+    DefineStartLocation(0, -1984.0, -128.0)
+    DefineStartLocation(1, 2368.0, 320.0)
+    InitCustomPlayerSlots()
+    InitCustomTeams()
+    InitAllyPriorities()
 end
 
