@@ -20,6 +20,7 @@ local systems = {
     require("System.DamageSystem").new(),
     --require("System.AbilityEditorSystem").new(),
     require("System.ProjectileSystem").new(),
+    --require("System.MoverSystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
 }

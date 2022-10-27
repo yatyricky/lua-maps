@@ -1,4 +1,4 @@
---lua-bundler:000104963
+--lua-bundler:000116176
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -24,17 +24,18 @@ __modules["Ability.Apocalypse"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local BuffBase = require("Objects.BuffBase")
-local ProjectileBase = require("Objects.ProjectileBase")
 local FesteringWound = require("Ability.FesteringWound")
 local UnitAttribute = require("Objects.UnitAttribute")
+local Vector2 = require("Lib.Vector2")
 
 --region meta
 
 Abilities.Apocalypse = {
-    ID = FourCC("A007"),
+    ID = FourCC("A011"),
     AtkMultiplier = { 1.2, 1.8, 2.5 },
     ExtraHpPerStack = { 30, 40, 50 },
     ExtraAtkPerStack = { 1, 2, 3 },
+    GargoyleID = FourCC("u001"),
 }
 
 BlzSetAbilityResearchTooltip(Abilities.Apocalypse.ID, "学习天启 - [|cffffcc00%d级|r]", 0)
@@ -46,14 +47,17 @@ BlzSetAbilityResearchExtendedTooltip(Abilities.Apocalypse.ID, string.format([[�
 |cffffcc001级|r - 造成|cffff8c00%s|r倍的基础攻击伤害，每层溃烂之伤提供|cffff8c00%s|r点生命值和|cffff8c00%s|r点攻击力。
 |cffffcc002级|r - 造成|cffff8c00%s|r倍的基础攻击伤害，每层溃烂之伤提供|cffff8c00%s|r点生命值和|cffff8c00%s|r点攻击力。
 |cffffcc003级|r - 造成|cffff8c00%s|r倍的基础攻击伤害，每层溃烂之伤提供|cffff8c00%s|r点生命值和|cffff8c00%s|r点攻击力。]],
-        Abilities.Apocalypse.AtkMultiplier[1], Abilities.Apocalypse.ExtraHpPerStack[1], math.round(Abilities.Apocalypse.ExtraAtkPerStack[1] * 100),
-        Abilities.Apocalypse.AtkMultiplier[2], Abilities.Apocalypse.ExtraHpPerStack[2], math.round(Abilities.Apocalypse.ExtraAtkPerStack[2] * 100),
-        Abilities.Apocalypse.AtkMultiplier[3], Abilities.Apocalypse.ExtraHpPerStack[3], math.round(Abilities.Apocalypse.ExtraAtkPerStack[3] * 100)
+        Abilities.Apocalypse.AtkMultiplier[1], Abilities.Apocalypse.ExtraHpPerStack[1], Abilities.Apocalypse.ExtraAtkPerStack[1],
+        Abilities.Apocalypse.AtkMultiplier[2], Abilities.Apocalypse.ExtraHpPerStack[2], Abilities.Apocalypse.ExtraAtkPerStack[2],
+        Abilities.Apocalypse.AtkMultiplier[3], Abilities.Apocalypse.ExtraHpPerStack[3], Abilities.Apocalypse.ExtraAtkPerStack[3]
 ), 0)
 
-for i = 1, #Abilities.Apocalypse.Duration do
-    BlzSetAbilityTooltip(Abilities.Apocalypse.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
-    BlzSetAbilityExtendedTooltip(Abilities.Apocalypse.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.Apocalypse.Duration[i], Abilities.Apocalypse.DurationHero[i], math.round(Abilities.Apocalypse.PlagueLengthen[i] * 100)), i - 1)
+for i = 1, #Abilities.Apocalypse.AtkMultiplier do
+    BlzSetAbilityTooltip(Abilities.Apocalypse.ID, string.format("天启 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.Apocalypse.ID, string.format([[引爆目标身上的所有溃烂之伤，造成一次|cffff8c00%s|r倍的攻击伤害，并召唤|cffff8c00一只永久|r的具有|cffff8c00100|r点生命值、|cffff8c0010|r点攻击力、|cffff8c00麻痹毒液|r攻击的邪恶石像鬼进入战场，每层溃烂之伤可以为石像鬼提供额外|cffff8c00%s|r点生命值和|cffff8c00%s|r点攻击力。
+
+|cff99ccff法力消耗|r - 600点
+|cff99ccff冷却时间|r - 20秒]], Abilities.Apocalypse.AtkMultiplier[i], Abilities.Apocalypse.ExtraHpPerStack[i], Abilities.Apocalypse.ExtraAtkPerStack[i]), i - 1)
 end
 
 --endregion
@@ -64,19 +68,64 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.Apocalypse.ID,
     ---@param data ISpellData
     handler = function(data)
+        -- festering wound burst
+        local debuff = BuffBase.FindBuffByClassName(data.target, FesteringWound.__cname)
+        local count = 0
+        if debuff then
+            count = debuff.stack
+            debuff:Burst(count)
+        end
+
         local level = GetUnitAbilityLevel(data.caster, Abilities.Apocalypse.ID)
         local attr = UnitAttribute.GetAttr(data.caster)
-        local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * Abilities.Apocalypse.AtkMultiplier[level]
-        UnitDamageTarget(data.caster, data.target, damage, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_METAL_HEAVY_SLICE)
+        if not ExIsUnitDead(data.target) then
+            local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * Abilities.Apocalypse.AtkMultiplier[level]
+            UnitDamageTarget(data.caster, data.target, damage, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_METAL_HEAVY_SLICE)
+            ExTextCriticalStrike(data.target, damage)
+        end
 
-        local count = 0
-        -- festering wound burst
-
-        local summoned = CreateUnit(GetOwningPlayer(data.caster), FourCC("ugar"), backx, backy, GetUnitFacing(data.caster))
+        local v1 = Vector2.FromUnit(data.caster)
+        local v2 = Vector2.FromUnit(data.target)
+        local dir = (v2 - v1):SetNormalize()
+        v1:Sub(dir * 600)
+        local summoned = CreateUnit(GetOwningPlayer(data.caster), Abilities.Apocalypse.GargoyleID, v1.x, v1.y, GetUnitFacing(data.caster))
         local summonedAttr = UnitAttribute.GetAttr(summoned)
         summonedAttr.hp = summonedAttr.hp + count * Abilities.Apocalypse.ExtraHpPerStack[level]
         summonedAttr.atk = summonedAttr.atk + count * Abilities.Apocalypse.ExtraAtkPerStack[level]
         summonedAttr:Commit()
+
+        local sfx = AddSpecialEffectTarget("Abilities/Spells/Other/BreathOfFire/BreathOfFireDamage.mdl", summoned, "origin")
+        local sfx2 = AddSpecialEffectTarget("Objects/Spawnmodels/Undead/ImpaleTargetDust/ImpaleTargetDust.mdl", summoned, "origin")
+        BlzSetSpecialEffectColor(sfx, 128, 255, 96)
+
+        -- move gargoyle
+        local targetHeight = GetUnitDefaultFlyHeight(summoned)
+        local currentHeight = 600
+        SetUnitFlyHeight(summoned, targetHeight + currentHeight, 0)
+
+        SetUnitPathing(summoned, false)
+        PauseUnit(summoned, true)
+        local velocity = (v2 - v1):SetNormalize():Mul(600 * Time.Delta)
+        coroutine.start(function()
+            while true do
+                currentHeight = currentHeight * 0.8
+                SetUnitFlyHeight(summoned, currentHeight + targetHeight, 0)
+                v1:Add(velocity)
+                v1:UnitMoveTo(summoned)
+                if (v2 - v1):GetMagnitude() < 96 then
+                    break
+                end
+                coroutine.step()
+            end
+            SetUnitPathing(summoned, true)
+            PauseUnit(summoned, false)
+            SetUnitFlyHeight(summoned, targetHeight, 0)
+            ExAddSpecialEffect("Objects/Spawnmodels/Undead/ImpaleTargetDust/ImpaleTargetDust.mdl", v2.x, v2.y, 2)
+            ExAddSpecialEffect("Abilities/Spells/Orc/EarthQuake/EarthQuakeTarget.mdl", v2.x, v2.y, 2)
+
+            DestroyEffect(sfx)
+            DestroyEffect(sfx2)
+        end)
     end
 })
 
@@ -278,6 +327,7 @@ local Abilities = require("Config.Abilities")
 local BuffBase = require("Objects.BuffBase")
 local ProjectileBase = require("Objects.ProjectileBase")
 local FesteringWound = require("Ability.FesteringWound")
+local Const = require("Config.Const")
 
 --region meta
 
@@ -389,7 +439,7 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
         BlzEndUnitAbilityCooldown(caster, Abilities.DeathCoil.ID)
         BlzSetUnitAbilityManaCost(caster, Abilities.DeathCoil.ID, level - 1, 0)
         IssueImmediateOrder(caster, "webon")
-        IssueTargetOrder(caster, "attack", target)
+        IssueTargetOrderById(caster, Const.OrderId_Attack, target)
     end
 end)
 
@@ -612,7 +662,6 @@ __modules["Ability.Defile"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local BuffBase = require("Objects.BuffBase")
-local ProjectileBase = require("Objects.ProjectileBase")
 local FesteringWound = require("Ability.FesteringWound")
 local Timer = require("Lib.Timer")
 local Circle = require("Lib.Circle")
@@ -666,53 +715,16 @@ local cls = class("Defile")
 
 cls.instances = {}
 
--- test
--- 32 ~ 0.3  416/4.5
---local ringR = 256
---local cacheRing = {}
---local function renderRing()
---    for i, v in ipairs(cacheRing) do
---        DestroyEffect(v)
---    end
---
---    cacheRing = {}
---    for i = 1, 36 do
---        local x = math.cos(i * 10 * bj_DEGTORAD) * ringR
---        local y = math.sin(i * 10 * bj_DEGTORAD) * ringR
---        local eff = AddSpecialEffect("Doodads/Cinematic/GlowingRunes/GlowingRunes2.mdl", x, y)
---        table.insert(cacheRing, eff)
---    end
---end
---renderRing()
---
---local scale = 3
---local aura = AddSpecialEffect("Abilities/Spells/Undead/UnholyAura/UnholyAura.mdl", 0, 0)
---
---local trigger = CreateTrigger()
---TriggerRegisterPlayerChatEvent(trigger, Player(0), "", false)
---ExTriggerAddAction(trigger, function()
---    local msg = GetEventPlayerChatString()
---    if msg == "q" then
---        ringR = ringR - 32
---        print("Ring radius is ", ringR)
---        renderRing()
---    elseif msg == "w" then
---        ringR = ringR + 32
---        print("Ring radius is ", ringR)
---        renderRing()
---    elseif msg == "a" then
---        scale = scale - 0.3
---        print("Aura scale is ", scale)
---        BlzSetSpecialEffectScale(aura, scale)
---    elseif msg == "s" then
---        scale = scale + 0.3
---        print("Aura scale is ", scale)
---        BlzSetSpecialEffectScale(aura, scale)
---    end
---end)
-
-local function radius2scale(r)
-    return (r - 256) / 32 * 0.3 + 3
+---@param c Circle
+local function drawRing(c)
+    local tm = Timer.new(function()
+        for i = 1, 36 do
+            local x = math.cos(i * 10 * bj_DEGTORAD) * c.r + c.center.x
+            local y = math.sin(i * 10 * bj_DEGTORAD) * c.r + c.center.y
+            ExAddSpecialEffect("Abilities/Spells/Undead/DeathandDecay/DeathandDecayTarget.mdl", x, y, 0.5)
+        end
+    end, 0.5, 2)
+    tm:Start()
 end
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
@@ -720,15 +732,13 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     ---@param data ISpellData
     handler = function(data)
         local circle = Circle.new(Vector2.new(data.x, data.y), Abilities.Defile.AOE)
-        print("caster is", data.caster)
         local tab = table.getOrCreateTable(cls.instances, data.caster)
         table.insert(tab, circle)
         local casterPlayer = GetOwningPlayer(data.caster)
         local level = GetUnitAbilityLevel(data.caster, Abilities.Defile.ID)
         local bonus = 0
 
-        local aura = AddSpecialEffect("Abilities/Spells/Undead/UnholyAura/UnholyAura.mdl", circle.center.x, circle.center.y)
-        BlzSetSpecialEffectScale(aura, radius2scale(circle.r))
+        drawRing(circle)
         local timer = Timer.new(function()
             local hasAnyUnit = false
             ExGroupEnumUnitsInRange(data.x, data.y, circle.r, function(e)
@@ -744,7 +754,6 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
                     -- 造成伤害
                     local damage = Abilities.Defile.Damage[level] * (1 + bonus)
-                    print("defile did damage", damage)
                     UnitDamageTarget(data.caster, e, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
                 end
             end)
@@ -757,27 +766,22 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 bonus = bonus + Abilities.Defile.DamageGrowth
             end
 
-            --circle = circle:Clone()
             circle.r = newR
-            --table.insert(tab, circle)
-            BlzSetSpecialEffectScale(aura, radius2scale(circle.r))
+            drawRing(circle)
         end, Abilities.Defile.Interval, Abilities.Defile.Duration)
         timer:Start()
 
         timer.onStop = function()
             -- 移除黑水效果
-            for i, v in ipairs(tab) do
+            for i, _ in ipairs(tab) do
                 tab[i] = nil
-                --cls.RestoreTerrain(v)
             end
-            BlzSetSpecialEffectColor(aura, 0, 0, 0)
-            DestroyEffect(aura)
         end
     end
 })
 
 -- 当你站在自己的亵渎范围内时，你的普通攻击会击中目标附近的其他敌人
-EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, weaponType, damageType, isAttack)
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _, isAttack)
     if not isAttack then
         return
     end
@@ -834,7 +838,6 @@ __modules["Ability.FesteringWound"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local BuffBase = require("Objects.BuffBase")
 local Abilities = require("Config.Abilities")
-local Timer = require("Lib.Timer")
 
 --region meta
 
@@ -860,13 +863,11 @@ BlzSetAbilityExtendedTooltip(Abilities.FesteringWound.ID, string.format(
 local cls = class("FesteringWound", BuffBase)
 
 function cls:OnEnable()
-    print("apply:", self.stack, self.target)
     self.sfx = AddSpecialEffectTarget("Abilities/Spells/Other/Parasite/ParasiteTarget.mdl", self.target, "overhead")
     --BlzSetSpecialEffectColor(self.sfx, 255, 128, 0)
 end
 
 function cls:OnDisable()
-    print("removed", self.target)
     DestroyEffect(self.sfx)
 end
 
@@ -1848,6 +1849,7 @@ end}
 
 __modules["Lib.native"]={loader=function()
 require("Lib.TableExt")
+require("Lib.MathExt")
 local Time = require("Lib.Time")
 
 local ipairs = ipairs
@@ -2065,6 +2067,19 @@ function GetStackTrace(oneline_yn)
         i = i + 1
     end
     return "Traceback (most recent call last)" .. trace
+end
+
+function ExTextCriticalStrike(whichUnit, dmg)
+    local tt = CreateTextTag()
+    local text = tostring(math.round(dmg)) .. "!"
+    SetTextTagText(tt, text, 0.017)
+    SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
+    SetTextTagColor(tt, 255, 0, 0, 255)
+    SetTextTagVelocity(tt, 0.0, 0.04)
+    SetTextTagVisibility(tt, true)
+    SetTextTagFadepoint(tt, 2.0)
+    SetTextTagLifespan(tt, 5.0)
+    SetTextTagPermanent(tt, false)
 end
 
 end}
@@ -2535,6 +2550,271 @@ return cls
 
 end}
 
+__modules["Lib.Vector3"]={loader=function()
+local Utils = require("Lib.Utils")
+
+local setmetatable = setmetatable
+local type = type
+local rawget = rawget
+local m_sqrt = math.sqrt
+
+local GetUnitX = GetUnitX
+local GetUnitY = GetUnitY
+
+---@class Vector3
+local cls = {}
+
+cls._loc = Location(0, 0)
+
+local function getTerrainZ(x, y)
+    MoveLocation(cls._loc, x, y)
+    return GetLocationZ(cls._loc)
+end
+
+---@return Vector3
+function cls.new(x, y, z)
+    x = x or 0
+    y = y or 0
+    return setmetatable({
+        x = x,
+        y = y,
+        z = z or getTerrainZ(x, y),
+    }, cls)
+end
+
+local new = cls.new
+
+---@param unit unit
+function cls.FromUnit(unit)
+    local x = GetUnitX(unit)
+    local y = GetUnitY(unit)
+    return new(x, y, getTerrainZ(x, y) + GetUnitFlyHeight(unit))
+end
+
+--function cls.InsideUnitCircle()
+--    local angle = math.random() * math.pi * 2
+--    return new(math.cos(angle), math.sin(angle))
+--end
+
+---@param unit unit
+function cls:MoveToUnit(unit)
+    self.x = GetUnitX(unit)
+    self.y = GetUnitY(unit)
+    self.z = getTerrainZ(self.x, self.y) + GetUnitFlyHeight(unit)
+    return self
+end
+
+---@param unit unit
+---@param mode integer modes. 1: force flying. 2: force to ground. other|Nil: flying units fly/ ground units grounded
+function cls:UnitMoveTo(unit, mode)
+    local tz = getTerrainZ(self.x, self.y)
+    local defaultFlyHeight = GetUnitDefaultFlyHeight(unit)
+    local minZ = tz + defaultFlyHeight
+    SetUnitPosition(unit, self.x, self.y)
+    if mode == 1 then
+        Utils.SetUnitFlyable(unit)
+        SetUnitFlyHeight(unit, math.max(minZ, self.z) - minZ, 0)
+    elseif mode == 2 then
+        SetUnitFlyHeight(unit, defaultFlyHeight, 0)
+    else
+        if IsUnitType(unit, UNIT_TYPE_FLYING) then
+            SetUnitFlyHeight(unit, math.max(minZ, self.z) - minZ, 0)
+        else
+            SetUnitFlyHeight(unit, defaultFlyHeight, 0)
+        end
+    end
+    return self
+end
+
+---@param other Vector3
+function cls:SetTo(other)
+    self.x = other.x
+    self.y = other.y
+    self.z = other.z
+    return
+end
+
+---@param other Vector3
+function cls:Add(other)
+    self.x = self.x + other.x
+    self.y = self.y + other.y
+    self.z = self.z + other.z
+    return self
+end
+
+---@param other Vector3
+function cls:Sub(other)
+    self.x = self.x - other.x
+    self.y = self.y - other.y
+    self.z = self.z - other.z
+    return self
+end
+
+---@param d real
+function cls:Div(d)
+    self.x = self.x / d
+    self.y = self.y / d
+    self.z = self.z / d
+    return self
+end
+
+---@param d real
+function cls:Mul(d)
+    self.x = self.x * d
+    self.y = self.y * d
+    self.z = self.z * d
+    return self
+end
+
+function cls:SetNormalize()
+    local magnitude = self:GetMagnitude()
+
+    if magnitude > 1e-05 then
+        self:Div(magnitude)
+    else
+        self.x = 0
+        self.y = 0
+        self.z = 0
+    end
+
+    return self
+end
+
+function cls:SetMagnitude(len)
+    self:SetNormalize():Mul(len)
+    return self
+end
+
+function cls:Clone()
+    return new(self.x, self.y, self.z)
+end
+
+function cls:GetTerrainZ()
+    return getTerrainZ(self.x, self.y)
+end
+
+function cls:GetMagnitude()
+    return m_sqrt(self:SqrMagnitude())
+end
+
+function cls:SqrMagnitude()
+    return self.x * self.x + self.y * self.y + self.z * self.z
+end
+
+function cls.Dot(lhs, rhs)
+    return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z
+end
+
+function cls.Scale(a, b)
+    local x = a.x * b.x
+    local y = a.y * b.y
+    local z = a.z * b.z
+    return new(x, y, z)
+end
+
+function cls.Cross(lhs, rhs)
+    local x = lhs.y * rhs.z - lhs.z * rhs.y
+    local y = lhs.z * rhs.x - lhs.x * rhs.z
+    local z = lhs.x * rhs.y - lhs.y * rhs.x
+    return new(x, y, z)
+end
+
+function cls.Project(v, onNormal)
+    local num = onNormal:SqrMagnitude()
+
+    if num < 0.0001 then
+        return new(0, 0, 0)
+    end
+
+    local num2 = cls.Dot(v, onNormal)
+    local v3 = onNormal:Clone()
+    v3:Mul(num2 / num)
+    return v3
+end
+
+function cls.ProjectOnPlane(v, planeNormal)
+    local v3 = cls.Project(v, planeNormal)
+    v3:Mul(-1)
+    v3:Add(v)
+    return v3
+end
+
+---@return string
+function cls:tostring()
+    return string.format("(%f,%f,%f)", self.x, self.y, self.z)
+end
+
+function cls.__index(_, k)
+    return rawget(cls, k)
+end
+
+function cls.__add(a, b)
+    return new(a.x + b.x, a.y + b.y, a.z + b.z)
+end
+
+---@return Vector3
+function cls.__sub(a, b)
+    return new(a.x - b.x, a.y - b.y, a.z - b.z)
+end
+
+function cls.__div(v, d)
+    return new(v.x / d, v.y / d, v.y / d)
+end
+
+function cls.__mul(a, d)
+    if type(d) == "number" then
+        return new(a.x * d, a.y * d, a.z * d)
+    else
+        return a:Clone():MulQuaternion(d)
+    end
+end
+
+function cls.__unm(v)
+    return new(-v.x, -v.y, -v.z)
+end
+
+function cls.__eq(a, b)
+    return ((a.x - b.x) ^ 2 + (a.y - b.y) ^ 2 + (a.z - b.z) ^ 2) < 9.999999e-11
+end
+
+function cls.up()
+    return new(0, 0, 1)
+end
+
+function cls.down()
+    return new(0, 0, -1)
+end
+
+function cls.right()
+    return new(1, 0, 0)
+end
+
+function cls.left()
+    return new(-1, 0, 0)
+end
+
+function cls.forward()
+    return new(0, 1, 0)
+end
+
+function cls.back()
+    return new(0, -1, 0)
+end
+
+function cls.zero()
+    return new(0, 0, 0)
+end
+
+function cls.one()
+    return new(1, 1, 1)
+end
+
+setmetatable(cls, cls)
+
+return cls
+
+end}
+
 __modules["Main"]={loader=function()
 local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
@@ -2558,6 +2838,7 @@ local systems = {
     require("System.DamageSystem").new(),
     --require("System.AbilityEditorSystem").new(),
     require("System.ProjectileSystem").new(),
+    --require("System.MoverSystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
 }
@@ -2640,7 +2921,7 @@ end
 function cls:OnDestroy()
     local unitTab = cls.unitBuffs[self.target]
     if not table.removeItem(unitTab, self) then
-        print("Remove buff unit failed")
+        --print("Remove buff unit failed") todo 我看不到报错就没有错误
     end
 end
 
@@ -2664,16 +2945,144 @@ function cls:IncreaseStack(stacks)
         return
     end
     self.stack = self.stack + stacks
-    print("increase stack:", stacks, "new", self.stack, self.target)
     self:ResetDuration()
 end
 
 function cls:DecreaseStack(stacks)
     stacks = stacks or 1
     self.stack = self.stack - stacks
-    print("decrease stack:", stacks, "new", self.stack, self.target)
     if self.stack <= 0 then
         EventCenter.KillBuff:Emit(self)
+    end
+end
+
+return cls
+
+end}
+
+__modules["Objects.Mover"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Vector3 = require("Lib.Vector3")
+
+---@class Mover
+local cls = class("Mover")
+
+cls.AttachType = {
+    None = 0,
+    Unit = 1,
+    Effect = 2,
+}
+
+cls.DestinationType = {
+    None = 0,
+    Point = 1,
+    Unit = 2,
+}
+
+cls.unitInstMap = {} ---@type table<unit, Mover>
+cls.effectInstMap = {} ---@type table<effect, Mover>
+
+---@param inst Mover
+function cls.LinearMoveBehaviour(inst, dt)
+    local dest = inst:GetTargetPos()
+    local norm = (dest - inst.pos):SetNormalize()
+    local dir = norm * ((inst.speed or 600) * dt)
+    inst.pos:Add(dir)
+
+    if inst.attachType == cls.AttachType.Effect then
+        BlzSetSpecialEffectPosition(inst.effect, inst.pos.x, inst.pos.y, inst.pos.z)
+        local p = Vector3.ProjectOnPlane(norm, Vector3.up()):SetNormalize()
+        BlzSetSpecialEffectYaw(inst.effect, math.atan2(p.y, p.x)) -- todo use quaternion
+    elseif inst.attachType == cls.AttachType.Unit then
+        inst.pos:UnitMoveTo(inst.unit)
+        local p = Vector3.ProjectOnPlane(norm, Vector3.up()):SetNormalize()
+        SetUnitFacing(inst.unit, (math.atan2(p.y, p.x)) * bj_RADTODEG)
+    end
+
+    return dest:Sub(inst.pos):GetMagnitude()
+end
+
+function cls.GetOrCreateFromUnit(unit, onArrived, moveBehaviour)
+    local inst = cls.unitInstMap[unit]
+    if inst then
+        inst.onArrived = onArrived
+        inst.moveBehaviour = moveBehaviour or cls.LinearMoveBehaviour
+        return inst
+    end
+
+    inst = cls.new(onArrived, moveBehaviour)
+    inst:InitAttachUnit(unit)
+    return inst
+end
+
+function cls.GetOrCreateFromEffect(effect, onArrived, moveBehaviour, x, y, z)
+    local inst = cls.effectInstMap[effect]
+    if inst then
+        inst.onArrived = onArrived
+        inst.moveBehaviour = moveBehaviour or cls.LinearMoveBehaviour
+        return inst
+    end
+
+    inst = cls.new(onArrived, moveBehaviour)
+    inst:InitAttachEffect(effect, x, y, z)
+    return inst
+end
+
+function cls:ctor(onArrived, moveBehaviour)
+    self.moveBehaviour = moveBehaviour or cls.LinearMoveBehaviour
+    self.attachType = cls.AttachType.None
+    self.destType = cls.DestinationType.None
+    self.onArrived = onArrived
+    EventCenter.NewMover:Emit(self)
+end
+
+function cls:InitAttachUnit(unit)
+    self.pos = Vector3.FromUnit(unit)
+    self.attachType = cls.AttachType.Unit
+    self.unit = unit
+    cls.unitInstMap[unit] = self
+    return self
+end
+
+function cls:InitAttachEffect(effect, x, y, z)
+    self.pos = Vector3.new(x, y, z)
+    self.attachType = cls.AttachType.Effect
+    self.effect = effect
+    return self
+end
+
+---@param vec3 Vector3
+function cls:InitDestinationPoint(vec3)
+    self.destType = cls.DestinationType.Point
+    self.targetPoint = vec3
+    return self
+end
+
+function cls:InitDestinationUnit(unit)
+    self.destType = cls.DestinationType.Unit
+    self.targetUnit = unit
+    return self
+end
+
+function cls:GetTargetPos()
+    if self.destType == cls.DestinationType.Unit then
+        return Vector3.FromUnit(self.targetUnit)
+    elseif self.destType == cls.DestinationType.Point then
+        return self.targetPoint:Clone()
+    else
+        return Vector3.zero()
+    end
+end
+
+function cls:CheckArrived(distance)
+    if self.attachType == cls.AttachType.Effect then
+        return distance < 1
+    elseif self.attachType == cls.AttachType.Unit then
+        return distance < 96
+    elseif self.attachType == cls.AttachType.None then
+        return true
+    else
+        return true
     end
 end
 
@@ -3059,7 +3468,7 @@ function cls:Awake()
     require("Ability.FesteringWound")
     require("Ability.DeathCoil")
     require("Ability.Defile")
-    --require("Ability.Apocalypse")
+    require("Ability.Apocalypse")
     --require("Ability.DarkTransformation")
     --require("Ability.MonstrousBlow")
     --require("Ability.ShamblingRush")
@@ -3175,6 +3584,58 @@ function cls:ctor()
     MeleeStartingUnits()
     MeleeStartingAI()
     MeleeInitVictoryDefeat()
+end
+
+return cls
+
+end}
+
+__modules["System.MoverSystem"]={loader=function()
+local Event = require("Lib.Event")
+local EventCenter = require("Lib.EventCenter")
+local SystemBase = require("System.SystemBase")
+local Vector2 = require("Lib.Vector2")
+local Mover = require("Objects.Mover")
+
+EventCenter.NewMover = Event.new()
+
+---@class MoverSystem : SystemBase
+local cls = class("MoverSystem", SystemBase)
+
+function cls:ctor()
+    self.instances = {} ---@type Mover[]
+end
+
+function cls:Awake()
+    EventCenter.NewMover:On(self, cls.onNewMover)
+end
+
+function cls:Update(dt)
+    local toRemove = {}
+    for idx, inst in ipairs(self.instances) do
+        local dist = inst.moveBehaviour(inst, dt)
+        if inst:CheckArrived(dist) then
+            if inst.onArrived then
+                inst.onArrived()
+            end
+            table.insert(toRemove, idx)
+        end
+    end
+
+    for i = #toRemove, 1, -1 do
+        table.remove(self.instances, toRemove[i])
+    end
+end
+
+---@param inst Mover
+function cls:onNewMover(inst)
+    if inst.destType == Mover.DestinationType.None then
+        if inst.onArrived then
+            inst.onArrived()
+        end
+    else
+        table.insert(self.instances, inst)
+    end
 end
 
 return cls
@@ -3438,7 +3899,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000104963
+--lua-bundler:000116176
 
 function InitGlobals()
 end

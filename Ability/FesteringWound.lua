@@ -3,7 +3,6 @@
 local EventCenter = require("Lib.EventCenter")
 local BuffBase = require("Objects.BuffBase")
 local Abilities = require("Config.Abilities")
-local Timer = require("Lib.Timer")
 
 --region meta
 
@@ -29,13 +28,11 @@ BlzSetAbilityExtendedTooltip(Abilities.FesteringWound.ID, string.format(
 local cls = class("FesteringWound", BuffBase)
 
 function cls:OnEnable()
-    print("apply:", self.stack, self.target)
     self.sfx = AddSpecialEffectTarget("Abilities/Spells/Other/Parasite/ParasiteTarget.mdl", self.target, "overhead")
     --BlzSetSpecialEffectColor(self.sfx, 255, 128, 0)
 end
 
 function cls:OnDisable()
-    print("removed", self.target)
     DestroyEffect(self.sfx)
 end
 

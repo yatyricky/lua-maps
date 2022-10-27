@@ -1,4 +1,5 @@
 require("Lib.TableExt")
+require("Lib.MathExt")
 local Time = require("Lib.Time")
 
 local ipairs = ipairs
@@ -216,4 +217,17 @@ function GetStackTrace(oneline_yn)
         i = i + 1
     end
     return "Traceback (most recent call last)" .. trace
+end
+
+function ExTextCriticalStrike(whichUnit, dmg)
+    local tt = CreateTextTag()
+    local text = tostring(math.round(dmg)) .. "!"
+    SetTextTagText(tt, text, 0.022)
+    SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
+    SetTextTagColor(tt, 255, 0, 0, 255)
+    SetTextTagVelocity(tt, 0.0, 0.04)
+    SetTextTagVisibility(tt, true)
+    SetTextTagFadepoint(tt, 2.0)
+    SetTextTagLifespan(tt, 5.0)
+    SetTextTagPermanent(tt, false)
 end

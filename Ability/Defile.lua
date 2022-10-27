@@ -3,7 +3,6 @@
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local BuffBase = require("Objects.BuffBase")
-local ProjectileBase = require("Objects.ProjectileBase")
 local FesteringWound = require("Ability.FesteringWound")
 local Timer = require("Lib.Timer")
 local Circle = require("Lib.Circle")
@@ -57,53 +56,16 @@ local cls = class("Defile")
 
 cls.instances = {}
 
--- test
--- 32 ~ 0.3  416/4.5
---local ringR = 256
---local cacheRing = {}
---local function renderRing()
---    for i, v in ipairs(cacheRing) do
---        DestroyEffect(v)
---    end
---
---    cacheRing = {}
---    for i = 1, 36 do
---        local x = math.cos(i * 10 * bj_DEGTORAD) * ringR
---        local y = math.sin(i * 10 * bj_DEGTORAD) * ringR
---        local eff = AddSpecialEffect("Doodads/Cinematic/GlowingRunes/GlowingRunes2.mdl", x, y)
---        table.insert(cacheRing, eff)
---    end
---end
---renderRing()
---
---local scale = 3
---local aura = AddSpecialEffect("Abilities/Spells/Undead/UnholyAura/UnholyAura.mdl", 0, 0)
---
---local trigger = CreateTrigger()
---TriggerRegisterPlayerChatEvent(trigger, Player(0), "", false)
---ExTriggerAddAction(trigger, function()
---    local msg = GetEventPlayerChatString()
---    if msg == "q" then
---        ringR = ringR - 32
---        print("Ring radius is ", ringR)
---        renderRing()
---    elseif msg == "w" then
---        ringR = ringR + 32
---        print("Ring radius is ", ringR)
---        renderRing()
---    elseif msg == "a" then
---        scale = scale - 0.3
---        print("Aura scale is ", scale)
---        BlzSetSpecialEffectScale(aura, scale)
---    elseif msg == "s" then
---        scale = scale + 0.3
---        print("Aura scale is ", scale)
---        BlzSetSpecialEffectScale(aura, scale)
---    end
---end)
-
-local function radius2scale(r)
-    return (r - 256) / 32 * 0.3 + 3
+---@param c Circle
+local function drawRing(c)
+    local tm = Timer.new(function()
+        for i = 1, 36 do
+            local x = math.cos(i * 10 * bj_DEGTORAD) * c.r + c.center.x
+            local y = math.sin(i * 10 * bj_DEGTORAD) * c.r + c.center.y
+            ExAddSpecialEffect("Abilities/Spells/Undead/DeathandDecay/DeathandDecayTarget.mdl", x, y, 0.5)
+        end
+    end, 0.5, 2)
+    tm:Start()
 end
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
@@ -111,15 +73,13 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     ---@param data ISpellData
     handler = function(data)
         local circle = Circle.new(Vector2.new(data.x, data.y), Abilities.Defile.AOE)
-        print("caster is", data.caster)
         local tab = table.getOrCreateTable(cls.instances, data.caster)
         table.insert(tab, circle)
         local casterPlayer = GetOwningPlayer(data.caster)
         local level = GetUnitAbilityLevel(data.caster, Abilities.Defile.ID)
         local bonus = 0
 
-        local aura = AddSpecialEffect("Abilities/Spells/Undead/UnholyAura/UnholyAura.mdl", circle.center.x, circle.center.y)
-        BlzSetSpecialEffectScale(aura, radius2scale(circle.r))
+        drawRing(circle)
         local timer = Timer.new(function()
             local hasAnyUnit = false
             ExGroupEnumUnitsInRange(data.x, data.y, circle.r, function(e)
@@ -135,7 +95,6 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
                     -- 造成伤害
                     local damage = Abilities.Defile.Damage[level] * (1 + bonus)
-                    print("defile did damage", damage)
                     UnitDamageTarget(data.caster, e, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
                 end
             end)
@@ -148,27 +107,22 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 bonus = bonus + Abilities.Defile.DamageGrowth
             end
 
-            --circle = circle:Clone()
             circle.r = newR
-            --table.insert(tab, circle)
-            BlzSetSpecialEffectScale(aura, radius2scale(circle.r))
+            drawRing(circle)
         end, Abilities.Defile.Interval, Abilities.Defile.Duration)
         timer:Start()
 
         timer.onStop = function()
             -- 移除黑水效果
-            for i, v in ipairs(tab) do
+            for i, _ in ipairs(tab) do
                 tab[i] = nil
-                --cls.RestoreTerrain(v)
             end
-            BlzSetSpecialEffectColor(aura, 0, 0, 0)
-            DestroyEffect(aura)
         end
     end
 })
 
 -- 当你站在自己的亵渎范围内时，你的普通攻击会击中目标附近的其他敌人
-EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, weaponType, damageType, isAttack)
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _, isAttack)
     if not isAttack then
         return
     end

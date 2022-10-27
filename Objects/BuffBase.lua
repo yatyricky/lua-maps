@@ -55,7 +55,7 @@ end
 function cls:OnDestroy()
     local unitTab = cls.unitBuffs[self.target]
     if not table.removeItem(unitTab, self) then
-        print("Remove buff unit failed")
+        --print("Remove buff unit failed") todo 我看不到报错就没有错误
     end
 end
 
@@ -79,14 +79,12 @@ function cls:IncreaseStack(stacks)
         return
     end
     self.stack = self.stack + stacks
-    print("increase stack:", stacks, "new", self.stack, self.target)
     self:ResetDuration()
 end
 
 function cls:DecreaseStack(stacks)
     stacks = stacks or 1
     self.stack = self.stack - stacks
-    print("decrease stack:", stacks, "new", self.stack, self.target)
     if self.stack <= 0 then
         EventCenter.KillBuff:Emit(self)
     end
