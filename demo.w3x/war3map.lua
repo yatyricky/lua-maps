@@ -1,4 +1,4 @@
---lua-bundler:000104424
+--lua-bundler:000104963
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -37,21 +37,24 @@ Abilities.Apocalypse = {
     ExtraAtkPerStack = { 1, 2, 3 },
 }
 
---BlzSetAbilityResearchTooltip(Abilities.Apocalypse.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
---BlzSetAbilityResearchExtendedTooltip(Abilities.Apocalypse.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
---
---|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
---        Abilities.Apocalypse.Duration[1], Abilities.Apocalypse.DurationHero[1], math.round(Abilities.Apocalypse.PlagueLengthen[1] * 100),
---        Abilities.Apocalypse.Duration[2], Abilities.Apocalypse.DurationHero[2], math.round(Abilities.Apocalypse.PlagueLengthen[2] * 100),
---        Abilities.Apocalypse.Duration[3], Abilities.Apocalypse.DurationHero[3], math.round(Abilities.Apocalypse.PlagueLengthen[3] * 100)
---), 0)
---
---for i = 1, #Abilities.Apocalypse.Duration do
---    BlzSetAbilityTooltip(Abilities.Apocalypse.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
---    BlzSetAbilityExtendedTooltip(Abilities.Apocalypse.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.Apocalypse.Duration[i], Abilities.Apocalypse.DurationHero[i], math.round(Abilities.Apocalypse.PlagueLengthen[i] * 100)), i - 1)
---end
+BlzSetAbilityResearchTooltip(Abilities.Apocalypse.ID, "学习天启 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Abilities.Apocalypse.ID, string.format([[引爆目标身上的所有溃烂之伤，造成一次攻击伤害，并召唤|cffff8c00一只永久|r的具有|cffff8c00100|r点生命值、|cffff8c0010|r点攻击力、|cffff8c00麻痹毒液|r攻击的邪恶石像鬼进入战场，每层溃烂之伤可以为石像鬼提供额外属性。
+
+|cff99ccff法力消耗|r - 600点
+|cff99ccff冷却时间|r - 20秒
+
+|cffffcc001级|r - 造成|cffff8c00%s|r倍的基础攻击伤害，每层溃烂之伤提供|cffff8c00%s|r点生命值和|cffff8c00%s|r点攻击力。
+|cffffcc002级|r - 造成|cffff8c00%s|r倍的基础攻击伤害，每层溃烂之伤提供|cffff8c00%s|r点生命值和|cffff8c00%s|r点攻击力。
+|cffffcc003级|r - 造成|cffff8c00%s|r倍的基础攻击伤害，每层溃烂之伤提供|cffff8c00%s|r点生命值和|cffff8c00%s|r点攻击力。]],
+        Abilities.Apocalypse.AtkMultiplier[1], Abilities.Apocalypse.ExtraHpPerStack[1], math.round(Abilities.Apocalypse.ExtraAtkPerStack[1] * 100),
+        Abilities.Apocalypse.AtkMultiplier[2], Abilities.Apocalypse.ExtraHpPerStack[2], math.round(Abilities.Apocalypse.ExtraAtkPerStack[2] * 100),
+        Abilities.Apocalypse.AtkMultiplier[3], Abilities.Apocalypse.ExtraHpPerStack[3], math.round(Abilities.Apocalypse.ExtraAtkPerStack[3] * 100)
+), 0)
+
+for i = 1, #Abilities.Apocalypse.Duration do
+    BlzSetAbilityTooltip(Abilities.Apocalypse.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Abilities.Apocalypse.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.Apocalypse.Duration[i], Abilities.Apocalypse.DurationHero[i], math.round(Abilities.Apocalypse.PlagueLengthen[i] * 100)), i - 1)
+end
 
 --endregion
 
@@ -279,13 +282,13 @@ local FesteringWound = require("Ability.FesteringWound")
 --region meta
 
 Abilities.DeathCoil = {
-    ID = FourCC("A007"),
+    ID = FourCC("A009"),
     Heal = { 0.4, 0.6, 0.8 },
     Damage = { 100, 200, 300 },
     Wounds = { 3, 5, 7 },
     AmplificationPerStack = 0.05,
     ProcPerStack = 0.05,
-    ManaCost = 100,
+    ManaCost = 400,
 }
 
 BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡缠绕 - [|cffffcc00%d级|r]", 0)
@@ -334,19 +337,19 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                     amount = Abilities.DeathCoil.Heal[level] * GetUnitState(data.target, UNIT_STATE_MAX_LIFE),
                 })
             else
-                -- 敌军，伤害+debuff
+                -- 并叠加溃烂之伤
                 local debuff = BuffBase.FindBuffByClassName(data.target, FesteringWound.__cname)
                 local stack = debuff and debuff.stack or 0
-                local damage = Abilities.DeathCoil.Damage[level] * (1 + Abilities.DeathCoil.AmplificationPerStack * stack)
-                UnitDamageTarget(data.caster, data.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
-
-                -- 并叠加溃烂之伤
                 if debuff then
                     debuff:IncreaseStack(Abilities.DeathCoil.Wounds[level])
                 else
                     debuff = FesteringWound.new(data.caster, data.target, Abilities.FesteringWound.Duration, 9999, {})
                     debuff:IncreaseStack(Abilities.DeathCoil.Wounds[level] - 1)
                 end
+
+                -- 敌军，伤害+debuff
+                local damage = Abilities.DeathCoil.Damage[level] * (1 + Abilities.DeathCoil.AmplificationPerStack * stack)
+                UnitDamageTarget(data.caster, data.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
             end
 
             -- sfx
@@ -361,7 +364,7 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
     handler = function(data)
         local level = GetUnitAbilityLevel(data.caster, data.abilityId)
         BlzSetUnitAbilityManaCost(data.caster, Abilities.DeathCoil.ID, level - 1, Abilities.DeathCoil.ManaCost)
-        IssueImmediateOrder(data.caster, "slowoff")
+        IssueImmediateOrder(data.caster, "weboff")
     end
 })
 
@@ -385,7 +388,8 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
     if chance then
         BlzEndUnitAbilityCooldown(caster, Abilities.DeathCoil.ID)
         BlzSetUnitAbilityManaCost(caster, Abilities.DeathCoil.ID, level - 1, 0)
-        IssueImmediateOrder(caster, "slowon")
+        IssueImmediateOrder(caster, "webon")
+        IssueTargetOrder(caster, "attack", target)
     end
 end)
 
@@ -838,15 +842,16 @@ Abilities.FesteringWound = {
     ID = FourCC("A00A"),
     Duration = 30,
     Damage = 15,
-    Mana = 3,
+    ManaRegen = 50,
+    ExtraMana = 30,
 }
 
 BlzSetAbilityTooltip(Abilities.FesteringWound.ID, "溃烂之伤", 0)
 BlzSetAbilityExtendedTooltip(Abilities.FesteringWound.ID, string.format(
-        [[死亡骑士的普通攻击会导致目标身上的一层溃烂之伤爆发，造成|cffff8c00%s|r点额外伤害并为死亡骑士恢复|cffff8c00%s|r点法力值。
+        [[死亡骑士的普通攻击会恢复|cffff8c00%s|r法力值，并导致目标身上的一层溃烂之伤爆发，造成|cffff8c00%s|r点额外伤害并为死亡骑士额外恢复|cffff8c00%s|r点法力值。
 
 |cff99ccff持续时间|r - %s秒]],
-        Abilities.FesteringWound.Damage, Abilities.FesteringWound.Mana, Abilities.FesteringWound.Duration),
+        Abilities.FesteringWound.ManaRegen, Abilities.FesteringWound.Damage, Abilities.FesteringWound.ExtraMana, Abilities.FesteringWound.Duration),
         0)
 
 --endregion
@@ -874,7 +879,7 @@ function cls:Burst(stacks)
     end
 
     local damage = Abilities.FesteringWound.Damage * stacks
-    local mana = Abilities.FesteringWound.Mana * stacks
+    local mana = Abilities.FesteringWound.ExtraMana * stacks
     UnitDamageTarget(self.caster, self.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
     SetUnitState(self.caster, UNIT_STATE_MANA, GetUnitState(self.caster, UNIT_STATE_MANA) + mana)
 
@@ -892,6 +897,8 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
     if level <= 0 then
         return
     end
+
+    SetUnitState(caster, UNIT_STATE_MANA, GetUnitState(caster, UNIT_STATE_MANA) + Abilities.FesteringWound.ManaRegen)
 
     local debuff = BuffBase.FindBuffByClassName(target, cls.__cname)
     if not debuff then
@@ -2714,33 +2721,33 @@ local Power = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 }
 local Temp = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 local PositiveAtk = {
-    FourCC("1000"),
-    FourCC("2000"),
-    FourCC("4000"),
-    FourCC("8000"),
-    FourCC("1600"),
-    FourCC("3200"),
-    FourCC("6400"),
-    FourCC("1280"),
-    FourCC("2560"),
-    FourCC("5120"),
-    FourCC("1024"),
-    FourCC("2048"),
+    FourCC("A00C"),
+    FourCC("A00D"),
+    FourCC("A00E"),
+    FourCC("A00F"),
+    FourCC("A00G"),
+    FourCC("A00H"),
+    FourCC("A00I"),
+    FourCC("A00J"),
+    FourCC("A00K"),
+    FourCC("A00L"),
+    FourCC("A00M"),
+    FourCC("A00N"),
 }
 
 local PositiveHp = {
-    FourCC("1000"),
-    FourCC("2000"),
-    FourCC("4000"),
-    FourCC("8000"),
-    FourCC("1600"),
-    FourCC("3200"),
-    FourCC("6400"),
-    FourCC("1280"),
-    FourCC("2560"),
-    FourCC("5120"),
-    FourCC("1024"),
-    FourCC("2048"),
+    FourCC("A00O"),
+    FourCC("A00P"),
+    FourCC("A00Q"),
+    FourCC("A00R"),
+    FourCC("A00S"),
+    FourCC("A00T"),
+    FourCC("A00U"),
+    FourCC("A00V"),
+    FourCC("A00W"),
+    FourCC("A00X"),
+    FourCC("A00Y"),
+    FourCC("A00Z"),
 }
 
 local function i2b(v)
@@ -3431,106 +3438,111 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000104424
+--lua-bundler:000104963
 
 function InitGlobals()
 end
 
 function CreateAllItems()
-    local itemID
-    BlzCreateItemWithSkin(FourCC("rlif"), -883.4, -107.4, FourCC("rlif"))
+local itemID
+
+BlzCreateItemWithSkin(FourCC("rlif"), -883.4, -107.4, FourCC("rlif"))
 end
 
 function CreateUnitsForPlayer0()
-    local p = Player(0)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -1107.0, -243.8, 48.710, FourCC("Udea"))
-    SetHeroLevel(u, 10, false)
-    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1225.0, 1133.3, 337.620, FourCC("hmpr"))
-    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1178.5, 1035.4, 79.038, FourCC("hmpr"))
-    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1146.8, 945.0, 66.030, FourCC("hmpr"))
-    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1130.9, 881.8, 124.600, FourCC("hmpr"))
-    u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1126.4, 833.9, 30.587, FourCC("hmpr"))
+local p = Player(0)
+local u
+local unitID
+local t
+local life
+
+u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -1107.0, -243.8, 48.710, FourCC("Udea"))
+SetHeroLevel(u, 10, false)
+u = BlzCreateUnitWithSkin(p, FourCC("u001"), -1612.0, -607.4, 30.433, FourCC("u001"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1225.0, 1133.3, 337.620, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1178.5, 1035.4, 79.038, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1146.8, 945.0, 66.030, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1130.9, 881.8, 124.600, FourCC("hmpr"))
+u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1126.4, 833.9, 30.587, FourCC("hmpr"))
 end
 
 function CreateUnitsForPlayer1()
-    local p = Player(1)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 354.3, -394.1, 145.749, FourCC("ogru"))
-    u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 192.5, -178.4, 9.306, FourCC("ogru"))
-    u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 137.6, -459.0, 145.749, FourCC("ogru"))
+local p = Player(1)
+local u
+local unitID
+local t
+local life
+
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 354.3, -394.1, 145.749, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 192.5, -178.4, 9.306, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 137.6, -459.0, 145.749, FourCC("ogru"))
 end
 
 function CreateNeutralPassiveBuildings()
-    local p = Player(PLAYER_NEUTRAL_PASSIVE)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -2560.0, 320.0, 270.000, FourCC("ngol"))
-    SetResourceAmount(u, 12500)
-    u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 2880.0, 640.0, 270.000, FourCC("ngol"))
-    SetResourceAmount(u, 12500)
-    u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -192.0, 2368.0, 270.000, FourCC("ngol"))
-    SetResourceAmount(u, 12500)
-    u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 512.0, -3264.0, 270.000, FourCC("ngol"))
-    SetResourceAmount(u, 12500)
+local p = Player(PLAYER_NEUTRAL_PASSIVE)
+local u
+local unitID
+local t
+local life
+
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -2560.0, 320.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 2880.0, 640.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -192.0, 2368.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 512.0, -3264.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
 end
 
 function CreatePlayerBuildings()
 end
 
 function CreatePlayerUnits()
-    CreateUnitsForPlayer0()
-    CreateUnitsForPlayer1()
+CreateUnitsForPlayer0()
+CreateUnitsForPlayer1()
 end
 
 function CreateAllUnits()
-    CreateNeutralPassiveBuildings()
-    CreatePlayerBuildings()
-    CreatePlayerUnits()
+CreateNeutralPassiveBuildings()
+CreatePlayerBuildings()
+CreatePlayerUnits()
 end
 
 function InitCustomPlayerSlots()
-    SetPlayerStartLocation(Player(0), 0)
-    SetPlayerColor(Player(0), ConvertPlayerColor(0))
-    SetPlayerRacePreference(Player(0), RACE_PREF_HUMAN)
-    SetPlayerRaceSelectable(Player(0), true)
-    SetPlayerController(Player(0), MAP_CONTROL_USER)
-    SetPlayerStartLocation(Player(1), 1)
-    SetPlayerColor(Player(1), ConvertPlayerColor(1))
-    SetPlayerRacePreference(Player(1), RACE_PREF_ORC)
-    SetPlayerRaceSelectable(Player(1), true)
-    SetPlayerController(Player(1), MAP_CONTROL_COMPUTER)
+SetPlayerStartLocation(Player(0), 0)
+SetPlayerColor(Player(0), ConvertPlayerColor(0))
+SetPlayerRacePreference(Player(0), RACE_PREF_HUMAN)
+SetPlayerRaceSelectable(Player(0), true)
+SetPlayerController(Player(0), MAP_CONTROL_USER)
+SetPlayerStartLocation(Player(1), 1)
+SetPlayerColor(Player(1), ConvertPlayerColor(1))
+SetPlayerRacePreference(Player(1), RACE_PREF_ORC)
+SetPlayerRaceSelectable(Player(1), true)
+SetPlayerController(Player(1), MAP_CONTROL_COMPUTER)
 end
 
 function InitCustomTeams()
-    SetPlayerTeam(Player(0), 0)
-    SetPlayerTeam(Player(1), 1)
+SetPlayerTeam(Player(0), 0)
+SetPlayerTeam(Player(1), 1)
 end
 
 function InitAllyPriorities()
-    SetStartLocPrioCount(1, 2)
-    SetStartLocPrio(1, 0, 0, MAP_LOC_PRIO_HIGH)
+SetStartLocPrioCount(1, 2)
+SetStartLocPrio(1, 0, 0, MAP_LOC_PRIO_HIGH)
 end
 
 function main()
-    SetCameraBounds(-3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
-    SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
-    NewSoundEnvironment("Default")
-    SetAmbientDaySound("LordaeronSummerDay")
-    SetAmbientNightSound("LordaeronSummerNight")
-    SetMapMusic("Music", true, 0)
-    CreateAllItems()
-    CreateAllUnits()
-    InitBlizzard()
-    InitGlobals()
+SetCameraBounds(-3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
+NewSoundEnvironment("Default")
+SetAmbientDaySound("LordaeronSummerDay")
+SetAmbientNightSound("LordaeronSummerNight")
+SetMapMusic("Music", true, 0)
+CreateAllItems()
+CreateAllUnits()
+InitBlizzard()
+InitGlobals()
 local s, m = pcall(RunBundle)
 if not s then
     print(m)
@@ -3538,15 +3550,15 @@ end
 end
 
 function config()
-    SetMapName("TRIGSTR_001")
-    SetMapDescription("TRIGSTR_003")
-    SetPlayers(2)
-    SetTeams(2)
-    SetGamePlacement(MAP_PLACEMENT_USE_MAP_SETTINGS)
-    DefineStartLocation(0, -1984.0, -128.0)
-    DefineStartLocation(1, 2368.0, 320.0)
-    InitCustomPlayerSlots()
-    InitCustomTeams()
-    InitAllyPriorities()
+SetMapName("TRIGSTR_001")
+SetMapDescription("TRIGSTR_003")
+SetPlayers(2)
+SetTeams(2)
+SetGamePlacement(MAP_PLACEMENT_USE_MAP_SETTINGS)
+DefineStartLocation(0, -1984.0, -128.0)
+DefineStartLocation(1, 2368.0, 320.0)
+InitCustomPlayerSlots()
+InitCustomTeams()
+InitAllyPriorities()
 end
 

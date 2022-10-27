@@ -518,18 +518,6 @@ STRING 113
 亵渎
 }
 
-STRING 114
-// 技能: A007 (死亡缠绕), Researchhotkey (热键 - 学习)
-{
-Q
-}
-
-STRING 115
-// 技能: A007 (死亡缠绕), Hotkey (热键 - 普通)
-{
-Q
-}
-
 STRING 116
 // 技能: A009 (死亡缠绕), Researchtip (提示工具 - 学习)
 {
@@ -576,18 +564,6 @@ STRING 123
 // 技能: A009 (死亡缠绕), Ubertip (提示工具 - 普通 - 扩展)
 {
 1
-}
-
-STRING 124
-// 技能: A007 (死亡缠绕), Name (名字)
-{
-死亡缠绕
-}
-
-STRING 125
-// 技能: A009 (死亡缠绕), EditorSuffix (编辑器后缀)
-{
-自动释放
 }
 
 STRING 126
@@ -675,37 +651,37 @@ STRING 142
 }
 
 STRING 143
-// 技能: A007 (死亡缠绕), Researchtip (提示工具 - 学习)
+// 技能: A011 (天启), Tip (提示工具 - 普通)
 {
 1
 }
 
 STRING 144
-// 技能: A007 (死亡缠绕), Researchubertip (提示工具 - 学习 - 扩展)
+// 技能: A011 (天启), Tip (提示工具 - 普通)
 {
 1
 }
 
 STRING 145
-// 技能: A007 (死亡缠绕), Tip (提示工具 - 普通)
+// 技能: A011 (天启), Ubertip (提示工具 - 普通 - 扩展)
 {
 1
 }
 
 STRING 146
-// 技能: A007 (死亡缠绕), Tip (提示工具 - 普通)
+// 技能: A011 (天启), Ubertip (提示工具 - 普通 - 扩展)
 {
 1
 }
 
 STRING 147
-// 技能: A007 (死亡缠绕), Tip (提示工具 - 普通)
+// 技能: A011 (天启), Researchtip (提示工具 - 学习)
 {
 1
 }
 
 STRING 148
-// 技能: A007 (死亡缠绕), Ubertip (提示工具 - 普通 - 扩展)
+// 技能: A011 (天启), Researchubertip (提示工具 - 学习 - 扩展)
 {
 1
 }
@@ -735,13 +711,13 @@ R
 }
 
 STRING 153
-// 技能: A007 (死亡缠绕), Ubertip (提示工具 - 普通 - 扩展)
+// 技能: A011 (天启), Tip (提示工具 - 普通)
 {
 1
 }
 
 STRING 154
-// 技能: A007 (死亡缠绕), Ubertip (提示工具 - 普通 - 扩展)
+// 技能: A011 (天启), Ubertip (提示工具 - 普通 - 扩展)
 {
 1
 }
@@ -806,39 +782,207 @@ STRING 170
  
 }
 
-STRING 171
-// 技能: A007 (死亡缠绕), Untip (提示工具 - 关闭)
+STRING 177
+// 技能: A00C (atk+1), Name (名字)
 {
- 
+atk+1
 }
 
-STRING 172
-// 技能: A007 (死亡缠绕), Untip (提示工具 - 关闭)
+STRING 178
+// 技能: A00D (atk+2), Name (名字)
 {
- 
+atk+2
 }
 
-STRING 173
-// 技能: A007 (死亡缠绕), Untip (提示工具 - 关闭)
+STRING 179
+// 技能: A00E (atk+4), Name (名字)
 {
- 
+atk+4
 }
 
-STRING 174
-// 技能: A007 (死亡缠绕), Unubertip (提示工具 - 关闭 - 扩展)
+STRING 180
+// 技能: A00F (atk+8), Name (名字)
 {
- 
+atk+8
 }
 
-STRING 175
-// 技能: A007 (死亡缠绕), Unubertip (提示工具 - 关闭 - 扩展)
+STRING 181
+// 技能: A00G (atk+16), Name (名字)
 {
- 
+atk+16
 }
 
-STRING 176
-// 技能: A007 (死亡缠绕), Unubertip (提示工具 - 关闭 - 扩展)
+STRING 182
+// 技能: A00H (atk+32), Name (名字)
 {
- 
+atk+32
+}
+
+STRING 183
+// 技能: A00I (atk+64), Name (名字)
+{
+atk+64
+}
+
+STRING 184
+// 技能: A00J (atk+128), Name (名字)
+{
+atk+128
+}
+
+STRING 185
+// 技能: A00K (atk+256), Name (名字)
+{
+atk+256
+}
+
+STRING 186
+// 技能: A00L (atk+512), Name (名字)
+{
+atk+512
+}
+
+STRING 187
+// 技能: A00M (atk+1024), Name (名字)
+{
+atk+1024
+}
+
+STRING 188
+// 技能: A00N (atk+2048), Name (名字)
+{
+atk+2048
+}
+
+STRING 189
+// 技能: A00O (hp+1), Name (名字)
+{
+hp+1
+}
+
+STRING 190
+// 技能: A00P (hp+2), Name (名字)
+{
+hp+2
+}
+
+STRING 191
+// 技能: A00Q (hp+4), Name (名字)
+{
+hp+4
+}
+
+STRING 192
+// 技能: A00R (hp+8), Name (名字)
+{
+hp+8
+}
+
+STRING 193
+// 技能: A00S (hp+16), Name (名字)
+{
+hp+16
+}
+
+STRING 194
+// 技能: A00T (hp+32), Name (名字)
+{
+hp+32
+}
+
+STRING 195
+// 技能: A00U (hp+64), Name (名字)
+{
+hp+64
+}
+
+STRING 196
+// 技能: A00V (hp+128), Name (名字)
+{
+hp+128
+}
+
+STRING 197
+// 技能: A00W (hp+256), Name (名字)
+{
+hp+256
+}
+
+STRING 198
+// 技能: A00X (hp+512), Name (名字)
+{
+hp+512
+}
+
+STRING 199
+// 技能: A00Y (hp+1024), Name (名字)
+{
+hp+1024
+}
+
+STRING 200
+// 技能: A00Z (hp+2048), Name (名字)
+{
+hp+2048
+}
+
+STRING 201
+// 单位: u001 (邪恶石像鬼), Name (名字)
+{
+邪恶石像鬼
+}
+
+STRING 202
+// 技能: A010 (麻痹毒液), Name (名字)
+{
+麻痹毒液
+}
+
+STRING 203
+// 技能: A010 (麻痹毒液), Tip (提示工具 - 普通)
+{
+麻痹毒液
+}
+
+STRING 205
+// 技能: A010 (麻痹毒液), Ubertip (提示工具 - 普通 - 扩展)
+{
+一次带毒的攻击，并使目标敌人的移动速度降低<A010,DataB1,%>%，持续<A010,Dur1>秒。
+}
+
+STRING 206
+// 技能: A011 (天启), Name (名字)
+{
+天启
+}
+
+STRING 207
+// 技能: A011 (天启), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 208
+// 技能: A011 (天启), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 213
+// 技能: A011 (天启), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 214
+// 技能: A011 (天启), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 219
+// 技能: A009 (死亡缠绕), EditorSuffix (编辑器后缀)
+{
+web
 }
 

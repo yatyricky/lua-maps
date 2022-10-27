@@ -3,17 +3,18 @@ local Abilities = require("Config.Abilities")
 local BuffBase = require("Objects.BuffBase")
 local ProjectileBase = require("Objects.ProjectileBase")
 local FesteringWound = require("Ability.FesteringWound")
+local Const = require("Config.Const")
 
 --region meta
 
 Abilities.DeathCoil = {
-    ID = FourCC("A007"),
+    ID = FourCC("A009"),
     Heal = { 0.4, 0.6, 0.8 },
     Damage = { 100, 200, 300 },
     Wounds = { 3, 5, 7 },
     AmplificationPerStack = 0.05,
     ProcPerStack = 0.05,
-    ManaCost = 100,
+    ManaCost = 400,
 }
 
 BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡缠绕 - [|cffffcc00%d级|r]", 0)
@@ -62,19 +63,19 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                     amount = Abilities.DeathCoil.Heal[level] * GetUnitState(data.target, UNIT_STATE_MAX_LIFE),
                 })
             else
-                -- 敌军，伤害+debuff
+                -- 并叠加溃烂之伤
                 local debuff = BuffBase.FindBuffByClassName(data.target, FesteringWound.__cname)
                 local stack = debuff and debuff.stack or 0
-                local damage = Abilities.DeathCoil.Damage[level] * (1 + Abilities.DeathCoil.AmplificationPerStack * stack)
-                UnitDamageTarget(data.caster, data.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
-
-                -- 并叠加溃烂之伤
                 if debuff then
                     debuff:IncreaseStack(Abilities.DeathCoil.Wounds[level])
                 else
                     debuff = FesteringWound.new(data.caster, data.target, Abilities.FesteringWound.Duration, 9999, {})
                     debuff:IncreaseStack(Abilities.DeathCoil.Wounds[level] - 1)
                 end
+
+                -- 敌军，伤害+debuff
+                local damage = Abilities.DeathCoil.Damage[level] * (1 + Abilities.DeathCoil.AmplificationPerStack * stack)
+                UnitDamageTarget(data.caster, data.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
             end
 
             -- sfx
@@ -89,7 +90,7 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
     handler = function(data)
         local level = GetUnitAbilityLevel(data.caster, data.abilityId)
         BlzSetUnitAbilityManaCost(data.caster, Abilities.DeathCoil.ID, level - 1, Abilities.DeathCoil.ManaCost)
-        IssueImmediateOrder(data.caster, "slowoff")
+        IssueImmediateOrder(data.caster, "weboff")
     end
 })
 
@@ -113,7 +114,8 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
     if chance then
         BlzEndUnitAbilityCooldown(caster, Abilities.DeathCoil.ID)
         BlzSetUnitAbilityManaCost(caster, Abilities.DeathCoil.ID, level - 1, 0)
-        IssueImmediateOrder(caster, "slowon")
+        IssueImmediateOrder(caster, "webon")
+        IssueTargetOrderById(caster, Const.OrderId_Attack, target)
     end
 end)
 
