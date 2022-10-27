@@ -53,6 +53,9 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             debuff:Burst(count)
         end
 
+        local weaponArt = ExAddSpecialEffectTarget("Abilities/Weapons/PhoenixMissile/Phoenix_Missile.mdl", data.caster, "weapon,left", 1.0)
+        BlzSetSpecialEffectColor(weaponArt, 0, 255, 0)
+
         local level = GetUnitAbilityLevel(data.caster, Abilities.Apocalypse.ID)
         local attr = UnitAttribute.GetAttr(data.caster)
         if not ExIsUnitDead(data.target) then
