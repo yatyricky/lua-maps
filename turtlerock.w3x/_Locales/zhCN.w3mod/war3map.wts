@@ -1,0 +1,456 @@
+﻿STRING 10
+{
+Player 1
+}
+
+STRING 11
+{
+Player 2
+}
+
+STRING 12
+// 技能: A003 (), Tip (提示工具 - 普通)
+{
+Player 3
+}
+
+STRING 13
+// 技能: A003 (), Tip (提示工具 - 普通)
+{
+Player 4
+}
+
+STRING 14
+{
+Force 1
+}
+
+STRING 15
+{
+Force 2
+}
+
+STRING 16
+{
+Force 3
+}
+
+STRING 17
+{
+Force 4
+}
+
+STRING 18
+{
+Force 5
+}
+
+STRING 19
+{
+Force 6
+}
+
+STRING 20
+{
+Turtle Rock
+}
+
+STRING 21
+{
+1v1 or 2v2
+}
+
+STRING 22
+{
+Once an island for all those who were exiled, this has now become an island of riches for those who seek its hidden treasures.
+}
+
+STRING 23
+{
+Blizzard Entertainment
+}
+
+STRING 24
+// 技能: A001 (Force 3), Name (名字)
+{
+Force 3
+}
+
+STRING 25
+// 技能: A003 (), Researchhotkey (热键 - 学习)
+{
+Player 1
+}
+
+STRING 26
+// 技能: A003 (), Hotkey (热键 - 普通)
+{
+Player 2
+}
+
+STRING 27
+// 技能: A003 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+Force 1
+}
+
+STRING 28
+// 技能: A003 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+Force 2
+}
+
+STRING 29
+// 技能: A008 (defile), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 30
+// 技能: A008 (defile), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 31
+// 技能: A008 (defile), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 32
+// 技能: A008 (defile), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 33
+// 技能: A008 (defile), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 34
+// 技能: A008 (defile), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 35
+// 技能: A008 (defile), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 36
+// 技能: A008 (defile), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 37
+// 技能: A008 (defile), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 38
+// 技能: A008 (defile), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 39
+// 技能: A009 (), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 40
+// 技能: A009 (), Untip (提示工具 - 关闭)
+{
+ 
+}
+
+STRING 41
+// 技能: A009 (), Unubertip (提示工具 - 关闭 - 扩展)
+{
+ 
+}
+
+STRING 42
+// 技能: A009 (), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 43
+// 技能: A009 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 44
+// 技能: A009 (), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 45
+// 技能: A009 (), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 46
+// 技能: A009 (), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 47
+// 技能: A009 (), Untip (提示工具 - 关闭)
+{
+ 
+}
+
+STRING 48
+// 技能: A009 (), Untip (提示工具 - 关闭)
+{
+ 
+}
+
+STRING 49
+// 技能: A009 (), Unubertip (提示工具 - 关闭 - 扩展)
+{
+ 
+}
+
+STRING 50
+// 技能: A009 (), Unubertip (提示工具 - 关闭 - 扩展)
+{
+ 
+}
+
+STRING 51
+// 技能: A009 (), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 52
+// 技能: A009 (), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 53
+// 技能: A009 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 54
+// 技能: A009 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 55
+// 技能: A011 (apocalypse), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 56
+// 技能: A00A (), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 57
+// 技能: A00A (), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 58
+// 技能: A011 (apocalypse), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 59
+// 技能: A011 (apocalypse), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 60
+// 技能: A011 (apocalypse), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 61
+// 技能: A011 (apocalypse), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 62
+// 技能: A011 (apocalypse), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 63
+// 技能: A011 (apocalypse), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 64
+// 技能: A011 (apocalypse), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 65
+// 技能: A007 (), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 66
+// 技能: A011 (apocalypse), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 67
+// 技能: A011 (apocalypse), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 68
+// 技能: A007 (), Researchhotkey (热键 - 学习)
+{
+R
+}
+
+STRING 69
+// 技能: A007 (), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 70
+// 技能: A007 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 71
+// 技能: A00B (), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 72
+// 技能: A013 (), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 73
+// 技能: A014 (), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 74
+// 技能: A007 (), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 75
+// 技能: A007 (), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 76
+// 技能: A015 (), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 77
+// 技能: A015 (), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 78
+// 技能: A015 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 79
+// 技能: A015 (), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 80
+// 技能: A015 (), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 81
+// 技能: A015 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 82
+// 技能: A015 (), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 83
+// 技能: A015 (), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 84
+// 技能: A015 (), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 85
+// 技能: A015 (), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 86
+// 技能: A008 (defile), Name (名字)
+{
+defile
+}
+
+STRING 87
+// 技能: A011 (apocalypse), Name (名字)
+{
+apocalypse
+}
+

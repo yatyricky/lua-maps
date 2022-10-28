@@ -1,0 +1,70 @@
+
+STRING 10
+{
+Jugador 1
+}
+
+STRING 11
+{
+Jugador 2
+}
+
+STRING 12
+{
+Jugador 3
+}
+
+STRING 13
+{
+Jugador 4
+}
+
+STRING 14
+{
+Fuerza 1
+}
+
+STRING 15
+{
+Fuerza 2
+}
+
+STRING 16
+{
+Fuerza 3
+}
+
+STRING 17
+{
+Fuerza 4
+}
+
+STRING 23
+{
+Blizzard Entertainment
+}
+
+STRING 18
+{
+Fuerza 5
+}
+
+STRING 19
+{
+Fuerza 6
+}
+
+STRING 20
+{
+Roca de Tortuga
+}
+
+STRING 21
+{
+1 vs. 1 o 2 vs. 2
+}
+
+STRING 22
+{
+Tiempo atrás fue la isla de los exiliados, ahora se ha convertido en una isla llena de riquezas para todos los que buscan sus tesoros escondidos.
+}

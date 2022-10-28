@@ -27,7 +27,7 @@ function cls:Update(dt)
             curr:Add(dir)
             BlzSetSpecialEffectX(proj.sfx, curr.x)
             BlzSetSpecialEffectY(proj.sfx, curr.y)
-            BlzSetSpecialEffectZ(proj.sfx, 60) -- todo, use vec3
+            BlzSetSpecialEffectZ(proj.sfx, curr:GetTerrainZ() + 60) -- todo, use vec3
             BlzSetSpecialEffectYaw(proj.sfx, math.atan2(norm.y, norm.x))
 
             if dest:Sub(curr):GetMagnitude() < 96 then

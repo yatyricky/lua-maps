@@ -8,13 +8,13 @@ local Const = require("Config.Const")
 --region meta
 
 Abilities.DeathCoil = {
-    ID = FourCC("A009"),
-    Heal = { 0.4, 0.6, 0.8 },
-    Damage = { 100, 200, 300 },
+    ID = FourCC("A015"),
+    Heal = { 0.2, 0.25, 0.35 },
+    Damage = { 70, 140, 210 },
     Wounds = { 3, 5, 7 },
     AmplificationPerStack = 0.05,
     ProcPerStack = 0.05,
-    ManaCost = 400,
+    ManaCost = 300,
 }
 
 BlzSetAbilityResearchTooltip(Abilities.DeathCoil.ID, "学习死亡缠绕 - [|cffffcc00%d级|r]", 0)
@@ -48,6 +48,8 @@ end
 --endregion
 
 local cls = class("DeathCoil")
+
+local indicator = {}
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.DeathCoil.ID,
@@ -90,7 +92,12 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
     handler = function(data)
         local level = GetUnitAbilityLevel(data.caster, data.abilityId)
         BlzSetUnitAbilityManaCost(data.caster, Abilities.DeathCoil.ID, level - 1, Abilities.DeathCoil.ManaCost)
-        IssueImmediateOrder(data.caster, "weboff")
+
+        if indicator[data.caster] ~= nil then
+            DestroyEffect(indicator[data.caster])
+            indicator[data.caster] = nil
+        end
+        --IssueImmediateOrder(data.caster, "weboff")
     end
 })
 
@@ -114,8 +121,13 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
     if chance then
         BlzEndUnitAbilityCooldown(caster, Abilities.DeathCoil.ID)
         BlzSetUnitAbilityManaCost(caster, Abilities.DeathCoil.ID, level - 1, 0)
-        IssueImmediateOrder(caster, "webon")
+        --IssueImmediateOrder(caster, "webon")
         IssueTargetOrderById(caster, Const.OrderId_Attack, target)
+
+        if indicator[caster] ~= nil then
+            DestroyEffect(indicator[caster])
+        end
+        indicator[caster] = AddSpecialEffectTarget("Abilities/Spells/Undead/DeathCoil/DeathCoilMissile.mdl", caster, "overhead")
     end
 end)
 

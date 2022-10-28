@@ -86,7 +86,7 @@ end
 ---@param t V[]
 ---@param func fun(i: integer, v: V): boolean
 ---@return V, integer
-function table.ifind(t, func)
+function table.iFind(t, func)
     for i, v in ipairs(t) do
         if func(i, v) == true then
             return v, i
@@ -122,4 +122,11 @@ function table.shallow(source, copy)
         copy[k] = v
     end
     return copy
+end
+
+---@generic T
+---@param t T[]
+---@return T
+function table.iGetRandom(t)
+    return t[m_random(#t)]
 end

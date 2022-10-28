@@ -42,7 +42,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 local distance = math.max(v3:GetMagnitude() - 96, 0)
                 local shouldMove = Abilities.ShamblingRush.Speed * Time.Delta
                 local norm = v3:SetNormalize()
-                SetUnitFacing(data.caster, math.atan2(norm.y, norm.x))
+                SetUnitFacing(data.caster, math.atan2(norm.y, norm.x) * bj_RADTODEG)
                 local move
                 local hit
                 if distance > shouldMove then

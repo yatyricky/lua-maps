@@ -27,7 +27,7 @@ BlzSetAbilityResearchExtendedTooltip(Abilities.Defile.ID, string.format([[亵渎
 
 |cff99ccff施法距离|r - 600
 |cff99ccff影响范围|r - 250-550
-|cff99ccff法力消耗|r - 30点
+|cff99ccff法力消耗|r - 600点
 |cff99ccff冷却时间|r - 10秒
 
 |cffffcc001级|r - 每秒造成|cffff8c00%s|r点伤害，击中|cffff8c00%s|r个敌人。

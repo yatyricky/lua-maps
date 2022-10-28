@@ -14,7 +14,7 @@ function cls.FindBuffByClassName(unit, name)
         return nil
     end
 
-    return table.ifind(arr, function(_, v)
+    return table.iFind(arr, function(_, v)
         return v.__cname == name
     end)
 end
