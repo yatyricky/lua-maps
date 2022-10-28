@@ -55,14 +55,15 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
         local constructAbomination = AddSpecialEffect("Units/Undead/Abomination/AbominationExplosion.mdl", pos.x, pos.y)
         BlzSetSpecialEffectTime(constructAbomination, 1.8)
-        BlzSetSpecialEffectScale(constructAbomination, 1.3)
+        BlzSetSpecialEffectScale(constructAbomination, 1.2)
         BlzSetSpecialEffectColor(constructAbomination, 127, 255, 150)
         BlzSetSpecialEffectTimeScale(constructAbomination, -1)
         coroutine.start(function()
             coroutine.wait(1.6)
             BlzSetSpecialEffectPosition(constructAbomination, 0, 0, -1000)
             DestroyEffect(constructAbomination)
-            CreateUnit(GetOwningPlayer(data.caster), Abilities.DarkTransformation.AbominationID, pos.x, pos.y, facing)
+            local summoned = CreateUnit(GetOwningPlayer(data.caster), Abilities.DarkTransformation.AbominationID, pos.x, pos.y, facing)
+            ExAddSpecialEffectTarget("Abilities/Spells/Undead/AnimateDead/AnimateDeadTarget.mdl", summoned, "origin", 1)
         end)
     end
 })

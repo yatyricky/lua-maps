@@ -41,6 +41,19 @@ end
 
 local cls = class("Apocalypse")
 
+local channelMap = {}
+
+EventCenter.RegisterPlayerUnitSpellChannel:Emit({
+    id = Abilities.Apocalypse.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        if channelMap[data.caster] ~= nil then
+            DestroyEffect(channelMap[data.caster])
+        end
+        channelMap[data.caster] = AddSpecialEffectTarget("Abilities/Spells/NightElf/TargetArtLumber/TargetArtLumber.mdl", data.caster, "weapon,left")
+    end
+})
+
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.Apocalypse.ID,
     ---@param data ISpellData
@@ -52,9 +65,6 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             count = debuff.stack
             debuff:Burst(count)
         end
-
-        local weaponArt = ExAddSpecialEffectTarget("Abilities/Weapons/PhoenixMissile/Phoenix_Missile.mdl", data.caster, "weapon,left", 1.0)
-        BlzSetSpecialEffectColor(weaponArt, 0, 255, 0)
 
         local level = GetUnitAbilityLevel(data.caster, Abilities.Apocalypse.ID)
         local attr = UnitAttribute.GetAttr(data.caster)
@@ -105,6 +115,25 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
             DestroyEffect(sfx)
             DestroyEffect(sfx2)
+
+            local soundEfx = AddSpecialEffect("Objects/Spawnmodels/Human/HCancelDeath/HCancelDeath.mdl", v2.x, v2.y)
+            BlzSetSpecialEffectScale(soundEfx, 0.01)
+            coroutine.wait(1)
+            DestroyEffect(soundEfx)
+        end)
+    end
+})
+
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = Abilities.Apocalypse.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        coroutine.start(function()
+            coroutine.wait(1.5)
+            if channelMap[data.caster] then
+                DestroyEffect(channelMap[data.caster])
+                channelMap[data.caster] = nil
+            end
         end)
     end
 })

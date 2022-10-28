@@ -4,18 +4,6 @@ local Vector3 = require("Lib.Vector3")
 ---@class Mover
 local cls = class("Mover")
 
-cls.AttachType = {
-    None = 0,
-    Unit = 1,
-    Effect = 2,
-}
-
-cls.DestinationType = {
-    None = 0,
-    Point = 1,
-    Unit = 2,
-}
-
 cls.unitInstMap = {} ---@type table<unit, Mover>
 cls.effectInstMap = {} ---@type table<effect, Mover>
 

@@ -16,9 +16,9 @@ function cls:Awake()
     require("Ability.Defile")
     require("Ability.Apocalypse")
     require("Ability.DarkTransformation")
-    --require("Ability.MonstrousBlow")
-    --require("Ability.ShamblingRush")
-    --require("Ability.PutridBulwark")
+    require("Ability.MonstrousBlow")
+    require("Ability.ShamblingRush")
+    require("Ability.PutridBulwark")
 end
 
 return cls

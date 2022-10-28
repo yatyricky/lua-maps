@@ -1,4 +1,4 @@
---lua-bundler:000117319
+--lua-bundler:000115078
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -64,6 +64,19 @@ end
 
 local cls = class("Apocalypse")
 
+local channelMap = {}
+
+EventCenter.RegisterPlayerUnitSpellChannel:Emit({
+    id = Abilities.Apocalypse.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        if channelMap[data.caster] ~= nil then
+            DestroyEffect(channelMap[data.caster])
+        end
+        channelMap[data.caster] = AddSpecialEffectTarget("Abilities/Spells/NightElf/TargetArtLumber/TargetArtLumber.mdl", data.caster, "weapon,left")
+    end
+})
+
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.Apocalypse.ID,
     ---@param data ISpellData
@@ -75,9 +88,6 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             count = debuff.stack
             debuff:Burst(count)
         end
-
-        local weaponArt = ExAddSpecialEffectTarget("Abilities/Weapons/PhoenixMissile/Phoenix_Missile.mdl", data.caster, "weapon,left", 1.0)
-        BlzSetSpecialEffectColor(weaponArt, 0, 255, 0)
 
         local level = GetUnitAbilityLevel(data.caster, Abilities.Apocalypse.ID)
         local attr = UnitAttribute.GetAttr(data.caster)
@@ -128,6 +138,25 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
             DestroyEffect(sfx)
             DestroyEffect(sfx2)
+
+            local soundEfx = AddSpecialEffect("Objects/Spawnmodels/Human/HCancelDeath/HCancelDeath.mdl", v2.x, v2.y)
+            BlzSetSpecialEffectScale(soundEfx, 0.01)
+            coroutine.wait(1)
+            DestroyEffect(soundEfx)
+        end)
+    end
+})
+
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = Abilities.Apocalypse.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        coroutine.start(function()
+            coroutine.wait(1.5)
+            if channelMap[data.caster] then
+                DestroyEffect(channelMap[data.caster])
+                channelMap[data.caster] = nil
+            end
         end)
     end
 })
@@ -267,10 +296,6 @@ __modules["Ability.DarkTransformation"]={loader=function()
 
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local BuffBase = require("Objects.BuffBase")
-local ProjectileBase = require("Objects.ProjectileBase")
-local FesteringWound = require("Ability.FesteringWound")
-local UnitAttribute = require("Objects.UnitAttribute")
 local Vector2 = require("Lib.Vector2")
 
 --region meta
@@ -322,12 +347,9 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         KillUnit(data.target)
         ExAddSpecialEffect("Objects/Spawnmodels/Human/HumanBlood/HeroBloodElfBlood.mdl", pos.x, pos.y, 2.0)
 
-        --local eff = CreateUnit(GetOwningPlayer(data.caster), FourCC("e000"), pos.x, pos.y, facing)
-        --SetUnitTimeScale(eff, -1)
-        --SetUnitAnimation(eff, "stand")
         local constructAbomination = AddSpecialEffect("Units/Undead/Abomination/AbominationExplosion.mdl", pos.x, pos.y)
         BlzSetSpecialEffectTime(constructAbomination, 1.8)
-        BlzSetSpecialEffectScale(constructAbomination, 1.3)
+        BlzSetSpecialEffectScale(constructAbomination, 1.2)
         BlzSetSpecialEffectColor(constructAbomination, 127, 255, 150)
         BlzSetSpecialEffectTimeScale(constructAbomination, -1)
         coroutine.start(function()
@@ -335,6 +357,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             BlzSetSpecialEffectPosition(constructAbomination, 0, 0, -1000)
             DestroyEffect(constructAbomination)
             local summoned = CreateUnit(GetOwningPlayer(data.caster), Abilities.DarkTransformation.AbominationID, pos.x, pos.y, facing)
+            ExAddSpecialEffectTarget("Abilities/Spells/Undead/AnimateDead/AnimateDeadTarget.mdl", summoned, "origin", 1)
         end)
     end
 })
@@ -350,7 +373,7 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
     end
 })
 
-ExTriggerRegisterUnitLearn(Abilities.DarkTransformation.ID, function(unit, level)
+ExTriggerRegisterUnitLearn(Abilities.DarkTransformation.ID, function(unit, _)
     local p = GetOwningPlayer(unit)
     SetPlayerTechResearched(p, Abilities.DarkTransformation.TechID, 1)
 end)
@@ -990,37 +1013,20 @@ __modules["Ability.MonstrousBlow"]={loader=function()
 
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local BuffBase = require("Objects.BuffBase")
-local ProjectileBase = require("Objects.ProjectileBase")
-local FesteringWound = require("Ability.FesteringWound")
-local UnitAttribute = require("Objects.UnitAttribute")
-local Vector2 = require("Lib.Vector2")
 local Const = require("Config.Const")
 local Timer = require("Lib.Timer")
 
 --region meta
 
 Abilities.MonstrousBlow = {
-    ID = FourCC("A007"),
+    ID = FourCC("A00B"),
     Duration = 2,
     Damage = 150,
 }
 
---BlzSetAbilityResearchTooltip(Abilities.MonstrousBlow.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
---BlzSetAbilityResearchExtendedTooltip(Abilities.MonstrousBlow.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
---
---|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
---        Abilities.MonstrousBlow.Duration[1], Abilities.MonstrousBlow.DurationHero[1], math.round(Abilities.MonstrousBlow.PlagueLengthen[1] * 100),
---        Abilities.MonstrousBlow.Duration[2], Abilities.MonstrousBlow.DurationHero[2], math.round(Abilities.MonstrousBlow.PlagueLengthen[2] * 100),
---        Abilities.MonstrousBlow.Duration[3], Abilities.MonstrousBlow.DurationHero[3], math.round(Abilities.MonstrousBlow.PlagueLengthen[3] * 100)
---), 0)
---
---for i = 1, #Abilities.MonstrousBlow.Duration do
---    BlzSetAbilityTooltip(Abilities.MonstrousBlow.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
---    BlzSetAbilityExtendedTooltip(Abilities.MonstrousBlow.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.MonstrousBlow.Duration[i], Abilities.MonstrousBlow.DurationHero[i], math.round(Abilities.MonstrousBlow.PlagueLengthen[i] * 100)), i - 1)
---end
+BlzSetAbilityTooltip(Abilities.MonstrousBlow.ID, string.format("蛮兽打击"), 0)
+BlzSetAbilityExtendedTooltip(Abilities.MonstrousBlow.ID, string.format("一次野蛮的攻击，对目标造成|cffff8c00%s|r点伤害并使其昏迷|cffff8c00%s|r秒。",
+        Abilities.MonstrousBlow.Damage, Abilities.MonstrousBlow.Duration), 0)
 
 --endregion
 
@@ -1033,21 +1039,18 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         UnitDamageTarget(data.caster, data.target, Abilities.MonstrousBlow.Damage, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WOOD_HEAVY_BASH)
 
         IssueImmediateOrderById(data.target, Const.OrderId_Stop)
+        local sfx = AddSpecialEffectTarget("Abilities/Spells/Human/Thunderclap/ThunderclapTarget.mdl", data.target, "overhead")
         PauseUnit(data.target, true)
         local timer = Timer.new(function()
             PauseUnit(data.target, false)
-        end)
+            DestroyEffect(sfx)
+        end, Abilities.MonstrousBlow.Duration, 1)
         timer:Start()
     end
 })
 
 return cls
 
-
--- 横扫爪击
--- 蛮兽打击
--- 蹒跚冲锋
--- 腐臭壁垒
 end}
 
 __modules["Ability.Outbreak"]={loader=function()
@@ -1248,42 +1251,23 @@ return cls
 end}
 
 __modules["Ability.PutridBulwark"]={loader=function()
--- 蛮兽打击
+-- 腐臭壁垒
 
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local BuffBase = require("Objects.BuffBase")
-local ProjectileBase = require("Objects.ProjectileBase")
-local FesteringWound = require("Ability.FesteringWound")
-local UnitAttribute = require("Objects.UnitAttribute")
-local Vector2 = require("Lib.Vector2")
-local Const = require("Config.Const")
-local Timer = require("Lib.Timer")
-local RootDebuff = require("Ability.RootDebuff")
 
 --region meta
 
 Abilities.PutridBulwark = {
-    ID = FourCC("A007"),
+    ID = FourCC("A014"),
     Reduction = 0.5,
     Duration = 10,
 }
 
---BlzSetAbilityResearchTooltip(Abilities.PutridBulwark.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
---BlzSetAbilityResearchExtendedTooltip(Abilities.PutridBulwark.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
---
---|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
---        Abilities.PutridBulwark.Duration[1], Abilities.PutridBulwark.DurationHero[1], math.round(Abilities.PutridBulwark.PlagueLengthen[1] * 100),
---        Abilities.PutridBulwark.Duration[2], Abilities.PutridBulwark.DurationHero[2], math.round(Abilities.PutridBulwark.PlagueLengthen[2] * 100),
---        Abilities.PutridBulwark.Duration[3], Abilities.PutridBulwark.DurationHero[3], math.round(Abilities.PutridBulwark.PlagueLengthen[3] * 100)
---), 0)
---
---for i = 1, #Abilities.PutridBulwark.Duration do
---    BlzSetAbilityTooltip(Abilities.PutridBulwark.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
---    BlzSetAbilityExtendedTooltip(Abilities.PutridBulwark.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.PutridBulwark.Duration[i], Abilities.PutridBulwark.DurationHero[i], math.round(Abilities.PutridBulwark.PlagueLengthen[i] * 100)), i - 1)
---end
+BlzSetAbilityTooltip(Abilities.PutridBulwark.ID, string.format("腐臭壁垒", 0), 0)
+BlzSetAbilityExtendedTooltip(Abilities.PutridBulwark.ID, string.format("发出固守咆哮，受到的所有伤害降低|cffff8c00%s|r，持续|cffff8c00%s|r秒。",
+        string.formatPercentage(Abilities.PutridBulwark.Reduction), Abilities.PutridBulwark.Duration), 0)
 
 --endregion
 
@@ -1291,15 +1275,19 @@ Abilities.PutridBulwark = {
 local cls = class("PutridBulwark", BuffBase)
 
 function cls:OnEnable()
+    self.sfx = AddSpecialEffectTarget("Abilities/Spells/Items/AIda/AIdaTarget.mdl", self.target, "overhead")
+    BlzSetSpecialEffectColor(self.sfx, 96, 255, 96)
 end
 
 function cls:OnDisable()
+    DestroyEffect(self.sfx)
 end
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.PutridBulwark.ID,
     ---@param data ISpellData
     handler = function(data)
+        ExAddSpecialEffectTarget("Abilities/Spells/Other/HowlOfTerror/HowlCaster.mdl", data.caster, "overhead", 2)
         local buff = BuffBase.FindBuffByClassName(data.caster, cls.__cname)
         if buff then
             buff:ResetDuration()
@@ -1320,11 +1308,6 @@ end)
 
 return cls
 
-
--- 横扫爪击
--- 蛮兽打击
--- 蹒跚冲锋
--- 腐臭壁垒
 end}
 
 __modules["Ability.RootDebuff"]={loader=function()
@@ -1341,45 +1324,31 @@ function cls:OnDisable()
     SetUnitMoveSpeed(self.target, GetUnitDefaultMoveSpeed(self.target))
 end
 
+return cls
+
 end}
 
 __modules["Ability.ShamblingRush"]={loader=function()
--- 蛮兽打击
+-- 蹒跚冲锋
 
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
 local BuffBase = require("Objects.BuffBase")
-local ProjectileBase = require("Objects.ProjectileBase")
-local FesteringWound = require("Ability.FesteringWound")
-local UnitAttribute = require("Objects.UnitAttribute")
 local Vector2 = require("Lib.Vector2")
 local Const = require("Config.Const")
-local Timer = require("Lib.Timer")
 local RootDebuff = require("Ability.RootDebuff")
 
 --region meta
 
 Abilities.ShamblingRush = {
-    ID = FourCC("A007"),
-    Speed = 600,
+    ID = FourCC("A013"),
+    Speed = 400,
     Duration = 6,
 }
 
---BlzSetAbilityResearchTooltip(Abilities.ShamblingRush.ID, "学习死亡之握 - [|cffffcc00%d级|r]", 0)
---BlzSetAbilityResearchExtendedTooltip(Abilities.ShamblingRush.ID, string.format([[运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，并根据目标身上的瘟疫数量，延长持续时间。
---
---|cffffcc001级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc002级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。
---|cffffcc003级|r - 持续%s秒，英雄%s秒，每个瘟疫延长%s%%。]],
---        Abilities.ShamblingRush.Duration[1], Abilities.ShamblingRush.DurationHero[1], math.round(Abilities.ShamblingRush.PlagueLengthen[1] * 100),
---        Abilities.ShamblingRush.Duration[2], Abilities.ShamblingRush.DurationHero[2], math.round(Abilities.ShamblingRush.PlagueLengthen[2] * 100),
---        Abilities.ShamblingRush.Duration[3], Abilities.ShamblingRush.DurationHero[3], math.round(Abilities.ShamblingRush.PlagueLengthen[3] * 100)
---), 0)
---
---for i = 1, #Abilities.ShamblingRush.Duration do
---    BlzSetAbilityTooltip(Abilities.ShamblingRush.ID, string.format("死亡之握 - [|cffffcc00%s级|r]", i), i - 1)
---    BlzSetAbilityExtendedTooltip(Abilities.ShamblingRush.ID, string.format("运用笼罩万物的邪恶能量，将目标拉到死亡骑士面前来，并让其无法移动，持续%s秒，英雄%s秒，目标身上的每个瘟疫可以延长%s%%的持续时间。", Abilities.ShamblingRush.Duration[i], Abilities.ShamblingRush.DurationHero[i], math.round(Abilities.ShamblingRush.PlagueLengthen[i] * 100)), i - 1)
---end
+BlzSetAbilityTooltip(Abilities.ShamblingRush.ID, string.format("蹒跚冲锋"), 0)
+BlzSetAbilityExtendedTooltip(Abilities.ShamblingRush.ID, string.format("向敌人冲锋，打断其正在施放的法术并使其不能移动，持续|cffff8c00%s|r秒。",
+        Abilities.ShamblingRush.Duration), 0)
 
 --endregion
 
@@ -1390,7 +1359,13 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     ---@param data ISpellData
     handler = function(data)
         coroutine.start(function()
+            coroutine.step()
             SetUnitPathing(data.caster, false)
+            local defaultRange = GetUnitAcquireRange(data.caster)
+            SetUnitAcquireRange(data.caster, 0)
+            SetUnitTimeScale(data.caster, 3)
+            SetUnitAnimationByIndex(data.caster, 1)
+            local sfx = AddSpecialEffectTarget("Objects/Spawnmodels/Undead/ImpaleTargetDust/ImpaleTargetDust.mdl", data.caster, "origin")
             while true do
                 local v1 = Vector2.FromUnit(data.caster)
                 local v2 = Vector2.FromUnit(data.target)
@@ -1418,13 +1393,16 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 coroutine.step()
             end
 
+            DestroyEffect(sfx)
             SetUnitPathing(data.caster, true)
             IssueImmediateOrderById(data.target, Const.OrderId_Stop)
+            SetUnitAcquireRange(data.caster, defaultRange)
+            SetUnitTimeScale(data.caster, 1)
             local debuff = BuffBase.FindBuffByClassName(data.target, RootDebuff.__cname)
             if debuff then
                 debuff:ResetDuration(Time.Time + Abilities.ShamblingRush.Duration)
             else
-                RootDebuff.new(data.caster, data. target, Abilities.ShamblingRush.Duration, 999)
+                RootDebuff.new(data.caster, data.target, Abilities.ShamblingRush.Duration, 999)
             end
         end)
     end
@@ -1432,11 +1410,6 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
 return cls
 
-
--- 横扫爪击
--- 蛮兽打击
--- 蹒跚冲锋
--- 腐臭壁垒
 end}
 
 __modules["Ability.UnholyPlague"]={loader=function()
@@ -1496,10 +1469,6 @@ cls.OrderId_Smart = 851971
 cls.OrderId_Attack = 851983
 
 return cls
-
-end}
-
-__modules["Lib.ArrayExt"]={loader=function()
 
 end}
 
@@ -2124,6 +2093,17 @@ end
 
 end}
 
+__modules["Lib.StringExt"]={loader=function()
+function string.formatPercentage(number, digits)
+    digits = digits or 0
+    number = number * 100
+    local pow = 10 ^ digits
+    number = math.round(number * pow) / pow
+    return tostring(number) .. "%"
+end
+
+end}
+
 __modules["Lib.TableExt"]={loader=function()
 local ipairs = ipairs
 local t_insert = table.insert
@@ -2268,7 +2248,7 @@ local TimeTimerInterval = 10
 local cls = {}
 
 cls.Frame = 0
-cls.Delta = 0.04
+cls.Delta = 0.02
 local delta = cls.Delta
 
 local time = 0
@@ -2859,8 +2839,8 @@ __modules["Main"]={loader=function()
 local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
-require("Lib.ArrayExt")
 require("Lib.TableExt")
+require("Lib.StringExt")
 require("Lib.native")
 
 local ipairs = ipairs
@@ -3006,18 +2986,6 @@ local Vector3 = require("Lib.Vector3")
 
 ---@class Mover
 local cls = class("Mover")
-
-cls.AttachType = {
-    None = 0,
-    Unit = 1,
-    Effect = 2,
-}
-
-cls.DestinationType = {
-    None = 0,
-    Point = 1,
-    Unit = 2,
-}
 
 cls.unitInstMap = {} ---@type table<unit, Mover>
 cls.effectInstMap = {} ---@type table<effect, Mover>
@@ -3510,9 +3478,9 @@ function cls:Awake()
     require("Ability.Defile")
     require("Ability.Apocalypse")
     require("Ability.DarkTransformation")
-    --require("Ability.MonstrousBlow")
-    --require("Ability.ShamblingRush")
-    --require("Ability.PutridBulwark")
+    require("Ability.MonstrousBlow")
+    require("Ability.ShamblingRush")
+    require("Ability.PutridBulwark")
 end
 
 return cls
@@ -3939,7 +3907,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000117319
+--lua-bundler:000115078
 
 function InitGlobals()
 end

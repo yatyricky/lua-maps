@@ -1,8 +1,8 @@
 local FrameTimer = require("Lib.FrameTimer")
 local Time = require("Lib.Time")
 require("Lib.CoroutineExt")
-require("Lib.ArrayExt")
 require("Lib.TableExt")
+require("Lib.StringExt")
 require("Lib.native")
 
 local ipairs = ipairs

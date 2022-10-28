@@ -12,7 +12,7 @@ local TimeTimerInterval = 10
 local cls = {}
 
 cls.Frame = 0
-cls.Delta = 0.04
+cls.Delta = 0.02
 local delta = cls.Delta
 
 local time = 0

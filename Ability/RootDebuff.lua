@@ -10,3 +10,5 @@ end
 function cls:OnDisable()
     SetUnitMoveSpeed(self.target, GetUnitDefaultMoveSpeed(self.target))
 end
+
+return cls
