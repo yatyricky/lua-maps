@@ -19,6 +19,14 @@ function cls:Awake()
     require("Ability.MonstrousBlow")
     require("Ability.ShamblingRush")
     require("Ability.PutridBulwark")
+
+    -- 默认 恶魔猎手
+    require("Ability.Evasion")
+
+    -- 武器战
+    require("Ability.RageGenerator")
+    require("Ability.DeepWounds")
+    require("Ability.Overpower")
 end
 
 return cls

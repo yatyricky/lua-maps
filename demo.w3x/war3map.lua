@@ -1,4 +1,4 @@
---lua-bundler:000117194
+--lua-bundler:000127012
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -394,7 +394,7 @@ local Const = require("Config.Const")
 --region meta
 
 Abilities.DeathCoil = {
-    ID = FourCC("A009"),
+    ID = FourCC("A015"),
     Heal = { 0.2, 0.25, 0.35 },
     Damage = { 70, 140, 210 },
     Wounds = { 3, 5, 7 },
@@ -479,11 +479,11 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
         local level = GetUnitAbilityLevel(data.caster, data.abilityId)
         BlzSetUnitAbilityManaCost(data.caster, Abilities.DeathCoil.ID, level - 1, Abilities.DeathCoil.ManaCost)
 
-        if indicator[data.caster] then
+        if indicator[data.caster] ~= nil then
             DestroyEffect(indicator[data.caster])
             indicator[data.caster] = nil
         end
-        IssueImmediateOrder(data.caster, "weboff")
+        --IssueImmediateOrder(data.caster, "weboff")
     end
 })
 
@@ -507,13 +507,13 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
     if chance then
         BlzEndUnitAbilityCooldown(caster, Abilities.DeathCoil.ID)
         BlzSetUnitAbilityManaCost(caster, Abilities.DeathCoil.ID, level - 1, 0)
-        IssueImmediateOrder(caster, "webon")
+        --IssueImmediateOrder(caster, "webon")
         IssueTargetOrderById(caster, Const.OrderId_Attack, target)
 
-        if indicator[caster] then
+        if indicator[caster] ~= nil then
             DestroyEffect(indicator[caster])
-            indicator[caster] = AddSpecialEffectTarget(caster, "Abilities/Spells/Undead/DeathCoil/DeathCoilMissile.mdl", "overhead")
         end
+        indicator[caster] = AddSpecialEffectTarget("Abilities/Spells/Undead/DeathCoil/DeathCoilMissile.mdl", caster, "overhead")
     end
 end)
 
@@ -730,6 +730,49 @@ return cls
 
 end}
 
+__modules["Ability.DeepWounds"]={loader=function()
+local BuffBase = require("Objects.BuffBase")
+local Abilities = require("Config.Abilities")
+local UnitAttribute = require("Objects.UnitAttribute")
+
+--region meta
+
+Abilities.DeepWounds = {
+    ID = FourCC("A017"),
+    DamageScale = 0.1,
+    Duration = 10,
+    Interval = 1,
+}
+
+BlzSetAbilityTooltip(Abilities.DeepWounds.ID, string.format("重伤"), 0)
+BlzSetAbilityExtendedTooltip(Abilities.DeepWounds.ID, string.format("你的压制、致死打击、或者天神下凡状态下的普通攻击，会对敌人造成重伤效果，每|cffff8c00%s|r秒造成|cffff8c00%s|r的攻击伤害，持续|cffff8c00%s|r秒。",
+        Abilities.DeepWounds.Interval, string.formatPercentage(Abilities.DeepWounds.DamageScale), Abilities.DeepWounds.Duration), 0)
+
+--endregion
+
+---@class DeepWounds : BuffBase
+local cls = class("DeepWounds", BuffBase)
+
+function cls:Update()
+    local attr = UnitAttribute.GetAttr(self.caster)
+    local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Agility) * Abilities.DeepWounds.DamageScale * self.stack
+    UnitDamageTarget(self.caster, self.target, damage, false, true, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
+    ExAddSpecialEffectTarget("Objects/Spawnmodels/Human/HumanBlood/HeroBloodElfBlood.mdl", self.target, "origin", 0.5)
+end
+
+function cls.Cast(caster, target)
+    local debuff = BuffBase.FindBuffByClassName(target, cls.__cname)
+    if debuff then
+        debuff:IncreaseStack()
+    else
+        cls.new(caster, target, Abilities.DeepWounds.Duration, Abilities.DeepWounds.Interval, {})
+    end
+end
+
+return cls
+
+end}
+
 __modules["Ability.Defile"]={loader=function()
 -- 亵渎
 
@@ -899,6 +942,56 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _
     local victims = table.slice(candidates, 1, Abilities.Defile.CleaveTargets[level])
     for _, v in ipairs(victims) do
         UnitDamageTarget(caster, v.unit, damage, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_DIVINE, WEAPON_TYPE_WHOKNOWS)
+    end
+end)
+
+return cls
+
+end}
+
+__modules["Ability.Evasion"]={loader=function()
+-- 闪避
+
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+
+--region meta
+
+Abilities.Evasion = {
+    ID = FourCC("A015"),
+    Chance = { 0.1, 0.2, 0.3 },
+}
+
+--BlzSetAbilityTooltip(Abilities.Evasion.ID, string.format("腐臭壁垒", 0), 0)
+--BlzSetAbilityExtendedTooltip(Abilities.Evasion.ID, string.format("发出固守咆哮，受到的所有伤害降低|cffff8c00%s|r，持续|cffff8c00%s|r秒。",
+--        string.formatPercentage(Abilities.Evasion.Reduction), Abilities.Evasion.Duration), 0)
+
+--endregion
+
+---@class Evasion
+local cls = class("Evasion")
+
+EventCenter.RegisterPlayerUnitDamaging:Emit(function(caster, target, damage, weaponType, damageType, isAttack)
+    if not isAttack then
+        return
+    end
+
+    local level = GetUnitAbilityLevel(target, Abilities.Evasion.ID)
+    if level <= 0 then
+        return
+    end
+
+    local chance = Abilities.Evasion.Chance[level]
+
+    if math.random() < chance then
+        BlzSetEventDamage(0)
+        BlzSetEventWeaponType(WEAPON_TYPE_WHOKNOWS)
+        ExTextMiss(target)
+
+        EventCenter.RegisterPlayerUnitAttackMiss:Emit({
+            caster = caster,
+            target = target,
+        })
     end
 end)
 
@@ -1103,6 +1196,68 @@ end}
 
 __modules["Ability.Outbreak"]={loader=function()
 -- 传染
+end}
+
+__modules["Ability.Overpower"]={loader=function()
+-- 压制
+
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local Const = require("Config.Const")
+local Timer = require("Lib.Timer")
+local UnitAttribute = require("Objects.UnitAttribute")
+local DeepWounds = require("Ability.DeepWounds")
+
+--region meta
+
+Abilities.Overpower = {
+    ID = FourCC("A016"),
+    TechUnitID = FourCC("e000"),
+    DamageScale = 1.2,
+}
+
+BlzSetAbilityTooltip(Abilities.Overpower.ID, string.format("压制"), 0)
+BlzSetAbilityExtendedTooltip(Abilities.Overpower.ID, string.format("敌人|cffff8c00躲闪后|r可以使用，压制敌人，造成|cffff8c00%s|r的攻击伤害并造成|cffff8c00一层|r重伤效果。",
+        string.formatPercentage(Abilities.Overpower.DamageScale)), 0)
+
+--endregion
+
+local cls = class("Overpower")
+
+cls.unitOverpowers = {}
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Abilities.Overpower.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local attr = UnitAttribute.GetAttr(data.caster)
+        local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Agility) * Abilities.Overpower.DamageScale
+        UnitDamageTarget(data.caster, data.target, damage, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WOOD_HEAVY_BASH)
+        DeepWounds.Cast(data.caster, data.target)
+        ExTextCriticalStrike(data.target, damage)
+
+        local tab = table.getOrCreateTable(cls.unitOverpowers, data.caster)
+        for k, v in pairs(tab) do
+            if not ExIsUnitDead(v) then
+                KillUnit(v)
+            end
+            tab[k] = nil
+        end
+    end
+})
+
+EventCenter.RegisterPlayerUnitAttackMiss:On(cls, function(context, data)
+    local level = GetUnitAbilityLevel(data.caster, Abilities.Overpower.ID)
+    if level <= 0 then
+        return
+    end
+
+    local tab = table.getOrCreateTable(cls.unitOverpowers, data.caster)
+    table.insert(tab, CreateUnit(GetOwningPlayer(data.caster), Abilities.Overpower.TechUnitID, 0, 0, 0))
+end)
+
+return cls
+
 end}
 
 __modules["Ability.PlagueStrike"]={loader=function()
@@ -1352,6 +1507,103 @@ EventCenter.RegisterPlayerUnitDamaging:Emit(function(caster, target, damage, wea
     end
 
     BlzSetEventDamage(damage * Abilities.PutridBulwark.Reduction)
+end)
+
+return cls
+
+end}
+
+__modules["Ability.RageGenerator"]={loader=function()
+local Abilities = require("Config.Abilities")
+local EventCenter = require("Lib.EventCenter")
+local Timer = require("Lib.Timer")
+
+--region meta
+
+Abilities.RageGenerator = {
+    ID = FourCC("A019"),
+    RageGeneratorAutoGen = 0.02,
+    RageGeneratorPerAttack = 0.05,
+    RageGeneratorPerHit = 2,
+    ExitCombatInterval = 6,
+}
+
+--endregion
+
+---@class RageGenerator
+local cls = class("RageGenerator")
+
+local combatUnits = {}
+
+local function isUnitRageGenerator(u)
+    return GetUnitAbilityLevel(u, Abilities.RageGenerator.ID) > 0
+end
+
+local exitCombatTimer = {}
+
+local function waitForExitCombat(unit)
+    local timer = exitCombatTimer[unit]
+    if timer then
+        timer:Stop()
+    end
+    timer = Timer.new(function()
+        combatUnits[unit] = -1
+        ExTextState(unit, "离开战斗")
+    end, Abilities.RageGenerator.ExitCombatInterval, 1)
+    exitCombatTimer[unit] = timer
+    timer:Start()
+end
+
+ExTriggerRegisterUnitAcquire(function(caster, target)
+    if isUnitRageGenerator(caster) then
+        if combatUnits[caster] ~= 1 then
+            ExTextState(caster, "进入战斗")
+        end
+        combatUnits[caster] = 1
+        waitForExitCombat(caster)
+    end
+    if isUnitRageGenerator(target) then
+        if combatUnits[target] ~= 1 then
+            ExTextState(target, "进入战斗")
+        end
+        combatUnits[target] = 1
+        waitForExitCombat(target)
+    end
+end)
+
+ExTriggerRegisterNewUnit(function(unit)
+    if isUnitRageGenerator(unit) then
+        SetUnitState(unit, UNIT_STATE_MANA, 0)
+        combatUnits[unit] = -1
+    end
+end)
+
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _, isAttack)
+    if isUnitRageGenerator(caster) then
+        if isAttack then
+            local mana = GetUnitState(caster, UNIT_STATE_MAX_MANA) * Abilities.RageGenerator.RageGeneratorPerAttack
+            SetUnitState(caster, UNIT_STATE_MANA, GetUnitState(caster, UNIT_STATE_MANA) + mana)
+            waitForExitCombat(caster)
+        end
+    end
+    if isUnitRageGenerator(target) then
+        local percent = damage / GetUnitState(target, UNIT_STATE_MAX_LIFE)
+        local mana = GetUnitState(target, UNIT_STATE_MAX_MANA) * percent * Abilities.RageGenerator.RageGeneratorPerHit
+        SetUnitState(target, UNIT_STATE_MANA, GetUnitState(target, UNIT_STATE_MANA) + mana)
+        waitForExitCombat(target)
+    end
+end)
+
+coroutine.start(function()
+    while true do
+        coroutine.wait(1)
+        for unit, flag in pairs(combatUnits) do
+            if flag == -1 then
+                local mana = GetUnitState(unit, UNIT_STATE_MAX_MANA) * Abilities.RageGenerator.RageGeneratorAutoGen * flag
+                SetUnitState(unit, UNIT_STATE_MANA, GetUnitState(unit, UNIT_STATE_MANA) + mana)
+            end
+        end
+    end
 end)
 
 return cls
@@ -2056,17 +2308,36 @@ function ExAddLightningPosUnit(modelName, x1, y1, z1, unit2, duration, color, ch
     end)
 end
 
+local acquireTrigger = CreateTrigger()
+local acquireCalls = {}
+ExTriggerAddAction(acquireTrigger, function()
+    local caster = GetTriggerUnit()
+    local target = GetEventTargetUnit()
+    for _, v in ipairs(acquireCalls) do
+        v(caster, target)
+    end
+end)
+function ExTriggerRegisterUnitAcquire(callback)
+    table.insert(acquireCalls, callback)
+end
+
 local mapArea = CreateRegion()
 RegionAddRect(mapArea, bj_mapInitialPlayableArea)
 local enterTrigger = CreateTrigger()
 local enterMapCalls = {}
 TriggerRegisterEnterRegion(enterTrigger, mapArea, Filter(function() return true end))
-ExTriggerAddAction(enterTrigger, function()
-    local u = GetTriggerUnit()
+function ExTriggerRegisterNewUnitExec(u)
+    TriggerRegisterUnitEvent(acquireTrigger, u, EVENT_UNIT_ACQUIRED_TARGET)
     for _, v in ipairs(enterMapCalls) do
         v(u)
     end
+end
+local ExTriggerRegisterNewUnitExec = ExTriggerRegisterNewUnitExec
+ExTriggerAddAction(enterTrigger, function()
+    ExTriggerRegisterNewUnitExec(GetTriggerUnit())
 end)
+
+---@param callback fun(unit: unit): void
 function ExTriggerRegisterNewUnit(callback)
     t_insert(enterMapCalls, callback)
 end
@@ -2126,16 +2397,44 @@ function GetStackTrace(oneline_yn)
     return "Traceback (most recent call last)" .. trace
 end
 
+function PrintTrace()
+    print(GetStackTrace())
+end
+
 function ExTextCriticalStrike(whichUnit, dmg)
     local tt = CreateTextTag()
     local text = tostring(math.round(dmg)) .. "!"
-    SetTextTagText(tt, text, 0.022)
+    SetTextTagText(tt, text, 0.024)
     SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
     SetTextTagColor(tt, 255, 0, 0, 255)
     SetTextTagVelocity(tt, 0.0, 0.04)
     SetTextTagVisibility(tt, true)
     SetTextTagFadepoint(tt, 2.0)
     SetTextTagLifespan(tt, 5.0)
+    SetTextTagPermanent(tt, false)
+end
+
+function ExTextMiss(whichUnit)
+    local tt = CreateTextTag()
+    SetTextTagText(tt, "未命中", 0.024)
+    SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
+    SetTextTagColor(tt, 255, 0, 0, 255)
+    SetTextTagVelocity(tt, 0.0, 0.03)
+    SetTextTagVisibility(tt, true)
+    SetTextTagFadepoint(tt, 1.0)
+    SetTextTagLifespan(tt, 3.0)
+    SetTextTagPermanent(tt, false)
+end
+
+function ExTextState(whichUnit, text)
+    local tt = CreateTextTag()
+    SetTextTagText(tt, text, 0.024)
+    SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
+    SetTextTagColor(tt, 255, 192, 0, 255)
+    SetTextTagVelocity(tt, 0.0, 0.03)
+    SetTextTagVisibility(tt, true)
+    SetTextTagFadepoint(tt, 1.0)
+    SetTextTagLifespan(tt, 3.0)
     SetTextTagPermanent(tt, false)
 end
 
@@ -2908,7 +3207,7 @@ local ipairs = ipairs
 local systems = {
     require("System.ItemSystem").new(),
     require("System.SpellSystem").new(),
-    require("System.MeleeGameSystem").new(),
+    --require("System.MeleeGameSystem").new(),
     require("System.BuffSystem").new(),
     require("System.DamageSystem").new(),
     --require("System.AbilityEditorSystem").new(),
@@ -2921,6 +3220,16 @@ local systems = {
 for _, system in ipairs(systems) do
     system:Awake()
 end
+
+local group = CreateGroup()
+GroupEnumUnitsInRect(group, bj_mapInitialPlayableArea, Filter(function()
+    local s, m = pcall(ExTriggerRegisterNewUnitExec, GetFilterUnit())
+    if not s then
+        print(m)
+    end
+end))
+DestroyGroup(group)
+group = nil
 
 for _, system in ipairs(systems) do
     system:OnEnable()
@@ -3449,6 +3758,7 @@ local Event = require("Lib.Event")
 EventCenter.RegisterPlayerUnitDamaging = Event.new()
 EventCenter.RegisterPlayerUnitDamaged = Event.new()
 EventCenter.Heal = Event.new()
+EventCenter.RegisterPlayerUnitAttackMiss = Event.new()
 
 local SystemBase = require("System.SystemBase")
 
@@ -3458,7 +3768,7 @@ local cls = class("DamageSystem", SystemBase)
 function cls:ctor()
     cls.super.ctor(self)
     local damagingTrigger = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(damagingTrigger, EVENT_PLAYER_UNIT_DAMAGED)
+    TriggerRegisterAnyUnitEventBJ(damagingTrigger, EVENT_PLAYER_UNIT_DAMAGING)
     ExTriggerAddAction(damagingTrigger, function()
         self:_response(self._damagingHandlers)
     end)
@@ -3536,6 +3846,14 @@ function cls:Awake()
     require("Ability.MonstrousBlow")
     require("Ability.ShamblingRush")
     require("Ability.PutridBulwark")
+
+    -- 默认 恶魔猎手
+    require("Ability.Evasion")
+
+    -- 武器战
+    require("Ability.RageGenerator")
+    require("Ability.DeepWounds")
+    require("Ability.Overpower")
 end
 
 return cls
@@ -3735,7 +4053,7 @@ function cls:Update(dt)
             curr:Add(dir)
             BlzSetSpecialEffectX(proj.sfx, curr.x)
             BlzSetSpecialEffectY(proj.sfx, curr.y)
-            BlzSetSpecialEffectZ(proj.sfx, 60) -- todo, use vec3
+            BlzSetSpecialEffectZ(proj.sfx, curr:GetTerrainZ() + 60) -- todo, use vec3
             BlzSetSpecialEffectYaw(proj.sfx, math.atan2(norm.y, norm.x))
 
             if dest:Sub(curr):GetMagnitude() < 96 then
@@ -3962,15 +4280,9 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000117194
+--lua-bundler:000127012
 
 function InitGlobals()
-end
-
-function CreateAllItems()
-local itemID
-
-BlzCreateItemWithSkin(FourCC("rlif"), -883.4, -107.4, FourCC("rlif"))
 end
 
 function CreateUnitsForPlayer0()
@@ -3980,15 +4292,8 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("Udea"), -1107.0, -243.8, 48.710, FourCC("Udea"))
+u = BlzCreateUnitWithSkin(p, FourCC("Obla"), -353.3, -695.3, 190.440, FourCC("Obla"))
 SetHeroLevel(u, 10, false)
-u = BlzCreateUnitWithSkin(p, FourCC("u001"), -1612.0, -607.4, 30.433, FourCC("u001"))
-u = BlzCreateUnitWithSkin(p, FourCC("u002"), -1593.7, -862.5, 5.153, FourCC("u002"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1225.0, 1133.3, 337.620, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1178.5, 1035.4, 79.038, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1146.8, 945.0, 66.030, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1130.9, 881.8, 124.600, FourCC("hmpr"))
-u = BlzCreateUnitWithSkin(p, FourCC("hmpr"), -1126.4, 833.9, 30.587, FourCC("hmpr"))
 end
 
 function CreateUnitsForPlayer1()
@@ -3998,9 +4303,23 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 354.3, -394.1, 145.749, FourCC("ogru"))
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 192.5, -178.4, 9.306, FourCC("ogru"))
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 137.6, -459.0, 145.749, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 371.8, 646.9, 145.749, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("Edem"), 823.1, -755.9, 233.570, FourCC("Edem"))
+SetHeroLevel(u, 10, false)
+SelectHeroSkill(u, FourCC("AEmb"))
+SelectHeroSkill(u, FourCC("AEmb"))
+SelectHeroSkill(u, FourCC("AEmb"))
+SelectHeroSkill(u, FourCC("AEim"))
+SelectHeroSkill(u, FourCC("AEim"))
+SelectHeroSkill(u, FourCC("AEim"))
+IssueImmediateOrder(u, "immolation")
+SelectHeroSkill(u, FourCC("A015"))
+SelectHeroSkill(u, FourCC("A015"))
+SelectHeroSkill(u, FourCC("A015"))
+IssueImmediateOrder(u, "")
+SelectHeroSkill(u, FourCC("AEme"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 210.1, 862.5, 9.306, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 155.2, 581.9, 145.749, FourCC("ogru"))
 end
 
 function CreateNeutralPassiveBuildings()
@@ -4064,7 +4383,6 @@ NewSoundEnvironment("Default")
 SetAmbientDaySound("LordaeronSummerDay")
 SetAmbientNightSound("LordaeronSummerNight")
 SetMapMusic("Music", true, 0)
-CreateAllItems()
 CreateAllUnits()
 InitBlizzard()
 InitGlobals()

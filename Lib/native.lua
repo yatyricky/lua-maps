@@ -149,17 +149,36 @@ function ExAddLightningPosUnit(modelName, x1, y1, z1, unit2, duration, color, ch
     end)
 end
 
+local acquireTrigger = CreateTrigger()
+local acquireCalls = {}
+ExTriggerAddAction(acquireTrigger, function()
+    local caster = GetTriggerUnit()
+    local target = GetEventTargetUnit()
+    for _, v in ipairs(acquireCalls) do
+        v(caster, target)
+    end
+end)
+function ExTriggerRegisterUnitAcquire(callback)
+    table.insert(acquireCalls, callback)
+end
+
 local mapArea = CreateRegion()
 RegionAddRect(mapArea, bj_mapInitialPlayableArea)
 local enterTrigger = CreateTrigger()
 local enterMapCalls = {}
 TriggerRegisterEnterRegion(enterTrigger, mapArea, Filter(function() return true end))
-ExTriggerAddAction(enterTrigger, function()
-    local u = GetTriggerUnit()
+function ExTriggerRegisterNewUnitExec(u)
+    TriggerRegisterUnitEvent(acquireTrigger, u, EVENT_UNIT_ACQUIRED_TARGET)
     for _, v in ipairs(enterMapCalls) do
         v(u)
     end
+end
+local ExTriggerRegisterNewUnitExec = ExTriggerRegisterNewUnitExec
+ExTriggerAddAction(enterTrigger, function()
+    ExTriggerRegisterNewUnitExec(GetTriggerUnit())
 end)
+
+---@param callback fun(unit: unit): void
 function ExTriggerRegisterNewUnit(callback)
     t_insert(enterMapCalls, callback)
 end
@@ -219,15 +238,43 @@ function GetStackTrace(oneline_yn)
     return "Traceback (most recent call last)" .. trace
 end
 
+function PrintTrace()
+    print(GetStackTrace())
+end
+
 function ExTextCriticalStrike(whichUnit, dmg)
     local tt = CreateTextTag()
     local text = tostring(math.round(dmg)) .. "!"
-    SetTextTagText(tt, text, 0.022)
+    SetTextTagText(tt, text, 0.024)
     SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
     SetTextTagColor(tt, 255, 0, 0, 255)
     SetTextTagVelocity(tt, 0.0, 0.04)
     SetTextTagVisibility(tt, true)
     SetTextTagFadepoint(tt, 2.0)
     SetTextTagLifespan(tt, 5.0)
+    SetTextTagPermanent(tt, false)
+end
+
+function ExTextMiss(whichUnit)
+    local tt = CreateTextTag()
+    SetTextTagText(tt, "未命中", 0.024)
+    SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
+    SetTextTagColor(tt, 255, 0, 0, 255)
+    SetTextTagVelocity(tt, 0.0, 0.03)
+    SetTextTagVisibility(tt, true)
+    SetTextTagFadepoint(tt, 1.0)
+    SetTextTagLifespan(tt, 3.0)
+    SetTextTagPermanent(tt, false)
+end
+
+function ExTextState(whichUnit, text)
+    local tt = CreateTextTag()
+    SetTextTagText(tt, text, 0.024)
+    SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
+    SetTextTagColor(tt, 255, 192, 0, 255)
+    SetTextTagVelocity(tt, 0.0, 0.03)
+    SetTextTagVisibility(tt, true)
+    SetTextTagFadepoint(tt, 1.0)
+    SetTextTagLifespan(tt, 3.0)
     SetTextTagPermanent(tt, false)
 end

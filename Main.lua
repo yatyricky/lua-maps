@@ -15,7 +15,7 @@ local ipairs = ipairs
 local systems = {
     require("System.ItemSystem").new(),
     require("System.SpellSystem").new(),
-    require("System.MeleeGameSystem").new(),
+    --require("System.MeleeGameSystem").new(),
     require("System.BuffSystem").new(),
     require("System.DamageSystem").new(),
     --require("System.AbilityEditorSystem").new(),
@@ -28,6 +28,16 @@ local systems = {
 for _, system in ipairs(systems) do
     system:Awake()
 end
+
+local group = CreateGroup()
+GroupEnumUnitsInRect(group, bj_mapInitialPlayableArea, Filter(function()
+    local s, m = pcall(ExTriggerRegisterNewUnitExec, GetFilterUnit())
+    if not s then
+        print(m)
+    end
+end))
+DestroyGroup(group)
+group = nil
 
 for _, system in ipairs(systems) do
     system:OnEnable()
