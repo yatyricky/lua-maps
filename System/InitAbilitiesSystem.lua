@@ -22,11 +22,14 @@ function cls:Awake()
 
     -- 默认 恶魔猎手
     require("Ability.Evasion")
+    require("Ability.MoonWellHeal")
 
     -- 武器战
     require("Ability.RageGenerator")
     require("Ability.DeepWounds")
     require("Ability.Overpower")
+    require("Ability.Charge")
+    require("Ability.MortalStrike")
 end
 
 return cls

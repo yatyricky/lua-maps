@@ -1460,3 +1460,81 @@ STRING 302
 rage
 }
 
+STRING 303
+// 技能: A01A (mortal strike), Name (名字)
+{
+mortal strike
+}
+
+STRING 304
+// 技能: A01A (mortal strike), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 306
+// 技能: A01A (mortal strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 307
+// 技能: A01A (mortal strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 308
+// 技能: A01A (mortal strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 309
+// 技能: A01A (mortal strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 310
+// 技能: A01A (mortal strike), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 311
+// 技能: A01A (mortal strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 312
+// 技能: A01A (mortal strike), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 313
+// 技能: A01A (mortal strike), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 314
+// 技能: A01A (mortal strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 315
+// 技能: A01A (mortal strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 316
+// 技能: A01A (mortal strike), Hotkey (热键 - 普通)
+{
+W
+}
+

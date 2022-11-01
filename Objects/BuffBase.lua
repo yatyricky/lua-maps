@@ -8,6 +8,7 @@ cls.unitBuffs = {} ---@type table<unit, BuffBase[]>
 
 ---@param unit unit
 ---@param name string
+---@return BuffBase | Nil, integer | Nil
 function cls.FindBuffByClassName(unit, name)
     local arr = cls.unitBuffs[unit]
     if not arr then

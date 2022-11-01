@@ -130,3 +130,17 @@ end
 function table.iGetRandom(t)
     return t[m_random(#t)]
 end
+
+---@generic T
+---@param t T[]
+---@param func fun(elem: T): boolean
+---@return T[]
+function table.iWhere(t, func)
+    local tab = {}
+    for _, v in ipairs(t) do
+        if func(v) then
+            t_insert(tab, v)
+        end
+    end
+    return tab
+end

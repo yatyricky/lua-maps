@@ -63,6 +63,10 @@ ExTriggerRegisterNewUnit(function(unit)
 end)
 
 EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _, isAttack)
+    if damage < 1 then
+        return
+    end
+
     if isUnitRageGenerator(caster) then
         if isAttack then
             local mana = GetUnitState(caster, UNIT_STATE_MAX_MANA) * Abilities.RageGenerator.RageGeneratorPerAttack

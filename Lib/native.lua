@@ -69,6 +69,20 @@ function ExGroupEnumUnitsInRange(x, y, radius, callback)
     end))
 end
 
+---@param x real
+---@param y real
+---@param radius real
+---@return void
+function ExGroupGetUnitsInRange(x, y, radius)
+    GroupClear(group)
+    local units = {}
+    GroupEnumUnitsInRange(group, x, y, radius, Filter(function()
+        t_insert(units, GetFilterUnit())
+        return false
+    end))
+    return units
+end
+
 ---@param modelName string
 ---@param target unit
 ---@param attachPoint string
@@ -196,6 +210,8 @@ ExTriggerAddAction(deathTrigger, function()
         v(u)
     end
 end)
+
+---@param callback fun(unit: unit): void
 function ExTriggerRegisterUnitDeath(callback)
     t_insert(unitDeathCalls, callback)
 end
@@ -238,7 +254,7 @@ function GetStackTrace(oneline_yn)
     return "Traceback (most recent call last)" .. trace
 end
 
-function PrintTrace()
+function PrintStackTrace()
     print(GetStackTrace())
 end
 
@@ -277,4 +293,24 @@ function ExTextState(whichUnit, text)
     SetTextTagFadepoint(tt, 1.0)
     SetTextTagLifespan(tt, 3.0)
     SetTextTagPermanent(tt, false)
+end
+
+function ExGetUnitMana(unit)
+    return GetUnitState(unit, UNIT_STATE_MANA)
+end
+
+function ExSetUnitMana(unit, amount)
+    return SetUnitState(unit, UNIT_STATE_MANA, amount)
+end
+
+function ExAddUnitMana(unit, amount)
+    ExSetUnitMana(ExGetUnitMana(unit) + amount)
+end
+
+function ExGetUnitLifeLoss(unit)
+    return GetUnitState(unit, UNIT_STATE_MAX_LIFE) - GetUnitState(unit, UNIT_STATE_LIFE)
+end
+
+function ExGetUnitManaLoss(unit)
+    return GetUnitState(unit, UNIT_STATE_MAX_MANA) - ExGetUnitMana(unit)
 end

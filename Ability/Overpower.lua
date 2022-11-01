@@ -16,7 +16,7 @@ Abilities.Overpower = {
 }
 
 BlzSetAbilityTooltip(Abilities.Overpower.ID, string.format("压制"), 0)
-BlzSetAbilityExtendedTooltip(Abilities.Overpower.ID, string.format("敌人|cffff8c00躲闪后|r可以使用，压制敌人，造成|cffff8c00%s|r的攻击伤害并造成|cffff8c00一层|r重伤效果。",
+BlzSetAbilityExtendedTooltip(Abilities.Overpower.ID, string.format("敌人|cffff8c00躲闪后|r可以使用，压制敌人，造成|cffff8c00%s|r的攻击伤害并造成一层|cffff8c00重伤|r效果。",
         string.formatPercentage(Abilities.Overpower.DamageScale)), 0)
 
 --endregion
@@ -45,7 +45,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     end
 })
 
-EventCenter.RegisterPlayerUnitAttackMiss:On(cls, function(context, data)
+EventCenter.PlayerUnitAttackMiss:On(cls, function(context, data)
     local level = GetUnitAbilityLevel(data.caster, Abilities.Overpower.ID)
     if level <= 0 then
         return

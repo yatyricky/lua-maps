@@ -1,10 +1,16 @@
 local EventCenter = require("Lib.EventCenter")
 local Event = require("Lib.Event")
+local UnitAttribute = require("Objects.UnitAttribute")
+local Const = require("Config.Const")
 
 EventCenter.RegisterPlayerUnitDamaging = Event.new()
 EventCenter.RegisterPlayerUnitDamaged = Event.new()
+---data {whichUnit, target, amount, attack, ranged, attackType, damageType, weaponType, outResult}
+EventCenter.Damage = Event.new()
+---data: {caster:unit,target:unit}
 EventCenter.Heal = Event.new()
-EventCenter.RegisterPlayerUnitAttackMiss = Event.new()
+EventCenter.HealMana = Event.new()
+EventCenter.PlayerUnitAttackMiss = Event.new()
 
 local SystemBase = require("System.SystemBase")
 
@@ -38,7 +44,33 @@ end
 function cls:Awake()
     EventCenter.RegisterPlayerUnitDamaging:On(self, cls._registerDamaging)
     EventCenter.RegisterPlayerUnitDamaged:On(self, cls._registerDamaged)
+    EventCenter.Damage:On(self, cls._onDamage)
     EventCenter.Heal:On(self, cls._onHeal)
+    EventCenter.HealMana:On(self, cls._onHealMana)
+end
+
+function cls:OnEnable()
+    EventCenter.RegisterPlayerUnitDamaging:Emit(function(caster, target, damage, weaponType, damageType, isAttack)
+        if not isAttack then
+            return
+        end
+
+        local attr = UnitAttribute.GetAttr(target)
+        if attr.dodge <= 0 then
+            return
+        end
+
+        if math.random() < attr.dodge then
+            BlzSetEventDamage(0)
+            BlzSetEventWeaponType(WEAPON_TYPE_WHOKNOWS)
+            ExTextMiss(target)
+
+            EventCenter.PlayerUnitAttackMiss:Emit({
+                caster = caster,
+                target = target,
+            })
+        end
+    end)
 end
 
 function cls:_registerDamaging(handler)
@@ -61,9 +93,44 @@ function cls:_response(whichHandlers)
     end
 end
 
+-- whichUnit, target, amount, attack, ranged, attackType, damageType, weaponType, outResult
+function cls:_onDamage(d)
+    local a = UnitAttribute.GetAttr(d.whichUnit)
+    local b = UnitAttribute.GetAttr(d.target)
+    if d.attack then
+        if math.random() < b.dodge then
+            d.outResult.hitResult = Const.HitResult_Miss
+            EventCenter.PlayerUnitAttackMiss:Emit({
+                caster = d.whichUnit,
+                target = d.target,
+            })
+            ExTextMiss(d.target)
+            return
+        end
+    end
+
+    local amount = d.amount * (1 + a.damageAmplification - b.damageReduction)
+    UnitDamageTarget(d.whichUnit, d.target, amount, d.attack, d.ranged, d.attackType, d.damageType, d.weaponType)
+    d.outResult.hitResult = Const.HitResult_Hit
+end
+
 function cls:_onHeal(data)
     local current = GetUnitState(data.target, UNIT_STATE_LIFE)
-    SetWidgetLife(data.target, current + data.amount)
+    local attr = UnitAttribute.GetAttr(data.target)
+    local healed = data.amount * (1 + attr.healingTaken)
+    print("onheal", GetUnitName(data.target), "amount", data.amount, "actual", healed, attr.healingTaken)
+    SetWidgetLife(data.target, current + healed)
+end
+
+function cls:_onHealMana(data)
+    local current = GetUnitState(data.target, UNIT_STATE_MANA)
+    local amount
+    if data.isPercentage then
+        amount = data.amount * GetUnitState(data.target, UNIT_STATE_MAX_MANA)
+    else
+        amount = data.amount
+    end
+    SetUnitState(data.target, UNIT_STATE_MANA, current + amount)
 end
 
 return cls

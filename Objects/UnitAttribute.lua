@@ -80,6 +80,12 @@ function cls:ctor(unit)
 
     self.ms = 0
     self.msp = 0
+
+    self.dodge = 0
+
+    self.damageAmplification = 0
+    self.damageReduction = 0
+    self.healingTaken = 0
 end
 
 function cls:GetHeroMainAttr(type, ignoreBonus)

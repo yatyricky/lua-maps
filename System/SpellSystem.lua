@@ -52,6 +52,9 @@ function cls:ctor()
 
     self:_register(EVENT_PLAYER_UNIT_SPELL_FINISH, function()
         local data = self.castTab[GetTriggerUnit()]
+        if data == nil then
+            return
+        end
         data.finished = true
         self:_invoke(self._finishHandlers, data)
     end)
@@ -92,6 +95,9 @@ function cls:_invoke(handlers, data)
                 listener.handler(data)
             end
         end
+    end
+    if not data then
+        return
     end
     tab = handlers[data.abilityId]
     if tab then

@@ -13,7 +13,7 @@ Abilities.Charge = {
     ID = FourCC("A018"),
     Damage = 0.2,
     MinDistance = 300,
-    Speed = 400,
+    Speed = 800,
     DurationMinion = { 10, 20, 30 },
     DurationHero = { 2, 5, 10 },
     Rage = 0.2,
@@ -21,8 +21,8 @@ Abilities.Charge = {
 
 local Meta = Abilities.Charge
 
-BlzSetAbilityResearchTooltip(Abilities.Charge.ID, "学习冲锋 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(Abilities.Charge.ID, string.format([[向一名敌人冲锋，造成|cffff8c00%s|r的攻击伤害，使其定身，并生成|cffff8c00%s|r的法力值。
+BlzSetAbilityResearchTooltip(Meta.ID, "学习冲锋 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[向一名敌人冲锋，造成|cffff8c00%s|r的攻击伤害，使其定身，并生成|cffff8c00%s|r的怒气值。
 
 |cff99ccff施法距离|r - %s-900
 |cff99ccff冷却时间|r - 10秒
@@ -74,14 +74,19 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             local defaultRange = GetUnitAcquireRange(data.caster)
             SetUnitAcquireRange(data.caster, 0)
             SetUnitTimeScale(data.caster, 3)
-            SetUnitAnimationByIndex(data.caster, 1)
-            local sfx = AddSpecialEffectTarget("Objects/Spawnmodels/Undead/ImpaleTargetDust/ImpaleTargetDust.mdl", data.caster, "origin")
+            SetUnitAnimationByIndex(data.caster, 6)
+            local sfx = AddSpecialEffectTarget("Abilities/Spells/Other/Tornado/Tornado_Target.mdl", data.caster, "origin")
+            local sfx1 = AddSpecialEffectTarget("Abilities/Spells/Other/Tornado/Tornado_Target.mdl", data.caster, "weapon")
+            local sfx2 = AddSpecialEffectTarget("Abilities/Spells/Other/Tornado/Tornado_Target.mdl", data.caster, "overhead")
+            local sfx3 = AddSpecialEffectTarget("Abilities/Weapons/PhoenixMissile/Phoenix_Missile.mdl", data.caster, "origin")
+            BlzSetSpecialEffectScale(sfx3, 0.2)
+            local travelled = 10
             while true do
                 local v1 = Vector2.FromUnit(data.caster)
                 local v2 = Vector2.FromUnit(data.target)
                 local v3 = v2 - v1
                 local distance = math.max(v3:GetMagnitude() - 96, 0)
-                local shouldMove = Abilities.Charge.Speed * Time.Delta
+                local shouldMove = Meta.Speed * Time.Delta
                 local norm = v3:SetNormalize()
                 SetUnitFacing(data.caster, math.atan2(norm.y, norm.x) * bj_RADTODEG)
                 local move
@@ -96,6 +101,12 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 v1:Add(norm * move)
                 v1:UnitMoveTo(data.caster)
 
+                travelled = travelled + distance
+                if travelled > 96 then
+                    travelled = 0
+                    ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x,v1.y, 1.2)
+                end
+
                 if hit then
                     break
                 end
@@ -104,16 +115,25 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             end
 
             DestroyEffect(sfx)
+            DestroyEffect(sfx1)
+            DestroyEffect(sfx2)
+            DestroyEffect(sfx3)
             SetUnitPathing(data.caster, true)
             IssueImmediateOrderById(data.target, Const.OrderId_Stop)
             SetUnitAcquireRange(data.caster, defaultRange)
             SetUnitTimeScale(data.caster, 1)
+
+            local level = GetUnitAbilityLevel(data.caster, Meta.ID)
+            local duration = IsUnitType(data.target, UNIT_TYPE_HERO) and Meta.DurationHero[level] or Meta.DurationMinion[level]
             local debuff = BuffBase.FindBuffByClassName(data.target, RootDebuff.__cname)
             if debuff then
-                debuff:ResetDuration(Time.Time + Abilities.Charge.Duration)
+                debuff:ResetDuration(Time.Time + duration)
             else
-                RootDebuff.new(data.caster, data.target, Abilities.Charge.Duration, 999)
+                RootDebuff.new(data.caster, data.target, duration, 999)
             end
+
+            local mana = GetUnitState(data.caster, UNIT_STATE_MAX_MANA) * Meta.Rage
+            SetUnitState(data.caster, UNIT_STATE_MANA, GetUnitState(data.caster, UNIT_STATE_MANA) + mana)
         end)
     end
 })
