@@ -118,7 +118,6 @@ function cls:_onHeal(data)
     local current = GetUnitState(data.target, UNIT_STATE_LIFE)
     local attr = UnitAttribute.GetAttr(data.target)
     local healed = data.amount * (1 + attr.healingTaken)
-    print("onheal", GetUnitName(data.target), "amount", data.amount, "actual", healed, attr.healingTaken)
     SetWidgetLife(data.target, current + healed)
 end
 
