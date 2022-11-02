@@ -28,16 +28,6 @@ STRING 6
 势力 1
 }
 
-STRING 7
-{
-Player 2
-}
-
-STRING 8
-{
-Force 3
-}
-
 STRING 9
 // 技能: A000 (死亡之握), Name (名字)
 {
@@ -1536,5 +1526,93 @@ STRING 316
 // 技能: A01A (mortal strike), Hotkey (热键 - 普通)
 {
 W
+}
+
+STRING 317
+// 技能: A01B (condemn), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 318
+// 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 319
+// 技能: A01B (condemn), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 320
+// 技能: A01B (condemn), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 323
+{
+玩家 2
+}
+
+STRING 324
+{
+势力 2
+}
+
+STRING 325
+// 技能: A01B (condemn), Name (名字)
+{
+condemn
+}
+
+STRING 326
+// 技能: A01B (condemn), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 327
+// 技能: A01B (condemn), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 328
+// 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 329
+// 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 330
+// 技能: A01B (condemn), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 331
+// 技能: A01B (condemn), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 332
+// 技能: A01B (condemn), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 333
+// 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
 }
 

@@ -258,6 +258,20 @@ function PrintStackTrace()
     print(GetStackTrace())
 end
 
+function ExTextTag(whichUnit, dmg, color)
+    local tt = CreateTextTag()
+    local text = tostring(math.round(dmg)) .. "!"
+    SetTextTagText(tt, text, 0.024)
+    SetTextTagPos(tt, GetUnitX(whichUnit), GetUnitY(whichUnit), 0.0)
+    color = color or { r = 1, g = 1, b = 1, a = 1 }
+    SetTextTagColor(tt, math.round(color.r * 255), math.round(color.g * 255), math.round(color.b * 255), math.round(color.a * 255))
+    SetTextTagVelocity(tt, 0.0, 0.04)
+    SetTextTagVisibility(tt, true)
+    SetTextTagFadepoint(tt, 2.0)
+    SetTextTagLifespan(tt, 5.0)
+    SetTextTagPermanent(tt, false)
+end
+
 function ExTextCriticalStrike(whichUnit, dmg)
     local tt = CreateTextTag()
     local text = tostring(math.round(dmg)) .. "!"
@@ -299,6 +313,14 @@ function ExGetUnitMana(unit)
     return GetUnitState(unit, UNIT_STATE_MANA)
 end
 
+function ExGetUnitMaxMana(unit)
+    return GetUnitState(unit, UNIT_STATE_MAX_MANA)
+end
+
+function ExGetUnitManaPortion(unit)
+    return ExGetUnitMana(unit) / ExGetUnitMaxMana(unit)
+end
+
 function ExSetUnitMana(unit, amount)
     return SetUnitState(unit, UNIT_STATE_MANA, amount)
 end
@@ -307,10 +329,14 @@ function ExAddUnitMana(unit, amount)
     ExSetUnitMana(ExGetUnitMana(unit) + amount)
 end
 
+function ExGetUnitManaLoss(unit)
+    return GetUnitState(unit, UNIT_STATE_MAX_MANA) - ExGetUnitMana(unit)
+end
+
 function ExGetUnitLifeLoss(unit)
     return GetUnitState(unit, UNIT_STATE_MAX_LIFE) - GetUnitState(unit, UNIT_STATE_LIFE)
 end
 
-function ExGetUnitManaLoss(unit)
-    return GetUnitState(unit, UNIT_STATE_MAX_MANA) - ExGetUnitMana(unit)
+function ExGetUnitLifePortion(unit)
+    return GetWidgetLife(unit) / GetUnitState(unit, UNIT_STATE_MAX_LIFE)
 end

@@ -62,8 +62,6 @@ end
 
 local cls = class("MortalStrike")
 
-cls.affectedUnits = {}
-
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Meta.ID,
     ---@param data ISpellData
