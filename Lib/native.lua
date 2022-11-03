@@ -326,7 +326,7 @@ function ExSetUnitMana(unit, amount)
 end
 
 function ExAddUnitMana(unit, amount)
-    ExSetUnitMana(ExGetUnitMana(unit) + amount)
+    ExSetUnitMana(unit, ExGetUnitMana(unit) + amount)
 end
 
 function ExGetUnitManaLoss(unit)

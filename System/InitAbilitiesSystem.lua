@@ -31,6 +31,7 @@ function cls:Awake()
     require("Ability.Charge")
     require("Ability.MortalStrike")
     require("Ability.Condemn")
+    require("Ability.BladeStorm")
 end
 
 return cls

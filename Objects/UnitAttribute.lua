@@ -104,6 +104,7 @@ function cls:GetHeroMainAttr(type, ignoreBonus)
     return 0
 end
 
+---@param type integer HeroAttributeType
 function cls:SimAttack(type)
     return BlzGetUnitBaseDamage(self.owner, 0) + math.random(1, BlzGetUnitDiceSides(self.owner, 0)) * BlzGetUnitDiceNumber(self.owner, 0) + self:GetHeroMainAttr(type)
 end

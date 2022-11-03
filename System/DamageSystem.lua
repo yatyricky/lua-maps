@@ -55,21 +55,24 @@ function cls:OnEnable()
             return
         end
 
-        local attr = UnitAttribute.GetAttr(target)
-        if attr.dodge <= 0 then
-            return
+        local b = UnitAttribute.GetAttr(target)
+        if b.dodge > 0 then
+            if math.random() < b.dodge then
+                BlzSetEventDamage(0)
+                BlzSetEventWeaponType(WEAPON_TYPE_WHOKNOWS)
+                ExTextMiss(target)
+
+                EventCenter.PlayerUnitAttackMiss:Emit({
+                    caster = caster,
+                    target = target,
+                })
+                return
+            end
         end
 
-        if math.random() < attr.dodge then
-            BlzSetEventDamage(0)
-            BlzSetEventWeaponType(WEAPON_TYPE_WHOKNOWS)
-            ExTextMiss(target)
-
-            EventCenter.PlayerUnitAttackMiss:Emit({
-                caster = caster,
-                target = target,
-            })
-        end
+        local a = UnitAttribute.GetAttr(caster)
+        damage = damage * (1 + a.damageAmplification - b.damageReduction)
+        BlzSetEventDamage(damage)
     end)
 end
 
@@ -112,6 +115,7 @@ function cls:_onDamage(d)
     local amount = d.amount * (1 + a.damageAmplification - b.damageReduction)
     UnitDamageTarget(d.whichUnit, d.target, amount, d.attack, d.ranged, d.attackType, d.damageType, d.weaponType)
     d.outResult.hitResult = Const.HitResult_Hit
+    d.outResult.damage = amount
 end
 
 function cls:_onHeal(data)

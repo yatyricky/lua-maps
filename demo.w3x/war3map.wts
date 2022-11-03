@@ -1552,6 +1552,12 @@ STRING 320
 1
 }
 
+STRING 321
+// 技能: A01C (blade storm), Researchhotkey (热键 - 学习)
+{
+R
+}
+
 STRING 323
 {
 玩家 2
@@ -1612,6 +1618,78 @@ STRING 332
 
 STRING 333
 // 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 334
+// 技能: A01C (blade storm), Name (名字)
+{
+blade storm
+}
+
+STRING 335
+// 技能: A01C (blade storm), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 336
+// 技能: A01C (blade storm), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 337
+// 技能: A01C (blade storm), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 338
+// 技能: A01C (blade storm), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 339
+// 技能: A01C (blade storm), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 340
+// 技能: A01C (blade storm), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 341
+// 技能: A01C (blade storm), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 342
+// 技能: A01C (blade storm), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 343
+// 技能: A01C (blade storm), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 344
+// 技能: A01C (blade storm), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 345
+// 技能: A01C (blade storm), Ubertip (提示工具 - 普通 - 扩展)
 {
 1
 }

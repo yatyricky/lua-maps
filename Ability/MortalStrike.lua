@@ -13,16 +13,16 @@ local Meta = {
     ID = FourCC("A01A"),
     HealingDecrease = 0.7,
     DamageScale = { 1.7, 2.6, 3.5 },
-    Duration = { 10, 20, 30 }
+    Duration = { 10, 20, 30 },
+    Rage = 0.2,
 }
 
 Abilities.MortalStrike = Meta
 
 BlzSetAbilityResearchTooltip(Meta.ID, "学习致死打击 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[一次残忍的突袭，对目标造成攻击伤害，并使其受到的治疗效果降低|cffff8c00%s|r，且造成一层|cffff8c00重伤|r效果。
+BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[一次残忍的突袭，对目标造成攻击伤害，并使其受到的治疗效果降低|cffff8c00%s|r，且造成一层|cffff8c00重伤|r效果。产生|cffff8c0020%%|r的怒气。
 
 |cff99ccff冷却时间|r - 6秒
-|cff99ccff怒气消耗|r - 50%%
 
 |cffffcc001级|r - |cffff8c00%s|r的攻击伤害，持续|cffff8c00%s|r秒。
 |cffffcc002级|r - |cffff8c00%s|r的攻击伤害，持续|cffff8c00%s|r秒。
@@ -36,10 +36,9 @@ BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[一次残忍的突
 for i = 1, #Meta.DamageScale do
     BlzSetAbilityTooltip(Meta.ID, string.format("致死打击 - [|cffffcc00%s级|r]", i), i - 1)
     BlzSetAbilityExtendedTooltip(Meta.ID, string.format(
-            [[一次残忍的突袭，对目标造成|cffff8c00%s|r的攻击伤害，并使其受到的治疗效果降低|cffff8c00%s|r，且造成一层|cffff8c00重伤|r效果。
+            [[一次残忍的突袭，对目标造成|cffff8c00%s|r的攻击伤害，并使其受到的治疗效果降低|cffff8c00%s|r，且造成一层|cffff8c00重伤|r效果。产生20%%的怒气。
 
 |cff99ccff冷却时间|r - 6秒
-|cff99ccff怒气消耗|r - 50%%
 |cff99ccff持续时间|r - %s秒]],
             string.formatPercentage(Meta.DamageScale[i]), Meta.HealingDecrease, Meta.Duration[i]),
             i - 1)
@@ -87,10 +86,15 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             return
         end
 
-        DeepWounds.Cast(data.caster, data.target)
-        ExTextCriticalStrike(data.target, damage)
+        ExTextCriticalStrike(data.target, result.damage)
         ExAddSpecialEffectTarget("Abilities/Spells/Orc/Disenchant/DisenchantSpecialArt.mdl", data.target, "origin", 1)
 
+        if ExIsUnitDead(data.target) then
+            return
+        end
+
+        ExAddUnitMana(data.caster, ExGetUnitMaxMana(data.caster) * Meta.Rage)
+        DeepWounds.Cast(data.caster, data.target)
         local debuff = BuffBase.FindBuffByClassName(data.target, MortalBuff.__cname)
         if debuff then
             debuff:ResetDuration()

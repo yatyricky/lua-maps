@@ -55,6 +55,7 @@ EventCenter.RegisterPlayerUnitSpellChannel:Emit({
         local targetHpp = ExGetUnitLifePortion(data.target)
         if targetHpp < Meta.ThresholdHigh and targetHpp > Meta.ThresholdLow then
             ExTextState(data.target, "无法使用")
+            IssueImmediateOrderById(data.caster, Const.OrderId_Stop)
             return
         end
 

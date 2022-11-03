@@ -31,9 +31,24 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     handler = function(data)
         local attr = UnitAttribute.GetAttr(data.caster)
         local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Agility) * Abilities.Overpower.DamageScale
-        UnitDamageTarget(data.caster, data.target, damage, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WOOD_HEAVY_BASH)
-        DeepWounds.Cast(data.caster, data.target)
-        ExTextCriticalStrike(data.target, damage)
+        local result = {}
+        EventCenter.Damage:Emit({
+            whichUnit = data.caster,
+            target = data.target,
+            amount = damage,
+            attack = false,
+            ranged = false,
+            attackType = ATTACK_TYPE_HERO,
+            damageType = DAMAGE_TYPE_NORMAL,
+            weaponType = WEAPON_TYPE_WOOD_HEAVY_BASH,
+            outResult = result,
+        })
+
+        if not ExIsUnitDead(data.target) then
+            DeepWounds.Cast(data.caster, data.target)
+        end
+
+        ExTextCriticalStrike(data.target, result.damage)
 
         local tab = table.getOrCreateTable(cls.unitOverpowers, data.caster)
         for k, v in pairs(tab) do

@@ -1,4 +1,4 @@
---lua-bundler:000150733
+--lua-bundler:000157426
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -251,6 +251,159 @@ return cls
 
 end}
 
+__modules["Ability.BladeStorm"]={loader=function()
+-- 天神下凡-剑刃风暴
+
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local Const = require("Config.Const")
+local UnitAttribute = require("Objects.UnitAttribute")
+local DeepWounds = require("Ability.DeepWounds")
+local BuffBase = require("Objects.BuffBase")
+
+--region meta
+
+local Meta = {
+    ID = FourCC("A01C"),
+    Cost = 0.15,
+    Interval = 1,
+    Damage = 0.5,
+    DeepWoundsStack = 1,
+    DamageIncrease = 0.2,
+    DamageReduction = 0.1,
+    AOE = 397,
+    Enlarge = 1.3,
+    AvatarDurationMult = 2,
+}
+
+Abilities.BladeStorm = Meta
+
+BlzSetAbilityResearchTooltip(Meta.ID, "学习天神剑刃风暴 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[化作一股具有毁灭性力量的剑刃风暴，打击附近所有目标，每秒消耗|cffff8c00%s|r的怒气，造成|cffff8c00%s|r的攻击伤害并造成重伤效果，直到怒气耗尽。然后化身为巨人，使你造成的伤害提高|cffff8c00%s|r，受到的伤害降低|cffff8c00%s|r，普通攻击会附带重伤效果，持续时间等同于剑刃风暴的持续时间的|cffff8c00%s|r。
+
+|cff99ccff冷却时间|r - 30秒]],
+        string.formatPercentage(Meta.Cost), string.formatPercentage(Meta.Damage), string.formatPercentage(Meta.DamageIncrease), string.formatPercentage(Meta.DamageReduction), string.formatPercentage(Meta.AvatarDurationMult)
+), 0)
+
+for i = 1, 1 do
+    BlzSetAbilityTooltip(Meta.ID, string.format("天神剑刃风暴 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Meta.ID, string.format(
+            [[化作一股具有毁灭性力量的剑刃风暴，打击附近所有目标，每秒消耗|cffff8c00%s|r的怒气，造成|cffff8c00%s|r的攻击伤害并造成重伤效果，直到怒气耗尽。然后化身为巨人，使你造成的伤害提高|cffff8c00%s|r，受到的伤害降低|cffff8c00%s|r，普通攻击会附带重伤效果，持续时间等同于剑刃风暴的持续时间的|cffff8c00%s|r。
+
+|cff99ccff冷却时间|r - 30秒]],
+            string.formatPercentage(Meta.Cost), string.formatPercentage(Meta.Damage), string.formatPercentage(Meta.DamageIncrease), string.formatPercentage(Meta.DamageReduction), string.formatPercentage(Meta.AvatarDurationMult)),
+            i - 1)
+end
+
+--endregion
+
+---@class Avatar : BuffBase
+local Avatar = class("Avatar", BuffBase)
+
+function Avatar:OnEnable()
+    --SetUnitScale(self.target, Meta.Enlarge, Meta.Enlarge, Meta.Enlarge)
+    SetUnitVertexColor(self.target, 255, 255, 15, 255)
+    local attr = UnitAttribute.GetAttr(self.target)
+    attr.damageAmplification = attr.damageAmplification + Meta.DamageIncrease
+    attr.damageReduction = attr.damageReduction + Meta.DamageReduction
+end
+
+function Avatar:OnDisable()
+    --SetUnitScale(self.target, 1, 1, 1)
+    SetUnitVertexColor(self.target, 255, 255, 255, 255)
+    local attr = UnitAttribute.GetAttr(self.target)
+    attr.damageAmplification = attr.damageAmplification - Meta.DamageIncrease
+    attr.damageReduction = attr.damageReduction - Meta.DamageReduction
+end
+
+local cls = class("BladeStorm")
+
+EventCenter.RegisterPlayerUnitSpellChannel:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        if ExGetUnitManaPortion(data.caster) < Meta.Cost then
+            ExTextState(data.caster, "怒气不足")
+            IssueImmediateOrderById(data.caster, Const.OrderId_Stop)
+        end
+    end
+})
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        coroutine.start(function()
+            local caster = data.caster
+
+            AddUnitAnimationProperties(caster, "spin", true)
+            local casterPlayer = GetOwningPlayer(caster)
+            local attr = UnitAttribute.GetAttr(caster)
+            local duration = 0
+            while ExGetUnitManaPortion(caster) >= Meta.Cost do
+                coroutine.wait(Meta.Interval)
+                if ExIsUnitDead(caster) then
+                    break
+                end
+
+                ExAddUnitMana(caster, ExGetUnitMaxMana(caster) * Meta.Cost * -1)
+                duration = duration + Meta.Interval
+                local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * Meta.Damage
+                ExGroupEnumUnitsInRange(GetUnitX(caster), GetUnitY(caster), Meta.AOE, function(unit)
+                    if IsUnitEnemy(unit, casterPlayer) and not ExIsUnitDead(unit) then
+                        EventCenter.Damage:Emit({
+                            whichUnit = caster,
+                            target = unit,
+                            amount = damage,
+                            attack = false,
+                            ranged = true,
+                            attackType = ATTACK_TYPE_HERO,
+                            damageType = DAMAGE_TYPE_DIVINE,
+                            weaponType = WEAPON_TYPE_WHOKNOWS,
+                            outResult = {},
+                        })
+                        if not ExIsUnitDead(unit) and not IsUnitType(unit, UNIT_TYPE_MECHANICAL) and not IsUnitType(unit, UNIT_TYPE_STRUCTURE) then
+                            DeepWounds.Cast(caster, unit)
+                        end
+                    end
+                end)
+            end
+            AddUnitAnimationProperties(caster, "spin", false)
+
+            if not ExIsUnitDead(caster) then
+                ExAddSpecialEffectTarget("Abilities/Spells/Human/Avatar/AvatarCaster.mdl", caster, "overhead", 2)
+                Avatar.new(caster, caster, duration, 999, {})
+            end
+        end)
+    end
+})
+
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isAttack)
+    if not isAttack then
+        return
+    end
+
+    if target == nil then
+        return
+    end
+
+    if ExIsUnitDead(target) or IsUnitType(target, UNIT_TYPE_MECHANICAL) or IsUnitType(target, UNIT_TYPE_STRUCTURE) then
+        return
+    end
+
+    local buff = BuffBase.FindBuffByClassName(caster, Avatar.__cname)
+
+    if not buff then
+        return
+    end
+
+    DeepWounds.Cast(caster, target)
+end)
+
+return cls
+
+end}
+
 __modules["Ability.BloodPlague"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local BuffBase = require("Objects.BuffBase")
@@ -493,6 +646,7 @@ EventCenter.RegisterPlayerUnitSpellChannel:Emit({
         local targetHpp = ExGetUnitLifePortion(data.target)
         if targetHpp < Meta.ThresholdHigh and targetHpp > Meta.ThresholdLow then
             ExTextState(data.target, "无法使用")
+            IssueImmediateOrderById(data.caster, Const.OrderId_Stop)
             return
         end
 
@@ -1621,16 +1775,16 @@ local Meta = {
     ID = FourCC("A01A"),
     HealingDecrease = 0.7,
     DamageScale = { 1.7, 2.6, 3.5 },
-    Duration = { 10, 20, 30 }
+    Duration = { 10, 20, 30 },
+    Rage = 0.2,
 }
 
 Abilities.MortalStrike = Meta
 
 BlzSetAbilityResearchTooltip(Meta.ID, "学习致死打击 - [|cffffcc00%d级|r]", 0)
-BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[一次残忍的突袭，对目标造成攻击伤害，并使其受到的治疗效果降低|cffff8c00%s|r，且造成一层|cffff8c00重伤|r效果。
+BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[一次残忍的突袭，对目标造成攻击伤害，并使其受到的治疗效果降低|cffff8c00%s|r，且造成一层|cffff8c00重伤|r效果。产生|cffff8c0020%%|r的怒气。
 
 |cff99ccff冷却时间|r - 6秒
-|cff99ccff怒气消耗|r - 50%%
 
 |cffffcc001级|r - |cffff8c00%s|r的攻击伤害，持续|cffff8c00%s|r秒。
 |cffffcc002级|r - |cffff8c00%s|r的攻击伤害，持续|cffff8c00%s|r秒。
@@ -1644,10 +1798,9 @@ BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[一次残忍的突
 for i = 1, #Meta.DamageScale do
     BlzSetAbilityTooltip(Meta.ID, string.format("致死打击 - [|cffffcc00%s级|r]", i), i - 1)
     BlzSetAbilityExtendedTooltip(Meta.ID, string.format(
-            [[一次残忍的突袭，对目标造成|cffff8c00%s|r的攻击伤害，并使其受到的治疗效果降低|cffff8c00%s|r，且造成一层|cffff8c00重伤|r效果。
+            [[一次残忍的突袭，对目标造成|cffff8c00%s|r的攻击伤害，并使其受到的治疗效果降低|cffff8c00%s|r，且造成一层|cffff8c00重伤|r效果。产生20%%的怒气。
 
 |cff99ccff冷却时间|r - 6秒
-|cff99ccff怒气消耗|r - 50%%
 |cff99ccff持续时间|r - %s秒]],
             string.formatPercentage(Meta.DamageScale[i]), Meta.HealingDecrease, Meta.Duration[i]),
             i - 1)
@@ -1695,10 +1848,15 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             return
         end
 
-        DeepWounds.Cast(data.caster, data.target)
-        ExTextCriticalStrike(data.target, damage)
+        ExTextCriticalStrike(data.target, result.damage)
         ExAddSpecialEffectTarget("Abilities/Spells/Orc/Disenchant/DisenchantSpecialArt.mdl", data.target, "origin", 1)
 
+        if ExIsUnitDead(data.target) then
+            return
+        end
+
+        ExAddUnitMana(data.caster, ExGetUnitMaxMana(data.caster) * Meta.Rage)
+        DeepWounds.Cast(data.caster, data.target)
         local debuff = BuffBase.FindBuffByClassName(data.target, MortalBuff.__cname)
         if debuff then
             debuff:ResetDuration()
@@ -1750,9 +1908,24 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     handler = function(data)
         local attr = UnitAttribute.GetAttr(data.caster)
         local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Agility) * Abilities.Overpower.DamageScale
-        UnitDamageTarget(data.caster, data.target, damage, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WOOD_HEAVY_BASH)
-        DeepWounds.Cast(data.caster, data.target)
-        ExTextCriticalStrike(data.target, damage)
+        local result = {}
+        EventCenter.Damage:Emit({
+            whichUnit = data.caster,
+            target = data.target,
+            amount = damage,
+            attack = false,
+            ranged = false,
+            attackType = ATTACK_TYPE_HERO,
+            damageType = DAMAGE_TYPE_NORMAL,
+            weaponType = WEAPON_TYPE_WOOD_HEAVY_BASH,
+            outResult = result,
+        })
+
+        if not ExIsUnitDead(data.target) then
+            DeepWounds.Cast(data.caster, data.target)
+        end
+
+        ExTextCriticalStrike(data.target, result.damage)
 
         local tab = table.getOrCreateTable(cls.unitOverpowers, data.caster)
         for k, v in pairs(tab) do
@@ -3011,7 +3184,7 @@ function ExSetUnitMana(unit, amount)
 end
 
 function ExAddUnitMana(unit, amount)
-    ExSetUnitMana(ExGetUnitMana(unit) + amount)
+    ExSetUnitMana(unit, ExGetUnitMana(unit) + amount)
 end
 
 function ExGetUnitManaLoss(unit)
@@ -4212,6 +4385,7 @@ function cls:GetHeroMainAttr(type, ignoreBonus)
     return 0
 end
 
+---@param type integer HeroAttributeType
 function cls:SimAttack(type)
     return BlzGetUnitBaseDamage(self.owner, 0) + math.random(1, BlzGetUnitDiceSides(self.owner, 0)) * BlzGetUnitDiceNumber(self.owner, 0) + self:GetHeroMainAttr(type)
 end
@@ -4423,21 +4597,24 @@ function cls:OnEnable()
             return
         end
 
-        local attr = UnitAttribute.GetAttr(target)
-        if attr.dodge <= 0 then
-            return
+        local b = UnitAttribute.GetAttr(target)
+        if b.dodge > 0 then
+            if math.random() < b.dodge then
+                BlzSetEventDamage(0)
+                BlzSetEventWeaponType(WEAPON_TYPE_WHOKNOWS)
+                ExTextMiss(target)
+
+                EventCenter.PlayerUnitAttackMiss:Emit({
+                    caster = caster,
+                    target = target,
+                })
+                return
+            end
         end
 
-        if math.random() < attr.dodge then
-            BlzSetEventDamage(0)
-            BlzSetEventWeaponType(WEAPON_TYPE_WHOKNOWS)
-            ExTextMiss(target)
-
-            EventCenter.PlayerUnitAttackMiss:Emit({
-                caster = caster,
-                target = target,
-            })
-        end
+        local a = UnitAttribute.GetAttr(caster)
+        damage = damage * (1 + a.damageAmplification - b.damageReduction)
+        BlzSetEventDamage(damage)
     end)
 end
 
@@ -4480,6 +4657,7 @@ function cls:_onDamage(d)
     local amount = d.amount * (1 + a.damageAmplification - b.damageReduction)
     UnitDamageTarget(d.whichUnit, d.target, amount, d.attack, d.ranged, d.attackType, d.damageType, d.weaponType)
     d.outResult.hitResult = Const.HitResult_Hit
+    d.outResult.damage = amount
 end
 
 function cls:_onHeal(data)
@@ -4538,6 +4716,7 @@ function cls:Awake()
     require("Ability.Charge")
     require("Ability.MortalStrike")
     require("Ability.Condemn")
+    require("Ability.BladeStorm")
 end
 
 return cls
@@ -4970,7 +5149,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000150733
+--lua-bundler:000157426
 
 function InitGlobals()
 end
@@ -5028,6 +5207,7 @@ SelectHeroSkill(u, FourCC("AEmb"))
 SelectHeroSkill(u, FourCC("AEim"))
 SelectHeroSkill(u, FourCC("AEim"))
 SelectHeroSkill(u, FourCC("AEim"))
+IssueImmediateOrder(u, "immolation")
 SelectHeroSkill(u, FourCC("A015"))
 SelectHeroSkill(u, FourCC("A015"))
 SelectHeroSkill(u, FourCC("A015"))
