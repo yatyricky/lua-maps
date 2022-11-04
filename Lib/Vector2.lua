@@ -111,6 +111,10 @@ function cls:GetMagnitude()
     return m_sqrt(self.x * self.x + self.y * self.y)
 end
 
+function cls:MagnitudeSqr()
+    return self.x * self.x + self.y * self.y
+end
+
 ---@return string
 function cls:tostring()
     return string.format("(%f,%f)", self.x, self.y)

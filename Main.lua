@@ -18,9 +18,9 @@ local systems = {
     require("System.MeleeGameSystem").new(),
     require("System.BuffSystem").new(),
     require("System.DamageSystem").new(),
-    --require("System.AbilityEditorSystem").new(),
     require("System.ProjectileSystem").new(),
     --require("System.MoverSystem").new(),
+    require("System.ManagedAISystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
 }

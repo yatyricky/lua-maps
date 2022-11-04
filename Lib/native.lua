@@ -69,6 +69,18 @@ function ExGroupEnumUnitsInRange(x, y, radius, callback)
     end))
 end
 
+---@param callback fun(unit: unit): void
+function ExGroupEnumUnitsInMap(callback)
+    GroupClear(group)
+    GroupEnumUnitsInRect(group, bj_mapInitialPlayableArea, Filter(function()
+        local s, m = pcall(callback, GetFilterUnit())
+        if not s then
+            print(m)
+        end
+        return false
+    end))
+end
+
 ---@param x real
 ---@param y real
 ---@param radius real
@@ -339,4 +351,8 @@ end
 
 function ExGetUnitLifePortion(unit)
     return GetWidgetLife(unit) / GetUnitState(unit, UNIT_STATE_MAX_LIFE)
+end
+
+function ExGetUnitPlayerId(unit)
+    return GetPlayerId(GetOwningPlayer(unit))
 end

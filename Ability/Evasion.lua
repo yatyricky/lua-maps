@@ -7,8 +7,8 @@ local UnitAttribute = require("Objects.UnitAttribute")
 
 local Meta = {
     ID = FourCC("A015"),
-    Chance = { 0.1, 0.2, 0.3 },
-    ChanceInc = { 0.1, 0.1, 0.1 },
+    Chance = { 0.15, 0.3, 0.45 },
+    ChanceInc = { 0.15, 0.15, 0.15 },
     --Chance = { 1, 1, 1 },
     --ChanceInc = { 1, 0, 0 },
 }

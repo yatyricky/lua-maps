@@ -40,7 +40,7 @@ for i = 1, #Meta.DamageScale do
 
 |cff99ccff冷却时间|r - 6秒
 |cff99ccff持续时间|r - %s秒]],
-            string.formatPercentage(Meta.DamageScale[i]), Meta.HealingDecrease, Meta.Duration[i]),
+            string.formatPercentage(Meta.DamageScale[i]), string.formatPercentage(Meta.HealingDecrease), Meta.Duration[i]),
             i - 1)
 end
 
