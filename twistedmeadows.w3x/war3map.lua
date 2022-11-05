@@ -1,4 +1,4 @@
---lua-bundler:000162889
+--lua-bundler:000162112
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -1378,8 +1378,8 @@ local UnitAttribute = require("Objects.UnitAttribute")
 
 local Meta = {
     ID = FourCC("A015"),
-    Chance = { 0.15, 0.3, 0.45 },
-    ChanceInc = { 0.15, 0.15, 0.15 },
+    Chance = { 0.1, 0.2, 0.3 },
+    ChanceInc = { 0.1, 0.1, 0.1 },
     --Chance = { 1, 1, 1 },
     --ChanceInc = { 1, 0, 0 },
 }
@@ -1802,7 +1802,7 @@ for i = 1, #Meta.DamageScale do
 
 |cff99ccff冷却时间|r - 6秒
 |cff99ccff持续时间|r - %s秒]],
-            string.formatPercentage(Meta.DamageScale[i]), Meta.HealingDecrease, Meta.Duration[i]),
+            string.formatPercentage(Meta.DamageScale[i]), string.formatPercentage(Meta.HealingDecrease), Meta.Duration[i]),
             i - 1)
 end
 
@@ -1870,6 +1870,32 @@ return cls
 
 end}
 
+__modules["Ability.NativeRejuvenation"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = FourCC("Arej"),
+    ---@param data ISpellData
+    handler = function(data)
+        coroutine.start(function()
+            for _ = 1, 12 do
+                coroutine.wait(1)
+                if not ExIsUnitDead(data.target) then
+                    EventCenter.Heal:Emit({
+                        caster = data.caster,
+                        target = data.target,
+                        amount = 33.333,
+                    })
+                else
+                    break
+                end
+            end
+        end)
+    end
+})
+
+end}
+
 __modules["Ability.Outbreak"]={loader=function()
 -- 传染
 end}
@@ -1889,7 +1915,7 @@ local DeepWounds = require("Ability.DeepWounds")
 Abilities.Overpower = {
     ID = FourCC("A016"),
     TechUnitID = FourCC("e000"),
-    DamageScale = 1.2,
+    DamageScale = 2,
 }
 
 BlzSetAbilityTooltip(Abilities.Overpower.ID, string.format("压制"), 0)
@@ -2437,113 +2463,73 @@ return cls
 end}
 
 __modules["AI.TwistedMeadows"]={loader=function()
-local EventCenter = require("Lib.EventCenter")
-local Const = require("Config.Const")
 local Vector2 = require("Lib.Vector2")
 
-local sequence = {
-    FourCC("AEmb"),
-    FourCC("A015"),
-    FourCC("A015"),
-    FourCC("AEmb"),
-    FourCC("A015"),
-    FourCC("AEme"),
-    FourCC("AEmb"),
-    FourCC("AEim"),
-    FourCC("AEim"),
-    FourCC("AEim"),
+local basePos = Vector2.new(-3202, 4121)
+local Interval = 10
+local p1 = Player(1)
+local TrainCount = 2
+
+local UTID_Archer = FourCC("earc")
+local UTID_Huntress = FourCC("esen")
+local UTID_Dryad = FourCC("edry")
+local UTID_Ballista = FourCC("ebal")
+local UTID_Chimaera = FourCC("echm")
+local UTID_Druid = FourCC("edoc")
+
+local Army = {
+    [UTID_Druid] = 4, -- 16
+    [UTID_Dryad] = 2, -- 15
+    [UTID_Ballista] = 2, -- 6
+    [UTID_Huntress] = 5, -- 12
+    [UTID_Archer] = 6, -- 12
 }
-
-local DH = FourCC("Edem")
-local camps = {}
-
-local basePos = Vector2.new(-3571, 4437)
-
-local Interval = 1.3
 
 local cls = class("TwistedMeadows")
 
 function cls:ctor()
-    local trigger = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(trigger, EVENT_PLAYER_HERO_LEVEL)
-    ExTriggerAddAction(trigger, function()
-        local unit = GetTriggerUnit()
-        --local player = GetOwningPlayer(unit)
-        if GetUnitTypeId(unit) == DH then
-            local level = GetUnitLevel(unit)
-            SelectHeroSkill(unit, sequence[level])
-        end
-    end)
-
-    local finishConstruction = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(finishConstruction, EVENT_PLAYER_UNIT_CONSTRUCT_FINISH)
-    ExTriggerAddAction(finishConstruction, function()
-        local unit = GetTriggerUnit()
-        if GetUnitTypeId(unit) == FourCC("eate") then
-            DestroyTrigger(finishConstruction)
-            self.altar = unit
-        end
-    end)
-
     self.time = 0
+    self.army = {}
 
-    self.done = false
-    self.unitFarm = {}
-
-    ExTriggerRegisterUnitAcquire(function(caster, target)
-        if (ExGetUnitPlayerId(caster) == 0 and ExGetUnitPlayerId(target) == 1) or (ExGetUnitPlayerId(caster) == 1 and ExGetUnitPlayerId(target) == 0) then
-            self.done = true
+    ExTriggerRegisterNewUnit(function(unit)
+        if ExGetUnitPlayerId(unit) == 1 then
+            table.addNum(self.army, GetUnitTypeId(unit), 1)
         end
     end)
 end
 
-local p1 = Player(1)
-local p0 = Player(0)
-
 function cls:Update(dt)
-    if not self.done and self.altar ~= nil then
-        IssueTrainOrderByIdBJ(self.altar, DH)
-    end
-
     self.time = self.time + dt
     if self.time >= Interval then
         self.time = self.time % Interval
-        SetPlayerState(p1, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(p1, PLAYER_STATE_RESOURCE_GOLD) + 5)
-        if not self.done then
-            self:run()
-        end
+        self:run()
     end
 end
 
 function cls:run()
-    local hp = 0
-    local p2 = Player(1)
-    local force = {}
-    ExGroupEnumUnitsInMap(function(unit)
-        if GetOwningPlayer(unit) == p2 and not ExIsUnitDead(unit) and not IsUnitType(unit, UNIT_TYPE_PEON) and not IsUnitType(unit, UNIT_TYPE_STRUCTURE) then
-            hp = hp + GetWidgetLife(unit)
-            table.insert(force, unit)
-        end
-    end)
-
-    local positions = {}
-    EventCenter.InitCamp:Emit(positions)
-    table.sort(positions, function(a, b)
-        local distA = (basePos - a.p):GetMagnitude()
-        local distB = (basePos - b.p):GetMagnitude()
-        return a.hp + distA < b.hp + distB
-    end)
-
-    local firstCamp = positions[1]
-    local vec = Vector2.new()
-    if firstCamp.hp > 1 and firstCamp.hp < hp then
-        for _, v in ipairs(force) do
-            local dist = vec:MoveToUnit(v):Sub(firstCamp.p):GetMagnitude()
-            if dist > 600 then
-                IssuePointOrderById(v, Const.OrderId_Attack, firstCamp.p.x, firstCamp.p.y)
+    if Time.Time < 240 then
+        return
+    end
+    local trained = TrainCount
+    for utid, maxSize in pairs(Army) do
+        local current = self.army[utid] or 0
+        local diff = maxSize - current
+        if diff > 0 then
+            local train = math.min(diff, trained)
+            for _ = 1, train do
+                CreateUnit(p1, utid, basePos.x, basePos.y, 0)
             end
+            trained = trained - train
+        end
+
+        if trained <= 0 then
+            break
         end
     end
+
+    --if Time.Time > 300 and trained <= 0 then
+    --    Interval = Interval + 0.4
+    --end
 end
 
 return cls
@@ -4683,7 +4669,7 @@ EventCenter.RegisterPlayerUnitDamaging = Event.new()
 EventCenter.RegisterPlayerUnitDamaged = Event.new()
 ---data {whichUnit, target, amount, attack, ranged, attackType, damageType, weaponType, outResult}
 EventCenter.Damage = Event.new()
----data: {caster:unit,target:unit}
+---data: {caster:unit,target:unit, amount: real}
 EventCenter.Heal = Event.new()
 EventCenter.HealMana = Event.new()
 EventCenter.PlayerUnitAttackMiss = Event.new()
@@ -4839,9 +4825,10 @@ function cls:Awake()
     require("Ability.ShamblingRush")
     require("Ability.PutridBulwark")
 
-    -- 默认 恶魔猎手
+    -- 默认 技能
     require("Ability.Evasion")
     require("Ability.MoonWellHeal")
+    require("Ability.NativeRejuvenation")
 
     -- 武器战
     require("Ability.RageGenerator")
@@ -5347,7 +5334,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000162889
+--lua-bundler:000162112
 
 function InitGlobals()
 end
@@ -6572,14 +6559,52 @@ bj_lastDyingWidget = nil
 DestroyTrigger(GetTriggeringTrigger())
 end
 
-function CreateUnitsForPlayer0()
-local p = Player(0)
+function CreateBuildingsForPlayer1()
+local p = Player(1)
 local u
 local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("Obla"), 1342.6, -2835.4, 357.781, FourCC("Obla"))
+u = BlzCreateUnitWithSkin(p, FourCC("etrp"), -4064.0, 3296.0, 270.000, FourCC("etrp"))
+u = BlzCreateUnitWithSkin(p, FourCC("etrp"), -3040.0, 3296.0, 270.000, FourCC("etrp"))
+u = BlzCreateUnitWithSkin(p, FourCC("etrp"), -2272.0, 4192.0, 270.000, FourCC("etrp"))
+u = BlzCreateUnitWithSkin(p, FourCC("etrp"), -2528.0, 4960.0, 270.000, FourCC("etrp"))
+u = BlzCreateUnitWithSkin(p, FourCC("eaow"), -2816.0, 4736.0, 270.000, FourCC("eaow"))
+u = BlzCreateUnitWithSkin(p, FourCC("eaoe"), -2752.0, 4288.0, 270.000, FourCC("eaoe"))
+u = BlzCreateUnitWithSkin(p, FourCC("edob"), -2496.0, 3584.0, 270.000, FourCC("edob"))
+u = BlzCreateUnitWithSkin(p, FourCC("edos"), -2368.0, 3840.0, 270.000, FourCC("edos"))
+u = BlzCreateUnitWithSkin(p, FourCC("eden"), -3136.0, 4288.0, 270.000, FourCC("eden"))
+u = BlzCreateUnitWithSkin(p, FourCC("eaom"), -3200.0, 4736.0, 270.000, FourCC("eaom"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -4064.0, 3552.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -3808.0, 4064.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -4064.0, 4064.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2656.0, 3872.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2784.0, 3680.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2976.0, 3488.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2848.0, 3936.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2784.0, 3488.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -3872.0, 3424.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("eate"), -4000.0, 3808.0, 270.000, FourCC("eate"))
+end
+
+function CreateUnitsForPlayer1()
+local p = Player(1)
+local u
+local unitID
+local t
+local life
+
+u = BlzCreateUnitWithSkin(p, FourCC("Edem"), -3114.9, 4067.3, 64.270, FourCC("Edem"))
+SetHeroLevel(u, 7, false)
+SelectHeroSkill(u, FourCC("AEmb"))
+SelectHeroSkill(u, FourCC("AEim"))
+SelectHeroSkill(u, FourCC("AEim"))
+SelectHeroSkill(u, FourCC("A015"))
+SelectHeroSkill(u, FourCC("A015"))
+SelectHeroSkill(u, FourCC("A015"))
+IssueImmediateOrder(u, "")
+SelectHeroSkill(u, FourCC("AEme"))
 end
 
 function CreateNeutralHostile()
@@ -7021,10 +7046,11 @@ u = BlzCreateUnitWithSkin(p, FourCC("e001"), -2483.4, 6472.4, 73.688, FourCC("e0
 end
 
 function CreatePlayerBuildings()
+CreateBuildingsForPlayer1()
 end
 
 function CreatePlayerUnits()
-CreateUnitsForPlayer0()
+CreateUnitsForPlayer1()
 end
 
 function CreateAllUnits()
@@ -7033,6 +7059,26 @@ CreatePlayerBuildings()
 CreateNeutralHostile()
 CreateNeutralPassive()
 CreatePlayerUnits()
+end
+
+function InitUpgrades_Player1()
+SetPlayerTechResearched(Player(1), FourCC("Resw"), 2)
+SetPlayerTechResearched(Player(1), FourCC("Resm"), 2)
+SetPlayerTechResearched(Player(1), FourCC("Rema"), 2)
+SetPlayerTechResearched(Player(1), FourCC("Remg"), 1)
+SetPlayerTechResearched(Player(1), FourCC("Reib"), 1)
+SetPlayerTechResearched(Player(1), FourCC("Remk"), 1)
+SetPlayerTechResearched(Player(1), FourCC("Redt"), 2)
+SetPlayerTechResearched(Player(1), FourCC("Redc"), 2)
+SetPlayerTechResearched(Player(1), FourCC("Recb"), 1)
+SetPlayerTechResearched(Player(1), FourCC("Resi"), 1)
+SetPlayerTechResearched(Player(1), FourCC("Repb"), 1)
+SetPlayerTechResearched(Player(1), FourCC("Reeb"), 1)
+SetPlayerTechResearched(Player(1), FourCC("Rews"), 1)
+end
+
+function InitUpgrades()
+InitUpgrades_Player1()
 end
 
 function InitCustomPlayerSlots()
@@ -7062,6 +7108,7 @@ NewSoundEnvironment("Default")
 SetAmbientDaySound("LordaeronSummerDay")
 SetAmbientNightSound("LordaeronSummerNight")
 SetMapMusic("Music", true, 0)
+InitUpgrades()
 CreateAllUnits()
 InitBlizzard()
 InitGlobals()

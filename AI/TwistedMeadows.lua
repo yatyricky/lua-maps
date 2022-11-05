@@ -1,110 +1,70 @@
-local EventCenter = require("Lib.EventCenter")
-local Const = require("Config.Const")
 local Vector2 = require("Lib.Vector2")
 
-local sequence = {
-    FourCC("AEmb"),
-    FourCC("A015"),
-    FourCC("A015"),
-    FourCC("AEmb"),
-    FourCC("A015"),
-    FourCC("AEme"),
-    FourCC("AEmb"),
-    FourCC("AEim"),
-    FourCC("AEim"),
-    FourCC("AEim"),
+local basePos = Vector2.new(-3202, 4121)
+local Interval = 10
+local p1 = Player(1)
+local TrainCount = 2
+
+local UTID_Archer = FourCC("earc")
+local UTID_Huntress = FourCC("esen")
+local UTID_Dryad = FourCC("edry")
+local UTID_Ballista = FourCC("ebal")
+local UTID_Chimaera = FourCC("echm")
+local UTID_Druid = FourCC("edoc")
+
+local Army = {
+    [UTID_Druid] = 4, -- 16
+    [UTID_Dryad] = 2, -- 15
+    [UTID_Ballista] = 2, -- 6
+    [UTID_Huntress] = 5, -- 12
+    [UTID_Archer] = 6, -- 12
 }
-
-local DH = FourCC("Edem")
-local camps = {}
-
-local basePos = Vector2.new(-3571, 4437)
-
-local Interval = 1.3
 
 local cls = class("TwistedMeadows")
 
 function cls:ctor()
-    local trigger = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(trigger, EVENT_PLAYER_HERO_LEVEL)
-    ExTriggerAddAction(trigger, function()
-        local unit = GetTriggerUnit()
-        --local player = GetOwningPlayer(unit)
-        if GetUnitTypeId(unit) == DH then
-            local level = GetUnitLevel(unit)
-            SelectHeroSkill(unit, sequence[level])
-        end
-    end)
-
-    local finishConstruction = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(finishConstruction, EVENT_PLAYER_UNIT_CONSTRUCT_FINISH)
-    ExTriggerAddAction(finishConstruction, function()
-        local unit = GetTriggerUnit()
-        if GetUnitTypeId(unit) == FourCC("eate") then
-            DestroyTrigger(finishConstruction)
-            self.altar = unit
-        end
-    end)
-
     self.time = 0
+    self.army = {}
 
-    self.done = false
-    self.unitFarm = {}
-
-    ExTriggerRegisterUnitAcquire(function(caster, target)
-        if (ExGetUnitPlayerId(caster) == 0 and ExGetUnitPlayerId(target) == 1) or (ExGetUnitPlayerId(caster) == 1 and ExGetUnitPlayerId(target) == 0) then
-            self.done = true
+    ExTriggerRegisterNewUnit(function(unit)
+        if ExGetUnitPlayerId(unit) == 1 then
+            table.addNum(self.army, GetUnitTypeId(unit), 1)
         end
     end)
 end
 
-local p1 = Player(1)
-local p0 = Player(0)
-
 function cls:Update(dt)
-    if not self.done and self.altar ~= nil then
-        IssueTrainOrderByIdBJ(self.altar, DH)
-    end
-
     self.time = self.time + dt
     if self.time >= Interval then
         self.time = self.time % Interval
-        SetPlayerState(p1, PLAYER_STATE_RESOURCE_GOLD, GetPlayerState(p1, PLAYER_STATE_RESOURCE_GOLD) + 5)
-        if not self.done then
-            self:run()
-        end
+        self:run()
     end
 end
 
 function cls:run()
-    local hp = 0
-    local p2 = Player(1)
-    local force = {}
-    ExGroupEnumUnitsInMap(function(unit)
-        if GetOwningPlayer(unit) == p2 and not ExIsUnitDead(unit) and not IsUnitType(unit, UNIT_TYPE_PEON) and not IsUnitType(unit, UNIT_TYPE_STRUCTURE) then
-            hp = hp + GetWidgetLife(unit)
-            table.insert(force, unit)
-        end
-    end)
-
-    local positions = {}
-    EventCenter.InitCamp:Emit(positions)
-    table.sort(positions, function(a, b)
-        local distA = (basePos - a.p):GetMagnitude()
-        local distB = (basePos - b.p):GetMagnitude()
-        return a.hp + distA < b.hp + distB
-    end)
-
-    local firstCamp = positions[1]
-    local vec = Vector2.new()
-    if firstCamp.hp > 1 and firstCamp.hp < hp then
-        for _, v in ipairs(force) do
-            local dist = vec:MoveToUnit(v):Sub(firstCamp.p):GetMagnitude()
-            if dist > 600 then
-                IssuePointOrderById(v, Const.OrderId_Attack, firstCamp.p.x, firstCamp.p.y)
+    if Time.Time < 240 then
+        return
+    end
+    local trained = TrainCount
+    for utid, maxSize in pairs(Army) do
+        local current = self.army[utid] or 0
+        local diff = maxSize - current
+        if diff > 0 then
+            local train = math.min(diff, trained)
+            for _ = 1, train do
+                CreateUnit(p1, utid, basePos.x, basePos.y, 0)
             end
+            trained = trained - train
+        end
+
+        if trained <= 0 then
+            break
         end
     end
+
+    --if Time.Time > 300 and trained <= 0 then
+    --    Interval = Interval + 0.4
+    --end
 end
 
 return cls

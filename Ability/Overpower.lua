@@ -12,7 +12,7 @@ local DeepWounds = require("Ability.DeepWounds")
 Abilities.Overpower = {
     ID = FourCC("A016"),
     TechUnitID = FourCC("e000"),
-    DamageScale = 1.2,
+    DamageScale = 2,
 }
 
 BlzSetAbilityTooltip(Abilities.Overpower.ID, string.format("压制"), 0)

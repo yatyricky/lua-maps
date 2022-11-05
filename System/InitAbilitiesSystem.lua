@@ -20,9 +20,10 @@ function cls:Awake()
     require("Ability.ShamblingRush")
     require("Ability.PutridBulwark")
 
-    -- 默认 恶魔猎手
+    -- 默认 技能
     require("Ability.Evasion")
     require("Ability.MoonWellHeal")
+    require("Ability.NativeRejuvenation")
 
     -- 武器战
     require("Ability.RageGenerator")
