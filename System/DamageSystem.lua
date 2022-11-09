@@ -9,6 +9,7 @@ EventCenter.RegisterPlayerUnitDamaged = Event.new()
 EventCenter.Damage = Event.new()
 ---data: {caster:unit,target:unit, amount: real}
 EventCenter.Heal = Event.new()
+---{caster=caster,target=target,amount=amount,isPercentage=isPercentage}
 EventCenter.HealMana = Event.new()
 EventCenter.PlayerUnitAttackMiss = Event.new()
 
