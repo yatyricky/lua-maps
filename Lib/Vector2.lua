@@ -31,6 +31,14 @@ function cls.InsideUnitCircle()
     return new(math.cos(angle), math.sin(angle))
 end
 
+function cls.Dot(a, b)
+    return a.x * b.x + a.y * b.y
+end
+
+function cls.Cross(a, b)
+    return a.y * b.x - a.x * b.y
+end
+
 ---@param unit unit
 function cls:MoveToUnit(unit)
     self.x = GetUnitX(unit)
@@ -80,7 +88,7 @@ function cls:Mul(d)
 end
 
 function cls:SetNormalize()
-    local magnitude = self:GetMagnitude()
+    local magnitude = self:Magnitude()
 
     if magnitude > 1e-05 then
         self.x = self.x / magnitude
@@ -107,7 +115,7 @@ function cls:GetTerrainZ()
     return GetLocationZ(cls._loc)
 end
 
-function cls:GetMagnitude()
+function cls:Magnitude()
     return m_sqrt(self.x * self.x + self.y * self.y)
 end
 
