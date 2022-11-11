@@ -1,4 +1,4 @@
---lua-bundler:000162112
+--lua-bundler:000163157
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -444,7 +444,7 @@ return cls
 end}
 
 __modules["Ability.Charge"]={loader=function()
--- 蹒跚冲锋
+-- 冲锋
 
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
@@ -452,6 +452,7 @@ local BuffBase = require("Objects.BuffBase")
 local Vector2 = require("Lib.Vector2")
 local Const = require("Config.Const")
 local RootDebuff = require("Ability.RootDebuff")
+local UnitAttribute = require("Objects.UnitAttribute")
 
 --region meta
 
@@ -470,7 +471,7 @@ local Meta = Abilities.Charge
 BlzSetAbilityResearchTooltip(Meta.ID, "学习冲锋 - [|cffffcc00%d级|r]", 0)
 BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[向一名敌人冲锋，造成|cffff8c00%s|r的攻击伤害，使其定身，并生成|cffff8c00%s|r的怒气值。
 
-|cff99ccff施法距离|r - %s-900
+|cff99ccff施法距离|r - %s-1200
 |cff99ccff冷却时间|r - 10秒
 
 |cffffcc001级|r - 持续|cffff8c00%s|r秒，英雄|cffff8c00%s|r秒。
@@ -550,7 +551,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 travelled = travelled + distance
                 if travelled > 96 then
                     travelled = 0
-                    ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x,v1.y, 1.2)
+                    ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x, v1.y, 1.2)
                 end
 
                 if hit then
@@ -569,13 +570,29 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             SetUnitAcquireRange(data.caster, defaultRange)
             SetUnitTimeScale(data.caster, 1)
 
-            local level = GetUnitAbilityLevel(data.caster, Meta.ID)
-            local duration = IsUnitType(data.target, UNIT_TYPE_HERO) and Meta.DurationHero[level] or Meta.DurationMinion[level]
-            local debuff = BuffBase.FindBuffByClassName(data.target, RootDebuff.__cname)
-            if debuff then
-                debuff:ResetDuration(Time.Time + duration)
-            else
-                RootDebuff.new(data.caster, data.target, duration, 999)
+            if not ExIsUnitDead(data.target) then
+                local attr = UnitAttribute.GetAttr(data.caster)
+                local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * Meta.Damage
+                EventCenter.Damage:Emit({
+                    whichUnit = data.caster,
+                    target = data.target,
+                    amount = damage,
+                    attack = false,
+                    ranged = true,
+                    attackType = ATTACK_TYPE_HERO,
+                    damageType = DAMAGE_TYPE_NORMAL,
+                    weaponType = WEAPON_TYPE_WHOKNOWS,
+                    outResult = {},
+                })
+
+                local level = GetUnitAbilityLevel(data.caster, Meta.ID)
+                local duration = IsUnitType(data.target, UNIT_TYPE_HERO) and Meta.DurationHero[level] or Meta.DurationMinion[level]
+                local debuff = BuffBase.FindBuffByClassName(data.target, RootDebuff.__cname)
+                if debuff then
+                    debuff:ResetDuration(Time.Time + duration)
+                else
+                    RootDebuff.new(data.caster, data.target, duration, 999)
+                end
             end
 
             local mana = GetUnitState(data.caster, UNIT_STATE_MAX_MANA) * Meta.Rage
@@ -2468,7 +2485,7 @@ local Vector2 = require("Lib.Vector2")
 local basePos = Vector2.new(-3202, 4121)
 local Interval = 10
 local p1 = Player(1)
-local TrainCount = 2
+local TrainCount = 3
 
 local UTID_Archer = FourCC("earc")
 local UTID_Huntress = FourCC("esen")
@@ -2479,10 +2496,9 @@ local UTID_Druid = FourCC("edoc")
 
 local Army = {
     [UTID_Druid] = 4, -- 16
-    [UTID_Dryad] = 2, -- 15
     [UTID_Ballista] = 2, -- 6
-    [UTID_Huntress] = 5, -- 12
-    [UTID_Archer] = 6, -- 12
+    [UTID_Huntress] = 3, -- 15
+    [UTID_Archer] = 7, -- 8
 }
 
 local cls = class("TwistedMeadows")
@@ -2496,6 +2512,12 @@ function cls:ctor()
             table.addNum(self.army, GetUnitTypeId(unit), 1)
         end
     end)
+
+    ExTriggerRegisterUnitDeath(function(unit)
+        if ExGetUnitPlayerId(unit) == 1 then
+            table.addNum(self.army, GetUnitTypeId(unit), -1)
+        end
+    end)
 end
 
 function cls:Update(dt)
@@ -2507,7 +2529,7 @@ function cls:Update(dt)
 end
 
 function cls:run()
-    if Time.Time < 240 then
+    if Time.Time < 360 then
         return
     end
     local trained = TrainCount
@@ -2527,9 +2549,9 @@ function cls:run()
         end
     end
 
-    --if Time.Time > 300 and trained <= 0 then
-    --    Interval = Interval + 0.4
-    --end
+    if Time.Time > 300 and trained <= 0 then
+        Interval = Interval + 0.4
+    end
 end
 
 return cls
@@ -3362,7 +3384,9 @@ function table.any(tab)
 end
 
 function table.getOrCreateTable(tab, key)
-    --print(GetStackTrace())
+    if key == nil then
+        print(GetStackTrace())
+    end
     local ret = tab[key]
     if not ret then
         ret = {}
@@ -4460,6 +4484,9 @@ function cls.GetAttr(unit)
     local inst = cls.tab[unit]
     if not inst then
         inst = cls.new(unit)
+        if unit == nil then
+            print(GetStackTrace())
+        end
         cls.tab[unit] = inst
     end
 
@@ -5334,7 +5361,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000162112
+--lua-bundler:000163157
 
 function InitGlobals()
 end
@@ -6566,25 +6593,15 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("etrp"), -4064.0, 3296.0, 270.000, FourCC("etrp"))
-u = BlzCreateUnitWithSkin(p, FourCC("etrp"), -3040.0, 3296.0, 270.000, FourCC("etrp"))
-u = BlzCreateUnitWithSkin(p, FourCC("etrp"), -2272.0, 4192.0, 270.000, FourCC("etrp"))
-u = BlzCreateUnitWithSkin(p, FourCC("etrp"), -2528.0, 4960.0, 270.000, FourCC("etrp"))
-u = BlzCreateUnitWithSkin(p, FourCC("eaow"), -2816.0, 4736.0, 270.000, FourCC("eaow"))
-u = BlzCreateUnitWithSkin(p, FourCC("eaoe"), -2752.0, 4288.0, 270.000, FourCC("eaoe"))
+u = BlzCreateUnitWithSkin(p, FourCC("eaoe"), -2816.0, 4736.0, 270.000, FourCC("eaoe"))
 u = BlzCreateUnitWithSkin(p, FourCC("edob"), -2496.0, 3584.0, 270.000, FourCC("edob"))
-u = BlzCreateUnitWithSkin(p, FourCC("edos"), -2368.0, 3840.0, 270.000, FourCC("edos"))
 u = BlzCreateUnitWithSkin(p, FourCC("eden"), -3136.0, 4288.0, 270.000, FourCC("eden"))
 u = BlzCreateUnitWithSkin(p, FourCC("eaom"), -3200.0, 4736.0, 270.000, FourCC("eaom"))
 u = BlzCreateUnitWithSkin(p, FourCC("emow"), -4064.0, 3552.0, 270.000, FourCC("emow"))
 u = BlzCreateUnitWithSkin(p, FourCC("emow"), -3808.0, 4064.0, 270.000, FourCC("emow"))
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), -4064.0, 4064.0, 270.000, FourCC("emow"))
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2656.0, 3872.0, 270.000, FourCC("emow"))
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2784.0, 3680.0, 270.000, FourCC("emow"))
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2976.0, 3488.0, 270.000, FourCC("emow"))
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2848.0, 3936.0, 270.000, FourCC("emow"))
 u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2784.0, 3488.0, 270.000, FourCC("emow"))
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), -3872.0, 3424.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2976.0, 3488.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), -2720.0, 3744.0, 270.000, FourCC("emow"))
 u = BlzCreateUnitWithSkin(p, FourCC("eate"), -4000.0, 3808.0, 270.000, FourCC("eate"))
 end
 
@@ -6596,15 +6613,13 @@ local t
 local life
 
 u = BlzCreateUnitWithSkin(p, FourCC("Edem"), -3114.9, 4067.3, 64.270, FourCC("Edem"))
-SetHeroLevel(u, 7, false)
+SetHeroLevel(u, 5, false)
 SelectHeroSkill(u, FourCC("AEmb"))
-SelectHeroSkill(u, FourCC("AEim"))
 SelectHeroSkill(u, FourCC("AEim"))
 SelectHeroSkill(u, FourCC("A015"))
 SelectHeroSkill(u, FourCC("A015"))
 SelectHeroSkill(u, FourCC("A015"))
 IssueImmediateOrder(u, "")
-SelectHeroSkill(u, FourCC("AEme"))
 end
 
 function CreateNeutralHostile()
@@ -7020,7 +7035,7 @@ u = BlzCreateUnitWithSkin(p, FourCC("npig"), -5106.6, -437.6, 55.340, FourCC("np
 u = BlzCreateUnitWithSkin(p, FourCC("nshe"), 2459.3, -2699.6, 325.205, FourCC("nshe"))
 u = BlzCreateUnitWithSkin(p, FourCC("nshe"), 3281.4, -1502.5, 234.796, FourCC("nshe"))
 u = BlzCreateUnitWithSkin(p, FourCC("nshe"), 4881.1, -1089.0, 210.603, FourCC("nshe"))
-u = BlzCreateUnitWithSkin(p, FourCC("nshe"), -3065.6, 1440.8, 353.529, FourCC("nshe"))
+u = BlzCreateUnitWithSkin(p, FourCC("nshe"), -2927.1, 2228.2, 353.529, FourCC("nshe"))
 u = BlzCreateUnitWithSkin(p, FourCC("nshe"), -1125.9, 2726.2, 240.960, FourCC("nshe"))
 u = BlzCreateUnitWithSkin(p, FourCC("e001"), -2328.8, 186.8, 20.193, FourCC("e001"))
 u = BlzCreateUnitWithSkin(p, FourCC("e001"), -522.4, -2671.6, 192.398, FourCC("e001"))
@@ -7062,19 +7077,8 @@ CreatePlayerUnits()
 end
 
 function InitUpgrades_Player1()
-SetPlayerTechResearched(Player(1), FourCC("Resw"), 2)
-SetPlayerTechResearched(Player(1), FourCC("Resm"), 2)
-SetPlayerTechResearched(Player(1), FourCC("Rema"), 2)
-SetPlayerTechResearched(Player(1), FourCC("Remg"), 1)
-SetPlayerTechResearched(Player(1), FourCC("Reib"), 1)
-SetPlayerTechResearched(Player(1), FourCC("Remk"), 1)
-SetPlayerTechResearched(Player(1), FourCC("Redt"), 2)
-SetPlayerTechResearched(Player(1), FourCC("Redc"), 2)
-SetPlayerTechResearched(Player(1), FourCC("Recb"), 1)
-SetPlayerTechResearched(Player(1), FourCC("Resi"), 1)
-SetPlayerTechResearched(Player(1), FourCC("Repb"), 1)
-SetPlayerTechResearched(Player(1), FourCC("Reeb"), 1)
 SetPlayerTechResearched(Player(1), FourCC("Rews"), 1)
+SetPlayerTechResearched(Player(1), FourCC("Redc"), 1)
 end
 
 function InitUpgrades()

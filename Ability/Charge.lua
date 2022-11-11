@@ -1,4 +1,4 @@
--- 蹒跚冲锋
+-- 冲锋
 
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
@@ -6,6 +6,7 @@ local BuffBase = require("Objects.BuffBase")
 local Vector2 = require("Lib.Vector2")
 local Const = require("Config.Const")
 local RootDebuff = require("Ability.RootDebuff")
+local UnitAttribute = require("Objects.UnitAttribute")
 
 --region meta
 
@@ -24,7 +25,7 @@ local Meta = Abilities.Charge
 BlzSetAbilityResearchTooltip(Meta.ID, "学习冲锋 - [|cffffcc00%d级|r]", 0)
 BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[向一名敌人冲锋，造成|cffff8c00%s|r的攻击伤害，使其定身，并生成|cffff8c00%s|r的怒气值。
 
-|cff99ccff施法距离|r - %s-900
+|cff99ccff施法距离|r - %s-1200
 |cff99ccff冷却时间|r - 10秒
 
 |cffffcc001级|r - 持续|cffff8c00%s|r秒，英雄|cffff8c00%s|r秒。
@@ -104,7 +105,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 travelled = travelled + distance
                 if travelled > 96 then
                     travelled = 0
-                    ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x,v1.y, 1.2)
+                    ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x, v1.y, 1.2)
                 end
 
                 if hit then
@@ -123,13 +124,29 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             SetUnitAcquireRange(data.caster, defaultRange)
             SetUnitTimeScale(data.caster, 1)
 
-            local level = GetUnitAbilityLevel(data.caster, Meta.ID)
-            local duration = IsUnitType(data.target, UNIT_TYPE_HERO) and Meta.DurationHero[level] or Meta.DurationMinion[level]
-            local debuff = BuffBase.FindBuffByClassName(data.target, RootDebuff.__cname)
-            if debuff then
-                debuff:ResetDuration(Time.Time + duration)
-            else
-                RootDebuff.new(data.caster, data.target, duration, 999)
+            if not ExIsUnitDead(data.target) then
+                local attr = UnitAttribute.GetAttr(data.caster)
+                local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * Meta.Damage
+                EventCenter.Damage:Emit({
+                    whichUnit = data.caster,
+                    target = data.target,
+                    amount = damage,
+                    attack = false,
+                    ranged = true,
+                    attackType = ATTACK_TYPE_HERO,
+                    damageType = DAMAGE_TYPE_NORMAL,
+                    weaponType = WEAPON_TYPE_WHOKNOWS,
+                    outResult = {},
+                })
+
+                local level = GetUnitAbilityLevel(data.caster, Meta.ID)
+                local duration = IsUnitType(data.target, UNIT_TYPE_HERO) and Meta.DurationHero[level] or Meta.DurationMinion[level]
+                local debuff = BuffBase.FindBuffByClassName(data.target, RootDebuff.__cname)
+                if debuff then
+                    debuff:ResetDuration(Time.Time + duration)
+                else
+                    RootDebuff.new(data.caster, data.target, duration, 999)
+                end
             end
 
             local mana = GetUnitState(data.caster, UNIT_STATE_MAX_MANA) * Meta.Rage

@@ -3,7 +3,7 @@ local Vector2 = require("Lib.Vector2")
 local basePos = Vector2.new(-3202, 4121)
 local Interval = 10
 local p1 = Player(1)
-local TrainCount = 2
+local TrainCount = 3
 
 local UTID_Archer = FourCC("earc")
 local UTID_Huntress = FourCC("esen")
@@ -14,10 +14,9 @@ local UTID_Druid = FourCC("edoc")
 
 local Army = {
     [UTID_Druid] = 4, -- 16
-    [UTID_Dryad] = 2, -- 15
     [UTID_Ballista] = 2, -- 6
-    [UTID_Huntress] = 5, -- 12
-    [UTID_Archer] = 6, -- 12
+    [UTID_Huntress] = 3, -- 15
+    [UTID_Archer] = 7, -- 8
 }
 
 local cls = class("TwistedMeadows")
@@ -31,6 +30,12 @@ function cls:ctor()
             table.addNum(self.army, GetUnitTypeId(unit), 1)
         end
     end)
+
+    ExTriggerRegisterUnitDeath(function(unit)
+        if ExGetUnitPlayerId(unit) == 1 then
+            table.addNum(self.army, GetUnitTypeId(unit), -1)
+        end
+    end)
 end
 
 function cls:Update(dt)
@@ -42,7 +47,7 @@ function cls:Update(dt)
 end
 
 function cls:run()
-    if Time.Time < 240 then
+    if Time.Time < 360 then
         return
     end
     local trained = TrainCount
@@ -62,9 +67,9 @@ function cls:run()
         end
     end
 
-    --if Time.Time > 300 and trained <= 0 then
-    --    Interval = Interval + 0.4
-    --end
+    if Time.Time > 300 and trained <= 0 then
+        Interval = Interval + 0.4
+    end
 end
 
 return cls

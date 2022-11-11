@@ -59,6 +59,9 @@ function cls.GetAttr(unit)
     local inst = cls.tab[unit]
     if not inst then
         inst = cls.new(unit)
+        if unit == nil then
+            print(GetStackTrace())
+        end
         cls.tab[unit] = inst
     end
 

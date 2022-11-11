@@ -26,7 +26,9 @@ function table.any(tab)
 end
 
 function table.getOrCreateTable(tab, key)
-    --print(GetStackTrace())
+    if key == nil then
+        print(GetStackTrace())
+    end
     local ret = tab[key]
     if not ret then
         ret = {}
