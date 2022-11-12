@@ -87,7 +87,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 })
 
 ExTriggerRegisterNewUnit(function(unit)
-    if (GetUnitPointValue(unit) & 1) ~= 1 then
+    if (BlzBitAnd(GetUnitPointValue(unit), 1)) ~= 1 then
         recordingUnits[unit] = PILQueue.new(queueSize)
     end
 end)

@@ -1,4 +1,4 @@
-﻿-- https://www.lua.org/pil/11.4.html
+-- https://www.lua.org/pil/11.4.html
 local cls = class("PILQueue")
 
 function cls:ctor(cap)
