@@ -33,6 +33,9 @@ function cls:Awake()
     require("Ability.MortalStrike")
     require("Ability.Condemn")
     require("Ability.BladeStorm")
+
+    -- 唤魔师
+    require("Ability.FireBreath")
 end
 
 return cls

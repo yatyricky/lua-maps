@@ -15,7 +15,7 @@ local ipairs = ipairs
 local systems = {
     require("System.ItemSystem").new(),
     require("System.SpellSystem").new(),
-    require("System.MeleeGameSystem").new(),
+    --require("System.MeleeGameSystem").new(),
     require("System.BuffSystem").new(),
     require("System.DamageSystem").new(),
     require("System.ProjectileSystem").new(),

@@ -58,7 +58,7 @@ EventCenter.RegisterPlayerUnitSpellChannel:Emit({
     handler = function(data)
         local v1 = Vector2.FromUnit(data.caster)
         local v2 = Vector2.FromUnit(data.target)
-        if (v2 - v1):GetMagnitude() < Meta.MinDistance then
+        if (v2 - v1):Magnitude() < Meta.MinDistance then
             IssueImmediateOrderById(data.caster, Const.OrderId_Stop)
             ExTextState(data.caster, "太近了")
         end
@@ -86,7 +86,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 local v1 = Vector2.FromUnit(data.caster)
                 local v2 = Vector2.FromUnit(data.target)
                 local v3 = v2 - v1
-                local distance = math.max(v3:GetMagnitude() - 96, 0)
+                local distance = math.max(v3:Magnitude() - 96, 0)
                 local shouldMove = Meta.Speed * Time.Delta
                 local norm = v3:SetNormalize()
                 SetUnitFacing(data.caster, math.atan2(norm.y, norm.x) * bj_RADTODEG)

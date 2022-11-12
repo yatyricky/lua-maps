@@ -1694,3 +1694,345 @@ STRING 345
 1
 }
 
+STRING 346
+// 单位: E001 (唤魔师), Name (名字)
+{
+唤魔师
+}
+
+STRING 347
+// 单位: E001 (唤魔师), Propernames (称谓)
+{
+海泽图斯
+}
+
+STRING 348
+// 技能: A01D (fire breath), Name (名字)
+{
+fire breath
+}
+
+STRING 349
+// 技能: A01D (fire breath), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 350
+// 技能: A01D (fire breath), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 351
+// 技能: A01D (fire breath), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 352
+// 技能: A01D (fire breath), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 353
+// 技能: A01D (fire breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 354
+// 技能: A01D (fire breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 355
+// 技能: A01D (fire breath), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 356
+// 技能: A01D (fire breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 357
+// 技能: A01D (fire breath), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 358
+// 技能: A01D (fire breath), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 359
+// 技能: A01E (disintegrate), Name (名字)
+{
+disintegrate
+}
+
+STRING 360
+// 技能: A01E (disintegrate), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 361
+// 技能: A01E (disintegrate), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 362
+// 技能: A01E (disintegrate), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 363
+// 技能: A01E (disintegrate), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 364
+// 技能: A01E (disintegrate), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 365
+// 技能: A01E (disintegrate), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 366
+// 技能: A01E (disintegrate), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 367
+// 技能: A01E (disintegrate), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 368
+// 技能: A01E (disintegrate), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 369
+// 技能: A01E (disintegrate), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 370
+// 技能: A01F (sleep walk), Name (名字)
+{
+sleep walk
+}
+
+STRING 371
+// 技能: A01F (sleep walk), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 372
+// 技能: A01F (sleep walk), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 373
+// 技能: A01F (sleep walk), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 374
+// 技能: A01F (sleep walk), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 375
+// 技能: A01F (sleep walk), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 376
+// 技能: A01F (sleep walk), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 377
+// 技能: A01F (sleep walk), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 378
+// 技能: A01F (sleep walk), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 379
+// 技能: A01F (sleep walk), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 380
+// 技能: A01F (sleep walk), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 381
+// 技能: A01G (time warp), Name (名字)
+{
+time warp
+}
+
+STRING 382
+// 技能: A01G (time warp), Researchhotkey (热键 - 学习)
+{
+R
+}
+
+STRING 383
+// 技能: A01G (time warp), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 384
+// 技能: A01G (time warp), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 385
+// 技能: A01G (time warp), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 386
+// 技能: A01G (time warp), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 387
+// 技能: A01G (time warp), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 388
+// 技能: A01G (time warp), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 389
+// 技能: A01G (time warp), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 390
+// 技能: A01G (time warp), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 391
+// 技能: A01G (time warp), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 392
+// 技能: A01H (magma breath), Name (名字)
+{
+magma breath
+}
+
+STRING 393
+// 技能: A01H (magma breath), Researchhotkey (热键 - 学习)
+{
+D
+}
+
+STRING 394
+// 技能: A01H (magma breath), Hotkey (热键 - 普通)
+{
+D
+}
+
+STRING 395
+// 技能: A01H (magma breath), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 396
+// 技能: A01H (magma breath), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 397
+// 技能: A01H (magma breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 398
+// 技能: A01H (magma breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 399
+// 技能: A01H (magma breath), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 400
+// 技能: A01H (magma breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 401
+// 技能: A01H (magma breath), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 402
+// 技能: A01H (magma breath), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+

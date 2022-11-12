@@ -108,14 +108,15 @@ function ExAddSpecialEffectTarget(modelName, target, attachPoint, duration)
 end
 
 function ExAddSpecialEffect(modelName, x, y, duration, color)
+    local sfx = AddSpecialEffect(modelName, x, y)
     c_start(function()
-        local sfx = AddSpecialEffect(modelName, x, y)
         if color then
             BlzSetSpecialEffectColor(sfx, m_round(color.r * 255), m_round(color.g * 255), m_round(color.b * 255))
         end
         c_wait(duration)
         DestroyEffect(sfx)
     end)
+    return sfx
 end
 
 function ExAddLightningPosPos(modelName, x1, y1, z1, x2, y2, z2, duration, color, check)

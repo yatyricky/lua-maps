@@ -101,7 +101,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 SetUnitFlyHeight(summoned, currentHeight + targetHeight, 0)
                 v1:Add(velocity)
                 v1:UnitMoveTo(summoned)
-                if (v2 - v1):GetMagnitude() < 96 then
+                if (v2 - v1):Magnitude() < 96 then
                     break
                 end
                 coroutine.step()

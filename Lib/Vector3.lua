@@ -114,7 +114,7 @@ function cls:Mul(d)
 end
 
 function cls:SetNormalize()
-    local magnitude = self:GetMagnitude()
+    local magnitude = self:Magnitude()
 
     if magnitude > 1e-05 then
         self:Div(magnitude)
@@ -140,7 +140,7 @@ function cls:GetTerrainZ()
     return getTerrainZ(self.x, self.y)
 end
 
-function cls:GetMagnitude()
+function cls:Magnitude()
     return m_sqrt(self:SqrMagnitude())
 end
 

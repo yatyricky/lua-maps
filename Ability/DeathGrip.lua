@@ -46,7 +46,7 @@ function cls:ctor(caster, target)
     local v1 = Vector2.FromUnit(caster)
     local v2 = Vector2.FromUnit(target)
     local norm = v2 - v1
-    local totalLen = norm:GetMagnitude()
+    local totalLen = norm:Magnitude()
     norm:SetNormalize()
     local travelled = 0
     local dest = (norm * 96):Add(v1)
@@ -79,7 +79,7 @@ function cls:ctor(caster, target)
             MoveLightningEx(lightning, false,
                     dir.x, dir.y, BlzGetUnitZ(target) + GetUnitFlyHeight(target),
                     dest.x, dest.y, 0)
-            if dir:Sub(dest):GetMagnitude() < 96 then
+            if dir:Sub(dest):Magnitude() < 96 then
                 break
             end
         end

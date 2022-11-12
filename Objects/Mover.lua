@@ -24,7 +24,7 @@ function cls.LinearMoveBehaviour(inst, dt)
         SetUnitFacing(inst.unit, (math.atan2(p.y, p.x)) * bj_RADTODEG)
     end
 
-    return dest:Sub(inst.pos):GetMagnitude()
+    return dest:Sub(inst.pos):Magnitude()
 end
 
 function cls.GetOrCreateFromUnit(unit, onArrived, moveBehaviour)

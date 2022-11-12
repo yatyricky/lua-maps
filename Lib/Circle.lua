@@ -11,7 +11,7 @@ end
 ---@param v Vector2
 function cls:Contains(v)
     local dir = v - self.center
-    return dir:GetMagnitude() <= self.r
+    return dir:Magnitude() <= self.r
 end
 
 function cls:Clone()

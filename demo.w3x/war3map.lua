@@ -1,4 +1,4 @@
---lua-bundler:000162249
+--lua-bundler:000179504
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -124,7 +124,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 SetUnitFlyHeight(summoned, currentHeight + targetHeight, 0)
                 v1:Add(velocity)
                 v1:UnitMoveTo(summoned)
-                if (v2 - v1):GetMagnitude() < 96 then
+                if (v2 - v1):Magnitude() < 96 then
                     break
                 end
                 coroutine.step()
@@ -444,7 +444,7 @@ return cls
 end}
 
 __modules["Ability.Charge"]={loader=function()
--- 蹒跚冲锋
+-- 冲锋
 
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
@@ -452,6 +452,7 @@ local BuffBase = require("Objects.BuffBase")
 local Vector2 = require("Lib.Vector2")
 local Const = require("Config.Const")
 local RootDebuff = require("Ability.RootDebuff")
+local UnitAttribute = require("Objects.UnitAttribute")
 
 --region meta
 
@@ -470,7 +471,7 @@ local Meta = Abilities.Charge
 BlzSetAbilityResearchTooltip(Meta.ID, "学习冲锋 - [|cffffcc00%d级|r]", 0)
 BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[向一名敌人冲锋，造成|cffff8c00%s|r的攻击伤害，使其定身，并生成|cffff8c00%s|r的怒气值。
 
-|cff99ccff施法距离|r - %s-900
+|cff99ccff施法距离|r - %s-1200
 |cff99ccff冷却时间|r - 10秒
 
 |cffffcc001级|r - 持续|cffff8c00%s|r秒，英雄|cffff8c00%s|r秒。
@@ -503,7 +504,7 @@ EventCenter.RegisterPlayerUnitSpellChannel:Emit({
     handler = function(data)
         local v1 = Vector2.FromUnit(data.caster)
         local v2 = Vector2.FromUnit(data.target)
-        if (v2 - v1):GetMagnitude() < Meta.MinDistance then
+        if (v2 - v1):Magnitude() < Meta.MinDistance then
             IssueImmediateOrderById(data.caster, Const.OrderId_Stop)
             ExTextState(data.caster, "太近了")
         end
@@ -531,7 +532,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 local v1 = Vector2.FromUnit(data.caster)
                 local v2 = Vector2.FromUnit(data.target)
                 local v3 = v2 - v1
-                local distance = math.max(v3:GetMagnitude() - 96, 0)
+                local distance = math.max(v3:Magnitude() - 96, 0)
                 local shouldMove = Meta.Speed * Time.Delta
                 local norm = v3:SetNormalize()
                 SetUnitFacing(data.caster, math.atan2(norm.y, norm.x) * bj_RADTODEG)
@@ -550,7 +551,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 travelled = travelled + distance
                 if travelled > 96 then
                     travelled = 0
-                    ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x,v1.y, 1.2)
+                    ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x, v1.y, 1.2)
                 end
 
                 if hit then
@@ -569,13 +570,29 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             SetUnitAcquireRange(data.caster, defaultRange)
             SetUnitTimeScale(data.caster, 1)
 
-            local level = GetUnitAbilityLevel(data.caster, Meta.ID)
-            local duration = IsUnitType(data.target, UNIT_TYPE_HERO) and Meta.DurationHero[level] or Meta.DurationMinion[level]
-            local debuff = BuffBase.FindBuffByClassName(data.target, RootDebuff.__cname)
-            if debuff then
-                debuff:ResetDuration(Time.Time + duration)
-            else
-                RootDebuff.new(data.caster, data.target, duration, 999)
+            if not ExIsUnitDead(data.target) then
+                local attr = UnitAttribute.GetAttr(data.caster)
+                local damage = attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * Meta.Damage
+                EventCenter.Damage:Emit({
+                    whichUnit = data.caster,
+                    target = data.target,
+                    amount = damage,
+                    attack = false,
+                    ranged = true,
+                    attackType = ATTACK_TYPE_HERO,
+                    damageType = DAMAGE_TYPE_NORMAL,
+                    weaponType = WEAPON_TYPE_WHOKNOWS,
+                    outResult = {},
+                })
+
+                local level = GetUnitAbilityLevel(data.caster, Meta.ID)
+                local duration = IsUnitType(data.target, UNIT_TYPE_HERO) and Meta.DurationHero[level] or Meta.DurationMinion[level]
+                local debuff = BuffBase.FindBuffByClassName(data.target, RootDebuff.__cname)
+                if debuff then
+                    debuff:ResetDuration(Time.Time + duration)
+                else
+                    RootDebuff.new(data.caster, data.target, duration, 999)
+                end
             end
 
             local mana = GetUnitState(data.caster, UNIT_STATE_MAX_MANA) * Meta.Rage
@@ -989,7 +1006,7 @@ function cls:ctor(caster, target)
     local v1 = Vector2.FromUnit(caster)
     local v2 = Vector2.FromUnit(target)
     local norm = v2 - v1
-    local totalLen = norm:GetMagnitude()
+    local totalLen = norm:Magnitude()
     norm:SetNormalize()
     local travelled = 0
     local dest = (norm * 96):Add(v1)
@@ -1022,7 +1039,7 @@ function cls:ctor(caster, target)
             MoveLightningEx(lightning, false,
                     dir.x, dir.y, BlzGetUnitZ(target) + GetUnitFlyHeight(target),
                     dest.x, dest.y, 0)
-            if dir:Sub(dest):GetMagnitude() < 96 then
+            if dir:Sub(dest):Magnitude() < 96 then
                 break
             end
         end
@@ -1350,7 +1367,7 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _
     ExGroupEnumUnitsInRange(GetUnitX(target), GetUnitY(target), circle.r, function(e)
         if not IsUnit(e, target) and IsUnitAlly(e, targetPlayer) and not ExIsUnitDead(e) then
             v2:MoveToUnit(e):Sub(v1)
-            table.insert(candidates, { unit = e, dist = v2:GetMagnitude() })
+            table.insert(candidates, { unit = e, dist = v2:Magnitude() })
         end
     end)
     table.sort(candidates, function(a, b)
@@ -1363,6 +1380,112 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _
         UnitDamageTarget(caster, v.unit, damage, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_DIVINE, WEAPON_TYPE_WHOKNOWS)
     end
 end)
+
+return cls
+
+end}
+
+__modules["Ability.Disintegrate"]={loader=function()
+local Vector2 = require("Lib.Vector2")
+local EventCenter = require("Lib.EventCenter")
+local Timer = require("Lib.Timer")
+local Pill = require("Lib.Pill")
+local Circle = require("Lib.Circle")
+local UnitAttribute = require("Objects.UnitAttribute")
+
+local cls = class("Disintegrate")
+
+local Meta = {
+    ID = FourCC("A000"),
+}
+
+local Width = 32
+local BackOffset = 10
+local Radius = Width / 2
+local PointMoveForward = Radius - 10
+
+Abilities.Disintegrate = Meta
+
+local instances = {}
+
+function cls:ctor(caster, target)
+    self.lightning = ExAddLightningUnitUnit("espb", caster, target, 9999, { r = 1, g = 1, b = 1, a = 1 }, false)
+    self.slowedUnits = {}
+    local casterPlayer = GetOwningPlayer(caster)
+    self.timer = Timer.new(function()
+        local a = Vector2.FromUnit(caster)
+        local b = Vector2.FromUnit(target)
+        local dir = b - a
+        local center = a + dir:Div(2)
+        local realDist = dir:Magnitude()
+        dir:SetNormalize()
+        local moveForwardOffset = math.min(realDist / 2, PointMoveForward)
+        local offset = dir * moveForwardOffset
+        a:Add(offset)
+        b:Sub(offset)
+        local pill = Pill.new(a, b, Radius)
+
+        local enumRange = realDist / 2 + BackOffset
+        ExGroupEnumUnitsInRange(center.x, center.y, enumRange, function(unit)
+            if not ExIsUnitDead(unit) and IsUnitAlly(unit, casterPlayer) then
+                local circle = Circle.new(Vector2.FromUnit(unit), Radius)
+                if Pill.PillCircle(pill, circle) then
+                    if not self.slowedUnits[unit] then
+                        local attr = UnitAttribute.GetAttr(unit)
+                        attr.msp = attr.msp + Meta.MoveSpeedPercent
+                        attr:Commit()
+                    end
+
+                    EventCenter.Damage:Emit({
+                        whichUnit = caster,
+                        target = unit,
+                        amount = Meta.Damage,
+                        attack = false,
+                        ranged = true,
+                        attackType = ATTACK_TYPE_HERO,
+                        damageType = DAMAGE_TYPE_DIVINE,
+                        weaponType = WEAPON_TYPE_WHOKNOWS,
+                        outResult = {},
+                    })
+                end
+            end
+        end)
+    end, 1, -1)
+    self.timer:Start()
+end
+
+function cls:stop()
+    self.timer:Stop()
+    for unit, _ in pairs(self.slowedUnits) do
+        local attr = UnitAttribute.GetAttr(unit)
+        attr.msp = attr.msp - Meta.MoveSpeedPercent
+        attr:Commit()
+    end
+    DestroyLightning(self.lightning)
+    self.slowedUnits = {}
+end
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        instances[data.caster] = cls.new(data.caster, data.target)
+    end
+})
+
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local inst = instances[data.caster]
+        if inst then
+            inst:stop()
+            instances[data.caster] = nil
+        else
+            print("Disintegrate end but no instance")
+        end
+    end
+})
 
 return cls
 
@@ -1525,6 +1648,101 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isA
 
     debuff:Burst()
 end)
+
+return cls
+
+end}
+
+__modules["Ability.FireBreath"]={loader=function()
+local Vector2 = require("Lib.Vector2")
+local EventCenter = require("Lib.EventCenter")
+local Timer = require("Lib.Timer")
+local Pill = require("Lib.Pill")
+local Circle = require("Lib.Circle")
+local UnitAttribute = require("Objects.UnitAttribute")
+local Abilities = require("Config.Abilities")
+
+local cls = class("FireBreath")
+
+local Meta = {
+    ID = FourCC("A01D"),
+    Duration = 6,
+    Interval = 2,
+    ChargeInterval = 1,
+    ChargeAmp = 0.15,
+    ChannelDuration = 3,
+    Damage = 80,
+    DOT = 10,
+    Heal = 160,
+}
+
+BlzSetAbilityResearchTooltip(Meta.ID, "学习火焰吐息 - [|cffffcc00%d级|r]", 0)
+BlzSetAbilityResearchExtendedTooltip(Meta.ID, string.format([[深吸一口气然后喷出，造成前方锥形龙息并击飞的效果，对敌军造成伤害并在接下来的|cffff8c00%s|r秒内每|cffff8c00%s|r秒灼烧目标，或者治疗友军单位。每蓄力|cffff8c00%s|r秒可以使效果增幅|cffff8c00%s|r，最多|cffff8c00%s|r秒。
+
+|cff99ccff冷却时间|r - 10秒
+
+|cffffcc001级|r - 造成|cffff8c00%s|r点基础伤害，|cffff8c00%s|r点持续伤害，|cffff8c00%s|r点治疗。]],
+        Meta.Duration, Meta.Interval, Meta.ChargeInterval, string.formatPercentage(Meta.ChargeAmp), Meta.ChannelDuration,
+        Meta.Damage, Meta.DOT, Meta.Heal
+), 0)
+
+for i = 1, 1 do
+    BlzSetAbilityTooltip(Meta.ID, string.format("火焰吐息 - [|cffffcc00%s级|r]", i), i - 1)
+    BlzSetAbilityExtendedTooltip(Meta.ID, string.format(
+            [[深吸一口气然后喷出，造成前方锥形龙息并击飞的效果，对敌军造成|cffff8c00%s|r点伤害并在接下来的|cffff8c00%s|r秒内每|cffff8c00%s|r秒灼烧目标，造成|cffff8c00%s|r点伤害，或者治疗友军单位|cffff8c00%s|r点生命。每蓄力|cffff8c00%s|r秒可以使效果增幅|cffff8c00%s|r，最多|cffff8c00%s|r秒。
+
+|cff99ccff冷却时间|r - 10秒]],
+            Meta.Damage, Meta.Duration, Meta.Interval, Meta.DOT, Meta.Heal, Meta.ChargeInterval, string.formatPercentage(Meta.ChargeAmp), Meta.ChannelDuration
+    ), i - 1)
+end
+
+Abilities.FireBreath = Meta
+
+local instances = {}
+
+function cls:ctor(caster, x, y)
+    self.charging = AddSpecialEffect("Abilities/Weapons/RedDragonBreath/RedDragonMissile.mdl", GetUnitX(caster), GetUnitY(caster))
+    BlzSetSpecialEffectScale(self.charging, 0.1)
+    self.charged = 0
+    self.caster = caster
+    self.targetPos = Vector2.new(x, y)
+
+    self.timer = Timer.new(function()
+        self.charged = self.charged + 1
+        BlzSetSpecialEffectScale(self.charging, 0.1 + self.charged * 0.3)
+    end, 1, -1)
+    self.timer:Start()
+end
+
+function cls:stop()
+    self.timer:Stop()
+
+    local sfx = ExAddSpecialEffect("Abilities/Spells/Other/BreathOfFire/BreathOfFireMissile.mdl", GetUnitX(self.caster), GetUnitY(self.caster), 1)
+    local dir = (self.targetPos - Vector2.FromUnit(self.caster)):SetNormalize()
+    BlzSetSpecialEffectYaw(sfx, math.atan2(dir.y, dir.x))
+end
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        instances[data.caster] = cls.new(data.caster, data.x, data.y)
+    end
+})
+
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local inst = instances[data.caster]
+        if inst then
+            inst:stop()
+            instances[data.caster] = nil
+        else
+            print("Disintegrate end but no instance")
+        end
+    end
+})
 
 return cls
 
@@ -1802,7 +2020,7 @@ for i = 1, #Meta.DamageScale do
 
 |cff99ccff冷却时间|r - 6秒
 |cff99ccff持续时间|r - %s秒]],
-            string.formatPercentage(Meta.DamageScale[i]), Meta.HealingDecrease, Meta.Duration[i]),
+            string.formatPercentage(Meta.DamageScale[i]), string.formatPercentage(Meta.HealingDecrease), Meta.Duration[i]),
             i - 1)
 end
 
@@ -1870,6 +2088,32 @@ return cls
 
 end}
 
+__modules["Ability.NativeRejuvenation"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = FourCC("Arej"),
+    ---@param data ISpellData
+    handler = function(data)
+        coroutine.start(function()
+            for _ = 1, 12 do
+                coroutine.wait(1)
+                if not ExIsUnitDead(data.target) then
+                    EventCenter.Heal:Emit({
+                        caster = data.caster,
+                        target = data.target,
+                        amount = 33.333,
+                    })
+                else
+                    break
+                end
+            end
+        end)
+    end
+})
+
+end}
+
 __modules["Ability.Outbreak"]={loader=function()
 -- 传染
 end}
@@ -1889,7 +2133,7 @@ local DeepWounds = require("Ability.DeepWounds")
 Abilities.Overpower = {
     ID = FourCC("A016"),
     TechUnitID = FourCC("e000"),
-    DamageScale = 1.2,
+    DamageScale = 2,
 }
 
 BlzSetAbilityTooltip(Abilities.Overpower.ID, string.format("压制"), 0)
@@ -2365,7 +2609,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 local v1 = Vector2.FromUnit(data.caster)
                 local v2 = Vector2.FromUnit(data.target)
                 local v3 = v2 - v1
-                local distance = math.max(v3:GetMagnitude() - 96, 0)
+                local distance = math.max(v3:Magnitude() - 96, 0)
                 local shouldMove = Abilities.ShamblingRush.Speed * Time.Delta
                 local norm = v3:SetNormalize()
                 SetUnitFacing(data.caster, math.atan2(norm.y, norm.x) * bj_RADTODEG)
@@ -2407,6 +2651,183 @@ return cls
 
 end}
 
+__modules["Ability.SleepWalk"]={loader=function()
+local Vector2 = require("Lib.Vector2")
+local EventCenter = require("Lib.EventCenter")
+
+local cls = class("SleepWalk")
+
+local Meta = {
+    ID = FourCC("A000")
+}
+
+Abilities.SleepWalk = Meta
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Abilities.DeathCoil.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        coroutine.start(function()
+            PauseUnit(data.target, true)
+            SetUnitPathing(data.target, false)
+            SetUnitAnimationByIndex(data.target, 0)
+            local sfx = AddSpecialEffectTarget("sleep", data.target, "overhead")
+            local travelled = 0
+            while true do
+                coroutine.step()
+                local dest = Vector2.FromUnit(data.caster)
+                local curr = Vector2.FromUnit(data.target)
+                local dir = (dest - curr):SetNormalize()
+                local stepLen = speed * Time.Delta
+                curr:Add(dir * stepLen):UnitMoveTo(data.target)
+                SetUnitFacing(data.target, math.atan2(dir.y, dir.x) * bj_RADTODEG)
+                travelled = travelled + stepLen
+                if travelled >= Meta.EveryYards then
+                    travelled = travelled - Meta.EveryYards
+                    EventCenter.HealMana:Emit({
+                        caster = data.caster,
+                        target = data.caster,
+                        amount = Meta.ManaRestore,
+                        isPercentage = false
+                    })
+                end
+                if curr:Sub(dest):Magnitude() < 96 then
+                    break
+                end
+            end
+
+            DestroyEffect(sfx)
+            PauseUnit(target, false)
+            SetUnitPathing(target, true)
+        end)
+    end
+})
+
+return cls
+
+end}
+
+__modules["Ability.TimeWarp"]={loader=function()
+local Vector2 = require("Lib.Vector2")
+local EventCenter = require("Lib.EventCenter")
+local Timer = require("Lib.Timer")
+local PILQueue = require("Lib.PILQueue")
+
+local cls = class("TimeWarp")
+
+local Meta = {
+    ID = FourCC("A000")
+}
+
+local queueSize = Meta.Duration / Time.Delta / Meta.ReverseSpeed
+local reversing = {}
+local recordingUnits = {}
+
+Abilities.TimeWarp = Meta
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Abilities.DeathCoil.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local casterPlayer = GetOwningPlayer(data.caster)
+
+        local clock = CreateUnit(casterPlayer, Meta.ClickID, data.x, data.y, 0)
+        SetUnitAnimation(clock, "Stand,Alternate")
+        SetUnitTimeScale(clock, 10 / MEta.Duration)
+        coroutine.start(function ()
+            coroutine.wait(Meta.Duration)
+            SetUnitAnimation(clock, "Death")
+            KillUnit(clock)
+        end)
+
+        coroutine.start(function()
+            local units = ExGroupGetUnitsInRange(data.x, data.y, Meta.Radius)
+            for i = #units, 1, -1 do
+                local u = units[i]
+                if IsUnit(u, data.caster) then
+                    table.remove(units, i)
+                else
+                    reversing[u] = true
+                end
+            end
+            while #units > 0 do
+                coroutine.step()
+                for i = #units, 1, -1 do
+                    local u = units[i]
+                    local q = recordingUnits[u]
+                    if not q then
+                        table.remove(units, i)
+                    else
+                        local d = q:peekright()
+                        if d then
+                            q:popright()
+                            if IsUnitAlly(u, casterPlayer) then
+                                local nowDead = ExIsUnitDead(u)
+                                if nowDead and not d.dead then
+                                    -- revive
+                                    local revived = CreateUnit(GetOwningPlayer(u), GetUnitTypeId(u), d.x, d.y, d.f)
+                                    SetWidgetLife(revived, d.hp)
+                                    ExSetUnitMana(revived, d.mp)
+                                    recordingUnits[revived] = q
+                                    recordingUnits[u] = nil
+                                    reversing[revived] = true
+                                    units[i] = revived
+                                elseif not nowDead and not d.dead then
+                                    SetUnitPosition(u, d.x, d.y)
+                                    SetUnitFacing(u, d.f)
+                                    SetWidgetLife(u, d.hp)
+                                    ExSetUnitMana(u, d.mp)
+                                end
+                            else
+                                if not ExIsUnitDead(u) then
+                                    SetUnitPosition(u, d.x, d.y)
+                                    SetUnitFacing(u, d.f)
+                                else
+                                    table.remove(units, i)
+                                end
+                            end
+                        else
+                            table.remove(units, i)
+                        end
+                    end
+                end
+            end
+        end)
+    end
+})
+
+ExTriggerRegisterNewUnit(function(unit)
+    if (GetUnitPointValue(unit) & 1) ~= 1 then
+        recordingUnits[unit] = PILQueue.new(queueSize)
+    end
+end)
+
+local decayTrigger = CreateTrigger()
+TriggerRegisterAnyUnitEventBJ(decayTrigger, EVENT_PLAYER_UNIT_DECAY)
+ExTriggerAddAction(decayTrigger, function()
+    recordingUnits[GetDecayingUnit()] = nil
+end)
+
+local tm = Timer.new(function()
+    for unit, q in pairs(recordingUnits) do
+        if not reversing[unit] then
+            q:pushright({
+                x = GetUnitX(unit),
+                y = GetUnitY(unit),
+                f = GetUnitFacing(unit),
+                hp = GetWidgetLife(unit),
+                mp = ExGetUnitMana(unit),
+                dead = ExIsUnitDead(unit),
+            })
+        end
+    end
+end, Time.Delta * Meta.ReverseSpeed, -1)
+tm:Start()
+
+return cls
+
+end}
+
 __modules["Ability.UnholyPlague"]={loader=function()
 local BuffBase = require("Objects.BuffBase")
 local Abilities = require("Config.Abilities")
@@ -2437,64 +2858,47 @@ return cls
 end}
 
 __modules["AI.TwistedMeadows"]={loader=function()
-local EventCenter = require("Lib.EventCenter")
-local Const = require("Config.Const")
 local Vector2 = require("Lib.Vector2")
 
-local sequence = {
-    FourCC("AEmb"),
-    FourCC("A015"),
-    FourCC("A015"),
-    FourCC("AEmb"),
-    FourCC("A015"),
-    FourCC("AEme"),
-    FourCC("AEmb"),
-    FourCC("AEim"),
-    FourCC("AEim"),
-    FourCC("AEim"),
+local basePos = Vector2.new(-3202, 4121)
+local Interval = 10
+local p1 = Player(1)
+local TrainCount = 3
+
+local UTID_Archer = FourCC("earc")
+local UTID_Huntress = FourCC("esen")
+local UTID_Dryad = FourCC("edry")
+local UTID_Ballista = FourCC("ebal")
+local UTID_Chimaera = FourCC("echm")
+local UTID_Druid = FourCC("edoc")
+
+local Army = {
+    [UTID_Druid] = 4, -- 16
+    [UTID_Ballista] = 2, -- 6
+    [UTID_Huntress] = 3, -- 15
+    [UTID_Archer] = 7, -- 8
 }
-
-local DH = FourCC("Edem")
-local camps = {}
-
-local basePos = Vector2.new(-3571, 4437)
-
-local Interval = 1
 
 local cls = class("TwistedMeadows")
 
 function cls:ctor()
-    local trigger = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(trigger, EVENT_PLAYER_HERO_LEVEL)
-    ExTriggerAddAction(trigger, function()
-        local unit = GetTriggerUnit()
-        --local player = GetOwningPlayer(unit)
-        if GetUnitTypeId(unit) == DH then
-            local level = GetUnitLevel(unit)
-            SelectHeroSkill(unit, sequence[level])
-        end
-    end)
-
-    local finishConstruction = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(finishConstruction, EVENT_PLAYER_UNIT_CONSTRUCT_FINISH)
-    ExTriggerAddAction(finishConstruction, function()
-        local unit = GetTriggerUnit()
-        if GetUnitTypeId(unit) == FourCC("eate") then
-            DestroyTrigger(finishConstruction)
-            self.altar = unit
-        end
-    end)
-
     self.time = 0
+    self.army = {}
 
-    self.unitFarm = {}
+    ExTriggerRegisterNewUnit(function(unit)
+        if ExGetUnitPlayerId(unit) == 1 then
+            table.addNum(self.army, GetUnitTypeId(unit), 1)
+        end
+    end)
+
+    ExTriggerRegisterUnitDeath(function(unit)
+        if ExGetUnitPlayerId(unit) == 1 then
+            table.addNum(self.army, GetUnitTypeId(unit), -1)
+        end
+    end)
 end
 
 function cls:Update(dt)
-    if self.altar ~= nil then
-        IssueTrainOrderByIdBJ(self.altar, DH)
-    end
-
     self.time = self.time + dt
     if self.time >= Interval then
         self.time = self.time % Interval
@@ -2503,31 +2907,28 @@ function cls:Update(dt)
 end
 
 function cls:run()
-    local hp = 0
-    local p2 = Player(1)
-    local force = {}
-    ExGroupEnumUnitsInMap(function(unit)
-        if GetOwningPlayer(unit) == p2 and not ExIsUnitDead(unit) and not IsUnitType(unit, UNIT_TYPE_PEON) and not IsUnitType(unit, UNIT_TYPE_STRUCTURE) then
-            hp = hp + GetWidgetLife(unit)
-            table.insert(force, unit)
+    if Time.Time < 360 then
+        return
+    end
+    local trained = TrainCount
+    for utid, maxSize in pairs(Army) do
+        local current = self.army[utid] or 0
+        local diff = maxSize - current
+        if diff > 0 then
+            local train = math.min(diff, trained)
+            for _ = 1, train do
+                CreateUnit(p1, utid, basePos.x, basePos.y, 0)
+            end
+            trained = trained - train
         end
-    end)
 
-    local positions = {}
-    EventCenter.InitCamp:Emit(positions)
-    table.sort(positions, function(a, b)
-        local distA = (basePos - a.p):GetMagnitude() / 10
-        local distB = (basePos - b.p):GetMagnitude() / 10
-        return a.hp + distA < b.hp + distB
-    end)
-
-    local firstCamp = positions[1]
-    print("got target", firstCamp.p:tostring())
-    if firstCamp.hp > 1 and firstCamp.hp < hp then
-        print("issue ", #force, "units")
-        for _, v in ipairs(force) do
-            IssuePointOrderById(v, Const.OrderId_Attack, firstCamp.p.x, firstCamp.p.y)
+        if trained <= 0 then
+            break
         end
+    end
+
+    if Time.Time > 300 and trained <= 0 then
+        Interval = Interval + 0.4
     end
 end
 
@@ -2584,7 +2985,7 @@ end
 ---@param v Vector2
 function cls:Contains(v)
     local dir = v - self.center
-    return dir:GetMagnitude() <= self.r
+    return dir:Magnitude() <= self.r
 end
 
 function cls:Clone()
@@ -3065,14 +3466,15 @@ function ExAddSpecialEffectTarget(modelName, target, attachPoint, duration)
 end
 
 function ExAddSpecialEffect(modelName, x, y, duration, color)
+    local sfx = AddSpecialEffect(modelName, x, y)
     c_start(function()
-        local sfx = AddSpecialEffect(modelName, x, y)
         if color then
             BlzSetSpecialEffectColor(sfx, m_round(color.r * 255), m_round(color.g * 255), m_round(color.b * 255))
         end
         c_wait(duration)
         DestroyEffect(sfx)
     end)
+    return sfx
 end
 
 function ExAddLightningPosPos(modelName, x1, y1, z1, x2, y2, z2, duration, color, check)
@@ -3316,6 +3718,149 @@ end
 
 end}
 
+__modules["Lib.Pill"]={loader=function()
+---@class Pill
+local cls = class("Pill")
+
+---@param p1 Vector2
+---@param p2 Vector2
+---@param r real
+function cls:ctor(p1, p2, r)
+    self.p1 = p1
+    self.p2 = p2
+    self.r = r
+end
+
+---胶囊碰撞
+---@param c1 Pill
+---@param c2 Pill
+---@return boolean
+function cls.PillPill(c1, c2)
+    local _caps = { c1, c2 }
+    local rs = (c1.r + c2.r) * (c1.r + c2.r)
+    for i = 1, 2 do
+        local ii = i + 1
+        if ii == 3 then
+            ii = 1
+        end
+        local _vw = _caps[ii].p2 - _caps[ii].p1
+        local vws2 = _vw:MagnitudeSqr()
+        local _ps = { _caps[i].p1, _caps[i].p2 }
+        for _, p in ipairs(_ps) do
+            local t = math.clamp01(Vector2.Dot(p - _caps[ii].p1, _vw) / vws2)
+            local _proj = _vw * t + _caps[ii].p1
+            local dist = (_proj - p):MagnitudeSqr()
+            if dist <= rs then
+                return true
+            end
+        end
+    end
+    local _v1 = c1.p2 - c1.p1
+    local _v2 = c2.p2 - c2.p1
+    local _vw = c2.p1 - c1.p1
+    local d = Vector2.Cross(_v1, _v2)
+    local v = Vector2.Cross(_vw, _v1) / d
+    local n = Vector2.Cross(_vw, _v2) / d
+    if n >= 0 and n <= 1 and v >= 0 and v <= 1 then
+        return true
+    end
+    return false
+end
+
+---@param capsule Pill
+---@param circle Circle
+function cls.PillCircle(capsule, circle)
+    local rs = (capsule.r + circle.r) * (capsule.r + circle.r)
+    local _vw = capsule.p2 - capsule.p1
+    local vws2 = _vw:MagnitudeSqr()
+    local t = math.clamp01(Vector2.Dot(circle.center - capsule.p1, _vw) / vws2)
+    local _proj = _vw * t + capsule.p1
+    if (_proj - circle.center):MagnitudeSqr() <= rs then
+        return true
+    else
+        return false
+    end
+end
+
+return cls
+
+end}
+
+__modules["Lib.PILQueue"]={loader=function()
+﻿-- https://www.lua.org/pil/11.4.html
+local cls = class("PILQueue")
+
+function cls:ctor(cap)
+    self.cap = cap
+    self.first = 0
+    self.last = -1
+end
+
+function cls:pushleft(value)
+    local first = self.first - 1
+    self.first = first
+    self[first] = value
+    if self.cap and self:size() > self.cap then
+        self:popright()
+    end
+end
+
+function cls:pushright(value)
+    local last = self.last + 1
+    self.last = last
+    self[last] = value
+    if self.cap and self:size() > self.cap then
+        self:popleft()
+    end
+end
+
+function cls:popleft()
+    local first = self.first
+    if first > self.last then
+        error("queue is empty")
+    end
+    local value = self[first]
+    self[first] = nil -- to allow garbage collection
+    self.first = first + 1
+    return value
+end
+
+function cls:popright()
+    local last = self.last
+    if self.first > last then
+        error("self is empty")
+    end
+    local value = self[last]
+    self[last] = nil -- to allow garbage collection
+    self.last = last - 1
+    return value
+end
+
+function cls:peekleft()
+    return self[self.first]
+end
+
+function cls:peekright()
+    return self[self.last]
+end
+
+function cls:size()
+    return self.last - self.first + 1
+end
+
+function cls:tostring()
+    local sb = ""
+    for i = self.first, self.last do
+        sb = sb .. tostring(self[i]) .. " "
+    end
+    sb = sb .. "size:" .. self:size()
+    return sb
+end
+
+return cls
+
+end}
+
 __modules["Lib.StringExt"]={loader=function()
 function string.formatPercentage(number, digits)
     digits = digits or 0
@@ -3361,7 +3906,9 @@ function table.any(tab)
 end
 
 function table.getOrCreateTable(tab, key)
-    --print(GetStackTrace())
+    if key == nil then
+        print(GetStackTrace())
+    end
     local ret = tab[key]
     if not ret then
         ret = {}
@@ -3695,6 +4242,14 @@ function cls.InsideUnitCircle()
     return new(math.cos(angle), math.sin(angle))
 end
 
+function cls.Dot(a, b)
+    return a.x * b.x + a.y * b.y
+end
+
+function cls.Cross(a, b)
+    return a.y * b.x - a.x * b.y
+end
+
 ---@param unit unit
 function cls:MoveToUnit(unit)
     self.x = GetUnitX(unit)
@@ -3744,7 +4299,7 @@ function cls:Mul(d)
 end
 
 function cls:SetNormalize()
-    local magnitude = self:GetMagnitude()
+    local magnitude = self:Magnitude()
 
     if magnitude > 1e-05 then
         self.x = self.x / magnitude
@@ -3771,7 +4326,7 @@ function cls:GetTerrainZ()
     return GetLocationZ(cls._loc)
 end
 
-function cls:GetMagnitude()
+function cls:Magnitude()
     return m_sqrt(self.x * self.x + self.y * self.y)
 end
 
@@ -3940,7 +4495,7 @@ function cls:Mul(d)
 end
 
 function cls:SetNormalize()
-    local magnitude = self:GetMagnitude()
+    local magnitude = self:Magnitude()
 
     if magnitude > 1e-05 then
         self:Div(magnitude)
@@ -3966,7 +4521,7 @@ function cls:GetTerrainZ()
     return getTerrainZ(self.x, self.y)
 end
 
-function cls:GetMagnitude()
+function cls:Magnitude()
     return m_sqrt(self:SqrMagnitude())
 end
 
@@ -4104,16 +4659,16 @@ local ipairs = ipairs
 
 ---@type SystemBase[]
 local systems = {
-    require("System.ItemSystem").new(),
-    require("System.SpellSystem").new(),
-    require("System.MeleeGameSystem").new(),
-    require("System.BuffSystem").new(),
-    require("System.DamageSystem").new(),
-    require("System.ProjectileSystem").new(),
-    --require("System.MoverSystem").new(),
-    require("System.ManagedAISystem").new(),
-
-    require("System.InitAbilitiesSystem").new(),
+    --require("System.ItemSystem").new(),
+    --require("System.SpellSystem").new(),
+    --require("System.MeleeGameSystem").new(),
+    --require("System.BuffSystem").new(),
+    --require("System.DamageSystem").new(),
+    --require("System.ProjectileSystem").new(),
+    ----require("System.MoverSystem").new(),
+    --require("System.ManagedAISystem").new(),
+    --
+    --require("System.InitAbilitiesSystem").new(),
 }
 
 for _, system in ipairs(systems) do
@@ -4271,7 +4826,7 @@ function cls.LinearMoveBehaviour(inst, dt)
         SetUnitFacing(inst.unit, (math.atan2(p.y, p.x)) * bj_RADTODEG)
     end
 
-    return dest:Sub(inst.pos):GetMagnitude()
+    return dest:Sub(inst.pos):Magnitude()
 end
 
 function cls.GetOrCreateFromUnit(unit, onArrived, moveBehaviour)
@@ -4459,6 +5014,9 @@ function cls.GetAttr(unit)
     local inst = cls.tab[unit]
     if not inst then
         inst = cls.new(unit)
+        if unit == nil then
+            print(GetStackTrace())
+        end
         cls.tab[unit] = inst
     end
 
@@ -4668,8 +5226,9 @@ EventCenter.RegisterPlayerUnitDamaging = Event.new()
 EventCenter.RegisterPlayerUnitDamaged = Event.new()
 ---data {whichUnit, target, amount, attack, ranged, attackType, damageType, weaponType, outResult}
 EventCenter.Damage = Event.new()
----data: {caster:unit,target:unit}
+---data: {caster:unit,target:unit, amount: real}
 EventCenter.Heal = Event.new()
+---{caster=caster,target=target,amount=amount,isPercentage=isPercentage}
 EventCenter.HealMana = Event.new()
 EventCenter.PlayerUnitAttackMiss = Event.new()
 
@@ -4809,33 +5368,37 @@ local cls = class("InitAbilitiesSystem", SystemBase)
 
 function cls:Awake()
     -- 血DK
-    require("Ability.DeathGrip")
-    require("Ability.DeathStrike")
-    require("Ability.PlagueStrike")
-    require("Ability.ArmyOfTheDead")
+    --require("Ability.DeathGrip")
+    --require("Ability.DeathStrike")
+    --require("Ability.PlagueStrike")
+    --require("Ability.ArmyOfTheDead")
+    --
+    ---- 邪DK
+    --require("Ability.FesteringWound")
+    --require("Ability.DeathCoil")
+    --require("Ability.Defile")
+    --require("Ability.Apocalypse")
+    --require("Ability.DarkTransformation")
+    --require("Ability.MonstrousBlow")
+    --require("Ability.ShamblingRush")
+    --require("Ability.PutridBulwark")
+    --
+    ---- 默认 技能
+    --require("Ability.Evasion")
+    --require("Ability.MoonWellHeal")
+    --require("Ability.NativeRejuvenation")
+    --
+    ---- 武器战
+    --require("Ability.RageGenerator")
+    --require("Ability.DeepWounds")
+    --require("Ability.Overpower")
+    --require("Ability.Charge")
+    --require("Ability.MortalStrike")
+    --require("Ability.Condemn")
+    --require("Ability.BladeStorm")
 
-    -- 邪DK
-    require("Ability.FesteringWound")
-    require("Ability.DeathCoil")
-    require("Ability.Defile")
-    require("Ability.Apocalypse")
-    require("Ability.DarkTransformation")
-    require("Ability.MonstrousBlow")
-    require("Ability.ShamblingRush")
-    require("Ability.PutridBulwark")
-
-    -- 默认 恶魔猎手
-    require("Ability.Evasion")
-    require("Ability.MoonWellHeal")
-
-    -- 武器战
-    require("Ability.RageGenerator")
-    require("Ability.DeepWounds")
-    require("Ability.Overpower")
-    require("Ability.Charge")
-    require("Ability.MortalStrike")
-    require("Ability.Condemn")
-    require("Ability.BladeStorm")
+    -- 唤魔师
+    --require("Ability.FireBreath")
 end
 
 return cls
@@ -4978,17 +5541,19 @@ function cls:onInitCamp(data)
                 hp = hp + GetWidgetLife(unit)
             end
         end)
-        table.insert(data, {
-            p = p,
-            hp = hp,
-        })
+        if hp > 5 then
+            table.insert(data, {
+                p = p,
+                hp = hp,
+            })
+        end
     end
 end
 
-ExTriggerRegisterUnitLearn(0, function(unit, level, skill)
-    local Utils = require("Lib.Utils")
-    print(GetUnitName(unit), "learn", Utils.CCFour(skill), level)
-end)
+--ExTriggerRegisterUnitLearn(0, function(unit, level, skill)
+--    local Utils = require("Lib.Utils")
+--    print(GetUnitName(unit), "learn", Utils.CCFour(skill), level)
+--end)
 
 return cls
 
@@ -5100,7 +5665,7 @@ function cls:Update(dt)
             BlzSetSpecialEffectZ(proj.sfx, curr:GetTerrainZ() + 60) -- todo, use vec3
             BlzSetSpecialEffectYaw(proj.sfx, math.atan2(norm.y, norm.x))
 
-            if dest:Sub(curr):GetMagnitude() < 96 then
+            if dest:Sub(curr):Magnitude() < 96 then
                 DestroyEffect(proj.sfx)
                 proj.onHit()
 
@@ -5330,20 +5895,9 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000162249
+--lua-bundler:000179504
 
 function InitGlobals()
-end
-
-function CreateBuildingsForPlayer0()
-local p = Player(0)
-local u
-local unitID
-local t
-local life
-
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), -992.0, -416.0, 270.000, FourCC("emow"))
-SetUnitState(u, UNIT_STATE_MANA, 300)
 end
 
 function CreateUnitsForPlayer0()
@@ -5353,23 +5907,11 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("Obla"), -353.3, -695.3, 190.440, FourCC("Obla"))
-SetHeroLevel(u, 10, false)
-end
-
-function CreateBuildingsForPlayer1()
-local p = Player(1)
-local u
-local unitID
-local t
-local life
-
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), 1120.0, -416.0, 270.000, FourCC("emow"))
-SetUnitState(u, UNIT_STATE_MANA, 300)
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), 1120.0, -608.0, 270.000, FourCC("emow"))
-SetUnitState(u, UNIT_STATE_MANA, 300)
-u = BlzCreateUnitWithSkin(p, FourCC("emow"), 1120.0, -800.0, 270.000, FourCC("emow"))
-SetUnitState(u, UNIT_STATE_MANA, 300)
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), -27.6, 179.5, 119.886, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), -62.0, -152.5, 191.959, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), -250.3, 39.6, 351.573, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("E001"), -578.3, -134.0, 22.080, FourCC("E001"))
+SetHeroLevel(u, 5, false)
 end
 
 function CreateUnitsForPlayer1()
@@ -5379,24 +5921,9 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 371.8, 646.9, 145.749, FourCC("ogru"))
-u = BlzCreateUnitWithSkin(p, FourCC("Edem"), 823.1, -755.9, 233.570, FourCC("Edem"))
-SetHeroLevel(u, 10, false)
-SelectHeroSkill(u, FourCC("AEmb"))
-SelectHeroSkill(u, FourCC("AEmb"))
-SelectHeroSkill(u, FourCC("AEmb"))
-SelectHeroSkill(u, FourCC("AEim"))
-SelectHeroSkill(u, FourCC("AEim"))
-SelectHeroSkill(u, FourCC("AEim"))
-IssueImmediateOrder(u, "immolation")
-SelectHeroSkill(u, FourCC("A015"))
-SelectHeroSkill(u, FourCC("A015"))
-SelectHeroSkill(u, FourCC("A015"))
-IssueImmediateOrder(u, "")
-SelectHeroSkill(u, FourCC("AEme"))
-UnitAddItemToSlotById(u, FourCC("pghe"), 0)
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 210.1, 862.5, 9.306, FourCC("ogru"))
-u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 155.2, 581.9, 145.749, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 491.2, -57.6, 145.749, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 329.5, 158.0, 9.306, FourCC("ogru"))
+u = BlzCreateUnitWithSkin(p, FourCC("ogru"), 274.5, -122.6, 145.749, FourCC("ogru"))
 end
 
 function CreateNeutralPassiveBuildings()
@@ -5417,8 +5944,6 @@ SetResourceAmount(u, 12500)
 end
 
 function CreatePlayerBuildings()
-CreateBuildingsForPlayer0()
-CreateBuildingsForPlayer1()
 end
 
 function CreatePlayerUnits()

@@ -37,7 +37,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                         isPercentage = false
                     })
                 end
-                if curr:Sub(dest):GetMagnitude() < 96 then
+                if curr:Sub(dest):Magnitude() < 96 then
                     break
                 end
             end

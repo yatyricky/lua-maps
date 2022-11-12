@@ -155,7 +155,7 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _
     ExGroupEnumUnitsInRange(GetUnitX(target), GetUnitY(target), circle.r, function(e)
         if not IsUnit(e, target) and IsUnitAlly(e, targetPlayer) and not ExIsUnitDead(e) then
             v2:MoveToUnit(e):Sub(v1)
-            table.insert(candidates, { unit = e, dist = v2:GetMagnitude() })
+            table.insert(candidates, { unit = e, dist = v2:Magnitude() })
         end
     end)
     table.sort(candidates, function(a, b)
