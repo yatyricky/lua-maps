@@ -1,10 +1,9 @@
 local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Timer = require("Lib.Timer")
-local Pill = require("Lib.Pill")
-local Circle = require("Lib.Circle")
-local UnitAttribute = require("Objects.UnitAttribute")
 local Abilities = require("Config.Abilities")
+local Ease = require("Lib.Ease")
+local BuffBase = require("Objects.BuffBase")
 
 local cls = class("FireBreath")
 
@@ -18,6 +17,7 @@ local Meta = {
     Damage = 80,
     DOT = 10,
     Heal = 160,
+    AOE = 600,
 }
 
 BlzSetAbilityResearchTooltip(Meta.ID, "学习火焰吐息 - [|cffffcc00%d级|r]", 0)
@@ -42,10 +42,48 @@ end
 
 Abilities.FireBreath = Meta
 
+---@class FireBreathBurn : BuffBase
+local FireBreathBurn = class("FireBreathBurn", BuffBase)
+
+function FireBreathBurn:Awake()
+    self.charged = self.awakeData.charged
+end
+
+function FireBreathBurn:OnEnable()
+    self.sfx = AddSpecialEffectTarget("Abilities/Spells/Other/BreathOfFire/BreathOfFireDamage.mdl", self.target, "overhead")
+end
+
+function FireBreathBurn:Update()
+    EventCenter.Damage:Emit({
+        whichUnit = self.caster,
+        target = self.target,
+        amount = Meta.DOT * (1 + Meta.ChargeAmp * self.charged),
+        attack = false,
+        ranged = true,
+        attackType = ATTACK_TYPE_HERO,
+        damageType = DAMAGE_TYPE_FIRE,
+        weaponType = WEAPON_TYPE_WHOKNOWS,
+        outResult = {}
+    })
+end
+
+function FireBreathBurn:OnDisable()
+    DestroyEffect(self.sfx)
+end
+
+function FireBreathBurn.Cast(caster, target, charged)
+    local debuff = BuffBase.FindBuffByClassName(target, FireBreathBurn.__cname)
+    if debuff then
+        debuff:ResetDuration()
+    else
+        FireBreathBurn.new(caster, target, Meta.Duration, Meta.Interval, { charged = charged })
+    end
+end
+
 local instances = {}
 
 function cls:ctor(caster, x, y)
-    self.charging = AddSpecialEffect("Abilities/Weapons/RedDragonBreath/RedDragonMissile.mdl", GetUnitX(caster), GetUnitY(caster))
+    self.charging = AddSpecialEffectTarget("Abilities/Weapons/RedDragonBreath/RedDragonMissile.mdl", caster, "weapon")
     BlzSetSpecialEffectScale(self.charging, 0.1)
     self.charged = 0
     self.caster = caster
@@ -60,10 +98,51 @@ end
 
 function cls:stop()
     self.timer:Stop()
+    DestroyEffect(self.charging)
 
-    local sfx = ExAddSpecialEffect("Abilities/Spells/Other/BreathOfFire/BreathOfFireMissile.mdl", GetUnitX(self.caster), GetUnitY(self.caster), 1)
-    local dir = (self.targetPos - Vector2.FromUnit(self.caster)):SetNormalize()
+    local casterPos = Vector2.FromUnit(self.caster)
+    local dir = (self.targetPos - casterPos):SetNormalize()
+    local offset = dir * 270
+    local v = casterPos + offset
+    local sfx = AddSpecialEffect("Abilities/Spells/Other/BreathOfFire/BreathOfFireMissile.mdl", v.x, v.y)
     BlzSetSpecialEffectYaw(sfx, math.atan2(dir.y, dir.x))
+    local travelled = 0
+    Ease.To(function()
+        return travelled
+    end, function(value)
+        travelled = value
+        local now = v + dir * travelled
+        BlzSetSpecialEffectX(sfx, now.x)
+        BlzSetSpecialEffectY(sfx, now.y)
+    end, 600, 1)
+
+    if self.charged < 1 then
+        return
+    end
+
+    local casterPlayer = GetOwningPlayer(self.caster)
+    local enumPos = casterPos - dir * 10
+    ExGroupEnumUnitsInRange(enumPos.x, enumPos.y, 750, function(unit)
+        if Vector2.Dot(dir, Vector2.FromUnit(unit):Sub(enumPos):SetNormalize()) > 0.28 and not ExIsUnitDead(unit) then
+            if IsUnitEnemy(unit, casterPlayer) then
+                EventCenter.Damage:Emit({
+                    whichUnit = self.caster,
+                    target = unit,
+                    amount = Meta.Damage * (1 + Meta.ChargeAmp * self.charged),
+                    attack = false,
+                    ranged = true,
+                    attackType = ATTACK_TYPE_HERO,
+                    damageType = DAMAGE_TYPE_FIRE,
+                    weaponType = WEAPON_TYPE_WHOKNOWS,
+                    outResult = {}
+                })
+                FireBreathBurn.Cast(self.caster, unit, self.charged)
+            else
+                EventCenter.Heal:Emit({ caster = self.caster, target = unit, amount = Meta.Heal * (1 + Meta.ChargeAmp * self.charged) })
+                ExAddSpecialEffectTarget("Abilities/Spells/Human/Heal/HealTarget.mdl", unit, "origin", 1)
+            end
+        end
+    end)
 end
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
@@ -82,8 +161,6 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
         if inst then
             inst:stop()
             instances[data.caster] = nil
-        else
-            print("Disintegrate end but no instance")
         end
     end
 })

@@ -131,15 +131,15 @@ function ExAddLightningPosPos(modelName, x1, y1, z1, x2, y2, z2, duration, color
 end
 
 function ExAddLightningUnitUnit(modelName, unit1, unit2, duration, color, checkVisibility)
-    c_start(function()
-        checkVisibility = checkVisibility or false
+    checkVisibility = checkVisibility or false
+    local lightning = AddLightningEx(modelName, checkVisibility,
+            GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
+            GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
+    if color then
+        SetLightningColor(lightning, color.r, color.g, color.b, color.a)
+    end
+    local co = c_start(function()
         local expr = Time.Time + duration
-        local lightning = AddLightningEx(modelName, checkVisibility,
-                GetUnitX(unit1), GetUnitY(unit1), BlzGetUnitZ(unit1) + GetUnitFlyHeight(unit1),
-                GetUnitX(unit2), GetUnitY(unit2), BlzGetUnitZ(unit2) + GetUnitFlyHeight(unit2))
-        if color then
-            SetLightningColor(lightning, color.r, color.g, color.b, color.a)
-        end
         while true do
             c_step()
             MoveLightningEx(lightning, checkVisibility,
@@ -151,6 +151,7 @@ function ExAddLightningUnitUnit(modelName, unit1, unit2, duration, color, checkV
         end
         DestroyLightning(lightning)
     end)
+    return lightning, co
 end
 
 function ExAddLightningPosUnit(modelName, x1, y1, z1, unit2, duration, color, check)

@@ -8,6 +8,7 @@ local GetUnitY = GetUnitY
 
 ---@class Vector2
 local cls = {}
+Vector2 = cls
 
 cls._loc = Location(0, 0)
 
@@ -99,6 +100,10 @@ function cls:SetNormalize()
     end
 
     return self
+end
+
+function cls:Normalized()
+    return self:Clone():SetNormalize()
 end
 
 function cls:SetMagnitude(len)

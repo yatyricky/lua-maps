@@ -4,14 +4,17 @@ local Timer = require("Lib.Timer")
 local Pill = require("Lib.Pill")
 local Circle = require("Lib.Circle")
 local UnitAttribute = require("Objects.UnitAttribute")
+local Abilities = require("Config.Abilities")
 
 local cls = class("Disintegrate")
 
 local Meta = {
-    ID = FourCC("A000"),
+    ID = FourCC("A01E"),
+    MoveSpeedPercent = -0.30,
+    Damage = 45,
 }
 
-local Width = 32
+local Width = 64
 local BackOffset = 10
 local Radius = Width / 2
 local PointMoveForward = Radius - 10
@@ -21,10 +24,10 @@ Abilities.Disintegrate = Meta
 local instances = {}
 
 function cls:ctor(caster, target)
-    self.lightning = ExAddLightningUnitUnit("espb", caster, target, 9999, { r = 1, g = 1, b = 1, a = 1 }, false)
+    self.lightning, self.lightningCo = ExAddLightningUnitUnit("DRAM", target, caster, 9999, { r = 1, g = 1, b = 1, a = 1 }, false)
     self.slowedUnits = {}
     local casterPlayer = GetOwningPlayer(caster)
-    self.timer = Timer.new(function()
+    local function exec()
         local a = Vector2.FromUnit(caster)
         local b = Vector2.FromUnit(target)
         local dir = b - a
@@ -38,14 +41,16 @@ function cls:ctor(caster, target)
         local pill = Pill.new(a, b, Radius)
 
         local enumRange = realDist / 2 + BackOffset
-        ExGroupEnumUnitsInRange(center.x, center.y, enumRange, function(unit)
-            if not ExIsUnitDead(unit) and IsUnitAlly(unit, casterPlayer) then
+        ExAddSpecialEffectTarget("Abilities/Spells/NightElf/MoonWell/MoonWellCasterArt.mdl", caster, "origin", 1)
+        ExGroupEnumUnitsInRange(center.x, center.y, enumRange + 197, function(unit)
+            if not ExIsUnitDead(unit) and IsUnitEnemy(unit, casterPlayer) then
                 local circle = Circle.new(Vector2.FromUnit(unit), Radius)
                 if Pill.PillCircle(pill, circle) then
                     if not self.slowedUnits[unit] then
                         local attr = UnitAttribute.GetAttr(unit)
                         attr.msp = attr.msp + Meta.MoveSpeedPercent
                         attr:Commit()
+                        self.slowedUnits[unit] = true
                     end
 
                     EventCenter.Damage:Emit({
@@ -59,21 +64,25 @@ function cls:ctor(caster, target)
                         weaponType = WEAPON_TYPE_WHOKNOWS,
                         outResult = {},
                     })
+                    ExAddSpecialEffectTarget("Abilities/Spells/Human/ManaFlare/ManaFlareBoltImpact.mdl", unit, "origin", 0.5)
                 end
             end
         end)
-    end, 1, -1)
+    end
+    exec()
+    self.timer = Timer.new(exec, 1, -1)
     self.timer:Start()
 end
 
 function cls:stop()
     self.timer:Stop()
+    coroutine.stop(self.lightningCo)
+    DestroyLightning(self.lightning)
     for unit, _ in pairs(self.slowedUnits) do
         local attr = UnitAttribute.GetAttr(unit)
         attr.msp = attr.msp - Meta.MoveSpeedPercent
         attr:Commit()
     end
-    DestroyLightning(self.lightning)
     self.slowedUnits = {}
 end
 

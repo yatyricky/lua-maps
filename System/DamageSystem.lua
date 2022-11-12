@@ -5,9 +5,9 @@ local Const = require("Config.Const")
 
 EventCenter.RegisterPlayerUnitDamaging = Event.new()
 EventCenter.RegisterPlayerUnitDamaged = Event.new()
----data {whichUnit, target, amount, attack, ranged, attackType, damageType, weaponType, outResult}
+---data {whichUnit=unit,target=unit,amount=real,attack=boolean,ranged=boolean,attackType=attacktype,damageType=damagetype,weaponType=weapontype,outResult=table}
 EventCenter.Damage = Event.new()
----data: {caster:unit,target:unit, amount: real}
+---data: {caster=unit,target=unit,amount=real}
 EventCenter.Heal = Event.new()
 ---{caster=caster,target=target,amount=amount,isPercentage=isPercentage}
 EventCenter.HealMana = Event.new()
@@ -99,6 +99,7 @@ end
 
 -- whichUnit, target, amount, attack, ranged, attackType, damageType, weaponType, outResult
 function cls:_onDamage(d)
+    --print("DamageEvent:", GetUnitName(d.whichUnit), GetUnitName(d.target), d.amount, d.attack, d.ranged, d.attackType, d.damageType, d.weaponType)
     local a = UnitAttribute.GetAttr(d.whichUnit)
     local b = UnitAttribute.GetAttr(d.target)
     if d.attack then
@@ -114,6 +115,7 @@ function cls:_onDamage(d)
     end
 
     local amount = d.amount * (1 + a.damageAmplification - b.damageReduction)
+    --print("DamageEvent-Native:", GetUnitName(d.whichUnit), GetUnitName(d.target), amount, d.attack, d.ranged, d.attackType, d.damageType, d.weaponType)
     UnitDamageTarget(d.whichUnit, d.target, amount, d.attack, d.ranged, d.attackType, d.damageType, d.weaponType)
     d.outResult.hitResult = Const.HitResult_Hit
     d.outResult.damage = amount

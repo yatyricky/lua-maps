@@ -36,6 +36,8 @@ function cls:Awake()
 
     -- 唤魔师
     require("Ability.FireBreath")
+    require("Ability.Disintegrate")
+    require("Ability.SleepWalk")
 end
 
 return cls
