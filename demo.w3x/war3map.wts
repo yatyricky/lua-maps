@@ -2036,3 +2036,9 @@ STRING 402
 1
 }
 
+STRING 403
+// 单位: e002 (clock), Name (名字)
+{
+clock
+}
+

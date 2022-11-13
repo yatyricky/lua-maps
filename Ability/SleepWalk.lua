@@ -1,7 +1,7 @@
 local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local Ease = require("Lib.Ease")
+--local Ease = require("Lib.Ease")
 
 local cls = class("SleepWalk")
 

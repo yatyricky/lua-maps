@@ -1,4 +1,4 @@
---lua-bundler:000185220
+--lua-bundler:000185452
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -2741,7 +2741,7 @@ __modules["Ability.SleepWalk"]={loader=function()
 local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
-local Ease = require("Lib.Ease")
+--local Ease = require("Lib.Ease")
 
 local cls = class("SleepWalk")
 
@@ -2777,16 +2777,16 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 local dir = (dest - curr):SetNormalize()
                 local stepLen = Meta.Speed * Time.Delta
 
-                if frames % 9 == 0 then
-                    local shade = AddSpecialEffect("units/nightelf/MountainGiant/MountainGiant.mdl", curr.x, curr.y)
-                    BlzSetSpecialEffectYaw(shade, GetUnitFacing(data.target) * bj_DEGTORAD)
-                    local alpha = 1
-                    Ease.To(function()
-                        return alpha
-                    end, function(value)
-                        BlzSetSpecialEffectAlpha(shade, math.floor(value * 255))
-                    end, 0, 1)
-                end
+                --if frames % 9 == 0 then
+                --    local shade = AddSpecialEffect("units/nightelf/MountainGiant/MountainGiant.mdl", curr.x, curr.y)
+                --    BlzSetSpecialEffectYaw(shade, GetUnitFacing(data.target) * bj_DEGTORAD)
+                --    local alpha = 1
+                --    Ease.To(function()
+                --        return alpha
+                --    end, function(value)
+                --        BlzSetSpecialEffectAlpha(shade, math.floor(value * 255))
+                --    end, 0, 1)
+                --end
 
                 curr:Add(dir * stepLen):UnitMoveTo(data.target)
                 SetUnitFacing(data.target, math.atan2(dir.y, dir.x) * bj_RADTODEG)
@@ -2822,11 +2822,16 @@ local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Timer = require("Lib.Timer")
 local PILQueue = require("Lib.PILQueue")
+local Abilities = require("Config.Abilities")
 
 local cls = class("TimeWarp")
 
 local Meta = {
-    ID = FourCC("A000")
+    ID = FourCC("A01G"),
+    ClockID = FourCC("e002"),
+    Duration = 2,
+    Radius = 600,
+    ReverseSpeed = 5,
 }
 
 local queueSize = Meta.Duration / Time.Delta / Meta.ReverseSpeed
@@ -2836,20 +2841,21 @@ local recordingUnits = {}
 Abilities.TimeWarp = Meta
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
-    id = Abilities.DeathCoil.ID,
+    id = Meta.ID,
     ---@param data ISpellData
     handler = function(data)
         local casterPlayer = GetOwningPlayer(data.caster)
 
-        local clock = CreateUnit(casterPlayer, Meta.ClickID, data.x, data.y, 0)
-        SetUnitAnimation(clock, "Stand,Alternate")
-        SetUnitTimeScale(clock, 10 / MEta.Duration)
+        local clock = CreateUnit(casterPlayer, Meta.ClockID, data.x, data.y, 0)
+        SetUnitAnimation(clock, "Stand Alternate")
+        SetUnitTimeScale(clock, 10 / Meta.Duration)
         coroutine.start(function ()
             coroutine.wait(Meta.Duration)
             SetUnitAnimation(clock, "Death")
             KillUnit(clock)
         end)
 
+        reversing = {}
         coroutine.start(function()
             local units = ExGroupGetUnitsInRange(data.x, data.y, Meta.Radius)
             for i = #units, 1, -1 do
@@ -2902,6 +2908,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                     end
                 end
             end
+            reversing = {}
         end)
     end
 })
@@ -5560,6 +5567,7 @@ function cls:Awake()
     require("Ability.FireBreath")
     require("Ability.Disintegrate")
     require("Ability.SleepWalk")
+    require("Ability.TimeWarp")
 end
 
 return cls
@@ -6056,7 +6064,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000185220
+--lua-bundler:000185452
 
 function InitGlobals()
 end
@@ -6068,6 +6076,11 @@ local unitID
 local t
 local life
 
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -243.6, 297.8, 240.564, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -238.6, 219.1, 235.543, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -401.9, 315.4, 314.581, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -202.2, 63.9, 123.007, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -269.7, -75.0, 67.008, FourCC("ugho"))
 u = BlzCreateUnitWithSkin(p, FourCC("E001"), -578.3, -134.0, 22.080, FourCC("E001"))
 SetHeroLevel(u, 5, false)
 end
@@ -6079,7 +6092,14 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("emtg"), 202.2, 131.7, 214.361, FourCC("emtg"))
+u = BlzCreateUnitWithSkin(p, FourCC("otau"), -18.3, 637.2, 275.007, FourCC("otau"))
+u = BlzCreateUnitWithSkin(p, FourCC("otau"), 124.7, 418.5, 210.790, FourCC("otau"))
+u = BlzCreateUnitWithSkin(p, FourCC("otau"), 125.4, -239.9, 76.401, FourCC("otau"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 271.0, 334.7, 144.046, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 269.3, 270.1, 11.217, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 286.2, 165.5, 339.422, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 292.3, 89.9, 61.976, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 383.9, -233.7, 296.849, FourCC("ohun"))
 end
 
 function CreateNeutralPassiveBuildings()

@@ -1,12 +1,16 @@
-local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Timer = require("Lib.Timer")
 local PILQueue = require("Lib.PILQueue")
+local Abilities = require("Config.Abilities")
 
 local cls = class("TimeWarp")
 
 local Meta = {
-    ID = FourCC("A000")
+    ID = FourCC("A01G"),
+    ClockID = FourCC("e002"),
+    Duration = 5,
+    Radius = 600,
+    ReverseSpeed = 5,
 }
 
 local queueSize = Meta.Duration / Time.Delta / Meta.ReverseSpeed
@@ -16,20 +20,21 @@ local recordingUnits = {}
 Abilities.TimeWarp = Meta
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
-    id = Abilities.DeathCoil.ID,
+    id = Meta.ID,
     ---@param data ISpellData
     handler = function(data)
         local casterPlayer = GetOwningPlayer(data.caster)
 
-        local clock = CreateUnit(casterPlayer, Meta.ClickID, data.x, data.y, 0)
-        SetUnitAnimation(clock, "Stand,Alternate")
-        SetUnitTimeScale(clock, 10 / MEta.Duration)
+        local clock = CreateUnit(casterPlayer, Meta.ClockID, data.x, data.y, 0)
+        SetUnitAnimation(clock, "Stand Alternate")
+        SetUnitTimeScale(clock, 10 / Meta.Duration)
         coroutine.start(function ()
             coroutine.wait(Meta.Duration)
             SetUnitAnimation(clock, "Death")
             KillUnit(clock)
         end)
 
+        reversing = {}
         coroutine.start(function()
             local units = ExGroupGetUnitsInRange(data.x, data.y, Meta.Radius)
             for i = #units, 1, -1 do
@@ -82,6 +87,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                     end
                 end
             end
+            reversing = {}
         end)
     end
 })
