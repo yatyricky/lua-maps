@@ -146,3 +146,30 @@ function table.iWhere(t, func)
     end
     return tab
 end
+
+---@generic V
+---@param tab V[]
+---@param filter fun(item: V): boolean
+---@return V[] removed items
+function table.iFilterInPlace(tab, filter)
+    local ret = {}
+    local c = #tab
+    local i = 1
+    local d = 0
+    while i <= c do
+        local it = tab[i]
+        if filter(it) then
+            if d > 0 then
+                tab[i - d] = it
+            end
+        else
+            t_insert(ret, it)
+            d = d + 1
+        end
+        i = i + 1
+    end
+    for j = 0, d - 1 do
+        tab[c - j] = nil
+    end
+    return ret
+end

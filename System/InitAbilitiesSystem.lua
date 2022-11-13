@@ -39,6 +39,7 @@ function cls:Awake()
     require("Ability.Disintegrate")
     require("Ability.SleepWalk")
     require("Ability.TimeWarp")
+    require("Ability.MagmaBreath")
 end
 
 return cls

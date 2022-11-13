@@ -84,7 +84,7 @@ end
 ---@param x real
 ---@param y real
 ---@param radius real
----@return void
+---@return unit[]
 function ExGroupGetUnitsInRange(x, y, radius)
     GroupClear(group)
     local units = {}

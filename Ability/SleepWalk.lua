@@ -1,7 +1,9 @@
 local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
---local Ease = require("Lib.Ease")
+--local Tween = require("Lib.Tween")
+local Utils = require("Lib.Utils")
+local Tween = require("Lib.Tween")
 
 local cls = class("SleepWalk")
 
@@ -26,6 +28,12 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
             ExAddSpecialEffectTarget("Abilities/Spells/Undead/Sleep/SleepSpecialArt.mdl", data.target, "overhead", 0.1)
             local sfx = AddSpecialEffectTarget("Abilities/Spells/Undead/Sleep/SleepTarget.mdl", data.target, "overhead")
+            Utils.SetUnitFlyable(data.target)
+            local originalHeight = GetUnitFlyHeight(data.target)
+            local newHeight = originalHeight + 100
+            Tween.To(function() return originalHeight end, function(value) SetUnitFlyHeight(data.target, value, 0) end, newHeight, 0.3)
+            local sfx2 = AddSpecialEffectTarget("Abilities/Spells/NightElf/TargetArtLumber/TargetArtLumber.mdl", data.target, "foot")
+
             local travelled = 0
             local timeStart = Time.Time
             local frames = 0
@@ -41,7 +49,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 --    local shade = AddSpecialEffect("units/nightelf/MountainGiant/MountainGiant.mdl", curr.x, curr.y)
                 --    BlzSetSpecialEffectYaw(shade, GetUnitFacing(data.target) * bj_DEGTORAD)
                 --    local alpha = 1
-                --    Ease.To(function()
+                --    Tween.To(function()
                 --        return alpha
                 --    end, function(value)
                 --        BlzSetSpecialEffectAlpha(shade, math.floor(value * 255))
@@ -66,7 +74,9 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 end
             end
 
+            Tween.To(function() return newHeight end, function(value) SetUnitFlyHeight(data.target, value, 0) end, originalHeight, 0.3)
             DestroyEffect(sfx)
+            DestroyEffect(sfx2)
             PauseUnit(data.target, false)
             SetUnitPathing(data.target, true)
         end)

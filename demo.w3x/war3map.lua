@@ -1,4 +1,4 @@
---lua-bundler:000185452
+--lua-bundler:000191878
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -1667,7 +1667,7 @@ local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Timer = require("Lib.Timer")
 local Abilities = require("Config.Abilities")
-local Ease = require("Lib.Ease")
+local Tween = require("Lib.Tween")
 local BuffBase = require("Objects.BuffBase")
 
 local cls = class("FireBreath")
@@ -1772,7 +1772,7 @@ function cls:stop()
     local sfx = AddSpecialEffect("Abilities/Spells/Other/BreathOfFire/BreathOfFireMissile.mdl", v.x, v.y)
     BlzSetSpecialEffectYaw(sfx, math.atan2(dir.y, dir.x))
     local travelled = 0
-    Ease.To(function()
+    Tween.To(function()
         return travelled
     end, function(value)
         travelled = value
@@ -1861,6 +1861,121 @@ function cls:OnDisable()
 
     ExAddSpecialEffectTarget("Abilities/Weapons/ZigguratMissile/ZigguratMissile.mdl", self.target, "origin", Time.Delta)
 end
+
+return cls
+
+end}
+
+__modules["Ability.MagmaBreath"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Timer = require("Lib.Timer")
+local Abilities = require("Config.Abilities")
+local Tween = require("Lib.Tween")
+local Vector3 = require("Lib.Vector3")
+
+local cls = class("MagmaBreath")
+
+local Meta = {
+    ID = FourCC("A01H"),
+}
+
+Abilities.MagmaBreath = Meta
+
+local function aoeDamage(caster, x, y, damage, checkMap)
+    local casterPlayer = GetOwningPlayer(caster)
+    ExGroupEnumUnitsInRange(x, y, 120, function(unit)
+        if IsUnitEnemy(unit, casterPlayer) and not ExIsUnitDead(unit) and not checkMap[unit] then
+            EventCenter.Damage:Emit({
+                whichUnit = caster,
+                target = unit,
+                amount = damage,
+                attack = false,
+                ranged = true,
+                attackType = ATTACK_TYPE_HERO,
+                damageType = DAMAGE_TYPE_FIRE,
+                weaponType = WEAPON_TYPE_WHOKNOWS,
+                outResult = {}
+            })
+            checkMap[unit] = true
+        end
+    end)
+end
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local myPos = Vector3.FromUnit(data.caster)
+        local damaged1 = {}
+        local damaged2 = {}
+        myPos.z = myPos.z + 100
+        local emitter = AddSpecialEffect("Abilities/Weapons/VengeanceMissile/VengeanceMissile.mdl", myPos.x, myPos.y)
+        BlzSetSpecialEffectZ(emitter, myPos.z)
+        BlzSetSpecialEffectScale(emitter, 3)
+        local tarPos = Vector3.new(data.x, data.y)
+        local dir = (tarPos - myPos):SetNormalize()
+        local curr = myPos + dir
+        local lightning = AddLightningEx("SPLK", false, myPos.x, myPos.y, myPos.z, curr.x, curr.y, curr:GetTerrainZ())
+        SetLightningColor(lightning, 1, 0.5, 0.5, 1)
+        local travelled = 0
+        local i = 0
+        local p1 = myPos:Clone()
+        local casterPlayer = GetOwningPlayer(data.caster)
+
+        local function run(value)
+            curr = p1 + dir * value
+            MoveLightningEx(lightning, false, myPos.x, myPos.y, myPos.z, curr.x, curr.y, curr:GetTerrainZ())
+            ExAddSpecialEffect("Abilities/Weapons/FireBallMissile/FireBallMissile.mdl", curr.x, curr.y, 0.0)
+            aoeDamage(data.caster, curr.x, curr.y, 20, damaged1)
+
+            local currIndex = math.floor(value / 50)
+            while i <= currIndex do
+                local cx, cy = curr.x, curr.y
+                local tm = Timer.new(function()
+                    ExAddSpecialEffect("Abilities/Weapons/Mortar/MortarMissile.mdl", cx, cy, 0.0)
+                    aoeDamage(data.caster, cx, cy, 80, damaged2)
+                end, 0.7, 1)
+                tm:Start()
+                i = i + 1
+            end
+        end
+
+        local tween = Tween.To(function()
+            return travelled
+        end, run, 2400, 2, Tween.Type.InQuint)
+        local nearTargets = ExGroupGetUnitsInRange(myPos.x, myPos.y, 300)
+        table.iFilterInPlace(nearTargets, function(item)
+            if ExIsUnitDead(item) then
+                return false
+            end
+            if IsUnitAlly(item, casterPlayer) then
+                return false
+            end
+            if IsUnit(item, data.caster) then
+                return false
+            end
+            return true
+        end)
+        if #nearTargets > 0 then
+            local firstTarget = table.iGetRandom(nearTargets)
+            tween:AppendCallback(function()
+                travelled = 0
+                p1 = curr:Clone()
+                dir = (Vector3.FromUnit(firstTarget) - p1):SetNormalize()
+                damaged1 = {}
+                damaged2 = {}
+                i = 0
+            end)
+            tween = tween:Append(Tween.To(function()
+                return travelled
+            end, run, 2400, 2, Tween.Type.InQuint, true))
+        end
+        tween:AppendCallback(function()
+            DestroyEffect(emitter)
+            DestroyLightning(lightning)
+        end)
+    end
+})
 
 return cls
 
@@ -2741,7 +2856,9 @@ __modules["Ability.SleepWalk"]={loader=function()
 local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
---local Ease = require("Lib.Ease")
+--local Tween = require("Lib.Tween")
+local Utils = require("Lib.Utils")
+local Tween = require("Lib.Tween")
 
 local cls = class("SleepWalk")
 
@@ -2766,6 +2883,12 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
 
             ExAddSpecialEffectTarget("Abilities/Spells/Undead/Sleep/SleepSpecialArt.mdl", data.target, "overhead", 0.1)
             local sfx = AddSpecialEffectTarget("Abilities/Spells/Undead/Sleep/SleepTarget.mdl", data.target, "overhead")
+            Utils.SetUnitFlyable(data.target)
+            local originalHeight = GetUnitFlyHeight(data.target)
+            local newHeight = originalHeight + 100
+            Tween.To(function() return originalHeight end, function(value) SetUnitFlyHeight(data.target, value, 0) end, newHeight, 0.3)
+            local sfx2 = AddSpecialEffectTarget("Abilities/Spells/NightElf/TargetArtLumber/TargetArtLumber.mdl", data.target, "foot")
+
             local travelled = 0
             local timeStart = Time.Time
             local frames = 0
@@ -2781,7 +2904,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 --    local shade = AddSpecialEffect("units/nightelf/MountainGiant/MountainGiant.mdl", curr.x, curr.y)
                 --    BlzSetSpecialEffectYaw(shade, GetUnitFacing(data.target) * bj_DEGTORAD)
                 --    local alpha = 1
-                --    Ease.To(function()
+                --    Tween.To(function()
                 --        return alpha
                 --    end, function(value)
                 --        BlzSetSpecialEffectAlpha(shade, math.floor(value * 255))
@@ -2806,7 +2929,9 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 end
             end
 
+            Tween.To(function() return newHeight end, function(value) SetUnitFlyHeight(data.target, value, 0) end, originalHeight, 0.3)
             DestroyEffect(sfx)
+            DestroyEffect(sfx2)
             PauseUnit(data.target, false)
             SetUnitPathing(data.target, true)
         end)
@@ -2818,7 +2943,6 @@ return cls
 end}
 
 __modules["Ability.TimeWarp"]={loader=function()
-local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Timer = require("Lib.Timer")
 local PILQueue = require("Lib.PILQueue")
@@ -2829,7 +2953,7 @@ local cls = class("TimeWarp")
 local Meta = {
     ID = FourCC("A01G"),
     ClockID = FourCC("e002"),
-    Duration = 2,
+    Duration = 5,
     Radius = 600,
     ReverseSpeed = 5,
 }
@@ -3284,47 +3408,6 @@ end
 
 end}
 
-__modules["Lib.Ease"]={loader=function()
-local Timer = require("Lib.Timer")
-local Time = require("Lib.Time")
-
-local cls = class("Ease")
-
-cls.Type = {
-    Linear = 1,
-}
-
-local function efLinear(t, c1, c2)
-    return c1 + (c2 - c1) * t
-end
-
-local funcMap = {
-    [cls.Type.Linear] = efLinear,
-}
-
----@param getter fun(): real
----@param setter fun(value: real): void
----@param target real
----@param duration real
----@param ease integer | Nil Ease.Type.*
-function cls.To(getter, setter, target, duration, ease)
-    ease = ease or cls.Type.Linear
-    local func = funcMap[ease]
-    local frames = math.ceil(duration / Time.Delta)
-    local c1 = getter()
-    local t = 0
-    local tm = Timer.new(function()
-        t = t + 1
-        local value = func(t / frames, c1, target)
-        setter(value)
-    end, Time.Delta, frames)
-    tm:Start()
-end
-
-return cls
-
-end}
-
 __modules["Lib.Event"]={loader=function()
 require("Lib.class")
 
@@ -3600,7 +3683,7 @@ end
 ---@param x real
 ---@param y real
 ---@param radius real
----@return void
+---@return unit[]
 function ExGroupGetUnitsInRange(x, y, radius)
     GroupClear(group)
     local units = {}
@@ -4186,6 +4269,33 @@ function table.iWhere(t, func)
     return tab
 end
 
+---@generic V
+---@param tab V[]
+---@param filter fun(item: V): boolean
+---@return V[] removed items
+function table.iFilterInPlace(tab, filter)
+    local ret = {}
+    local c = #tab
+    local i = 1
+    local d = 0
+    while i <= c do
+        local it = tab[i]
+        if filter(it) then
+            if d > 0 then
+                tab[i - d] = it
+            end
+        else
+            t_insert(ret, it)
+            d = d + 1
+        end
+        i = i + 1
+    end
+    for j = 0, d - 1 do
+        tab[c - j] = nil
+    end
+    return ret
+end
+
 end}
 
 __modules["Lib.Time"]={loader=function()
@@ -4312,6 +4422,90 @@ function cls:Stop()
         self.onStop()
     end
     cacheTimer(self.timer)
+end
+
+return cls
+
+end}
+
+__modules["Lib.Tween"]={loader=function()
+local Timer = require("Lib.Timer")
+local Time = require("Lib.Time")
+
+local cls = class("Tween")
+
+cls.Type = {
+    Linear = 1,
+    InQuint = 2,
+}
+
+cls.NextType = {
+    Function = 1,
+    Tween = 2,
+}
+
+local funcMap = {
+    [cls.Type.Linear] = function(t)
+        return t
+    end,
+    [cls.Type.InQuint] = function(t)
+        return t * t * t * t
+    end,
+}
+
+function cls:ctor()
+    self.next = {}
+end
+
+function cls:AppendCallback(func)
+    table.insert(self.next, {
+        type = cls.NextType.Function,
+        func = func,
+    })
+end
+
+function cls:Append(tween)
+    table.insert(self.next, {
+        type = cls.NextType.Tween,
+        tween = tween,
+    })
+    return tween
+end
+
+function cls:runOnStopCalls()
+    for _, v in ipairs(self.next) do
+        if v.type == cls.NextType.Function then
+            v.func()
+        elseif v.type == cls.NextType.Tween then
+            v.tween.timer:Start()
+        end
+    end
+end
+
+---@param getter fun(): real
+---@param setter fun(value: real): void
+---@param target real
+---@param duration real
+---@param ease integer | Nil Tween.Type.*
+function cls.To(getter, setter, target, duration, ease, dontStart)
+    ease = ease or cls.Type.Linear
+    local func = funcMap[ease]
+    local frames = math.ceil(duration / Time.Delta)
+    local t = 0
+    local inst = cls.new()
+    inst.timer = Timer.new(function()
+        t = t + 1
+        local c1 = getter()
+        local value = c1 + (target - c1) * func(t / frames)
+        setter(value)
+    end, Time.Delta, frames)
+    inst.timer:SetOnStop(function()
+        inst:runOnStopCalls()
+    end)
+    if not dontStart then
+        inst.timer:Start()
+    end
+    return inst
 end
 
 return cls
@@ -4624,6 +4818,12 @@ function cls:SetTo(other)
     self.y = other.y
     self.z = other.z
     return
+end
+
+function cls:Set(x, y, z)
+    self.x = x
+    self.y = y
+    self.z = z or getTerrainZ(x, y)
 end
 
 ---@param other Vector3
@@ -5568,6 +5768,7 @@ function cls:Awake()
     require("Ability.Disintegrate")
     require("Ability.SleepWalk")
     require("Ability.TimeWarp")
+    require("Ability.MagmaBreath")
 end
 
 return cls
@@ -6064,7 +6265,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000185452
+--lua-bundler:000191878
 
 function InitGlobals()
 end

@@ -2,7 +2,7 @@ local Vector2 = require("Lib.Vector2")
 local EventCenter = require("Lib.EventCenter")
 local Timer = require("Lib.Timer")
 local Abilities = require("Config.Abilities")
-local Ease = require("Lib.Ease")
+local Tween = require("Lib.Tween")
 local BuffBase = require("Objects.BuffBase")
 
 local cls = class("FireBreath")
@@ -107,7 +107,7 @@ function cls:stop()
     local sfx = AddSpecialEffect("Abilities/Spells/Other/BreathOfFire/BreathOfFireMissile.mdl", v.x, v.y)
     BlzSetSpecialEffectYaw(sfx, math.atan2(dir.y, dir.x))
     local travelled = 0
-    Ease.To(function()
+    Tween.To(function()
         return travelled
     end, function(value)
         travelled = value

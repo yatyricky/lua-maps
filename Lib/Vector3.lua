@@ -81,6 +81,12 @@ function cls:SetTo(other)
     return
 end
 
+function cls:Set(x, y, z)
+    self.x = x
+    self.y = y
+    self.z = z or getTerrainZ(x, y)
+end
+
 ---@param other Vector3
 function cls:Add(other)
     self.x = self.x + other.x
