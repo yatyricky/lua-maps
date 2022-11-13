@@ -10,7 +10,7 @@ local cls = class("SleepWalk")
 local Meta = {
     ID = FourCC("A01F"),
     EveryYards = 100,
-    ManaRestore = 20,
+    ManaRestore = 350,
     Speed = 50,
     MaxDuration = 10,
 }

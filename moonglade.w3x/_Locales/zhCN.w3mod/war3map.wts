@@ -1,0 +1,2034 @@
+﻿STRING 1
+{
+Lua Demo
+}
+
+STRING 2
+{
+任意
+}
+
+STRING 3
+{
+没有说明
+}
+
+STRING 9
+// 技能: A000 (死亡之握), Name (名字)
+{
+死亡之握
+}
+
+STRING 10
+// 技能: A003 (亡者大军), Researchhotkey (热键 - 学习)
+{
+R
+}
+
+STRING 11
+// 技能: A003 (亡者大军), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 12
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 13
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 14
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 15
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 16
+// 技能: A001 (灵界打击), Name (名字)
+{
+灵界打击
+}
+
+STRING 24
+// 技能: A003 (亡者大军), Name (名字)
+{
+亡者大军
+}
+
+STRING 31
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 32
+// 技能: A002 (瘟疫武器), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 33
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 34
+// 技能: A002 (瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 37
+// 技能: A000 (死亡之握), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 38
+// 技能: A000 (死亡之握), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 39
+// 技能: A001 (灵界打击), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 40
+// 技能: A001 (灵界打击), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 41
+// 技能: A002 (瘟疫武器), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 50
+// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 51
+// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 52
+// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 53
+// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 54
+// 技能: A000 (死亡之握), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 55
+// 技能: A000 (死亡之握), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 56
+// 技能: A000 (死亡之握), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 57
+// 技能: A000 (死亡之握), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 58
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 59
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 60
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 61
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 62
+// 技能: A001 (灵界打击), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 63
+// 技能: A001 (灵界打击), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 64
+// 技能: A002 (瘟疫武器), Name (名字)
+{
+瘟疫武器
+}
+
+STRING 67
+// 技能: A001 (灵界打击), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 68
+// 技能: A001 (灵界打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 69
+// 技能: A003 (亡者大军), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 70
+// 技能: A003 (亡者大军), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 71
+// 技能: A003 (亡者大军), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 72
+// 技能: A003 (亡者大军), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 73
+// 技能: A004 (邪恶瘟疫武器), Name (名字)
+{
+邪恶瘟疫武器
+}
+
+STRING 74
+// 技能: A002 (瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 75
+// 技能: A002 (瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 76
+// 技能: A002 (瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 77
+// 技能: A002 (瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 78
+// 技能: A002 (瘟疫武器), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 79
+// 技能: A002 (瘟疫武器), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 80
+// 技能: A005 (鲜血瘟疫武器), Name (名字)
+{
+鲜血瘟疫武器
+}
+
+STRING 81
+// 技能: A002 (瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 82
+// 技能: A002 (瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 83
+// 技能: A004 (邪恶瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 84
+// 技能: A004 (邪恶瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 85
+// 技能: A004 (邪恶瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 86
+// 技能: A004 (邪恶瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 87
+// 技能: A006 (冰霜瘟疫武器), Name (名字)
+{
+冰霜瘟疫武器
+}
+
+STRING 88
+// 技能: A004 (邪恶瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 89
+// 技能: A004 (邪恶瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 90
+// 技能: A005 (鲜血瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 91
+// 技能: A005 (鲜血瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 92
+// 技能: A005 (鲜血瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 93
+// 技能: A005 (鲜血瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 94
+// 技能: A005 (鲜血瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 95
+// 技能: A005 (鲜血瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 96
+// 技能: A006 (冰霜瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 97
+// 技能: A006 (冰霜瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 98
+// 技能: A006 (冰霜瘟疫武器), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 99
+// 技能: A006 (冰霜瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 100
+// 技能: A006 (冰霜瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 101
+// 技能: A006 (冰霜瘟疫武器), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 102
+// 技能: A009 (死亡缠绕), Name (名字)
+{
+死亡缠绕
+}
+
+STRING 103
+// 技能: A009 (死亡缠绕), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 104
+// 技能: A009 (死亡缠绕), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 105
+// 技能: A008 (亵渎), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 106
+// 技能: A008 (亵渎), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 107
+// 技能: A008 (亵渎), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 108
+// 技能: A008 (亵渎), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 109
+// 技能: A008 (亵渎), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 110
+// 技能: A008 (亵渎), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 111
+// 技能: A008 (亵渎), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 112
+// 技能: A008 (亵渎), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 113
+// 技能: A008 (亵渎), Name (名字)
+{
+亵渎
+}
+
+STRING 116
+// 技能: A009 (死亡缠绕), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 117
+// 技能: A009 (死亡缠绕), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 118
+// 技能: A009 (死亡缠绕), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 119
+// 技能: A009 (死亡缠绕), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 120
+// 技能: A009 (死亡缠绕), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 121
+// 技能: A009 (死亡缠绕), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 122
+// 技能: A009 (死亡缠绕), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 123
+// 技能: A009 (死亡缠绕), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 126
+// 技能: A00A (溃烂之伤), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 127
+// 技能: A00A (溃烂之伤), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 131
+// 技能: A00A (溃烂之伤), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 132
+// 技能: A00A (溃烂之伤), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 133
+// 技能: A00A (溃烂之伤), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 134
+// 技能: A00A (溃烂之伤), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 135
+// 技能: A011 (天启), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 136
+// 技能: A011 (天启), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 137
+// 技能: A011 (天启), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 138
+// 技能: A011 (天启), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 139
+// 技能: A011 (天启), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 140
+// 技能: A011 (天启), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 141
+// 技能: A011 (天启), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 142
+// 技能: A011 (天启), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 143
+// 技能: A007 (黑暗突变), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 144
+// 技能: A007 (黑暗突变), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 145
+// 技能: A007 (黑暗突变), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 146
+// 技能: A007 (黑暗突变), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 147
+// 技能: A007 (黑暗突变), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 148
+// 技能: A007 (黑暗突变), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 149
+// 技能: A00A (溃烂之伤), Name (名字)
+{
+溃烂之伤
+}
+
+STRING 150
+// 技能: A007 (黑暗突变), Name (名字)
+{
+黑暗突变
+}
+
+STRING 151
+// 技能: A007 (黑暗突变), Researchhotkey (热键 - 学习)
+{
+R
+}
+
+STRING 152
+// 技能: A007 (黑暗突变), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 153
+// 技能: A007 (黑暗突变), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 154
+// 技能: A007 (黑暗突变), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 157
+// 技能: A011 (天启), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 158
+// 技能: A011 (天启), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 163
+// 技能: A008 (亵渎), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 164
+// 技能: A008 (亵渎), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 165
+// 技能: A009 (死亡缠绕), Untip (提示工具 - 关闭)
+{
+ 
+}
+
+STRING 166
+// 技能: A009 (死亡缠绕), Unubertip (提示工具 - 关闭 - 扩展)
+{
+ 
+}
+
+STRING 167
+// 技能: A009 (死亡缠绕), Untip (提示工具 - 关闭)
+{
+ 
+}
+
+STRING 168
+// 技能: A009 (死亡缠绕), Untip (提示工具 - 关闭)
+{
+ 
+}
+
+STRING 169
+// 技能: A009 (死亡缠绕), Unubertip (提示工具 - 关闭 - 扩展)
+{
+ 
+}
+
+STRING 170
+// 技能: A009 (死亡缠绕), Unubertip (提示工具 - 关闭 - 扩展)
+{
+ 
+}
+
+STRING 177
+// 技能: A00C (atk+1), Name (名字)
+{
+atk+1
+}
+
+STRING 178
+// 技能: A00D (atk+2), Name (名字)
+{
+atk+2
+}
+
+STRING 179
+// 技能: A00E (atk+4), Name (名字)
+{
+atk+4
+}
+
+STRING 180
+// 技能: A00F (atk+8), Name (名字)
+{
+atk+8
+}
+
+STRING 181
+// 技能: A00G (atk+16), Name (名字)
+{
+atk+16
+}
+
+STRING 182
+// 技能: A00H (atk+32), Name (名字)
+{
+atk+32
+}
+
+STRING 183
+// 技能: A00I (atk+64), Name (名字)
+{
+atk+64
+}
+
+STRING 184
+// 技能: A00J (atk+128), Name (名字)
+{
+atk+128
+}
+
+STRING 185
+// 技能: A00K (atk+256), Name (名字)
+{
+atk+256
+}
+
+STRING 186
+// 技能: A00L (atk+512), Name (名字)
+{
+atk+512
+}
+
+STRING 187
+// 技能: A00M (atk+1024), Name (名字)
+{
+atk+1024
+}
+
+STRING 188
+// 技能: A00N (atk+2048), Name (名字)
+{
+atk+2048
+}
+
+STRING 189
+// 技能: A00O (hp+1), Name (名字)
+{
+hp+1
+}
+
+STRING 190
+// 技能: A00P (hp+2), Name (名字)
+{
+hp+2
+}
+
+STRING 191
+// 技能: A00Q (hp+4), Name (名字)
+{
+hp+4
+}
+
+STRING 192
+// 技能: A00R (hp+8), Name (名字)
+{
+hp+8
+}
+
+STRING 193
+// 技能: A00S (hp+16), Name (名字)
+{
+hp+16
+}
+
+STRING 194
+// 技能: A00T (hp+32), Name (名字)
+{
+hp+32
+}
+
+STRING 195
+// 技能: A00U (hp+64), Name (名字)
+{
+hp+64
+}
+
+STRING 196
+// 技能: A00V (hp+128), Name (名字)
+{
+hp+128
+}
+
+STRING 197
+// 技能: A00W (hp+256), Name (名字)
+{
+hp+256
+}
+
+STRING 198
+// 技能: A00X (hp+512), Name (名字)
+{
+hp+512
+}
+
+STRING 199
+// 技能: A00Y (hp+1024), Name (名字)
+{
+hp+1024
+}
+
+STRING 200
+// 技能: A00Z (hp+2048), Name (名字)
+{
+hp+2048
+}
+
+STRING 201
+// 单位: u001 (邪恶石像鬼), Name (名字)
+{
+邪恶石像鬼
+}
+
+STRING 202
+// 技能: A010 (麻痹毒液), Name (名字)
+{
+麻痹毒液
+}
+
+STRING 203
+// 技能: A010 (麻痹毒液), Tip (提示工具 - 普通)
+{
+麻痹毒液
+}
+
+STRING 205
+// 技能: A010 (麻痹毒液), Ubertip (提示工具 - 普通 - 扩展)
+{
+一次带毒的攻击，并使目标敌人的移动速度降低<A010,DataB1,%>%，持续<A010,Dur1>秒。
+}
+
+STRING 206
+// 技能: A011 (天启), Name (名字)
+{
+天启
+}
+
+STRING 207
+// 技能: A011 (天启), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 208
+// 技能: A011 (天启), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 219
+// 技能: A009 (死亡缠绕), EditorSuffix (编辑器后缀)
+{
+web
+}
+
+STRING 221
+// 技能: A00B (蛮兽打击), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 222
+// 技能: A00B (蛮兽打击), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 223
+// 技能: A00B (蛮兽打击), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 224
+// 技能: A00B (蛮兽打击), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 225
+// 技能: A00B (蛮兽打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 226
+// 技能: A00B (蛮兽打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 227
+// 技能: A00B (蛮兽打击), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 228
+// 技能: A00B (蛮兽打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 229
+// 技能: A00B (蛮兽打击), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 230
+// 技能: A00B (蛮兽打击), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 231
+// 技能: A00B (蛮兽打击), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 232
+// 技能: A00B (蛮兽打击), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 233
+// 技能: A00B (蛮兽打击), Name (名字)
+{
+蛮兽打击
+}
+
+STRING 234
+// 技能: A012 (横扫爪击), Name (名字)
+{
+横扫爪击
+}
+
+STRING 235
+// 技能: A013 (蹒跚冲锋), Name (名字)
+{
+蹒跚冲锋
+}
+
+STRING 236
+// 技能: A013 (蹒跚冲锋), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 237
+// 技能: A013 (蹒跚冲锋), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 238
+// 技能: A013 (蹒跚冲锋), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 239
+// 技能: A013 (蹒跚冲锋), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 240
+// 技能: A013 (蹒跚冲锋), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 241
+// 技能: A013 (蹒跚冲锋), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 242
+// 技能: A013 (蹒跚冲锋), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 243
+// 技能: A013 (蹒跚冲锋), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 244
+// 技能: A013 (蹒跚冲锋), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 245
+// 技能: A013 (蹒跚冲锋), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 246
+// 技能: A013 (蹒跚冲锋), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 247
+// 技能: A013 (蹒跚冲锋), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 248
+// 技能: A014 (腐臭壁垒), Name (名字)
+{
+腐臭壁垒
+}
+
+STRING 249
+// 技能: A014 (腐臭壁垒), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 250
+// 技能: A014 (腐臭壁垒), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 251
+// 技能: A014 (腐臭壁垒), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 252
+// 技能: A014 (腐臭壁垒), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 253
+// 技能: A014 (腐臭壁垒), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 254
+// 技能: A014 (腐臭壁垒), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 255
+// 技能: A014 (腐臭壁垒), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 256
+// 技能: A014 (腐臭壁垒), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 257
+// 技能: A014 (腐臭壁垒), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 258
+// 技能: A014 (腐臭壁垒), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 259
+// 技能: A014 (腐臭壁垒), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 260
+// 技能: A014 (腐臭壁垒), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 261
+// 技能: A015 (闪避), EditorSuffix (编辑器后缀)
+{
+managed
+}
+
+STRING 262
+// 技能: A016 (overpower), Name (名字)
+{
+overpower
+}
+
+STRING 263
+// 技能: A016 (overpower), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 264
+// 技能: A016 (overpower), Hotkey (热键 - 普通)
+{
+T
+}
+
+STRING 265
+// 技能: A016 (overpower), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 266
+// 技能: A016 (overpower), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 267
+// 技能: A016 (overpower), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 268
+// 技能: A016 (overpower), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 269
+// 技能: A016 (overpower), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 270
+// 技能: A016 (overpower), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 271
+// 技能: A016 (overpower), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 272
+// 技能: A016 (overpower), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 273
+// 技能: A016 (overpower), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 274
+// 技能: A016 (overpower), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 276
+// 单位: e000 (对方闪避), Name (名字)
+{
+对方闪避
+}
+
+STRING 277
+// 技能: A017 (deep wounds), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 278
+// 技能: A017 (deep wounds), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 279
+// 技能: A017 (deep wounds), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 280
+// 技能: A017 (deep wounds), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 281
+// 技能: A017 (deep wounds), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 282
+// 技能: A017 (deep wounds), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 283
+// 技能: A017 (deep wounds), Name (名字)
+{
+deep wounds
+}
+
+STRING 284
+// 技能: A018 (charge), Name (名字)
+{
+charge
+}
+
+STRING 285
+// 技能: A018 (charge), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 286
+// 技能: A018 (charge), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 287
+// 技能: A018 (charge), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 288
+// 技能: A018 (charge), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 289
+// 技能: A018 (charge), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 290
+// 技能: A018 (charge), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 291
+// 技能: A018 (charge), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 292
+// 技能: A018 (charge), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 293
+// 技能: A018 (charge), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 294
+// 技能: A018 (charge), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 295
+// 技能: A018 (charge), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 296
+// 技能: A018 (charge), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 297
+// 技能: A019 (rage), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 298
+// 技能: A019 (rage), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 299
+// 技能: A019 (rage), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 300
+// 技能: A019 (rage), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 301
+// 技能: A019 (rage), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 302
+// 技能: A019 (rage), Name (名字)
+{
+rage
+}
+
+STRING 303
+// 技能: A01A (mortal strike), Name (名字)
+{
+mortal strike
+}
+
+STRING 304
+// 技能: A01A (mortal strike), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 306
+// 技能: A01A (mortal strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 307
+// 技能: A01A (mortal strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 308
+// 技能: A01A (mortal strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 309
+// 技能: A01A (mortal strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 310
+// 技能: A01A (mortal strike), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 311
+// 技能: A01A (mortal strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 312
+// 技能: A01A (mortal strike), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 313
+// 技能: A01A (mortal strike), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 314
+// 技能: A01A (mortal strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 315
+// 技能: A01A (mortal strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 316
+// 技能: A01A (mortal strike), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 317
+// 技能: A01B (condemn), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 318
+// 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 319
+// 技能: A01B (condemn), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 320
+// 技能: A01B (condemn), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 321
+// 技能: A01C (blade storm), Researchhotkey (热键 - 学习)
+{
+R
+}
+
+STRING 325
+// 技能: A01B (condemn), Name (名字)
+{
+condemn
+}
+
+STRING 326
+// 技能: A01B (condemn), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 327
+// 技能: A01B (condemn), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 328
+// 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 329
+// 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 330
+// 技能: A01B (condemn), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 331
+// 技能: A01B (condemn), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 332
+// 技能: A01B (condemn), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 333
+// 技能: A01B (condemn), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 334
+// 技能: A01C (blade storm), Name (名字)
+{
+blade storm
+}
+
+STRING 335
+// 技能: A01C (blade storm), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 336
+// 技能: A01C (blade storm), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 337
+// 技能: A01C (blade storm), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 338
+// 技能: A01C (blade storm), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 339
+// 技能: A01C (blade storm), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 340
+// 技能: A01C (blade storm), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 341
+// 技能: A01C (blade storm), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 342
+// 技能: A01C (blade storm), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 343
+// 技能: A01C (blade storm), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 344
+// 技能: A01C (blade storm), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 345
+// 技能: A01C (blade storm), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 346
+// 单位: E001 (唤魔师), Name (名字)
+{
+唤魔师
+}
+
+STRING 347
+// 单位: E001 (唤魔师), Propernames (称谓)
+{
+海泽图斯
+}
+
+STRING 348
+// 技能: A01D (fire breath), Name (名字)
+{
+fire breath
+}
+
+STRING 349
+// 技能: A01D (fire breath), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 350
+// 技能: A01D (fire breath), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 351
+// 技能: A01D (fire breath), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 352
+// 技能: A01D (fire breath), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 353
+// 技能: A01D (fire breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 354
+// 技能: A01D (fire breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 355
+// 技能: A01D (fire breath), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 356
+// 技能: A01D (fire breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 357
+// 技能: A01D (fire breath), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 358
+// 技能: A01D (fire breath), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 359
+// 技能: A01E (disintegrate), Name (名字)
+{
+disintegrate
+}
+
+STRING 360
+// 技能: A01E (disintegrate), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 361
+// 技能: A01E (disintegrate), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 362
+// 技能: A01E (disintegrate), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 363
+// 技能: A01E (disintegrate), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 364
+// 技能: A01E (disintegrate), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 365
+// 技能: A01E (disintegrate), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 366
+// 技能: A01E (disintegrate), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 367
+// 技能: A01E (disintegrate), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 368
+// 技能: A01E (disintegrate), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 369
+// 技能: A01E (disintegrate), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 370
+// 技能: A01F (sleep walk), Name (名字)
+{
+sleep walk
+}
+
+STRING 371
+// 技能: A01F (sleep walk), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 372
+// 技能: A01F (sleep walk), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 373
+// 技能: A01F (sleep walk), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 374
+// 技能: A01F (sleep walk), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 375
+// 技能: A01F (sleep walk), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 376
+// 技能: A01F (sleep walk), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 377
+// 技能: A01F (sleep walk), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 378
+// 技能: A01F (sleep walk), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 379
+// 技能: A01F (sleep walk), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 380
+// 技能: A01F (sleep walk), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 381
+// 技能: A01G (time warp), Name (名字)
+{
+time warp
+}
+
+STRING 382
+// 技能: A01G (time warp), Researchhotkey (热键 - 学习)
+{
+R
+}
+
+STRING 383
+// 技能: A01G (time warp), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 384
+// 技能: A01G (time warp), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 385
+// 技能: A01G (time warp), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 386
+// 技能: A01G (time warp), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 387
+// 技能: A01G (time warp), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 388
+// 技能: A01G (time warp), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 389
+// 技能: A01G (time warp), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 390
+// 技能: A01G (time warp), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 391
+// 技能: A01G (time warp), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 392
+// 技能: A01H (magma breath), Name (名字)
+{
+magma breath
+}
+
+STRING 393
+// 技能: A01H (magma breath), Researchhotkey (热键 - 学习)
+{
+D
+}
+
+STRING 394
+// 技能: A01H (magma breath), Hotkey (热键 - 普通)
+{
+D
+}
+
+STRING 395
+// 技能: A01H (magma breath), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 396
+// 技能: A01H (magma breath), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 397
+// 技能: A01H (magma breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 398
+// 技能: A01H (magma breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 399
+// 技能: A01H (magma breath), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 400
+// 技能: A01H (magma breath), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 401
+// 技能: A01H (magma breath), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 402
+// 技能: A01H (magma breath), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 403
+// 单位: e002 (clock), Name (名字)
+{
+clock
+}
+
+STRING 406
+{
+月光林地
+}
+
+STRING 407
+{
+暗夜精灵
+}
+
+STRING 408
+{
+燃烧军团
+}
+

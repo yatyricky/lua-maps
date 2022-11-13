@@ -3,6 +3,7 @@ local Timer = require("Lib.Timer")
 local Abilities = require("Config.Abilities")
 local Tween = require("Lib.Tween")
 local Vector3 = require("Lib.Vector3")
+local Vector2 = require("Lib.Vector2")
 
 local cls = class("MagmaBreath")
 
@@ -57,14 +58,14 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             curr = p1 + dir * value
             MoveLightningEx(lightning, false, myPos.x, myPos.y, myPos.z, curr.x, curr.y, curr:GetTerrainZ())
             ExAddSpecialEffect("Abilities/Weapons/FireBallMissile/FireBallMissile.mdl", curr.x, curr.y, 0.0)
-            aoeDamage(data.caster, curr.x, curr.y, 20, damaged1)
+            aoeDamage(data.caster, curr.x, curr.y, 100, damaged1)
 
             local currIndex = math.floor(value / 50)
             while i <= currIndex do
                 local cx, cy = curr.x, curr.y
                 local tm = Timer.new(function()
                     ExAddSpecialEffect("Abilities/Weapons/Mortar/MortarMissile.mdl", cx, cy, 0.0)
-                    aoeDamage(data.caster, cx, cy, 80, damaged2)
+                    aoeDamage(data.caster, cx, cy, 500, damaged2)
                 end, 0.7, 1)
                 tm:Start()
                 i = i + 1
@@ -74,7 +75,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         local tween = Tween.To(function()
             return travelled
         end, run, 2400, 2, Tween.Type.InQuint)
-        local nearTargets = ExGroupGetUnitsInRange(myPos.x, myPos.y, 300)
+        local nearTargets = ExGroupGetUnitsInRange(myPos.x, myPos.y, 1500)
         table.iFilterInPlace(nearTargets, function(item)
             if ExIsUnitDead(item) then
                 return false
@@ -88,7 +89,14 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             return true
         end)
         if #nearTargets > 0 then
-            local firstTarget = table.iGetRandom(nearTargets)
+            local refPos = Vector2.FromUnit(data.caster)
+            local v2Dir = (Vector2.new(data.x, data.y) - refPos):SetNormalize()
+            table.sort(nearTargets, function(a, b)
+                local da = (Vector2.FromUnit(a) - refPos):SetNormalize()
+                local db = (Vector2.FromUnit(b) - refPos):SetNormalize()
+                return math.abs(Vector2.Dot(v2Dir, da)) < math.abs(Vector2.Dot(v2Dir, db))
+            end)
+            local firstTarget = nearTargets[1]
             tween:AppendCallback(function()
                 travelled = 0
                 p1 = curr:Clone()

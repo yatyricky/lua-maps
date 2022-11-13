@@ -28,7 +28,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         local clock = CreateUnit(casterPlayer, Meta.ClockID, data.x, data.y, 0)
         SetUnitAnimation(clock, "Stand Alternate")
         SetUnitTimeScale(clock, 10 / Meta.Duration)
-        coroutine.start(function ()
+        coroutine.start(function()
             coroutine.wait(Meta.Duration)
             SetUnitAnimation(clock, "Death")
             KillUnit(clock)
@@ -45,6 +45,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                     reversing[u] = true
                 end
             end
+            local affectedUnits = {}
             while #units > 0 do
                 coroutine.step()
                 for i = #units, 1, -1 do
@@ -69,6 +70,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                                     units[i] = revived
                                 elseif not nowDead and not d.dead then
                                     SetUnitPosition(u, d.x, d.y)
+                                    affectedUnits[u] = true
                                     SetUnitFacing(u, d.f)
                                     SetWidgetLife(u, d.hp)
                                     ExSetUnitMana(u, d.mp)
@@ -76,6 +78,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                             else
                                 if not ExIsUnitDead(u) then
                                     SetUnitPosition(u, d.x, d.y)
+                                    affectedUnits[u] = true
                                     SetUnitFacing(u, d.f)
                                 else
                                     table.remove(units, i)
@@ -86,6 +89,9 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                         end
                     end
                 end
+            end
+            for u, _ in pairs(affectedUnits) do
+                EventCenter.DefaultOrder:Emit(u)
             end
             reversing = {}
         end)

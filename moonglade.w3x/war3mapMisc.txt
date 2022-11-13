@@ -1,0 +1,4 @@
+[Misc]
+MinBldgSpeed=0.0
+MinUnitSpeed=0.0
+

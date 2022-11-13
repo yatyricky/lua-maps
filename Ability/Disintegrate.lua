@@ -11,7 +11,7 @@ local cls = class("Disintegrate")
 local Meta = {
     ID = FourCC("A01E"),
     MoveSpeedPercent = -0.30,
-    Damage = 45,
+    Damage = 150,
 }
 
 local Width = 64

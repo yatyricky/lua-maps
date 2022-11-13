@@ -26,7 +26,8 @@ function cls:Awake()
         end
     end)
 
-    table.insert(self.ais, require("AI.TwistedMeadows").new())
+    --table.insert(self.ais, require("AI.TwistedMeadows").new())
+    table.insert(self.ais, require("AI.MoonGlade").new())
 end
 
 function cls:Update(dt)

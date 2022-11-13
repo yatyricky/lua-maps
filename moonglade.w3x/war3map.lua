@@ -1,4 +1,4 @@
---lua-bundler:000194821
+--lua-bundler:000195677
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -1399,7 +1399,7 @@ local cls = class("Disintegrate")
 local Meta = {
     ID = FourCC("A01E"),
     MoveSpeedPercent = -0.30,
-    Damage = 45,
+    Damage = 150,
 }
 
 local Width = 64
@@ -1927,14 +1927,14 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
             curr = p1 + dir * value
             MoveLightningEx(lightning, false, myPos.x, myPos.y, myPos.z, curr.x, curr.y, curr:GetTerrainZ())
             ExAddSpecialEffect("Abilities/Weapons/FireBallMissile/FireBallMissile.mdl", curr.x, curr.y, 0.0)
-            aoeDamage(data.caster, curr.x, curr.y, 20, damaged1)
+            aoeDamage(data.caster, curr.x, curr.y, 100, damaged1)
 
             local currIndex = math.floor(value / 50)
             while i <= currIndex do
                 local cx, cy = curr.x, curr.y
                 local tm = Timer.new(function()
                     ExAddSpecialEffect("Abilities/Weapons/Mortar/MortarMissile.mdl", cx, cy, 0.0)
-                    aoeDamage(data.caster, cx, cy, 80, damaged2)
+                    aoeDamage(data.caster, cx, cy, 500, damaged2)
                 end, 0.7, 1)
                 tm:Start()
                 i = i + 1
@@ -2873,7 +2873,7 @@ local cls = class("SleepWalk")
 local Meta = {
     ID = FourCC("A01F"),
     EveryYards = 100,
-    ManaRestore = 20,
+    ManaRestore = 350,
     Speed = 50,
     MaxDuration = 10,
 }
@@ -2981,7 +2981,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         local clock = CreateUnit(casterPlayer, Meta.ClockID, data.x, data.y, 0)
         SetUnitAnimation(clock, "Stand Alternate")
         SetUnitTimeScale(clock, 10 / Meta.Duration)
-        coroutine.start(function ()
+        coroutine.start(function()
             coroutine.wait(Meta.Duration)
             SetUnitAnimation(clock, "Death")
             KillUnit(clock)
@@ -2998,6 +2998,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                     reversing[u] = true
                 end
             end
+            local affectedUnits = {}
             while #units > 0 do
                 coroutine.step()
                 for i = #units, 1, -1 do
@@ -3022,6 +3023,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                                     units[i] = revived
                                 elseif not nowDead and not d.dead then
                                     SetUnitPosition(u, d.x, d.y)
+                                    affectedUnits[u] = true
                                     SetUnitFacing(u, d.f)
                                     SetWidgetLife(u, d.hp)
                                     ExSetUnitMana(u, d.mp)
@@ -3029,6 +3031,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                             else
                                 if not ExIsUnitDead(u) then
                                     SetUnitPosition(u, d.x, d.y)
+                                    affectedUnits[u] = true
                                     SetUnitFacing(u, d.f)
                                 else
                                     table.remove(units, i)
@@ -3039,6 +3042,9 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                         end
                     end
                 end
+            end
+            for u, _ in pairs(affectedUnits) do
+                EventCenter.DefaultOrder:Emit(u)
             end
             reversing = {}
         end)
@@ -3110,6 +3116,10 @@ __modules["AI.MoonGlade"]={loader=function()
 local Vector2 = require("Lib.Vector2")
 local Timer = require("Lib.Timer")
 local Const = require("Config.Const")
+local EventCenter = require("Lib.EventCenter")
+local Event = require("Lib.Event")
+
+EventCenter.DefaultOrder = Event.new()
 
 local MyBase = Vector2.new(4022, 4110)
 local EnemyBase = Vector2.new(-4248, -5806)
@@ -3117,6 +3127,7 @@ local MyPlayer = Player(0)
 local EnemyPlayer = Player(3)
 
 local Interval = 30
+local DefaultOrder = {}
 
 local MyArmy = {
     { [FourCC("earc")] = 4 },
@@ -3134,12 +3145,12 @@ local EnemyArmy = {
     { [FourCC("nfel")] = 4 },
     { [FourCC("nfel")] = 4, [FourCC("nbal")] = 1 },
     { [FourCC("nfel")] = 4, [FourCC("nvde")] = 1 },
-    { [FourCC("nfel")] = 4, [FourCC("nbal")] = 1 },
-    { [FourCC("nfel")] = 4, [FourCC("ninf")] = 1 },
-    { [FourCC("nfel")] = 4, [FourCC("nbal")] = 1 },
-    { [FourCC("nfel")] = 4, [FourCC("ndqs")] = 1 },
-    { [FourCC("nfel")] = 4, [FourCC("nbal")] = 1 },
-    { [FourCC("nfel")] = 4, [FourCC("nerw")] = 1 },
+    { [FourCC("nfel")] = 6, [FourCC("nbal")] = 1 },
+    { [FourCC("nfel")] = 6, [FourCC("ninf")] = 1 },
+    { [FourCC("nfel")] = 6, [FourCC("nbal")] = 1 },
+    { [FourCC("nfel")] = 8, [FourCC("ndqs")] = 1 },
+    { [FourCC("nfel")] = 8, [FourCC("nbal")] = 1 },
+    { [FourCC("nfel")] = 8, [FourCC("nerw")] = 1 },
 }
 
 local cls = class("MoonGlade")
@@ -3152,6 +3163,7 @@ function cls:ctor()
             for _ = 1, count do
                 local u = CreateUnit(MyPlayer, utid, MyBase.x, MyBase.y, 0)
                 IssuePointOrderById(u, Const.OrderId_Attack, EnemyBase.x, EnemyBase.y)
+                DefaultOrder[u] = { Const.OrderId_Attack, EnemyBase.x, EnemyBase.y }
             end
         end
         local enemyArmy = EnemyArmy[math.clamp(index, 1, #EnemyArmy)]
@@ -3159,6 +3171,7 @@ function cls:ctor()
             for _ = 1, count do
                 local u = CreateUnit(EnemyPlayer, utid, EnemyBase.x, EnemyBase.y, 0)
                 IssuePointOrderById(u, Const.OrderId_Attack, MyBase.x, MyBase.y)
+                DefaultOrder[u] = { Const.OrderId_Attack, MyBase.x, MyBase.y }
             end
         end
         index = index + 1
@@ -3167,14 +3180,24 @@ function cls:ctor()
     Timer.new(spawn, Interval, -1):Start()
 
     local hero = CreateUnit(MyPlayer, FourCC("E001"), MyBase.x, MyBase.y, 0)
-    ExTriggerRegisterUnitDeath(function(unit)
-        if GetUnitTypeId(unit) == FourCC("nbal") then
-            SetHeroLevel(hero, GetHeroLevel(hero) + 1, true)
-        end
-    end)
+    --ExTriggerRegisterUnitDeath(function(unit)
+    --    if GetUnitTypeId(unit) == FourCC("nbal") then
+    --        SetHeroLevel(hero, GetHeroLevel(hero) + 1, true)
+    --    end
+    --end)
+
+    EventCenter.DefaultOrder:On(self, cls.onDefaultOrder)
 end
 
 function cls:Update()
+end
+
+function cls:onDefaultOrder(unit)
+    local order = DefaultOrder[unit]
+    if not order then
+        return
+    end
+    IssuePointOrderById(unit, order[1], order[2], order[3])
 end
 
 return cls
@@ -6349,42 +6372,669 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000194821
+--lua-bundler:000195677
 
 function InitGlobals()
 end
 
-function CreateUnitsForPlayer0()
+function Unit000023_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_CHARGED, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000024_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 1), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000026_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_CHARGED, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000028_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000033_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000037_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_CHARGED, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000044_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 1), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000046_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000047_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 1), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000049_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 1), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000050_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_CHARGED, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000053_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 1), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000054_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_CHARGED, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000060_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 1), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000067_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_PERMANENT, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function Unit000070_DropItems()
+local trigWidget = nil
+local trigUnit = nil
+local itemID = 0
+local canDrop = true
+
+trigWidget = bj_lastDyingWidget
+if (trigWidget == nil) then
+trigUnit = GetTriggerUnit()
+end
+if (trigUnit ~= nil) then
+canDrop = not IsUnitHidden(trigUnit)
+if (canDrop and GetChangingUnit() ~= nil) then
+canDrop = (GetChangingUnitPrevOwner() == Player(PLAYER_NEUTRAL_AGGRESSIVE))
+end
+end
+if (canDrop) then
+RandomDistReset()
+RandomDistAddItem(ChooseRandomItemEx(ITEM_TYPE_CHARGED, 3), 100)
+itemID = RandomDistChoose()
+if (trigUnit ~= nil) then
+UnitDropItem(trigUnit, itemID)
+else
+WidgetDropItem(trigWidget, itemID)
+end
+end
+bj_lastDyingWidget = nil
+DestroyTrigger(GetTriggeringTrigger())
+end
+
+function CreateBuildingsForPlayer0()
 local p = Player(0)
 local u
 local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -243.6, 297.8, 240.564, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -238.6, 219.1, 235.543, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -401.9, 315.4, 314.581, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -202.2, 63.9, 123.007, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -269.7, -75.0, 67.008, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("E001"), -578.3, -134.0, 22.080, FourCC("E001"))
-SetHeroLevel(u, 5, false)
+u = BlzCreateUnitWithSkin(p, FourCC("etoe"), 4032.0, 4096.0, 270.000, FourCC("etoe"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 3168.0, 5344.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 3360.0, 5088.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 3488.0, 3616.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 3680.0, 3552.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 3936.0, 3488.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 2720.0, 4256.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 2720.0, 4512.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 3936.0, 5024.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 4512.0, 4640.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("emow"), 4640.0, 4384.0, 270.000, FourCC("emow"))
+u = BlzCreateUnitWithSkin(p, FourCC("eaom"), 2816.0, 4800.0, 270.000, FourCC("eaom"))
+u = BlzCreateUnitWithSkin(p, FourCC("eate"), 4256.0, 4704.0, 270.000, FourCC("eate"))
+u = BlzCreateUnitWithSkin(p, FourCC("eaoe"), 3200.0, 4800.0, 270.000, FourCC("eaoe"))
+u = BlzCreateUnitWithSkin(p, FourCC("eaow"), 3904.0, 4736.0, 270.000, FourCC("eaow"))
+u = BlzCreateUnitWithSkin(p, FourCC("edob"), 4544.0, 3968.0, 270.000, FourCC("edob"))
+u = BlzCreateUnitWithSkin(p, FourCC("etrp"), 3296.0, 3488.0, 270.000, FourCC("etrp"))
+u = BlzCreateUnitWithSkin(p, FourCC("etrp"), 3104.0, 3296.0, 270.000, FourCC("etrp"))
+u = BlzCreateUnitWithSkin(p, FourCC("etrp"), 2720.0, 3936.0, 270.000, FourCC("etrp"))
+u = BlzCreateUnitWithSkin(p, FourCC("etrp"), 2528.0, 3744.0, 270.000, FourCC("etrp"))
+u = BlzCreateUnitWithSkin(p, FourCC("edos"), 3584.0, 4736.0, 270.000, FourCC("edos"))
+u = BlzCreateUnitWithSkin(p, FourCC("eden"), 3072.0, 4416.0, 270.000, FourCC("eden"))
 end
 
-function CreateUnitsForPlayer1()
-local p = Player(1)
+function CreateBuildingsForPlayer3()
+local p = Player(3)
 local u
 local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("otau"), -18.3, 637.2, 275.007, FourCC("otau"))
-u = BlzCreateUnitWithSkin(p, FourCC("otau"), 124.7, 418.5, 210.790, FourCC("otau"))
-u = BlzCreateUnitWithSkin(p, FourCC("otau"), 125.4, -239.9, 76.401, FourCC("otau"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 271.0, 334.7, 144.046, FourCC("ohun"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 269.3, 270.1, 11.217, FourCC("ohun"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 286.2, 165.5, 339.422, FourCC("ohun"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 292.3, 89.9, 61.976, FourCC("ohun"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 383.9, -233.7, 296.849, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ndkw"), -4224.0, -5824.0, 270.000, FourCC("ndkw"))
+end
+
+function CreateNeutralHostile()
+local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
+local u
+local unitID
+local t
+local life
+
+u = BlzCreateUnitWithSkin(p, FourCC("nfra"), -1222.5, 6180.6, 258.517, FourCC("nfra"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000028_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -1430.5, 6233.6, 296.405, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -1009.5, 6089.3, 251.862, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrb"), -4636.6, -2743.9, 312.620, FourCC("nfrb"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000054_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfra"), 4341.5, -1883.2, 162.021, FourCC("nfra"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000033_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 4170.2, -1637.8, 173.917, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 4150.9, -1920.9, 156.182, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 913.3, -6775.3, 84.229, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfra"), 1014.9, -6952.9, 90.081, FourCC("nfra"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000046_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 1196.5, -6793.6, 100.316, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -1548.7, -6937.7, 150.604, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -1146.2, -6949.6, 73.800, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrb"), -1344.9, -6851.7, 89.180, FourCC("nfrb"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000037_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 4331.1, -5664.8, 126.756, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 2006.7, 6262.8, 267.963, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 4371.7, -5153.2, 200.770, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfra"), -4228.4, 600.8, 344.551, FourCC("nfra"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000067_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -4133.6, 320.9, 358.829, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -4081.1, 815.5, 331.262, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrb"), 4346.5, -5397.0, 164.929, FourCC("nfrb"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000050_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrb"), 4388.9, 1442.5, 173.151, FourCC("nfrb"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000070_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 1601.4, 6236.1, 232.490, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrb"), 1809.1, 6169.4, 267.682, FourCC("nfrb"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000023_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrb"), -4114.3, 3808.1, 340.470, FourCC("nfrb"))
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000026_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -4131.0, 3529.1, 0.000, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -4088.3, 4021.5, 0.000, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -4857.9, -2828.3, 354.590, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), -4638.7, -2463.3, 0.000, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nsgt"), 4827.5, -3725.8, 195.073, FourCC("nsgt"))
+SetUnitAcquireRange(u, 200.0)
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000049_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), 4767.0, -3937.9, 181.208, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), 4594.8, -3725.2, 231.067, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nsgt"), 3927.6, -6906.7, 116.145, FourCC("nsgt"))
+SetUnitAcquireRange(u, 200.0)
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000024_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 4454.9, 1690.5, 218.050, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nfrl"), 4414.2, 1178.9, 150.604, FourCC("nfrl"))
+u = BlzCreateUnitWithSkin(p, FourCC("nsgt"), -3858.8, 5610.2, 312.801, FourCC("nsgt"))
+SetUnitAcquireRange(u, 200.0)
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000060_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), 3736.6, -6929.6, 112.208, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), 3873.4, -6692.6, 162.067, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nsgt"), 1916.6, 2731.9, 312.930, FourCC("nsgt"))
+SetUnitAcquireRange(u, 200.0)
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000044_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), -3648.2, 5621.1, 291.284, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), -3788.9, 5386.3, 341.143, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nsgt"), -2369.6, -5884.4, 91.051, FourCC("nsgt"))
+SetUnitAcquireRange(u, 200.0)
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000047_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nsgt"), -4993.9, 2604.3, 318.290, FourCC("nsgt"))
+SetUnitAcquireRange(u, 200.0)
+t = CreateTrigger()
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+TriggerAddAction(t, Unit000053_DropItems)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), -4779.8, 2626.3, 291.284, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), -4920.4, 2391.6, 341.143, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), -2511.4, -5788.8, 90.050, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), -2255.2, -5692.6, 113.741, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), 2127.4, 2740.4, 291.284, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
+u = BlzCreateUnitWithSkin(p, FourCC("nspr"), 1986.8, 2505.6, 341.143, FourCC("nspr"))
+SetUnitAcquireRange(u, 200.0)
 end
 
 function CreateNeutralPassiveBuildings()
@@ -6394,62 +7044,104 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -2560.0, 320.0, 270.000, FourCC("ngol"))
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 4480.0, 3456.0, 270.000, FourCC("ngol"))
 SetResourceAmount(u, 12500)
-u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 2880.0, 640.0, 270.000, FourCC("ngol"))
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 4544.0, -2368.0, 270.000, FourCC("ngol"))
 SetResourceAmount(u, 12500)
-u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -192.0, 2368.0, 270.000, FourCC("ngol"))
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 576.0, -7168.0, 270.000, FourCC("ngol"))
 SetResourceAmount(u, 12500)
-u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 512.0, -3264.0, 270.000, FourCC("ngol"))
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -4480.0, -4992.0, 270.000, FourCC("ngol"))
 SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -4416.0, 1024.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -896.0, 6656.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 4608.0, -5504.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 4672.0, 1408.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), 1792.0, 6528.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -4416.0, 3904.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -4992.0, -2496.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ngol"), -1344.0, -7168.0, 270.000, FourCC("ngol"))
+SetResourceAmount(u, 12500)
+u = BlzCreateUnitWithSkin(p, FourCC("ntav"), -256.0, -3008.0, 270.000, FourCC("ntav"))
+SetUnitColor(u, ConvertPlayerColor(0))
+u = BlzCreateUnitWithSkin(p, FourCC("ntav"), -768.0, 2176.0, 270.000, FourCC("ntav"))
+SetUnitColor(u, ConvertPlayerColor(0))
+end
+
+function CreateNeutralPassive()
+local p = Player(PLAYER_NEUTRAL_PASSIVE)
+local u
+local unitID
+local t
+local life
+
+u = BlzCreateUnitWithSkin(p, FourCC("nder"), -1248.8, -5317.8, 286.708, FourCC("nder"))
+u = BlzCreateUnitWithSkin(p, FourCC("nder"), 2650.1, -3039.6, 21.995, FourCC("nder"))
+u = BlzCreateUnitWithSkin(p, FourCC("nder"), 2649.5, 2106.7, 123.754, FourCC("nder"))
+u = BlzCreateUnitWithSkin(p, FourCC("nder"), 460.6, 5272.9, 334.599, FourCC("nder"))
+u = BlzCreateUnitWithSkin(p, FourCC("nder"), -3939.0, 2752.4, 73.644, FourCC("nder"))
+u = BlzCreateUnitWithSkin(p, FourCC("nder"), -2242.3, -1230.6, 149.188, FourCC("nder"))
+u = BlzCreateUnitWithSkin(p, FourCC("nder"), -3819.9, -2528.2, 8.345, FourCC("nder"))
 end
 
 function CreatePlayerBuildings()
+CreateBuildingsForPlayer0()
+CreateBuildingsForPlayer3()
 end
 
 function CreatePlayerUnits()
-CreateUnitsForPlayer0()
-CreateUnitsForPlayer1()
 end
 
 function CreateAllUnits()
 CreateNeutralPassiveBuildings()
 CreatePlayerBuildings()
+CreateNeutralHostile()
+CreateNeutralPassive()
 CreatePlayerUnits()
+end
+
+function InitUpgrades_Player0()
+SetPlayerTechResearched(Player(0), FourCC("Redc"), 2)
+end
+
+function InitUpgrades()
+InitUpgrades_Player0()
 end
 
 function InitCustomPlayerSlots()
 SetPlayerStartLocation(Player(0), 0)
 ForcePlayerStartLocation(Player(0), 0)
 SetPlayerColor(Player(0), ConvertPlayerColor(0))
-SetPlayerRacePreference(Player(0), RACE_PREF_ORC)
+SetPlayerRacePreference(Player(0), RACE_PREF_NIGHTELF)
 SetPlayerRaceSelectable(Player(0), false)
 SetPlayerController(Player(0), MAP_CONTROL_USER)
-SetPlayerStartLocation(Player(1), 1)
-ForcePlayerStartLocation(Player(1), 1)
-SetPlayerColor(Player(1), ConvertPlayerColor(1))
-SetPlayerRacePreference(Player(1), RACE_PREF_NIGHTELF)
-SetPlayerRaceSelectable(Player(1), false)
-SetPlayerController(Player(1), MAP_CONTROL_COMPUTER)
+SetPlayerStartLocation(Player(3), 1)
+ForcePlayerStartLocation(Player(3), 1)
+SetPlayerColor(Player(3), ConvertPlayerColor(3))
+SetPlayerRacePreference(Player(3), RACE_PREF_UNDEAD)
+SetPlayerRaceSelectable(Player(3), false)
+SetPlayerController(Player(3), MAP_CONTROL_COMPUTER)
 end
 
 function InitCustomTeams()
 SetPlayerTeam(Player(0), 0)
-SetPlayerTeam(Player(1), 1)
-end
-
-function InitAllyPriorities()
-SetStartLocPrioCount(1, 2)
-SetStartLocPrio(1, 0, 0, MAP_LOC_PRIO_HIGH)
+SetPlayerTeam(Player(3), 1)
 end
 
 function main()
-SetCameraBounds(-3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -3584.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
-SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
+SetCameraBounds(-5376.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -7680.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 5376.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 7168.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -5376.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 7168.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 5376.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -7680.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+SetDayNightModels("Environment\\DNC\\DNCAshenvale\\DNCAshenvaleTerrain\\DNCAshenvaleTerrain.mdl", "Environment\\DNC\\DNCAshenvale\\DNCAshenvaleUnit\\DNCAshenvaleUnit.mdl")
 NewSoundEnvironment("Default")
-SetAmbientDaySound("LordaeronSummerDay")
-SetAmbientNightSound("LordaeronSummerNight")
+SetAmbientDaySound("AshenvaleDay")
+SetAmbientNightSound("AshenvaleNight")
 SetMapMusic("Music", true, 0)
+InitUpgrades()
 CreateAllUnits()
 InitBlizzard()
 InitGlobals()
@@ -6460,15 +7152,14 @@ end
 end
 
 function config()
-SetMapName("TRIGSTR_001")
-SetMapDescription("TRIGSTR_003")
+SetMapName("TRIGSTR_406")
+SetMapDescription("TRIGSTR_002")
 SetPlayers(2)
 SetTeams(2)
 SetGamePlacement(MAP_PLACEMENT_USE_MAP_SETTINGS)
-DefineStartLocation(0, -1984.0, -128.0)
-DefineStartLocation(1, 2368.0, 320.0)
+DefineStartLocation(0, 4032.0, 4096.0)
+DefineStartLocation(1, -4224.0, -5760.0)
 InitCustomPlayerSlots()
 InitCustomTeams()
-InitAllyPriorities()
 end
 
