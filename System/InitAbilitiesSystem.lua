@@ -6,6 +6,7 @@ local cls = class("InitAbilitiesSystem", SystemBase)
 function cls:Awake()
     -- 血DK
     require("Ability.DeathGrip")
+    require("Ability.GorefiendsGrasp")
     require("Ability.DeathStrike")
     require("Ability.PlagueStrike")
     require("Ability.ArmyOfTheDead")

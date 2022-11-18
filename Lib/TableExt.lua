@@ -173,3 +173,23 @@ function table.iFilterInPlace(tab, filter)
     end
     return ret
 end
+
+function table.iRemoveOneRight(tab, item)
+    for i = #tab, 1, -1 do
+        if tab[i] == item then
+            table.remove(tab, i)
+            return true
+        end
+    end
+    return false
+end
+
+function table.iRemoveOneLeft(tab, item)
+    for i = 1, #tab do
+        if tab[i] == item then
+            table.remove(tab, i)
+            return true
+        end
+    end
+    return false
+end

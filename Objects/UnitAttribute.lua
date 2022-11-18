@@ -89,6 +89,8 @@ function cls:ctor(unit)
     self.damageAmplification = 0
     self.damageReduction = 0
     self.healingTaken = 0
+
+    self.taunted = {} ---被嘲讽的目标
 end
 
 function cls:GetHeroMainAttr(type, ignoreBonus)
@@ -133,6 +135,14 @@ function cls:Commit()
 
     local ms = self.baseMs * (1 + self.msp) + self.ms
     SetUnitMoveSpeed(self.owner, ms)
+end
+
+function cls:TauntedBy(caster, duration)
+    table.insert(self.taunted, caster)
+    coroutine.start(function()
+        coroutine.wait(duration)
+        table.iRemoveOneLeft(self.taunted, caster)
+    end)
 end
 
 ExTriggerRegisterNewUnit(cls.GetAttr)

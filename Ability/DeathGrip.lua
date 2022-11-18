@@ -7,6 +7,7 @@ local BuffBase = require("Objects.BuffBase")
 local Timer = require("Lib.Timer")
 local PlagueStrike = require("Ability.PlagueStrike")
 local RootDebuff = require("Ability.RootDebuff")
+local UnitAttribute = require("Objects.UnitAttribute")
 
 --region meta
 
@@ -39,7 +40,7 @@ local StepLen = 16
 
 local cls = class("DeathGrip")
 
-function cls:ctor(caster, target)
+function cls:ctor(caster, target, level)
     IssueImmediateOrderById(target, Const.OrderId_Stop)
     PauseUnit(target, true)
 
@@ -89,26 +90,36 @@ function cls:ctor(caster, target)
         PauseUnit(target, false)
         SetUnitPathing(target, true)
 
-        local impact = AddSpecialEffectTarget("Abilities/Spells/Undead/DeathCoil/DeathCoilSpecialArt.mdl", target, "origin")
-        local impactTimer = Timer.new(function()
-            DestroyEffect(impact)
-        end, 2, 1)
-        impactTimer:Start()
+        if not ExIsUnitDead(target) then
+            local impact = AddSpecialEffectTarget("Abilities/Spells/Undead/DeathCoil/DeathCoilSpecialArt.mdl", target, "origin")
+            local impactTimer = Timer.new(function()
+                DestroyEffect(impact)
+            end, 2, 1)
+            impactTimer:Start()
 
-        local level = GetUnitAbilityLevel(caster, Abilities.DeathGrip.ID)
-        local count = PlagueStrike.GetPlagueCount(target)
-        local duration = (IsUnitType(target, UNIT_TYPE_HERO) and Abilities.DeathGrip.DurationHero[level] or Abilities.DeathGrip.Duration[level]) * (1 + Abilities.DeathGrip.PlagueLengthen[level] * count)
-        local debuff = BuffBase.FindBuffByClassName(target, RootDebuff.__cname)
-        if debuff then
-            debuff:ResetDuration(Time.Time + duration)
-        else
-            RootDebuff.new(caster, target, duration, 999)
+            local count = PlagueStrike.GetPlagueCount(target)
+            local duration
+            if IsUnitType(target, UNIT_TYPE_HERO) then
+                duration = Abilities.DeathGrip.DurationHero[level]
+            else
+                duration = Abilities.DeathGrip.Duration[level]
+            end
+            duration = duration * (1 + Abilities.DeathGrip.PlagueLengthen[level] * count)
+            local debuff = BuffBase.FindBuffByClassName(target, RootDebuff.__cname)
+            if debuff then
+                debuff:ResetDuration(Time.Time + duration)
+            else
+                RootDebuff.new(caster, target, duration, 999)
+            end
+
+            local attr = UnitAttribute.GetAttr(target)
+            attr:TauntedBy(caster, duration)
+
+            coroutine.wait(duration - 1)
+            DestroyEffect(sfx)
+
+            PlagueStrike.Spread(caster, target)
         end
-
-        coroutine.wait(duration - 1)
-        DestroyEffect(sfx)
-
-        PlagueStrike.Spread(caster, target)
     end)
 end
 
@@ -116,7 +127,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.DeathGrip.ID,
     ---@param data ISpellData
     handler = function(data)
-        cls.new(data.caster, data.target)
+        cls.new(data.caster, data.target, GetUnitAbilityLevel(data.caster, Abilities.DeathGrip.ID))
     end
 })
 

@@ -19,8 +19,7 @@ local systems = {
     require("System.BuffSystem").new(),
     require("System.DamageSystem").new(),
     require("System.ProjectileSystem").new(),
-    --require("System.MoverSystem").new(),
-    require("System.ManagedAISystem").new(),
+    --require("System.ManagedAISystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
 }

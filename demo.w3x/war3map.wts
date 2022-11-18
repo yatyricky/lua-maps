@@ -2042,3 +2042,69 @@ STRING 403
 clock
 }
 
+STRING 404
+// 技能: A01I (gorefiend's grasp), Name (名字)
+{
+gorefiend's grasp
+}
+
+STRING 405
+// 技能: A01I (gorefiend's grasp), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 406
+// 技能: A01I (gorefiend's grasp), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 407
+// 技能: A01I (gorefiend's grasp), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 408
+// 技能: A01I (gorefiend's grasp), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 409
+// 技能: A01I (gorefiend's grasp), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 410
+// 技能: A01I (gorefiend's grasp), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 411
+// 技能: A01I (gorefiend's grasp), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 412
+// 技能: A01I (gorefiend's grasp), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 413
+// 技能: A01I (gorefiend's grasp), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 414
+// 技能: A01I (gorefiend's grasp), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
