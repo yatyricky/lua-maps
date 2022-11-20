@@ -3,12 +3,16 @@ local Abilities = require("Config.Abilities")
 local Vector2 = require("Lib.Vector2")
 local Timer = require("Lib.Timer")
 local Const = require("Config.Const")
+local UnitAttribute = require("Objects.UnitAttribute")
 
 --region meta
 
-Abilities.ArmyOfTheDead = {
-    ID = FourCC("A003")
+local Meta = {
+    ID = FourCC("A003"),
+    DamageReduction = 0,
 }
+
+Abilities.ArmyOfTheDead = Meta
 
 BlzSetAbilityResearchTooltip(Abilities.ArmyOfTheDead.ID, "学习亡者大军 - [|cffffcc00%d级|r]", 0)
 BlzSetAbilityResearchExtendedTooltip(Abilities.ArmyOfTheDead.ID, string.format([[召唤一支食尸鬼军团为你作战。食尸鬼会在你附近的区域横冲直撞，攻击一切它们可以攻击的目标。
@@ -31,7 +35,9 @@ local GreaterColor = { r = 0.6, g = 0.15, b = 0.4, a = 1 }
 ---@class ArmyOfTheDead
 local cls = class("ArmyOfTheDead")
 
-function cls:ctor(caster)
+function cls:ctor(caster, level, meta)
+    self.meta = meta
+    self.caster = caster
     local casterPos = Vector2.FromUnit(caster)
     local casterZ = casterPos:GetTerrainZ()
     self.sfxTimer = Timer.new(function()
@@ -51,18 +57,24 @@ function cls:ctor(caster)
         IssuePointOrderById(summoned, Const.OrderId_Attack, GetUnitX(caster), GetUnitY(caster))
     end, 1, -1)
     self.summonTimer:Start()
+
+    local attr = UnitAttribute.GetAttr(caster)
+    attr.damageReduction = attr.damageReduction + meta.DamageReduction
 end
 
 function cls:Stop()
     self.sfxTimer:Stop()
     self.summonTimer:Stop()
+
+    local attr = UnitAttribute.GetAttr(self.caster)
+    attr.damageReduction = attr.damageReduction + self.meta.DamageReduction
 end
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.ArmyOfTheDead.ID,
     ---@param data ISpellData
     handler = function(data)
-        instances[data.caster] = cls.new(data.caster, GetUnitAbilityLevel(data.caster, data.abilityId))
+        instances[data.caster] = cls.new(data.caster, GetUnitAbilityLevel(data.caster, data.abilityId), Meta)
     end
 })
 
