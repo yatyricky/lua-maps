@@ -2108,3 +2108,141 @@ STRING 414
 1
 }
 
+STRING 415
+// 技能: A01J (passive damage with impale visuals), Name (名字)
+{
+passive damage with impale visuals
+}
+
+STRING 416
+// 技能: A01J (passive damage with impale visuals), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 417
+// 技能: A01J (passive damage with impale visuals), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 418
+// 技能: A01J (passive damage with impale visuals), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 419
+// 技能: A01J (passive damage with impale visuals), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 420
+// 技能: A01J (passive damage with impale visuals), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 421
+// 技能: A01J (passive damage with impale visuals), Tip (提示工具 - 普通)
+{
+引导
+}
+
+STRING 422
+// 技能: A01J (passive damage with impale visuals), Ubertip (提示工具 - 普通 - 扩展)
+{
+引导强大的结界魔法。
+}
+
+STRING 423
+// 技能: A01J (passive damage with impale visuals), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 424
+// 技能: A01J (passive damage with impale visuals), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 425
+// 技能: A01J (passive damage with impale visuals), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 426
+// 技能: A01J (passive damage with impale visuals), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 427
+// 技能: A01K (soul siphon), Name (名字)
+{
+soul siphon
+}
+
+STRING 428
+// 技能: A01K (soul siphon), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 429
+// 技能: A01K (soul siphon), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 430
+// 技能: A01K (soul siphon), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 431
+// 技能: A01K (soul siphon), Tip (提示工具 - 普通)
+{
+Channel
+}
+
+STRING 432
+// 技能: A01K (soul siphon), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 433
+// 技能: A01K (soul siphon), Ubertip (提示工具 - 普通 - 扩展)
+{
+Channels powerful warding magic.
+}
+
+STRING 434
+// 技能: A01K (soul siphon), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 435
+// 技能: A01K (soul siphon), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 436
+// 技能: A01K (soul siphon), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 437
+// 技能: A01K (soul siphon), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+

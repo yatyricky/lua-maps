@@ -1,4 +1,4 @@
---lua-bundler:000193260
+--lua-bundler:000197535
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -170,12 +170,16 @@ local Abilities = require("Config.Abilities")
 local Vector2 = require("Lib.Vector2")
 local Timer = require("Lib.Timer")
 local Const = require("Config.Const")
+local UnitAttribute = require("Objects.UnitAttribute")
 
 --region meta
 
-Abilities.ArmyOfTheDead = {
-    ID = FourCC("A003")
+local Meta = {
+    ID = FourCC("A003"),
+    DamageReduction = 0,
 }
+
+Abilities.ArmyOfTheDead = Meta
 
 BlzSetAbilityResearchTooltip(Abilities.ArmyOfTheDead.ID, "学习亡者大军 - [|cffffcc00%d级|r]", 0)
 BlzSetAbilityResearchExtendedTooltip(Abilities.ArmyOfTheDead.ID, string.format([[召唤一支食尸鬼军团为你作战。食尸鬼会在你附近的区域横冲直撞，攻击一切它们可以攻击的目标。
@@ -198,7 +202,9 @@ local GreaterColor = { r = 0.6, g = 0.15, b = 0.4, a = 1 }
 ---@class ArmyOfTheDead
 local cls = class("ArmyOfTheDead")
 
-function cls:ctor(caster)
+function cls:ctor(caster, level, meta)
+    self.meta = meta
+    self.caster = caster
     local casterPos = Vector2.FromUnit(caster)
     local casterZ = casterPos:GetTerrainZ()
     self.sfxTimer = Timer.new(function()
@@ -218,18 +224,24 @@ function cls:ctor(caster)
         IssuePointOrderById(summoned, Const.OrderId_Attack, GetUnitX(caster), GetUnitY(caster))
     end, 1, -1)
     self.summonTimer:Start()
+
+    local attr = UnitAttribute.GetAttr(caster)
+    attr.damageReduction = attr.damageReduction + meta.DamageReduction
 end
 
 function cls:Stop()
     self.sfxTimer:Stop()
     self.summonTimer:Stop()
+
+    local attr = UnitAttribute.GetAttr(self.caster)
+    attr.damageReduction = attr.damageReduction + self.meta.DamageReduction
 end
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Abilities.ArmyOfTheDead.ID,
     ---@param data ISpellData
     handler = function(data)
-        instances[data.caster] = cls.new(data.caster, GetUnitAbilityLevel(data.caster, data.abilityId))
+        instances[data.caster] = cls.new(data.caster, GetUnitAbilityLevel(data.caster, data.abilityId), Meta)
     end
 })
 
@@ -2456,6 +2468,67 @@ return cls
 
 end}
 
+__modules["Ability.PassiveDamageWithImpaleVisuals"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local BuffBase = require("Objects.BuffBase")
+local BloodPlague = require("Ability.BloodPlague")
+local FrostPlague = require("Ability.FrostPlague")
+local UnholyPlague = require("Ability.UnholyPlague")
+
+--region meta
+
+local Meta = {
+    ID = FourCC("A01J"),
+    Chance = 0.2,
+    Damage = 400,
+}
+
+Abilities.PassiveDamageWithImpaleVisuals = Meta
+
+--endregion
+
+local cls = class("PassiveDamageWithImpaleVisuals")
+
+EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, _, _, _, isAttack)
+    if not isAttack then
+        return
+    end
+
+    if target == nil or IsUnitType(target, UNIT_TYPE_MECHANICAL) or IsUnitType(target, UNIT_TYPE_STRUCTURE) then
+        return
+    end
+
+    local abilityLevel = GetUnitAbilityLevel(caster, Meta.ID)
+    if abilityLevel < 1 then
+        return
+    end
+
+    if math.random() >= Meta.Chance then
+        return
+    end
+
+    EventCenter.Damage:Emit({
+        whichUnit = caster,
+        target = target,
+        amount = Meta.Damage,
+        attack = false,
+        ranged = false,
+        attackType = ATTACK_TYPE_HERO,
+        damageType = DAMAGE_TYPE_NORMAL,
+        weaponType = WEAPON_TYPE_WHOKNOWS,
+        outResult = {}
+    })
+
+    local v = Vector2.FromUnit(target)
+    local sfx = ExAddSpecialEffect("Abilities/Spells/Undead/Impale/ImpaleMissTarget.mdl", v.x, v.y, 1)
+    BlzSetSpecialEffectScale(sfx, 2)
+end)
+
+return cls
+
+end}
+
 __modules["Ability.PlagueStrike"]={loader=function()
 local EventCenter = require("Lib.EventCenter")
 local Abilities = require("Config.Abilities")
@@ -2997,6 +3070,90 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         end)
     end
 })
+
+return cls
+
+end}
+
+__modules["Ability.SoulSiphon"]={loader=function()
+local Vector2 = require("Lib.Vector2")
+local EventCenter = require("Lib.EventCenter")
+local Timer = require("Lib.Timer")
+local Pill = require("Lib.Pill")
+local Circle = require("Lib.Circle")
+local UnitAttribute = require("Objects.UnitAttribute")
+local Abilities = require("Config.Abilities")
+
+local cls = class("SoulSiphon")
+
+local Meta = {
+    ID = FourCC("A01K"),
+    Damage = 150,
+}
+
+Abilities.SoulSiphon = Meta
+
+local instances = {}
+
+function cls:ctor(caster, target)
+    self.lightning, self.lightningCo = ExAddLightningUnitUnit("DRAM", caster, target, 9999, { r = 1, g = 0, b = 1, a = 1 }, false)
+    local function exec()
+        if ExIsUnitDead(target) then
+            self:stop()
+            return
+        end
+
+        EventCenter.Damage:Emit({
+            whichUnit = caster,
+            target = target,
+            amount = Meta.Damage,
+            attack = false,
+            ranged = true,
+            attackType = ATTACK_TYPE_HERO,
+            damageType = DAMAGE_TYPE_DIVINE,
+            weaponType = WEAPON_TYPE_WHOKNOWS,
+            outResult = {},
+        })
+    end
+    exec()
+    self.timer = Timer.new(exec, 1, -1)
+    self.timer:Start()
+end
+
+function cls:stop()
+    self.timer:Stop()
+    coroutine.stop(self.lightningCo)
+    DestroyLightning(self.lightning)
+end
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        if instances[data.caster] then
+            instances[data.caster]:stop()
+        end
+        instances[data.caster] = cls.new(data.caster, data.target)
+    end
+})
+
+EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local inst = instances[data.caster]
+        if inst then
+            inst:stop()
+            instances[data.caster] = nil
+        else
+            print("SoulSiphon end but no instance")
+        end
+    end
+})
+
+ExTriggerRegisterUnitDeath(function(unit)
+
+end)
 
 return cls
 
@@ -5839,6 +5996,12 @@ function cls:Awake()
     require("Ability.SleepWalk")
     require("Ability.TimeWarp")
     require("Ability.MagmaBreath")
+
+    -- 地穴领主
+    require("Ability.PassiveDamageWithImpaleVisuals")
+
+    -- 巫妖
+    require("Ability.SoulSiphon")
 end
 
 return cls
@@ -6284,7 +6447,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000193260
+--lua-bundler:000197535
 
 function InitGlobals()
 end
@@ -6301,7 +6464,8 @@ u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -238.6, 219.1, 235.543, FourCC("ugh
 u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -401.9, 315.4, 314.581, FourCC("ugho"))
 u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -202.2, 63.9, 123.007, FourCC("ugho"))
 u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -269.7, -75.0, 67.008, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("U003"), -638.2, -26.2, 33.279, FourCC("U003"))
+u = BlzCreateUnitWithSkin(p, FourCC("U005"), -889.8, 5.7, 138.080, FourCC("U005"))
+u = BlzCreateUnitWithSkin(p, FourCC("U004"), -646.5, -228.3, 31.872, FourCC("U004"))
 end
 
 function CreateUnitsForPlayer1()

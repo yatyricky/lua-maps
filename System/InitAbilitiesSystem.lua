@@ -41,6 +41,12 @@ function cls:Awake()
     require("Ability.SleepWalk")
     require("Ability.TimeWarp")
     require("Ability.MagmaBreath")
+
+    -- 地穴领主
+    require("Ability.PassiveDamageWithImpaleVisuals")
+
+    -- 巫妖
+    require("Ability.SoulSiphon")
 end
 
 return cls
