@@ -30,7 +30,7 @@ function cls:Update(dt)
             BlzSetSpecialEffectZ(proj.sfx, curr:GetTerrainZ() + 60) -- todo, use vec3
             BlzSetSpecialEffectYaw(proj.sfx, math.atan2(norm.y, norm.x))
 
-            if dest:Sub(curr):Magnitude() < 96 then
+            if dest:Sub(curr):Magnitude() < 20 then
                 DestroyEffect(proj.sfx)
                 proj.onHit()
 

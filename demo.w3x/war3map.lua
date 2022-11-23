@@ -1,4 +1,4 @@
---lua-bundler:000197535
+--lua-bundler:000202064
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -731,6 +731,96 @@ EventCenter.RegisterPlayerUnitSpellEndCast:Emit({
             --    coroutine.wait(1.5)
             --end)
         end
+    end
+})
+
+return cls
+
+end}
+
+__modules["Ability.DarkHeal"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local BuffBase = require("Objects.BuffBase")
+local ProjectileBase = require("Objects.ProjectileBase")
+local FesteringWound = require("Ability.FesteringWound")
+local Const = require("Config.Const")
+
+--region meta
+
+local Meta = {
+    ID = FourCC("A01M"),
+    Heal = 400,
+}
+
+Abilities.DarkHeal = Meta
+
+--endregion
+
+local cls = class("DarkHeal")
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        EventCenter.Heal:Emit({
+            caster = data.caster,
+            target = data.target,
+            amount = Meta.Heal,
+        })
+        ExAddSpecialEffectTarget("Abilities/Spells/Undead/RaiseSkeletonWarrior/RaiseSkeleton.mdl", data.target, "origin", 1)
+    end
+})
+
+return cls
+
+end}
+
+__modules["Ability.DarkShield"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local BuffBase = require("Objects.BuffBase")
+local ProjectileBase = require("Objects.ProjectileBase")
+local FesteringWound = require("Ability.FesteringWound")
+local Const = require("Config.Const")
+local UnitAttribute = require("Objects.UnitAttribute")
+
+--region meta
+
+local Meta = {
+    ID = FourCC("A01N"),
+    Shield = 100,
+    Duration = 15,
+}
+
+Abilities.DarkShield = Meta
+
+--endregion
+
+---@class DarkShield : BuffBase
+local cls = class("DarkShield", BuffBase)
+
+function cls:OnEnable()
+    self.sfx = AddSpecialEffectTarget("Abilities/Spells/Items/StaffOfSanctuary/Staff_Sanctuary_Target.mdl", self.target, "origin")
+    local attr = UnitAttribute.GetAttr(self.target)
+    table.insert(attr.absorbShields, self)
+end
+
+function cls:OnDisable()
+    DestroyEffect(self.sfx)
+end
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        local buff = BuffBase.FindBuffByClassName(data.target, cls.__cname)
+        if buff then
+            buff:ResetDuration()
+        else
+            buff = cls.new(data.caster, data.target, Meta.Duration, 9999, {})
+        end
+        buff.shield = Meta.Shield
     end
 })
 
@@ -2896,6 +2986,52 @@ end
 function cls:OnDisable()
     SetUnitMoveSpeed(self.target, GetUnitDefaultMoveSpeed(self.target))
 end
+
+return cls
+
+end}
+
+__modules["Ability.ShadowBolt"]={loader=function()
+local EventCenter = require("Lib.EventCenter")
+local Abilities = require("Config.Abilities")
+local BuffBase = require("Objects.BuffBase")
+local ProjectileBase = require("Objects.ProjectileBase")
+local FesteringWound = require("Ability.FesteringWound")
+local Const = require("Config.Const")
+
+--region meta
+
+local Meta = {
+    ID = FourCC("A01L"),
+    Damage = 400,
+    HitRange = 20,
+}
+
+Abilities.ShadowBolt = Meta
+
+--endregion
+
+local cls = class("ShadowBolt")
+
+EventCenter.RegisterPlayerUnitSpellEffect:Emit({
+    id = Meta.ID,
+    ---@param data ISpellData
+    handler = function(data)
+        ProjectileBase.new(data.caster, data.target, "Abilities/Weapons/AvengerMissile/AvengerMissile.mdl", 600, function()
+            EventCenter.Damage:Emit({
+                whichUnit = data.caster,
+                target = data.target,
+                amount = Meta.Damage,
+                attack = false,
+                ranged = true,
+                attackType = ATTACK_TYPE_HERO,
+                damageType = DAMAGE_TYPE_NORMAL,
+                weaponType = WEAPON_TYPE_WHOKNOWS,
+                outResult = {}
+            })
+        end, nil)
+    end
+})
 
 return cls
 
@@ -5626,6 +5762,7 @@ function cls:ctor(unit)
     self.healingTaken = 0
 
     self.taunted = {} ---被嘲讽的目标
+    self.absorbShields = {} ---吸收盾
 end
 
 function cls:GetHeroMainAttr(type, ignoreBonus)
@@ -5861,7 +5998,9 @@ end
 
 function cls:OnEnable()
     EventCenter.RegisterPlayerUnitDamaging:Emit(function(caster, target, damage, weaponType, damageType, isAttack)
+        --print("Damage from native")
         if not isAttack then
+            --print("not attack, skip")
             return
         end
 
@@ -5881,7 +6020,27 @@ function cls:OnEnable()
         end
 
         local a = UnitAttribute.GetAttr(caster)
-        damage = damage * (1 + a.damageAmplification - b.damageReduction)
+        damage = damage * math.max(1 + a.damageAmplification - b.damageReduction, 0)
+
+        -- shield
+        local bas = b.absorbShields
+        if table.any(bas) then
+            while #bas > 0 and damage > 0 do
+                local shieldBuff = bas[1]
+                if shieldBuff.shield >= damage then
+                    shieldBuff.shield = shieldBuff.shield - damage
+                    damage = 0
+                else
+                    damage = damage - shieldBuff.shield
+                    shieldBuff.shield = 0
+                end
+                if shieldBuff.shield <= 0 then
+                    EventCenter.KillBuff:Emit(shieldBuff)
+                    table.remove(bas, 1)
+                end
+            end
+        end
+
         BlzSetEventDamage(damage)
     end)
 end
@@ -6000,8 +6159,13 @@ function cls:Awake()
     -- 地穴领主
     require("Ability.PassiveDamageWithImpaleVisuals")
 
-    -- 巫妖
+    -- 术士-克尔苏加德
     require("Ability.SoulSiphon")
+    require("Ability.ShadowBolt")
+
+    -- 牧师-希尔盖
+    require("Ability.DarkHeal")
+    require("Ability.DarkShield")
 end
 
 return cls
@@ -6217,7 +6381,7 @@ function cls:Update(dt)
             BlzSetSpecialEffectZ(proj.sfx, curr:GetTerrainZ() + 60) -- todo, use vec3
             BlzSetSpecialEffectYaw(proj.sfx, math.atan2(norm.y, norm.x))
 
-            if dest:Sub(curr):Magnitude() < 96 then
+            if dest:Sub(curr):Magnitude() < 20 then
                 DestroyEffect(proj.sfx)
                 proj.onHit()
 
@@ -6447,7 +6611,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000197535
+--lua-bundler:000202064
 
 function InitGlobals()
 end
@@ -6459,13 +6623,15 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -243.6, 297.8, 240.564, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -238.6, 219.1, 235.543, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -401.9, 315.4, 314.581, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -202.2, 63.9, 123.007, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -269.7, -75.0, 67.008, FourCC("ugho"))
-u = BlzCreateUnitWithSkin(p, FourCC("U005"), -889.8, 5.7, 138.080, FourCC("U005"))
-u = BlzCreateUnitWithSkin(p, FourCC("U004"), -646.5, -228.3, 31.872, FourCC("U004"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -1064.7, 1466.8, 240.564, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -1059.7, 1388.2, 235.543, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -1222.9, 1484.4, 314.581, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -1023.2, 1232.9, 123.007, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("ugho"), -1090.7, 1094.0, 67.008, FourCC("ugho"))
+u = BlzCreateUnitWithSkin(p, FourCC("U005"), -1439.0, 5.9, 138.080, FourCC("U005"))
+u = BlzCreateUnitWithSkin(p, FourCC("U004"), -1467.6, 940.7, 31.872, FourCC("U004"))
+u = BlzCreateUnitWithSkin(p, FourCC("U006"), -401.5, -8.9, 53.829, FourCC("U006"))
+u = BlzCreateUnitWithSkin(p, FourCC("U003"), -1551.0, 467.7, 184.071, FourCC("U003"))
 end
 
 function CreateUnitsForPlayer1()
@@ -6475,14 +6641,14 @@ local unitID
 local t
 local life
 
-u = BlzCreateUnitWithSkin(p, FourCC("otau"), -18.3, 637.2, 275.007, FourCC("otau"))
-u = BlzCreateUnitWithSkin(p, FourCC("otau"), 124.7, 418.5, 210.790, FourCC("otau"))
+u = BlzCreateUnitWithSkin(p, FourCC("otau"), 794.6, 1114.3, 275.007, FourCC("otau"))
+u = BlzCreateUnitWithSkin(p, FourCC("otau"), 813.9, 850.0, 210.790, FourCC("otau"))
 u = BlzCreateUnitWithSkin(p, FourCC("otau"), 125.4, -239.9, 76.401, FourCC("otau"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 271.0, 334.7, 144.046, FourCC("ohun"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 269.3, 270.1, 11.217, FourCC("ohun"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 286.2, 165.5, 339.422, FourCC("ohun"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 292.3, 89.9, 61.976, FourCC("ohun"))
-u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 383.9, -233.7, 296.849, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 960.3, 766.2, 144.046, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 958.5, 701.6, 11.217, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 975.5, 597.1, 339.422, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 981.5, 521.4, 61.976, FourCC("ohun"))
+u = BlzCreateUnitWithSkin(p, FourCC("ohun"), 970.1, 79.7, 296.849, FourCC("ohun"))
 end
 
 function CreateNeutralPassiveBuildings()

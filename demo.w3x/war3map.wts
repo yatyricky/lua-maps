@@ -2246,3 +2246,213 @@ STRING 437
 1
 }
 
+STRING 438
+// 技能: A01L (shadow bolt), Name (名字)
+{
+shadow bolt
+}
+
+STRING 439
+// 技能: A01L (shadow bolt), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 440
+// 技能: A01L (shadow bolt), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 441
+// 技能: A01L (shadow bolt), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 442
+// 技能: A01L (shadow bolt), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 443
+// 技能: A01L (shadow bolt), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 444
+// 技能: A01L (shadow bolt), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 445
+// 技能: A01L (shadow bolt), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 446
+// 技能: A01L (shadow bolt), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 447
+// 技能: A01L (shadow bolt), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 448
+// 技能: A01L (shadow bolt), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 449
+// 单位: U005 (术士), Name (名字)
+{
+术士
+}
+
+STRING 450
+// 单位: U006 (牧师), Name (名字)
+{
+牧师
+}
+
+STRING 451
+// 技能: A01M (dark heal), Name (名字)
+{
+dark heal
+}
+
+STRING 452
+// 技能: A01M (dark heal), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 453
+// 技能: A01M (dark heal), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 454
+// 技能: A01M (dark heal), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 455
+// 技能: A01M (dark heal), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 456
+// 技能: A01M (dark heal), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 457
+// 技能: A01M (dark heal), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 458
+// 技能: A01M (dark heal), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 459
+// 技能: A01M (dark heal), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 460
+// 技能: A01M (dark heal), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 461
+// 技能: A01M (dark heal), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 462
+// 技能: A01N (dark shield), Name (名字)
+{
+dark shield
+}
+
+STRING 463
+// 技能: A01N (dark shield), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 465
+// 技能: A01N (dark shield), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 466
+// 技能: A01N (dark shield), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 467
+// 技能: A01N (dark shield), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 468
+// 技能: A01N (dark shield), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 469
+// 技能: A01N (dark shield), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 470
+// 技能: A01N (dark shield), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 471
+// 技能: A01N (dark shield), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 472
+// 技能: A01N (dark shield), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 473
+// 技能: A01N (dark shield), Hotkey (热键 - 普通)
+{
+W
+}
+

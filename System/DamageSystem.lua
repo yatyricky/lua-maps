@@ -52,7 +52,9 @@ end
 
 function cls:OnEnable()
     EventCenter.RegisterPlayerUnitDamaging:Emit(function(caster, target, damage, weaponType, damageType, isAttack)
+        --print("Damage from native")
         if not isAttack then
+            --print("not attack, skip")
             return
         end
 
@@ -72,7 +74,27 @@ function cls:OnEnable()
         end
 
         local a = UnitAttribute.GetAttr(caster)
-        damage = damage * (1 + a.damageAmplification - b.damageReduction)
+        damage = damage * math.max(1 + a.damageAmplification - b.damageReduction, 0)
+
+        -- shield
+        local bas = b.absorbShields
+        if table.any(bas) then
+            while #bas > 0 and damage > 0 do
+                local shieldBuff = bas[1]
+                if shieldBuff.shield >= damage then
+                    shieldBuff.shield = shieldBuff.shield - damage
+                    damage = 0
+                else
+                    damage = damage - shieldBuff.shield
+                    shieldBuff.shield = 0
+                end
+                if shieldBuff.shield <= 0 then
+                    EventCenter.KillBuff:Emit(shieldBuff)
+                    table.remove(bas, 1)
+                end
+            end
+        end
+
         BlzSetEventDamage(damage)
     end)
 end

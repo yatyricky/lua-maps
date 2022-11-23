@@ -91,6 +91,7 @@ function cls:ctor(unit)
     self.healingTaken = 0
 
     self.taunted = {} ---被嘲讽的目标
+    self.absorbShields = {} ---吸收盾
 end
 
 function cls:GetHeroMainAttr(type, ignoreBonus)

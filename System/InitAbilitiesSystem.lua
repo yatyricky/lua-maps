@@ -45,8 +45,13 @@ function cls:Awake()
     -- 地穴领主
     require("Ability.PassiveDamageWithImpaleVisuals")
 
-    -- 巫妖
+    -- 术士-克尔苏加德
     require("Ability.SoulSiphon")
+    require("Ability.ShadowBolt")
+
+    -- 牧师-希尔盖
+    require("Ability.DarkHeal")
+    require("Ability.DarkShield")
 end
 
 return cls
