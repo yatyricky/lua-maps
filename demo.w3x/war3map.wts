@@ -2402,6 +2402,12 @@ STRING 463
 Q
 }
 
+STRING 464
+// 技能: A01O (sara blessings), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
 STRING 465
 // 技能: A01N (dark shield), Tip (提示工具 - 普通)
 {
@@ -2454,5 +2460,65 @@ STRING 473
 // 技能: A01N (dark shield), Hotkey (热键 - 普通)
 {
 W
+}
+
+STRING 474
+// 技能: A01O (sara blessings), Name (名字)
+{
+sara blessings
+}
+
+STRING 475
+// 技能: A01O (sara blessings), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 476
+// 技能: A01O (sara blessings), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 477
+// 技能: A01O (sara blessings), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 478
+// 技能: A01O (sara blessings), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 479
+// 技能: A01O (sara blessings), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 480
+// 技能: A01O (sara blessings), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 481
+// 技能: A01O (sara blessings), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 482
+// 技能: A01O (sara blessings), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 483
+// 技能: A01O (sara blessings), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
 }
 
