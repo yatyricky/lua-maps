@@ -111,6 +111,16 @@ function cls:SetMagnitude(len)
     return self
 end
 
+function cls:RotateSelf(angle)
+    local cos = math.cos(angle)
+    local sin = math.sin(angle)
+    local x = cos * self.x - sin * self.y
+    local y = sin * self.x + cos * self.y
+    self.x = x
+    self.y = y
+    return self
+end
+
 function cls:Clone()
     return new(self.x, self.y)
 end

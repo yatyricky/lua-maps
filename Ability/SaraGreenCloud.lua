@@ -10,22 +10,24 @@ local UnitAttribute = require("Objects.UnitAttribute")
 
 local Meta = {
     ID = FourCC("A01N"),
-    Heal = 300,
-    Duration = 6,
-    Interval = 1,
-    DOT = 100,
+    Duration = 9,
+    Interval = 3,
+    DOT = 200,
+    Attack = 100,
 }
 
-Abilities.SaraBlessings = Meta
+Abilities.SaraGreenCloud = Meta
 
 --endregion
 
----@class SaraBlessings : BuffBase
-local cls = class("SaraBlessings", BuffBase)
+---@class SaraGreenCloud : BuffBase
+local cls = class("SaraGreenCloud", BuffBase)
 
 function cls:OnEnable()
     --self.sfx = AddSpecialEffectTarget("Abilities/Spells/Items/StaffOfSanctuary/Staff_Sanctuary_Target.mdl", self.target, "overhead")
-    --local attr = UnitAttribute.GetAttr(self.target)
+    local attr = UnitAttribute.GetAttr(self.target)
+    attr.atk = attr.atk + Meta.Attack
+    attr:Commit()
     --table.insert(attr.absorbShields, self)
 end
 
@@ -45,17 +47,15 @@ end
 
 function cls:OnDisable()
     --DestroyEffect(self.sfx)
+    local attr = UnitAttribute.GetAttr(self.target)
+    attr.atk = attr.atk - Meta.Attack
+    attr:Commit()
 end
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
     id = Meta.ID,
     ---@param data ISpellData
     handler = function(data)
-        EventCenter.Heal:Emit({
-            caster = data.caster,
-            target = data.target,
-            amount = Meta.Heal,
-        })
         local debuff = BuffBase.FindBuffByClassName(data.target, cls.__cname)
         if debuff then
             debuff:ResetDuration()
