@@ -111,6 +111,7 @@ function cls:SetMagnitude(len)
     return self
 end
 
+---@param angle real radians
 function cls:RotateSelf(angle)
     local cos = math.cos(angle)
     local sin = math.sin(angle)
@@ -119,6 +120,11 @@ function cls:RotateSelf(angle)
     self.x = x
     self.y = y
     return self
+end
+
+---@param angle real radians
+function cls:Rotate(angle)
+    return self:Clone():RotateSelf(angle)
 end
 
 function cls:Clone()

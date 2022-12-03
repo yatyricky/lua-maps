@@ -24,6 +24,7 @@ local function cacheTimer(timer)
     t_insert(pool, timer)
 end
 
+---@class Timer
 local cls = class("Timer")
 
 function cls:ctor(func, duration, loops)
