@@ -37,6 +37,10 @@ local BlzSetSpecialEffectColor = BlzSetSpecialEffectColor
 local TriggerAddAction = TriggerAddAction
 local TriggerRegisterAnyUnitEventBJ = TriggerRegisterAnyUnitEventBJ
 
+local function trueFilter()
+    return true
+end
+
 ---@param trigger trigger
 ---@param action fun(): void
 ---@return void
@@ -84,12 +88,22 @@ end
 ---@param x real
 ---@param y real
 ---@param radius real
+---@param filter fun(unit: unit): boolean
 ---@return unit[]
-function ExGroupGetUnitsInRange(x, y, radius)
+function ExGroupGetUnitsInRange(x, y, radius, filter)
+    filter = filter or trueFilter
     GroupClear(group)
     local units = {}
     GroupEnumUnitsInRange(group, x, y, radius, Filter(function()
-        t_insert(units, GetFilterUnit())
+        local f = GetFilterUnit()
+        local s, m = pcall(filter, f)
+        if not s then
+            print(m)
+            return false
+        end
+        if m then
+            t_insert(units, f)
+        end
         return false
     end))
     return units

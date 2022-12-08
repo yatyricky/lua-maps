@@ -19,8 +19,12 @@ local Meta = {
     InstanceCount = 2,
     AngleSpeed = math.pi * 2 / 36,
     UTIDCloud = FourCC("u000"),
+    UTIDFacelessOne = FourCC("u000"),
     AutoGenCD = 10,
     ActiveTriggerCD = 3,
+    AOESpawn = 256,
+    AOEDamage = 450,
+    DamageAmount = 299,
 }
 
 Abilities.SaraGreenCloud = Meta
@@ -38,6 +42,24 @@ function cls.update(dt)
         v.dir:RotateSelf(Meta.AngleSpeed * dt)
         local pos = v.center + v.dir
         BlzSetSpecialEffectPosition(v.cloud, pos.x, pos.y, pos:GetTerrainZ())
+
+        v.cdAutoGen = v.cdAutoGen - dt
+        v.cdActiveTrigger = v.cdActiveTrigger - dt
+
+        if v.cdAutoGen <= 0 then
+            v.cdAutoGen = Meta.AutoGenCD
+            v:spawn(pos)
+        elseif v.cdActiveTrigger <= 0 then
+            local casterFaction = GetOwningPlayer(v.caster)
+            local units = ExGroupGetUnitsInRange(pos.x, pos.y, Meta.AOESpawn, function(unit)
+                return not ExIsUnitDead(unit) and IsUnitEnemy(unit, casterFaction)
+            end)
+            if #units > 0 then
+                v.cdAutoGen = Meta.AutoGenCD
+                v.cdActiveTrigger = Meta.ActiveTriggerCD
+                v:spawn(pos)
+            end
+        end
     end
 end
 
@@ -51,7 +73,15 @@ function cls:ctor(center, dir, caster)
 
     local pos = self.center + self.dir
     self.cloud = AddSpecialEffect("Units/Undead/PlagueCloud/PlagueCloudtarget.mdl", pos.x, pos.y)
-    self.cd = 10
+
+    self.cdActiveTrigger = 0
+    self.cdAutoGen = Meta.AutoGenCD
+end
+
+function cls:spawn(pos)
+    -- play sfx
+    local casterPlayer = GetOwningPlayer(self.caster)
+    local spawned = CreateUnit(casterPlayer, Meta.UTIDFacelessOne, pos.x, pos.y, math.random() * 360)
 end
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({
@@ -68,10 +98,34 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
         if #cls.instances > 0 then
             if cls.timer == nil then
                 cls.timer = Timer.new(cls.update, Time.Delta, -1)
+                cls.timer:Start()
             end
-            cls.timer:Start()
         end
     end
 })
+
+ExTriggerRegisterUnitDeath(function(unit)
+    local utid = GetUnitTypeId(unit)
+    if utid == Meta.UTIDFacelessOne then
+        local p = Vector2.FromUnit(unit)
+        -- sfx
+
+        ExGroupEnumUnitsInRange(p.x, p.y, Meta.AOEDamage, function(v)
+            if not IsUnit(unit, v) then
+                EventCenter.Damage:Emit({
+                    whichUnit = unit,
+                    target = v,
+                    amount = Meta.DamageAmount,
+                    attack = false,
+                    ranged = true,
+                    attackType = ATTACK_TYPE_CHAOS,
+                    damageType = DAMAGE_TYPE_DIVINE,
+                    weaponType = WEAPON_TYPE_WHOKNOWS,
+                    outResult = {}
+                })
+            end
+        end)
+    end
+end)
 
 return cls
