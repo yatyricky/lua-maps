@@ -22,7 +22,7 @@ function table.addNum(tab, k, v)
 end
 
 function table.any(tab)
-    return next(tab) ~= nil
+    return tab ~= nil and next(tab) ~= nil
 end
 
 function table.getOrCreateTable(tab, key)

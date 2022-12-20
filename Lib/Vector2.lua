@@ -40,6 +40,18 @@ function cls.Cross(a, b)
     return a.y * b.x - a.x * b.y
 end
 
+function cls.UnitDistance(u1, u2)
+    local v1 = cls.FromUnit(u1)
+    local v2 = cls.FromUnit(u2)
+    return v1:Sub(v2):Magnitude()
+end
+
+function cls.UnitDistanceSqr(u1, u2)
+    local v1 = cls.FromUnit(u1)
+    local v2 = cls.FromUnit(u2)
+    return v1:Sub(v2):MagnitudeSqr()
+end
+
 ---@param unit unit
 function cls:MoveToUnit(unit)
     self.x = GetUnitX(unit)
