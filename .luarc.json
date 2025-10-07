@@ -1,0 +1,22 @@
+{
+    "workspace": {
+        "ignoreDir": [
+            "demo.w3x",
+            "echoisles.w3x",
+            "moonglade.w3x", 
+            "turtlerock.w3x",
+            "twistedmeadows.w3x"
+        ],
+        "ignoreSubmodules": true,
+        "library": [
+            "LuaProject/Api"
+        ]
+    },
+    "diagnostics": {
+        "disable": [
+            "undefined-global"
+        ],
+        "workspaceDelay": 3000,
+        "workspaceRate": 100
+    }
+}
