@@ -1,4 +1,4 @@
---lua-bundler:000219348
+--lua-bundler:000219263
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -731,7 +731,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 v1:Add(norm * move)
                 v1:UnitMoveTo(data.caster)
 
-                travelled = travelled + distance
+                travelled = travelled + move
                 if travelled > 96 then
                     travelled = 0
                     ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x, v1.y, 1.2)
@@ -4366,7 +4366,6 @@ function coroutine.start(f, ...)
             c2t[c] = nil
             local success, msg = c_resume(c, t_unpack(args))
             if not success then
-                timer:Stop()
                 print(msg)
             end
         end, 1, 1)
@@ -4386,7 +4385,6 @@ function coroutine.wait(t)
 
         local success, msg = c_resume(c)
         if not success then
-            timer:Stop()
             print(msg)
         end
     end
@@ -4407,7 +4405,6 @@ function coroutine.step(t)
 
         local success, msg = c_resume(c)
         if not success then
-            timer:Stop()
             print(msg)
         end
     end
@@ -5474,6 +5471,10 @@ function cls:SetOnStop(onStop)
 end
 
 function cls:Stop()
+    if self.stopped then
+        return
+    end
+    self.stopped = true
     if self.onStop then
         self.onStop()
     end
@@ -7226,7 +7227,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000219348
+--lua-bundler:000219263
 
 function InitGlobals()
 end

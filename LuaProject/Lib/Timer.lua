@@ -61,6 +61,10 @@ function cls:SetOnStop(onStop)
 end
 
 function cls:Stop()
+    if self.stopped then
+        return
+    end
+    self.stopped = true
     if self.onStop then
         self.onStop()
     end

@@ -102,7 +102,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 v1:Add(norm * move)
                 v1:UnitMoveTo(data.caster)
 
-                travelled = travelled + distance
+                travelled = travelled + move
                 if travelled > 96 then
                     travelled = 0
                     ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x, v1.y, 1.2)

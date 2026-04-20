@@ -27,7 +27,6 @@ function coroutine.start(f, ...)
             c2t[c] = nil
             local success, msg = c_resume(c, t_unpack(args))
             if not success then
-                timer:Stop()
                 print(msg)
             end
         end, 1, 1)
@@ -47,7 +46,6 @@ function coroutine.wait(t)
 
         local success, msg = c_resume(c)
         if not success then
-            timer:Stop()
             print(msg)
         end
     end
@@ -68,7 +66,6 @@ function coroutine.step(t)
 
         local success, msg = c_resume(c)
         if not success then
-            timer:Stop()
             print(msg)
         end
     end
