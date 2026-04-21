@@ -22,6 +22,7 @@ local systems = {
     require("System.ManagedAISystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
+    require("System.BuffDisplaySystem").new(),
 }
 
 for _, system in ipairs(systems) do

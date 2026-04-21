@@ -1,0 +1,59 @@
+// BuffDisplay.fdf - Custom buff display UI frames
+
+// Buff icon backdrop - used for both hero buff row and selected unit buff row
+Frame "BACKDROP" "BuffIcon" {
+    Width 0.032,
+    Height 0.032,
+    DecorateFileNames,
+    BackdropTileBackground,
+    Background {
+        file "UI\\Widgets\\EscMenu\\Human\\blank-background",
+        size 0.032 0.032,
+    },
+}
+
+// Selected unit portrait icon backdrop
+Frame "BACKDROP" "SelectedUnitPortrait" {
+    Width 0.050,
+    Height 0.050,
+    DecorateFileNames,
+    BackdropTileBackground,
+    Background {
+        file "UI\\Widgets\\EscMenu\\Human\\blank-background",
+        size 0.050 0.050,
+    },
+}
+
+// Tooltip container backdrop
+Frame "BACKDROP" "BuffTooltip" {
+    Width 0.24,
+    Height 0.075,
+    DecorateFileNames,
+    BackdropTileBackground,
+    Background {
+        file "UI\\Widgets\\EscMenu\\Human\\blank-background",
+        size 0.24 0.075,
+    },
+    Border {
+        file "UI\\Glues\\ScoreScreen\\scorescreen-title",
+        size 0.003 0.003,
+    },
+}
+
+// Tooltip title text (buff name)
+Frame "TEXT" "BuffTooltipTitle" {
+    Width 0.230,
+    Height 0.020,
+    FontFlags "OUTLINE",
+    Font "Fonts\\FRIZQT__.TTF", 0.012, 0.0,
+    TextColor 1.0 0.82 0.0 1.0,
+}
+
+// Tooltip description text
+Frame "TEXT" "BuffTooltipDesc" {
+    Width 0.230,
+    Height 0.050,
+    FontFlags "OUTLINE",
+    Font "Fonts\\FRIZQT__.TTF", 0.010, 0.0,
+    TextColor 0.9 0.9 0.9 1.0,
+}

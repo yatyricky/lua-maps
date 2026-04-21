@@ -1,4 +1,4 @@
---lua-bundler:000219263
+--lua-bundler:000228766
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -6117,6 +6117,7 @@ local systems = {
     require("System.ManagedAISystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
+    require("System.BuffDisplaySystem").new(),
 }
 
 for _, system in ipairs(systems) do
@@ -6185,6 +6186,14 @@ function cls:ctor(caster, target, duration, interval, awakeData)
     self.interval = interval
     self.nextUpdate = self.time + interval
     self.stack = 1
+
+    -- Display fields – subclasses should override these for the buff UI.
+    ---@type string   icon path shown in the buff bar, e.g. "ReplaceableTextures\\CommandButtons\\BTNxxx.blp"
+    self.icon        = self.icon        or ""
+    ---@type string   short localised name displayed in the tooltip title
+    self.buffName    = self.buffName    or ""
+    ---@type string   tooltip body text; leave empty to use the default time/stack display
+    self.description = self.description or ""
 
     local unitTab = table.getOrCreateTable(cls.unitBuffs, target)
     table.insert(unitTab, self)
@@ -6465,6 +6474,240 @@ end
 function cls:onEditUnitAbility(data)
     local tab = table.getOrCreateTable(self.map, data.unitId)
     tab[data.abilityId] = data.handler
+end
+
+return cls
+
+end}
+
+__modules["System.BuffDisplaySystem"]={loader=function()
+local SystemBase = require("System.SystemBase")
+local BuffBase = require("Objects.BuffBase")
+
+---@class BuffDisplaySystem : SystemBase
+local cls = class("BuffDisplaySystem", SystemBase)
+
+local MAX_HERO_BUFFS   = 8
+local MAX_SELECT_BUFFS = 8
+local ICON_SIZE        = 0.032
+local ICON_GAP         = 0.002
+local ICON_STEP        = ICON_SIZE + ICON_GAP
+
+-- Selected unit portrait size
+local PORTRAIT_SIZE = 0.050
+-- Top-right corner absolute position for the selected unit portrait (TOPRIGHT anchor)
+local PORTRAIT_TR_X = 0.793
+local PORTRAIT_TR_Y = 0.592
+
+local FALLBACK_ICON = "ReplaceableTextures\\CommandButtons\\BTNTemp.blp"
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- Helpers
+-- ──────────────────────────────────────────────────────────────────────────────
+
+---Try to obtain the display icon for a unit.
+---For heroes: reads the hero-glow ability's icon (FourCC 'Ahro').
+---For other units: falls back to iterating abilities.
+---@param unit unit
+---@return string
+local function getUnitIcon(unit)
+    local heroAbil = BlzGetUnitAbility(unit, FourCC("Ahro"))
+    if heroAbil then
+        local icon = BlzGetAbilityStringLevelField(heroAbil, ABILITY_SLF_ICON_NORMAL, 0)
+        if icon and icon ~= "" then
+            return icon
+        end
+    end
+    -- Walk the ability list looking for any icon
+    local idx = 0
+    while true do
+        local abil = BlzGetUnitAbilityByIndex(unit, idx)
+        if not abil then break end
+        local icon = BlzGetAbilityStringLevelField(abil, ABILITY_SLF_ICON_NORMAL, 0)
+        if icon and icon ~= "" then
+            return icon
+        end
+        idx = idx + 1
+    end
+    return FALLBACK_ICON
+end
+
+---Create the shared tooltip frame and its text children.
+---@param parent framehandle
+---@return table
+local function createTooltip(parent)
+    local backdrop = BlzCreateFrame("BuffTooltip", parent, 0, 0)
+    BlzFrameSetVisible(backdrop, false)
+
+    local title = BlzCreateFrame("BuffTooltipTitle", backdrop, 0, 0)
+    BlzFrameSetPoint(title, FRAMEPOINT_TOPLEFT, backdrop, FRAMEPOINT_TOPLEFT, 0.006, -0.006)
+
+    local desc = BlzCreateFrame("BuffTooltipDesc", backdrop, 0, 0)
+    BlzFrameSetPoint(desc, FRAMEPOINT_TOPLEFT, title, FRAMEPOINT_BOTTOMLEFT, 0.0, -0.003)
+
+    return { frame = backdrop, title = title, desc = desc }
+end
+
+---Create one buff icon slot.  The icon frame is hidden by default and mouse
+---events are registered so the shared tooltip is shown/hidden on hover.
+---@param parent framehandle
+---@param tooltip table
+---@return table   slot  { frame, buff }
+local function createBuffSlot(parent, tooltip)
+    local frame = BlzCreateFrame("BuffIcon", parent, 0, 0)
+    BlzFrameSetVisible(frame, false)
+
+    local slot = { frame = frame, buff = nil }
+
+    -- Show tooltip on mouse-enter
+    local enterTrig = CreateTrigger()
+    BlzTriggerRegisterFrameEvent(enterTrig, frame, FRAMEEVENT_MOUSE_ENTER)
+    TriggerAddAction(enterTrig, function()
+        local b = slot.buff
+        if not b then return end
+
+        local name = b.buffName or b.__cname or "Buff"
+        local timeLeft = string.format("%.1f", b:GetTimeLeft())
+        local desc = b.description
+            or string.format("|cffffd700剩余时间:|r %.1fs\n|cffffd700层数:|r %d", b:GetTimeLeft(), b.stack or 1)
+
+        BlzFrameSetText(tooltip.title, name)
+        BlzFrameSetText(tooltip.desc, desc)
+
+        -- Reposition tooltip above the hovered icon
+        BlzFrameClearAllPoints(tooltip.frame)
+        BlzFrameSetPoint(tooltip.frame, FRAMEPOINT_BOTTOMLEFT, frame, FRAMEPOINT_TOPLEFT, 0.0, 0.004)
+
+        BlzFrameSetVisible(tooltip.frame, true)
+    end)
+
+    -- Hide tooltip on mouse-leave
+    local leaveTrig = CreateTrigger()
+    BlzTriggerRegisterFrameEvent(leaveTrig, frame, FRAMEEVENT_MOUSE_LEAVE)
+    TriggerAddAction(leaveTrig, function()
+        BlzFrameSetVisible(tooltip.frame, false)
+    end)
+
+    return slot
+end
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- System
+-- ──────────────────────────────────────────────────────────────────────────────
+
+function cls:ctor()
+    self.heroBuffSlots   = {} ---@type table[]
+    self.selectBuffSlots = {} ---@type table[]
+    self.selectedUnit    = nil ---@type unit|nil
+    self.localHero       = nil ---@type unit|nil
+    self.selectedUnitPortrait = nil ---@type framehandle|nil
+    self.tooltip              = nil ---@type table|nil
+end
+
+function cls:Awake()
+    -- Load custom frames defined in our FDF via the TOC
+    BlzLoadTOCFile("war3mapImported\\BuffDisplay.toc")
+
+    local gameUI = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0)
+
+    -- Shared tooltip (rendered on top of everything else)
+    self.tooltip = createTooltip(gameUI)
+
+    -- ── Hero buff row ──────────────────────────────────────────────────────────
+    -- Buff icons are anchored relative to the first hero portrait button so they
+    -- always sit directly to its right regardless of screen resolution.
+    local heroButton = BlzGetOriginFrame(ORIGIN_FRAME_HERO_BUTTON, 0)
+    for i = 1, MAX_HERO_BUFFS do
+        local slot = createBuffSlot(gameUI, self.tooltip)
+        BlzFrameSetSize(slot.frame, ICON_SIZE, ICON_SIZE)
+        local xOff = (i - 1) * ICON_STEP + ICON_GAP
+        BlzFrameSetPoint(slot.frame, FRAMEPOINT_LEFT, heroButton, FRAMEPOINT_RIGHT, xOff, 0)
+        self.heroBuffSlots[i] = slot
+    end
+
+    -- ── Selected unit portrait (top-right corner) ──────────────────────────────
+    self.selectedUnitPortrait = BlzCreateFrame("SelectedUnitPortrait", gameUI, 0, 0)
+    BlzFrameSetSize(self.selectedUnitPortrait, PORTRAIT_SIZE, PORTRAIT_SIZE)
+    BlzFrameSetAbsPoint(self.selectedUnitPortrait, FRAMEPOINT_TOPRIGHT, PORTRAIT_TR_X, PORTRAIT_TR_Y)
+    BlzFrameSetVisible(self.selectedUnitPortrait, false)
+
+    -- ── Selected unit buff row ─────────────────────────────────────────────────
+    -- Buff icons grow leftward from the portrait.
+    for i = 1, MAX_SELECT_BUFFS do
+        local slot = createBuffSlot(gameUI, self.tooltip)
+        BlzFrameSetSize(slot.frame, ICON_SIZE, ICON_SIZE)
+        local xOff = -((i - 1) * ICON_STEP + ICON_GAP)
+        BlzFrameSetPoint(slot.frame, FRAMEPOINT_RIGHT, self.selectedUnitPortrait, FRAMEPOINT_LEFT, xOff, 0)
+        self.selectBuffSlots[i] = slot
+    end
+
+    -- ── Track local player's hero ──────────────────────────────────────────────
+    ExTriggerRegisterNewUnit(function(unit)
+        if IsHeroUnit(unit) and GetOwningPlayer(unit) == GetLocalPlayer() then
+            self.localHero = unit
+        end
+    end)
+    ExTriggerRegisterUnitDeath(function(unit)
+        if unit == self.localHero then
+            self.localHero = nil
+        end
+    end)
+
+    -- ── Track selected unit ────────────────────────────────────────────────────
+    local selectTrig = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(selectTrig, EVENT_PLAYER_UNIT_SELECTED)
+    TriggerAddAction(selectTrig, function()
+        if GetTriggerPlayer() == GetLocalPlayer() then
+            self.selectedUnit = GetTriggerUnit()
+        end
+    end)
+
+    local deselectTrig = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(deselectTrig, EVENT_PLAYER_UNIT_DESELECTED)
+    TriggerAddAction(deselectTrig, function()
+        if GetTriggerPlayer() == GetLocalPlayer() then
+            self.selectedUnit = nil
+        end
+    end)
+end
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- Per-frame update helpers
+-- ──────────────────────────────────────────────────────────────────────────────
+
+---Sync one row of buff icon slots with the buffs currently on `unit`.
+---@param slots table[]
+---@param unit unit|nil
+function cls:_updateSlots(slots, unit)
+    local buffs = (unit and BuffBase.unitBuffs[unit]) or {}
+    for i, slot in ipairs(slots) do
+        local buff = buffs[i]
+        if buff then
+            local icon = buff.icon or FALLBACK_ICON
+            BlzFrameSetTexture(slot.frame, icon, 0, true)
+            BlzFrameSetVisible(slot.frame, true)
+            slot.buff = buff
+        else
+            BlzFrameSetVisible(slot.frame, false)
+            slot.buff = nil
+        end
+    end
+end
+
+function cls:Update(_, _)
+    -- Hero buff row
+    self:_updateSlots(self.heroBuffSlots, self.localHero)
+
+    -- Selected unit portrait + buff row
+    local sel = self.selectedUnit
+    if sel and GetUnitTypeId(sel) ~= 0 then
+        BlzFrameSetTexture(self.selectedUnitPortrait, getUnitIcon(sel), 0, true)
+        BlzFrameSetVisible(self.selectedUnitPortrait, true)
+        self:_updateSlots(self.selectBuffSlots, sel)
+    else
+        BlzFrameSetVisible(self.selectedUnitPortrait, false)
+        self:_updateSlots(self.selectBuffSlots, nil)
+    end
 end
 
 return cls
@@ -7227,7 +7470,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000219263
+--lua-bundler:000228766
 
 function InitGlobals()
 end

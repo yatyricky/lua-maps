@@ -34,6 +34,14 @@ function cls:ctor(caster, target, duration, interval, awakeData)
     self.nextUpdate = self.time + interval
     self.stack = 1
 
+    -- Display fields – subclasses should override these for the buff UI.
+    ---@type string   icon path shown in the buff bar, e.g. "ReplaceableTextures\\CommandButtons\\BTNxxx.blp"
+    self.icon        = self.icon        or ""
+    ---@type string   short localised name displayed in the tooltip title
+    self.buffName    = self.buffName    or ""
+    ---@type string   tooltip body text; leave empty to use the default time/stack display
+    self.description = self.description or ""
+
     local unitTab = table.getOrCreateTable(cls.unitBuffs, target)
     table.insert(unitTab, self)
 

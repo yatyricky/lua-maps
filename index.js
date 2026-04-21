@@ -70,6 +70,21 @@ async function program() {
         fs.copyFileSync(from, path.join(__dirname, mapName, "_Locales", "zhCN.w3mod", "war3map.wts"))
     }
 
+    // 2b. copy UI assets (FDF/TOC/etc.) from LuaProject/UI into <map>.w3x/war3mapImported
+    const uiSrcDir = path.join(__dirname, "LuaProject", "UI")
+    if (fs.existsSync(uiSrcDir)) {
+        const uiDstDir = path.join(__dirname, mapName, "war3mapImported")
+        if (!fs.existsSync(uiDstDir)) {
+            fs.mkdirSync(uiDstDir, { recursive: true })
+        }
+        for (const entry of fs.readdirSync(uiSrcDir)) {
+            const src = path.join(uiSrcDir, entry)
+            if (fs.statSync(src).isFile()) {
+                fs.copyFileSync(src, path.join(uiDstDir, entry))
+            }
+        }
+    }
+
     // 3. node ./lua-bundler/bin.js ./Main.lua ./moonglade.w3x/war3map.lua -e "Api;lua-bundler"
     child_process.execSync(`node ./lua-bundler/bin.js ./LuaProject/Main.lua ./${mapName}/war3map.lua -e "Api"`, {
         cwd: __dirname

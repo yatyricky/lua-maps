@@ -1,4 +1,4 @@
---lua-bundler:000219269
+--lua-bundler:000228710
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -731,7 +731,7 @@ EventCenter.RegisterPlayerUnitSpellEffect:Emit({
                 v1:Add(norm * move)
                 v1:UnitMoveTo(data.caster)
 
-                travelled = travelled + distance
+                travelled = travelled + move
                 if travelled > 96 then
                     travelled = 0
                     ExAddSpecialEffect("Environment/SmallBuildingFire/SmallBuildingFire0.mdl", v1.x, v1.y, 1.2)
@@ -4261,6 +4261,8 @@ end}
 __modules["Lib.class"]={loader=function()
 require("Lib.clone")
 
+---@param classname string
+---@param super table?
 function class(classname, super)
     local superType = type(super)
     local cls
@@ -4364,7 +4366,6 @@ function coroutine.start(f, ...)
             c2t[c] = nil
             local success, msg = c_resume(c, t_unpack(args))
             if not success then
-                timer:Stop()
                 print(msg)
             end
         end, 1, 1)
@@ -4384,7 +4385,6 @@ function coroutine.wait(t)
 
         local success, msg = c_resume(c)
         if not success then
-            timer:Stop()
             print(msg)
         end
     end
@@ -4395,6 +4395,7 @@ function coroutine.wait(t)
     c_yield()
 end
 
+---@param t number?
 function coroutine.step(t)
     local c = c_running()
     local timer
@@ -4404,7 +4405,6 @@ function coroutine.step(t)
 
         local success, msg = c_resume(c)
         if not success then
-            timer:Stop()
             print(msg)
         end
     end
@@ -4816,6 +4816,7 @@ ExTriggerAddAction(acquireTrigger, function()
         v(caster, target)
     end
 end)
+
 function ExTriggerRegisterUnitAcquire(callback)
     table.insert(acquireCalls, callback)
 end
@@ -5470,6 +5471,10 @@ function cls:SetOnStop(onStop)
 end
 
 function cls:Stop()
+    if self.stopped then
+        return
+    end
+    self.stopped = true
     if self.onStop then
         self.onStop()
     end
@@ -6112,6 +6117,7 @@ local systems = {
     require("System.ManagedAISystem").new(),
 
     require("System.InitAbilitiesSystem").new(),
+    require("System.BuffDisplaySystem").new(),
 }
 
 for _, system in ipairs(systems) do
@@ -6180,6 +6186,14 @@ function cls:ctor(caster, target, duration, interval, awakeData)
     self.interval = interval
     self.nextUpdate = self.time + interval
     self.stack = 1
+
+    -- Display fields – subclasses should override these for the buff UI.
+    ---@type string   icon path shown in the buff bar, e.g. "ReplaceableTextures\\CommandButtons\\BTNxxx.blp"
+    self.icon        = self.icon        or ""
+    ---@type string   short localised name displayed in the tooltip title
+    self.buffName    = self.buffName    or ""
+    ---@type string   tooltip body text; leave empty to use the default time/stack display
+    self.description = self.description or ""
 
     local unitTab = table.getOrCreateTable(cls.unitBuffs, target)
     table.insert(unitTab, self)
@@ -6460,6 +6474,241 @@ end
 function cls:onEditUnitAbility(data)
     local tab = table.getOrCreateTable(self.map, data.unitId)
     tab[data.abilityId] = data.handler
+end
+
+return cls
+
+end}
+
+__modules["System.BuffDisplaySystem"]={loader=function()
+local SystemBase = require("System.SystemBase")
+local BuffBase = require("Objects.BuffBase")
+
+---@class BuffDisplaySystem : SystemBase
+local cls = class("BuffDisplaySystem", SystemBase)
+
+local MAX_HERO_BUFFS   = 8
+local MAX_SELECT_BUFFS = 8
+local ICON_SIZE        = 0.032
+local ICON_GAP         = 0.002
+local ICON_STEP        = ICON_SIZE + ICON_GAP
+
+local PORTRAIT_SIZE    = 0.050
+
+-- Absolute top-right corner for the selected-unit portrait.
+-- Standard WC3 coordinate space: screen is ~0.8 wide x ~0.6 tall for 4:3.
+local PORTRAIT_TR_X    = 0.790
+local PORTRAIT_TR_Y    = 0.590
+
+local FALLBACK_ICON    = "ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp"
+
+local TT_W = 0.220
+local TT_H = 0.080
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- Helpers
+-- ──────────────────────────────────────────────────────────────────────────────
+
+---Best-effort icon path for a unit by walking its ability list.
+---@param unit unit
+---@return string
+local function getUnitIcon(unit)
+    local idx = 0
+    while true do
+        local abil = BlzGetUnitAbilityByIndex(unit, idx)
+        if not abil then break end
+        local icon = BlzGetAbilityStringLevelField(abil, ABILITY_SLF_ICON_NORMAL, 0)
+        if icon and icon ~= "" then
+            return icon
+        end
+        idx = idx + 1
+    end
+    return FALLBACK_ICON
+end
+
+---Create a BACKDROP frame for icon display. No FDF required.
+---@param parent framehandle
+---@param ctx integer  unique context id per frame
+---@return framehandle
+local function newIconFrame(parent, ctx)
+    local f = BlzCreateFrameByType("BACKDROP", "BuffSlot", parent, "", ctx)
+    BlzFrameSetSize(f, ICON_SIZE, ICON_SIZE)
+    BlzFrameSetVisible(f, false)
+    return f
+end
+
+---Create the shared tooltip (backdrop + title + description).
+---@param parent framehandle
+---@return table  { frame, title, desc }
+local function newTooltip(parent)
+    local bg = BlzCreateFrameByType("BACKDROP", "BuffTooltipBg", parent, "", 9000)
+    BlzFrameSetSize(bg, TT_W, TT_H)
+    BlzFrameSetTexture(bg, "UI\\Widgets\\EscMenu\\Human\\blank-background.blp", 0, true)
+    BlzFrameSetVisible(bg, false)
+
+    local titleF = BlzCreateFrameByType("TEXT", "BuffTooltipTitle", bg, "", 9001)
+    BlzFrameSetSize(titleF, TT_W - 0.010, 0.016)
+    BlzFrameSetPoint(titleF, FRAMEPOINT_TOPLEFT, bg, FRAMEPOINT_TOPLEFT, 0.005, -0.005)
+    BlzFrameSetFont(titleF, "Fonts\\FRIZQT__.TTF", 0.012, 0)
+    BlzFrameSetTextColor(titleF, BlzConvertColor(255, 255, 215, 0))
+    BlzFrameSetTextAlignment(titleF, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_LEFT)
+
+    local descF = BlzCreateFrameByType("TEXT", "BuffTooltipDesc", bg, "", 9002)
+    BlzFrameSetSize(descF, TT_W - 0.010, TT_H - 0.026)
+    BlzFrameSetPoint(descF, FRAMEPOINT_TOPLEFT, titleF, FRAMEPOINT_BOTTOMLEFT, 0.0, -0.003)
+    BlzFrameSetFont(descF, "Fonts\\FRIZQT__.TTF", 0.010, 0)
+    BlzFrameSetTextColor(descF, BlzConvertColor(255, 220, 220, 220))
+    BlzFrameSetTextAlignment(descF, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_LEFT)
+
+    return { frame = bg, title = titleF, desc = descF }
+end
+
+---Wire hover events on `iconFrame` to show/hide `tooltip` with `slot`'s buff data.
+---@param iconFrame framehandle
+---@param slot table
+---@param tooltip table
+local function registerHover(iconFrame, slot, tooltip)
+    local enterTrig = CreateTrigger()
+    BlzTriggerRegisterFrameEvent(enterTrig, iconFrame, FRAMEEVENT_MOUSE_ENTER)
+    TriggerAddAction(enterTrig, function()
+        local b = slot.buff
+        if not b then return end
+
+        local name = (b.buffName ~= "" and b.buffName) or b.__cname or "Buff"
+        local body = b.description
+        if not body or body == "" then
+            body = string.format("|cffffd700剩余时间:|r %.1fs  |cffffd700层数:|r %d",
+                b:GetTimeLeft(), b.stack or 1)
+        end
+
+        BlzFrameSetText(tooltip.title, name)
+        BlzFrameSetText(tooltip.desc, body)
+        BlzFrameClearAllPoints(tooltip.frame)
+        BlzFrameSetPoint(tooltip.frame, FRAMEPOINT_BOTTOMLEFT,
+            iconFrame, FRAMEPOINT_TOPLEFT, 0.0, 0.004)
+        BlzFrameSetVisible(tooltip.frame, true)
+    end)
+
+    local leaveTrig = CreateTrigger()
+    BlzTriggerRegisterFrameEvent(leaveTrig, iconFrame, FRAMEEVENT_MOUSE_LEAVE)
+    TriggerAddAction(leaveTrig, function()
+        BlzFrameSetVisible(tooltip.frame, false)
+    end)
+end
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- System
+-- ──────────────────────────────────────────────────────────────────────────────
+
+function cls:ctor()
+    self.heroBuffSlots   = {}
+    self.selectBuffSlots = {}
+    self.selectedUnit    = nil
+    self.localHero       = nil
+    self.portraitFrame   = nil
+    self.tooltip         = nil
+end
+
+function cls:Awake()
+    local gameUI = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0)
+
+    -- Shared tooltip on top
+    self.tooltip = newTooltip(gameUI)
+
+    -- ── Hero buff row ──────────────────────────────────────────────────────────
+    local heroButton = BlzGetOriginFrame(ORIGIN_FRAME_HERO_BUTTON, 0)
+    for i = 1, MAX_HERO_BUFFS do
+        local f = newIconFrame(gameUI, i)
+        local xOff = (i - 1) * ICON_STEP + ICON_GAP
+        BlzFrameSetPoint(f, FRAMEPOINT_LEFT, heroButton, FRAMEPOINT_RIGHT, xOff, 0)
+        local slot = { frame = f, buff = nil }
+        registerHover(f, slot, self.tooltip)
+        self.heroBuffSlots[i] = slot
+    end
+
+    -- ── Selected unit portrait (top-right corner) ──────────────────────────────
+    self.portraitFrame = BlzCreateFrameByType("BACKDROP", "SelUnitPortrait", gameUI, "", 100)
+    BlzFrameSetSize(self.portraitFrame, PORTRAIT_SIZE, PORTRAIT_SIZE)
+    BlzFrameSetAbsPoint(self.portraitFrame, FRAMEPOINT_TOPRIGHT, PORTRAIT_TR_X, PORTRAIT_TR_Y)
+    BlzFrameSetVisible(self.portraitFrame, false)
+
+    -- ── Selected unit buff row ─────────────────────────────────────────────────
+    for i = 1, MAX_SELECT_BUFFS do
+        local f = newIconFrame(gameUI, 100 + i)
+        local xOff = -((i - 1) * ICON_STEP + ICON_GAP)
+        BlzFrameSetPoint(f, FRAMEPOINT_RIGHT, self.portraitFrame, FRAMEPOINT_LEFT, xOff, 0)
+        local slot = { frame = f, buff = nil }
+        registerHover(f, slot, self.tooltip)
+        self.selectBuffSlots[i] = slot
+    end
+
+    -- ── Track local hero ───────────────────────────────────────────────────────
+    ExTriggerRegisterNewUnit(function(unit)
+        if IsUnitType(unit, UNIT_TYPE_HERO) and GetOwningPlayer(unit) == GetLocalPlayer() then
+            self.localHero = unit
+        end
+    end)
+    ExTriggerRegisterUnitDeath(function(unit)
+        if unit == self.localHero then
+            self.localHero = nil
+        end
+    end)
+
+    -- ── Track selection ────────────────────────────────────────────────────────
+    local selTrig = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(selTrig, EVENT_PLAYER_UNIT_SELECTED)
+    TriggerAddAction(selTrig, function()
+        if GetTriggerPlayer() == GetLocalPlayer() then
+            self.selectedUnit = GetTriggerUnit()
+        end
+    end)
+
+    local deselTrig = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(deselTrig, EVENT_PLAYER_UNIT_DESELECTED)
+    TriggerAddAction(deselTrig, function()
+        if GetTriggerPlayer() == GetLocalPlayer() then
+            self.selectedUnit = nil
+        end
+    end)
+end
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- Per-frame refresh
+-- ──────────────────────────────────────────────────────────────────────────────
+
+---Sync one row of buff slots with the live buff list for `unit`.
+---@param slots table[]
+---@param unit unit|nil
+function cls:_syncSlots(slots, unit)
+    local buffs = (unit and BuffBase.unitBuffs[unit]) or {}
+    for i, slot in ipairs(slots) do
+        local buff = buffs[i]
+        if buff then
+            local icon = (buff.icon ~= "" and buff.icon) or FALLBACK_ICON
+            BlzFrameSetTexture(slot.frame, icon, 0, true)
+            BlzFrameSetVisible(slot.frame, true)
+            slot.buff = buff
+        else
+            BlzFrameSetVisible(slot.frame, false)
+            slot.buff = nil
+        end
+    end
+end
+
+function cls:Update(_, _)
+    -- Hero buff bar
+    self:_syncSlots(self.heroBuffSlots, self.localHero)
+
+    -- Selected unit portrait + buff bar
+    local sel = self.selectedUnit
+    if sel and GetUnitTypeId(sel) ~= 0 then
+        BlzFrameSetTexture(self.portraitFrame, getUnitIcon(sel), 0, true)
+        BlzFrameSetVisible(self.portraitFrame, true)
+        self:_syncSlots(self.selectBuffSlots, sel)
+    else
+        BlzFrameSetVisible(self.portraitFrame, false)
+        self:_syncSlots(self.selectBuffSlots, nil)
+    end
 end
 
 return cls
@@ -6822,7 +7071,7 @@ function cls:ctor()
         self:_mergeItems(item, unit, player)
     end)
 
-    self._recipes = {} ---@type table<item, table<item, integer>[]> key=result, key2=ingredient value2=ingredient count
+    self._recipes = {} ---@type table<item, list<table<item, integer>>> key=result, key2=ingredient value2=ingredient count
     self._ingredients = {} ---@type table<item, table<item, integer>> key=ingredient key2=result value2=1
     EventCenter.RegisterItemRecipe:On(self, cls._registerItemRecipe)
 end
@@ -7222,7 +7471,7 @@ end}
 
 __modules["Main"].loader()
 end
---lua-bundler:000219269
+--lua-bundler:000228710
 
 function InitGlobals()
 end
