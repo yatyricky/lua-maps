@@ -55,6 +55,10 @@ function cls:OnDisable()
             local transmittedStack = self.stack
             local caster = self.caster
             ProjectileBase.new(caster, target, "Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAcidMissile.mdl", 300, function()
+                -- Target may have died / been removed during projectile flight.
+                if GetUnitTypeId(target) == 0 or ExIsUnitDead(target) then
+                    return
+                end
                 -- 并叠加溃烂之伤
                 local debuff = BuffBase.FindBuffByClassName(target, cls.__cname)
                 if debuff then
