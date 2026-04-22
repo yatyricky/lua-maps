@@ -25,6 +25,13 @@ local systems = {
     require("System.BuffDisplaySystem").new(),
 }
 
+--#IF MAP_NAME_moonglade THEN
+table.insert(systems, require("System.MoonGladeSystem").new())
+--#END
+--#IF MAP_NAME_twistedmeadows THEN
+table.insert(systems, require("System.TwistedMeadowsSystem").new())
+--#END
+
 for _, system in ipairs(systems) do
     system:Awake()
 end
