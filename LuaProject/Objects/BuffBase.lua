@@ -1,14 +1,15 @@
 local EventCenter = require("Lib.EventCenter")
 local Time = require("Lib.Time")
 
----@class BuffBase
+---@class BuffBase : __ClassBase<BuffBase>
 local cls = class("BuffBase")
 
 cls.unitBuffs = {} ---@type table<unit, BuffBase[]>
 
+---@generic T : BuffBase
 ---@param unit unit
----@param name string
----@return BuffBase | Nil, integer | Nil
+---@param name `T`
+---@return T | Nil, integer | Nil
 function cls.FindBuffByClassName(unit, name)
     local arr = cls.unitBuffs[unit]
     if not arr then

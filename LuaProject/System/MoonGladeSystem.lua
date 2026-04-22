@@ -39,7 +39,7 @@ local EnemyArmy = {
     { [FourCC("nfel")] = 8, [FourCC("nerw")] = 1 },
 }
 
----@class MoonGladeSystem : SystemBase
+---@class MoonGladeSystem : SystemBase, __ClassBase<MoonGladeSystem>
 local cls = class("MoonGladeSystem", SystemBase)
 
 function cls:Awake()

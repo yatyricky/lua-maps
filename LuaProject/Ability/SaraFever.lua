@@ -19,7 +19,7 @@ Abilities.SaraFever = Meta
 
 --endregion
 
----@class SaraFever : BuffBase
+---@class SaraFever : BuffBase, __ClassBase<SaraFever>
 local cls = class("SaraFever", BuffBase)
 
 function cls:OnEnable()

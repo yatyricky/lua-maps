@@ -7,7 +7,7 @@ local next = next
 local pairs = pairs
 local tostring = tostring
 
----@class Event
+---@class Event : __ClassBase<Event>
 local cls = class("Event")
 
 function cls:ctor()

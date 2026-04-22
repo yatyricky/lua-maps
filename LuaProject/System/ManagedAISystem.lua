@@ -8,7 +8,7 @@ EventCenter.InitCamp = Event.new()
 
 local CampFlag = FourCC("e001")
 
----@class ManagedAISystem : SystemBase
+---@class ManagedAISystem : SystemBase, __ClassBase<ManagedAISystem>
 local cls = class("ManagedAISystem", SystemBase)
 
 function cls:ctor()

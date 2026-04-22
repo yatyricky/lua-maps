@@ -46,7 +46,7 @@ end
 
 --endregion
 
----@class MortalBuff : BuffBase
+---@class MortalBuff : BuffBase, __ClassBase<MortalBuff>
 local MortalBuff = class("MortalBuff", BuffBase)
 
 function MortalBuff:OnEnable()

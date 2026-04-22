@@ -1,7 +1,12 @@
 require("Lib.clone")
 
----@param classname string
----@param super table?
+---@class __ClassBase<T>
+---@field new fun(...): T
+
+---@generic T
+---@param classname `T`
+---@param super any?
+---@return T
 function class(classname, super)
     local superType = type(super)
     local cls

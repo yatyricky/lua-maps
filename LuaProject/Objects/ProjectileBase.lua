@@ -2,7 +2,7 @@ local EventCenter = require("Lib.EventCenter")
 local Timer = require("Lib.Timer")
 local Vector2 = require("Lib.Vector2")
 
----@class ProjectileBase
+---@class ProjectileBase : __ClassBase<ProjectileBase>
 local cls = class("ProjectileBase")
 
 ---@param caster unit

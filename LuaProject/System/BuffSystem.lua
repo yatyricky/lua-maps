@@ -5,7 +5,7 @@ local SystemBase = require("System.SystemBase")
 EventCenter.NewBuff = Event.new()
 EventCenter.KillBuff = Event.new()
 
----@class BuffSystem : SystemBase
+---@class BuffSystem : SystemBase, __ClassBase<BuffSystem>
 local cls = class("BuffSystem", SystemBase)
 
 function cls:ctor()

@@ -1,7 +1,7 @@
 local SystemBase = require("System.SystemBase")
 local BuffBase = require("Objects.BuffBase")
 
----@class BuffDisplaySystem : SystemBase
+---@class BuffDisplaySystem : SystemBase, __ClassBase<BuffDisplaySystem>
 local cls = class("BuffDisplaySystem", SystemBase)
 
 local MAX_HERO_BUFFS   = 8

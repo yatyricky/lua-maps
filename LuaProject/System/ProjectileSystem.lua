@@ -5,7 +5,7 @@ local Vector2 = require("Lib.Vector2")
 
 EventCenter.NewProjectile = Event.new()
 
----@class ProjectileSystem : SystemBase
+---@class ProjectileSystem : SystemBase, __ClassBase<ProjectileSystem>
 local cls = class("ProjectileSystem", SystemBase)
 
 function cls:ctor()

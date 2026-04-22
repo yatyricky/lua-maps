@@ -1,6 +1,6 @@
 local SystemBase = require("System.SystemBase")
 
----@class InitAbilitiesSystem : SystemBase
+---@class InitAbilitiesSystem : SystemBase, __ClassBase<InitAbilitiesSystem>
 local cls = class("InitAbilitiesSystem", SystemBase)
 
 function cls:Awake()

@@ -20,7 +20,7 @@ Abilities.SaraBlessings = Meta
 
 --endregion
 
----@class SaraBlessings : BuffBase
+---@class SaraBlessings : BuffBase, __ClassBase<SaraBlessings>
 local cls = class("SaraBlessings", BuffBase)
 
 function cls:OnEnable()

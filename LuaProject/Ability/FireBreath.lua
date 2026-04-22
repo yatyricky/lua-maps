@@ -5,6 +5,7 @@ local Abilities = require("Config.Abilities")
 local Tween = require("Lib.Tween")
 local BuffBase = require("Objects.BuffBase")
 
+---@class FireBreath : __ClassBase<FireBreath>
 local cls = class("FireBreath")
 
 local Meta = {
@@ -42,7 +43,7 @@ end
 
 Abilities.FireBreath = Meta
 
----@class FireBreathBurn : BuffBase
+---@class FireBreathBurn : BuffBase, __ClassBase<FireBreathBurn>
 local FireBreathBurn = class("FireBreathBurn", BuffBase)
 
 function FireBreathBurn:Awake()

@@ -17,7 +17,7 @@ BlzSetAbilityExtendedTooltip(Abilities.DeepWounds.ID, string.format("你的压�
 
 --endregion
 
----@class DeepWounds : BuffBase
+---@class DeepWounds : BuffBase, __ClassBase<DeepWounds>
 local cls = class("DeepWounds", BuffBase)
 
 function cls:Update()

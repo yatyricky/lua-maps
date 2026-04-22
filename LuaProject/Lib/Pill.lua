@@ -1,4 +1,4 @@
----@class Pill
+---@class Pill : __ClassBase<Pill>
 local cls = class("Pill")
 
 ---@param p1 Vector2

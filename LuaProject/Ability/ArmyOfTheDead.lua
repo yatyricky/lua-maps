@@ -32,7 +32,7 @@ local instances = {} ---@type table<unit, ArmyOfTheDead>
 local LesserColor = { r = 0.2, g = 0, b = 0.4, a = 1 }
 local GreaterColor = { r = 0.6, g = 0.15, b = 0.4, a = 1 }
 
----@class ArmyOfTheDead
+---@class ArmyOfTheDead : __ClassBase<ArmyOfTheDead>
 local cls = class("ArmyOfTheDead")
 
 function cls:ctor(caster, level, meta)
