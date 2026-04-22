@@ -1,4 +1,4 @@
---lua-bundler:000228367
+--lua-bundler:000229423
 local function RunBundle()
 local __modules = {}
 local require = function(path)
@@ -1623,7 +1623,7 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _
         return
     end
 
-    if target == nil then
+    if caster == nil or target == nil then
         return
     end
 
@@ -1886,6 +1886,10 @@ function cls:OnDisable()
             local transmittedStack = self.stack
             local caster = self.caster
             ProjectileBase.new(caster, target, "Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAcidMissile.mdl", 300, function()
+                -- Target may have died / been removed during projectile flight.
+                if GetUnitTypeId(target) == 0 or ExIsUnitDead(target) then
+                    return
+                end
                 -- 并叠加溃烂之伤
                 local debuff = BuffBase.FindBuffByClassName(target, cls.__cname)
                 if debuff then
@@ -4023,177 +4027,6 @@ return cls
 
 end}
 
-__modules["AI.MoonGlade"]={loader=function()
-local Vector2 = require("Lib.Vector2")
-local Timer = require("Lib.Timer")
-local Const = require("Config.Const")
-local EventCenter = require("Lib.EventCenter")
-local Event = require("Lib.Event")
-
-EventCenter.DefaultOrder = Event.new()
-
-local MyBase = Vector2.new(4022, 4110)
-local EnemyBase = Vector2.new(-4248, -5806)
-local MyPlayer = Player(0)
-local EnemyPlayer = Player(3)
-
-local Interval = 30
-local DefaultOrder = {}
-
-local MyArmy = {
-    { [FourCC("earc")] = 4 },
-    { [FourCC("esen")] = 4 },
-    { [FourCC("earc")] = 4, [FourCC("esen")] = 2 },
-    { [FourCC("esen")] = 2, [FourCC("ebal")] = 2 },
-    { [FourCC("earc")] = 2, [FourCC("esen")] = 4 },
-    { [FourCC("edry")] = 4 },
-    { [FourCC("edoc")] = 4 },
-    { [FourCC("earc")] = 4, [FourCC("edoc")] = 2 },
-    { [FourCC("earc")] = 6 },
-}
-
-local EnemyArmy = {
-    { [FourCC("nfel")] = 4 },
-    { [FourCC("nfel")] = 4, [FourCC("nbal")] = 1 },
-    { [FourCC("nfel")] = 4, [FourCC("nvde")] = 1 },
-    { [FourCC("nfel")] = 6, [FourCC("nbal")] = 1 },
-    { [FourCC("nfel")] = 6, [FourCC("ninf")] = 1 },
-    { [FourCC("nfel")] = 6, [FourCC("nbal")] = 1 },
-    { [FourCC("nfel")] = 8, [FourCC("ndqs")] = 1 },
-    { [FourCC("nfel")] = 8, [FourCC("nbal")] = 1 },
-    { [FourCC("nfel")] = 8, [FourCC("nerw")] = 1 },
-}
-
-local cls = class("MoonGlade")
-
-function cls:ctor()
-    local index = 1
-    local function spawn()
-        local myArmy = MyArmy[math.clamp(index, 1, #MyArmy)]
-        for utid, count in pairs(myArmy) do
-            for _ = 1, count do
-                local u = CreateUnit(MyPlayer, utid, MyBase.x, MyBase.y, 0)
-                IssuePointOrderById(u, Const.OrderId_Attack, EnemyBase.x, EnemyBase.y)
-                DefaultOrder[u] = { Const.OrderId_Attack, EnemyBase.x, EnemyBase.y }
-            end
-        end
-        local enemyArmy = EnemyArmy[math.clamp(index, 1, #EnemyArmy)]
-        for utid, count in pairs(enemyArmy) do
-            for _ = 1, count do
-                local u = CreateUnit(EnemyPlayer, utid, EnemyBase.x, EnemyBase.y, 0)
-                IssuePointOrderById(u, Const.OrderId_Attack, MyBase.x, MyBase.y)
-                DefaultOrder[u] = { Const.OrderId_Attack, MyBase.x, MyBase.y }
-            end
-        end
-        index = index + 1
-    end
-    spawn()
-    Timer.new(spawn, Interval, -1):Start()
-
-    local hero = CreateUnit(MyPlayer, FourCC("E001"), MyBase.x, MyBase.y, 0)
-    --ExTriggerRegisterUnitDeath(function(unit)
-    --    if GetUnitTypeId(unit) == FourCC("nbal") then
-    --        SetHeroLevel(hero, GetHeroLevel(hero) + 1, true)
-    --    end
-    --end)
-
-    EventCenter.DefaultOrder:On(self, cls.onDefaultOrder)
-end
-
-function cls:Update()
-end
-
-function cls:onDefaultOrder(unit)
-    local order = DefaultOrder[unit]
-    if not order then
-        return
-    end
-    IssuePointOrderById(unit, order[1], order[2], order[3])
-end
-
-return cls
-
-end}
-
-__modules["AI.TwistedMeadows"]={loader=function()
-local Vector2 = require("Lib.Vector2")
-
-local basePos = Vector2.new(-3202, 4121)
-local Interval = 10
-local p1 = Player(1)
-local TrainCount = 3
-
-local UTID_Archer = FourCC("earc")
-local UTID_Huntress = FourCC("esen")
-local UTID_Dryad = FourCC("edry")
-local UTID_Ballista = FourCC("ebal")
-local UTID_Chimaera = FourCC("echm")
-local UTID_Druid = FourCC("edoc")
-
-local Army = {
-    [UTID_Druid] = 4, -- 16
-    [UTID_Ballista] = 2, -- 6
-    [UTID_Huntress] = 3, -- 15
-    [UTID_Archer] = 7, -- 8
-}
-
-local cls = class("TwistedMeadows")
-
-function cls:ctor()
-    self.time = 0
-    self.army = {}
-
-    ExTriggerRegisterNewUnit(function(unit)
-        if ExGetUnitPlayerId(unit) == 1 then
-            table.addNum(self.army, GetUnitTypeId(unit), 1)
-        end
-    end)
-
-    ExTriggerRegisterUnitDeath(function(unit)
-        if ExGetUnitPlayerId(unit) == 1 then
-            table.addNum(self.army, GetUnitTypeId(unit), -1)
-        end
-    end)
-end
-
-function cls:Update(dt)
-    self.time = self.time + dt
-    if self.time >= Interval then
-        self.time = self.time % Interval
-        self:run()
-    end
-end
-
-function cls:run()
-    if Time.Time < 360 then
-        return
-    end
-    local trained = TrainCount
-    for utid, maxSize in pairs(Army) do
-        local current = self.army[utid] or 0
-        local diff = maxSize - current
-        if diff > 0 then
-            local train = math.min(diff, trained)
-            for _ = 1, train do
-                CreateUnit(p1, utid, basePos.x, basePos.y, 0)
-            end
-            trained = trained - train
-        end
-
-        if trained <= 0 then
-            break
-        end
-    end
-
-    if Time.Time > 300 and trained <= 0 then
-        Interval = Interval + 0.4
-    end
-end
-
-return cls
-
-end}
-
 __modules["Config.Abilities"]={loader=function()
 local data = {}
 
@@ -6120,6 +5953,9 @@ local systems = {
     require("System.BuffDisplaySystem").new(),
 }
 
+
+
+
 for _, system in ipairs(systems) do
     system:Awake()
 end
@@ -6847,6 +6683,10 @@ function cls:OnEnable()
             return
         end
 
+        if caster == nil or target == nil then
+            return
+        end
+
         local b = UnitAttribute.GetAttr(target)
         if b.dodge > 0 then
             if math.random() < b.dodge then
@@ -7134,8 +6974,7 @@ function cls:Awake()
         end
     end)
 
-    table.insert(self.ais, require("AI.TwistedMeadows").new())
-    -- table.insert(self.ais, require("AI.MoonGlade").new())
+
 end
 
 function cls:Update(dt)
@@ -7191,6 +7030,92 @@ return cls
 
 end}
 
+__modules["System.MoonGladeSystem"]={loader=function()
+local SystemBase = require("System.SystemBase")
+local Vector2 = require("Lib.Vector2")
+local Timer = require("Lib.Timer")
+local Const = require("Config.Const")
+local EventCenter = require("Lib.EventCenter")
+local Event = require("Lib.Event")
+
+EventCenter.DefaultOrder = Event.new()
+
+local MyBase = Vector2.new(4022, 4110)
+local EnemyBase = Vector2.new(-4248, -5806)
+local MyPlayer = Player(0)
+local EnemyPlayer = Player(3)
+
+local Interval = 30
+local DefaultOrder = {}
+
+local MyArmy = {
+    { [FourCC("earc")] = 4 },
+    { [FourCC("esen")] = 4 },
+    { [FourCC("earc")] = 4, [FourCC("esen")] = 2 },
+    { [FourCC("esen")] = 2, [FourCC("ebal")] = 2 },
+    { [FourCC("earc")] = 2, [FourCC("esen")] = 4 },
+    { [FourCC("edry")] = 4 },
+    { [FourCC("edoc")] = 4 },
+    { [FourCC("earc")] = 4, [FourCC("edoc")] = 2 },
+    { [FourCC("earc")] = 6 },
+}
+
+local EnemyArmy = {
+    { [FourCC("nfel")] = 4 },
+    { [FourCC("nfel")] = 4, [FourCC("nbal")] = 1 },
+    { [FourCC("nfel")] = 4, [FourCC("nvde")] = 1 },
+    { [FourCC("nfel")] = 6, [FourCC("nbal")] = 1 },
+    { [FourCC("nfel")] = 6, [FourCC("ninf")] = 1 },
+    { [FourCC("nfel")] = 6, [FourCC("nbal")] = 1 },
+    { [FourCC("nfel")] = 8, [FourCC("ndqs")] = 1 },
+    { [FourCC("nfel")] = 8, [FourCC("nbal")] = 1 },
+    { [FourCC("nfel")] = 8, [FourCC("nerw")] = 1 },
+}
+
+---@class MoonGladeSystem : SystemBase
+local cls = class("MoonGladeSystem", SystemBase)
+
+function cls:Awake()
+    local index = 1
+    local function spawn()
+        local myArmy = MyArmy[math.clamp(index, 1, #MyArmy)]
+        for utid, count in pairs(myArmy) do
+            for _ = 1, count do
+                local u = CreateUnit(MyPlayer, utid, MyBase.x, MyBase.y, 0)
+                IssuePointOrderById(u, Const.OrderId_Attack, EnemyBase.x, EnemyBase.y)
+                DefaultOrder[u] = { Const.OrderId_Attack, EnemyBase.x, EnemyBase.y }
+            end
+        end
+        local enemyArmy = EnemyArmy[math.clamp(index, 1, #EnemyArmy)]
+        for utid, count in pairs(enemyArmy) do
+            for _ = 1, count do
+                local u = CreateUnit(EnemyPlayer, utid, EnemyBase.x, EnemyBase.y, 0)
+                IssuePointOrderById(u, Const.OrderId_Attack, MyBase.x, MyBase.y)
+                DefaultOrder[u] = { Const.OrderId_Attack, MyBase.x, MyBase.y }
+            end
+        end
+        index = index + 1
+    end
+    spawn()
+    Timer.new(spawn, Interval, -1):Start()
+
+    CreateUnit(MyPlayer, FourCC("E001"), MyBase.x, MyBase.y, 0)
+
+    EventCenter.DefaultOrder:On(self, cls._onDefaultOrder)
+end
+
+function cls:_onDefaultOrder(unit)
+    local order = DefaultOrder[unit]
+    if not order then
+        return
+    end
+    IssuePointOrderById(unit, order[1], order[2], order[3])
+end
+
+return cls
+
+end}
+
 __modules["System.ProjectileSystem"]={loader=function()
 local Event = require("Lib.Event")
 local EventCenter = require("Lib.EventCenter")
@@ -7214,21 +7139,33 @@ function cls:Update(dt)
     local toRemove = {}
     for idx, proj in ipairs(self.projectiles) do
         if proj.targetType == "unit" then
-            local curr = proj.pos
-            local dest = Vector2.FromUnit(proj.target)
-            local norm = (dest - curr):SetNormalize()
-            local dir = norm * (proj.speed * dt)
-            curr:Add(dir)
-            BlzSetSpecialEffectX(proj.sfx, curr.x)
-            BlzSetSpecialEffectY(proj.sfx, curr.y)
-            BlzSetSpecialEffectZ(proj.sfx, curr:GetTerrainZ() + 60) -- todo, use vec3
-            BlzSetSpecialEffectYaw(proj.sfx, math.atan2(norm.y, norm.x))
-
-            if dest:Sub(curr):Magnitude() < 20 then
+            -- Target unit was removed (RemoveUnit / handle invalidated).
+            -- GetUnitTypeId returns 0 for a destroyed/removed unit handle.
+            -- Without this guard the sfx would chase (0,0) and could be left orphaned on the ground.
+            if GetUnitTypeId(proj.target) == 0 then
                 DestroyEffect(proj.sfx)
-                proj.onHit()
-
                 table.insert(toRemove, idx)
+            else
+                local curr = proj.pos
+                local dest = Vector2.FromUnit(proj.target)
+                local norm = (dest - curr):SetNormalize()
+                local dir = norm * (proj.speed * dt)
+                curr:Add(dir)
+                BlzSetSpecialEffectX(proj.sfx, curr.x)
+                BlzSetSpecialEffectY(proj.sfx, curr.y)
+                BlzSetSpecialEffectZ(proj.sfx, curr:GetTerrainZ() + 60) -- todo, use vec3
+                BlzSetSpecialEffectYaw(proj.sfx, math.atan2(norm.y, norm.x))
+
+                if dest:Sub(curr):Magnitude() < 20 then
+                    DestroyEffect(proj.sfx)
+                    -- Guard onHit so an error in the callback can't leave other projectiles unprocessed.
+                    local ok, err = pcall(proj.onHit)
+                    if not ok then
+                        print("ProjectileSystem onHit error: " .. tostring(err))
+                    end
+
+                    table.insert(toRemove, idx)
+                end
             end
         end
     end
@@ -7452,9 +7389,92 @@ return cls
 
 end}
 
+__modules["System.TwistedMeadowsSystem"]={loader=function()
+local SystemBase = require("System.SystemBase")
+local Vector2 = require("Lib.Vector2")
+
+local basePos = Vector2.new(-3202, 4121)
+local Interval = 10
+local p1 = Player(1)
+local TrainCount = 3
+
+local UTID_Archer = FourCC("earc")
+local UTID_Huntress = FourCC("esen")
+local UTID_Dryad = FourCC("edry")
+local UTID_Ballista = FourCC("ebal")
+local UTID_Chimaera = FourCC("echm")
+local UTID_Druid = FourCC("edoc")
+
+local Army = {
+    [UTID_Druid] = 4,    -- 16
+    [UTID_Ballista] = 2, -- 6
+    [UTID_Huntress] = 3, -- 15
+    [UTID_Archer] = 7,   -- 8
+}
+
+---@class TwistedMeadowsSystem : SystemBase
+local cls = class("TwistedMeadowsSystem", SystemBase)
+
+function cls:ctor()
+    self.time = 0
+    self.army = {}
+end
+
+function cls:Awake()
+    ExTriggerRegisterNewUnit(function(unit)
+        if ExGetUnitPlayerId(unit) == 1 then
+            table.addNum(self.army, GetUnitTypeId(unit), 1)
+        end
+    end)
+
+    ExTriggerRegisterUnitDeath(function(unit)
+        if ExGetUnitPlayerId(unit) == 1 then
+            table.addNum(self.army, GetUnitTypeId(unit), -1)
+        end
+    end)
+end
+
+function cls:Update(dt)
+    self.time = self.time + dt
+    if self.time >= Interval then
+        self.time = self.time % Interval
+        self:_run()
+    end
+end
+
+function cls:_run()
+    if Time.Time < 360 then
+        return
+    end
+    local trained = TrainCount
+    for utid, maxSize in pairs(Army) do
+        local current = self.army[utid] or 0
+        local diff = maxSize - current
+        if diff > 0 then
+            local train = math.min(diff, trained)
+            for _ = 1, train do
+                CreateUnit(p1, utid, basePos.x, basePos.y, 0)
+            end
+            trained = trained - train
+        end
+
+        if trained <= 0 then
+            break
+        end
+    end
+
+    if Time.Time > 300 and trained <= 0 then
+        Interval = Interval + 0.4
+    end
+end
+
+return cls
+
+end}
+
 __modules["Main"].loader()
 end
---lua-bundler:000228367
+--lua-bundler:000229423
 
 function InitGlobals()
 end
