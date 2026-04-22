@@ -91,7 +91,7 @@ async function program() {
 
     // 3. node ./lua-bundler/bin.js ./Main.lua ./moonglade.w3x/war3map.lua -e "Api;lua-bundler"
     const mapNameNoExt = path.parse(mapName).name
-    execSync(`node ./lua-bundler/bin.js ./LuaProject/Main.lua ./${mapName}/war3map.lua -e "Api" -d "MAP_NAME_${mapNameNoExt}"`, {
+    execSync(`node ./lua-bundler/bin.js -i ./LuaProject/Main.lua -o ./${mapName}/war3map.lua -e "Api" -d "MAP_NAME_${mapNameNoExt}"`, {
         cwd: __dirname
     })
     
