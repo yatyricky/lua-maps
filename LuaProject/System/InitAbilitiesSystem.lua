@@ -4,13 +4,16 @@ local SystemBase = require("System.SystemBase")
 local cls = class("InitAbilitiesSystem", SystemBase)
 
 function cls:Awake()
+--#IF MAP_NAME_echoisles THEN
     -- 血DK
     require("Ability.DeathGrip")
     require("Ability.GorefiendsGrasp")
     require("Ability.DeathStrike")
     require("Ability.PlagueStrike")
     require("Ability.ArmyOfTheDead")
+--#END
 
+--#IF MAP_NAME_turtlerock THEN
     -- 邪DK
     require("Ability.FesteringWound")
     require("Ability.DeathCoil")
@@ -20,7 +23,9 @@ function cls:Awake()
     require("Ability.MonstrousBlow")
     require("Ability.ShamblingRush")
     require("Ability.PutridBulwark")
+--#END
 
+--#IF MAP_NAME_twistedmeadows THEN
     -- 默认 技能
     require("Ability.Evasion")
     require("Ability.MoonWellHeal")
@@ -34,14 +39,18 @@ function cls:Awake()
     require("Ability.MortalStrike")
     require("Ability.Condemn")
     require("Ability.BladeStorm")
+--#END
 
+--#IF MAP_NAME_moonglade THEN
     -- 唤魔师
     require("Ability.FireBreath")
     require("Ability.Disintegrate")
     require("Ability.SleepWalk")
     require("Ability.TimeWarp")
     require("Ability.MagmaBreath")
+--#END
 
+--#IF MAP_NAME_demo THEN
     -- 地穴领主
     require("Ability.PassiveDamageWithImpaleVisuals")
 
@@ -52,6 +61,7 @@ function cls:Awake()
     -- 牧师-希尔盖
     require("Ability.DarkHeal")
     require("Ability.DarkShield")
+--#END
 end
 
 return cls

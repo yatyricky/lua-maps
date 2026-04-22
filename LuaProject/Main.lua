@@ -15,7 +15,6 @@ local ipairs = ipairs
 local systems = {
     require("System.ItemSystem").new(),
     require("System.SpellSystem").new(),
-    require("System.MeleeGameSystem").new(),
     require("System.BuffSystem").new(),
     require("System.DamageSystem").new(),
     require("System.ProjectileSystem").new(),
@@ -24,6 +23,10 @@ local systems = {
     require("System.InitAbilitiesSystem").new(),
     require("System.BuffDisplaySystem").new(),
 }
+
+--#IF MAP_NAME_echoisles OR MAP_NAME_turtlerock OR MAP_NAME_twistedmeadows THEN
+table.insert(systems, require("System.MeleeGameSystem").new())
+--#END
 
 --#IF MAP_NAME_moonglade THEN
 table.insert(systems, require("System.MoonGladeSystem").new())
