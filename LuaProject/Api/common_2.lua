@@ -2384,6 +2384,10 @@ UNIT_RF_DEATH_TIME = nil
 ---@type unitrealfield
 UNIT_RF_FLY_HEIGHT = nil
 
+---ConvertUnitRealField('ufmh')
+---@type unitrealfield
+UNIT_RF_FLY_MAX_HEIGHT = nil
+
 ---ConvertUnitRealField('umvr')
 ---@type unitrealfield
 UNIT_RF_TURN_RATE = nil
@@ -3008,42 +3012,34 @@ function GetLocalizedString(source) end
 function GetLocalizedHotkey(source) end
 
 ---@param name string
----@return nothing
 function SetMapName(name) end
 
 ---@param description string
----@return nothing
 function SetMapDescription(description) end
 
 ---@param teamcount integer
----@return nothing
 function SetTeams(teamcount) end
 
 ---@param playercount integer
----@return nothing
 function SetPlayers(playercount) end
 
 ---@param whichStartLoc integer
 ---@param x real
 ---@param y real
----@return nothing
 function DefineStartLocation(whichStartLoc, x, y) end
 
 ---@param whichStartLoc integer
 ---@param whichLocation location
----@return nothing
 function DefineStartLocationLoc(whichStartLoc, whichLocation) end
 
 ---@param whichStartLoc integer
 ---@param prioSlotCount integer
----@return nothing
 function SetStartLocPrioCount(whichStartLoc, prioSlotCount) end
 
 ---@param whichStartLoc integer
 ---@param prioSlotIndex integer
 ---@param otherStartLocIndex integer
 ---@param priority startlocprio
----@return nothing
 function SetStartLocPrio(whichStartLoc, prioSlotIndex, otherStartLocIndex, priority) end
 
 ---@param whichStartLoc integer
@@ -3058,44 +3054,35 @@ function GetStartLocPrio(whichStartLoc, prioSlotIndex) end
 
 ---@param whichStartLoc integer
 ---@param prioSlotCount integer
----@return nothing
 function SetEnemyStartLocPrioCount(whichStartLoc, prioSlotCount) end
 
 ---@param whichStartLoc integer
 ---@param prioSlotIndex integer
 ---@param otherStartLocIndex integer
 ---@param priority startlocprio
----@return nothing
 function SetEnemyStartLocPrio(whichStartLoc, prioSlotIndex, otherStartLocIndex, priority) end
 
 ---@param whichGameType gametype
 ---@param value boolean
----@return nothing
 function SetGameTypeSupported(whichGameType, value) end
 
 ---@param whichMapFlag mapflag
 ---@param value boolean
----@return nothing
 function SetMapFlag(whichMapFlag, value) end
 
 ---@param whichPlacementType placement
----@return nothing
 function SetGamePlacement(whichPlacementType) end
 
 ---@param whichspeed gamespeed
----@return nothing
 function SetGameSpeed(whichspeed) end
 
 ---@param whichdifficulty gamedifficulty
----@return nothing
 function SetGameDifficulty(whichdifficulty) end
 
 ---@param whichdensity mapdensity
----@return nothing
 function SetResourceDensity(whichdensity) end
 
 ---@param whichdensity mapdensity
----@return nothing
 function SetCreatureDensity(whichdensity) end
 
 ---@return integer
@@ -3144,61 +3131,50 @@ function GetStartLocationLoc(whichStartLocation) end
 
 ---@param whichPlayer player
 ---@param whichTeam integer
----@return nothing
 function SetPlayerTeam(whichPlayer, whichTeam) end
 
 ---@param whichPlayer player
 ---@param startLocIndex integer
----@return nothing
 function SetPlayerStartLocation(whichPlayer, startLocIndex) end
 
 ---@param whichPlayer player
 ---@param startLocIndex integer
----@return nothing
 function ForcePlayerStartLocation(whichPlayer, startLocIndex) end
 
 ---@param whichPlayer player
 ---@param color playercolor
----@return nothing
 function SetPlayerColor(whichPlayer, color) end
 
 ---@param sourcePlayer player
 ---@param otherPlayer player
 ---@param whichAllianceSetting alliancetype
 ---@param value boolean
----@return nothing
 function SetPlayerAlliance(sourcePlayer, otherPlayer, whichAllianceSetting, value) end
 
 ---@param sourcePlayer player
 ---@param otherPlayer player
 ---@param whichResource playerstate
 ---@param rate integer
----@return nothing
 function SetPlayerTaxRate(sourcePlayer, otherPlayer, whichResource, rate) end
 
 ---@param whichPlayer player
 ---@param whichRacePreference racepreference
----@return nothing
 function SetPlayerRacePreference(whichPlayer, whichRacePreference) end
 
 ---@param whichPlayer player
 ---@param value boolean
----@return nothing
 function SetPlayerRaceSelectable(whichPlayer, value) end
 
 ---@param whichPlayer player
 ---@param controlType mapcontrol
----@return nothing
 function SetPlayerController(whichPlayer, controlType) end
 
 ---@param whichPlayer player
 ---@param name string
----@return nothing
 function SetPlayerName(whichPlayer, name) end
 
 ---@param whichPlayer player
 ---@param flag boolean
----@return nothing
 function SetPlayerOnScoreScreen(whichPlayer, flag) end
 
 ---@param whichPlayer player
@@ -3244,14 +3220,12 @@ function GetPlayerName(whichPlayer) end
 function CreateTimer() end
 
 ---@param whichTimer timer
----@return nothing
 function DestroyTimer(whichTimer) end
 
 ---@param whichTimer timer
 ---@param timeout real
 ---@param periodic boolean
 ---@param handlerFunc code
----@return nothing
 function TimerStart(whichTimer, timeout, periodic, handlerFunc) end
 
 ---@param whichTimer timer
@@ -3267,11 +3241,9 @@ function TimerGetRemaining(whichTimer) end
 function TimerGetTimeout(whichTimer) end
 
 ---@param whichTimer timer
----@return nothing
 function PauseTimer(whichTimer) end
 
 ---@param whichTimer timer
----@return nothing
 function ResumeTimer(whichTimer) end
 
 ---@return timer
@@ -3281,7 +3253,6 @@ function GetExpiredTimer() end
 function CreateGroup() end
 
 ---@param whichGroup group
----@return nothing
 function DestroyGroup(whichGroup) end
 
 ---@param whichGroup group
@@ -3305,7 +3276,6 @@ function BlzGroupAddGroupFast(whichGroup, addGroup) end
 function BlzGroupRemoveGroupFast(whichGroup, removeGroup) end
 
 ---@param whichGroup group
----@return nothing
 function GroupClear(whichGroup) end
 
 ---@param whichGroup group
@@ -3320,33 +3290,28 @@ function BlzGroupUnitAt(whichGroup, index) end
 ---@param whichGroup group
 ---@param unitname string
 ---@param filter boolexpr
----@return nothing
 function GroupEnumUnitsOfType(whichGroup, unitname, filter) end
 
 ---@param whichGroup group
 ---@param whichPlayer player
 ---@param filter boolexpr
----@return nothing
 function GroupEnumUnitsOfPlayer(whichGroup, whichPlayer, filter) end
 
 ---@param whichGroup group
 ---@param unitname string
 ---@param filter boolexpr
 ---@param countLimit integer
----@return nothing
 function GroupEnumUnitsOfTypeCounted(whichGroup, unitname, filter, countLimit) end
 
 ---@param whichGroup group
 ---@param r rect
 ---@param filter boolexpr
----@return nothing
 function GroupEnumUnitsInRect(whichGroup, r, filter) end
 
 ---@param whichGroup group
 ---@param r rect
 ---@param filter boolexpr
 ---@param countLimit integer
----@return nothing
 function GroupEnumUnitsInRectCounted(whichGroup, r, filter, countLimit) end
 
 ---@param whichGroup group
@@ -3354,14 +3319,12 @@ function GroupEnumUnitsInRectCounted(whichGroup, r, filter, countLimit) end
 ---@param y real
 ---@param radius real
 ---@param filter boolexpr
----@return nothing
 function GroupEnumUnitsInRange(whichGroup, x, y, radius, filter) end
 
 ---@param whichGroup group
 ---@param whichLocation location
 ---@param radius real
 ---@param filter boolexpr
----@return nothing
 function GroupEnumUnitsInRangeOfLoc(whichGroup, whichLocation, radius, filter) end
 
 ---@param whichGroup group
@@ -3370,7 +3333,6 @@ function GroupEnumUnitsInRangeOfLoc(whichGroup, whichLocation, radius, filter) e
 ---@param radius real
 ---@param filter boolexpr
 ---@param countLimit integer
----@return nothing
 function GroupEnumUnitsInRangeCounted(whichGroup, x, y, radius, filter, countLimit) end
 
 ---@param whichGroup group
@@ -3378,13 +3340,11 @@ function GroupEnumUnitsInRangeCounted(whichGroup, x, y, radius, filter, countLim
 ---@param radius real
 ---@param filter boolexpr
 ---@param countLimit integer
----@return nothing
 function GroupEnumUnitsInRangeOfLocCounted(whichGroup, whichLocation, radius, filter, countLimit) end
 
 ---@param whichGroup group
 ---@param whichPlayer player
 ---@param filter boolexpr
----@return nothing
 function GroupEnumUnitsSelected(whichGroup, whichPlayer, filter) end
 
 ---@param whichGroup group
@@ -3437,7 +3397,6 @@ function GroupTargetOrderById(whichGroup, order, targetWidget) end
 
 ---@param whichGroup group
 ---@param callback code
----@return nothing
 function ForGroup(whichGroup, callback) end
 
 ---@param whichGroup group
@@ -3448,17 +3407,14 @@ function FirstOfGroup(whichGroup) end
 function CreateForce() end
 
 ---@param whichForce force
----@return nothing
 function DestroyForce(whichForce) end
 
 ---@param whichForce force
 ---@param whichPlayer player
----@return nothing
 function ForceAddPlayer(whichForce, whichPlayer) end
 
 ---@param whichForce force
 ---@param whichPlayer player
----@return nothing
 function ForceRemovePlayer(whichForce, whichPlayer) end
 
 ---@param whichForce force
@@ -3467,35 +3423,29 @@ function ForceRemovePlayer(whichForce, whichPlayer) end
 function BlzForceHasPlayer(whichForce, whichPlayer) end
 
 ---@param whichForce force
----@return nothing
 function ForceClear(whichForce) end
 
 ---@param whichForce force
 ---@param filter boolexpr
----@return nothing
 function ForceEnumPlayers(whichForce, filter) end
 
 ---@param whichForce force
 ---@param filter boolexpr
 ---@param countLimit integer
----@return nothing
 function ForceEnumPlayersCounted(whichForce, filter, countLimit) end
 
 ---@param whichForce force
 ---@param whichPlayer player
 ---@param filter boolexpr
----@return nothing
 function ForceEnumAllies(whichForce, whichPlayer, filter) end
 
 ---@param whichForce force
 ---@param whichPlayer player
 ---@param filter boolexpr
----@return nothing
 function ForceEnumEnemies(whichForce, whichPlayer, filter) end
 
 ---@param whichForce force
 ---@param callback code
----@return nothing
 function ForForce(whichForce, callback) end
 
 ---@param minx real
@@ -3511,7 +3461,6 @@ function Rect(minx, miny, maxx, maxy) end
 function RectFromLoc(min, max) end
 
 ---@param whichRect rect
----@return nothing
 function RemoveRect(whichRect) end
 
 ---@param whichRect rect
@@ -3519,24 +3468,20 @@ function RemoveRect(whichRect) end
 ---@param miny real
 ---@param maxx real
 ---@param maxy real
----@return nothing
 function SetRect(whichRect, minx, miny, maxx, maxy) end
 
 ---@param whichRect rect
 ---@param min location
 ---@param max location
----@return nothing
 function SetRectFromLoc(whichRect, min, max) end
 
 ---@param whichRect rect
 ---@param newCenterX real
 ---@param newCenterY real
----@return nothing
 function MoveRectTo(whichRect, newCenterX, newCenterY) end
 
 ---@param whichRect rect
 ---@param newCenterLoc location
----@return nothing
 function MoveRectToLoc(whichRect, newCenterLoc) end
 
 ---@param whichRect rect
@@ -3567,39 +3512,32 @@ function GetRectMaxY(whichRect) end
 function CreateRegion() end
 
 ---@param whichRegion region
----@return nothing
 function RemoveRegion(whichRegion) end
 
 ---@param whichRegion region
 ---@param r rect
----@return nothing
 function RegionAddRect(whichRegion, r) end
 
 ---@param whichRegion region
 ---@param r rect
----@return nothing
 function RegionClearRect(whichRegion, r) end
 
 ---@param whichRegion region
 ---@param x real
 ---@param y real
----@return nothing
 function RegionAddCell(whichRegion, x, y) end
 
 ---@param whichRegion region
 ---@param whichLocation location
----@return nothing
 function RegionAddCellAtLoc(whichRegion, whichLocation) end
 
 ---@param whichRegion region
 ---@param x real
 ---@param y real
----@return nothing
 function RegionClearCell(whichRegion, x, y) end
 
 ---@param whichRegion region
 ---@param whichLocation location
----@return nothing
 function RegionClearCellAtLoc(whichRegion, whichLocation) end
 
 ---@param x real
@@ -3608,13 +3546,11 @@ function RegionClearCellAtLoc(whichRegion, whichLocation) end
 function Location(x, y) end
 
 ---@param whichLocation location
----@return nothing
 function RemoveLocation(whichLocation) end
 
 ---@param whichLocation location
 ---@param newX real
 ---@param newY real
----@return nothing
 function MoveLocation(whichLocation, newX, newY) end
 
 ---@param whichLocation location
@@ -3652,19 +3588,15 @@ function GetWorldBounds() end
 function CreateTrigger() end
 
 ---@param whichTrigger trigger
----@return nothing
 function DestroyTrigger(whichTrigger) end
 
 ---@param whichTrigger trigger
----@return nothing
 function ResetTrigger(whichTrigger) end
 
 ---@param whichTrigger trigger
----@return nothing
 function EnableTrigger(whichTrigger) end
 
 ---@param whichTrigger trigger
----@return nothing
 function DisableTrigger(whichTrigger) end
 
 ---@param whichTrigger trigger
@@ -3673,7 +3605,6 @@ function IsTriggerEnabled(whichTrigger) end
 
 ---@param whichTrigger trigger
 ---@param flag boolean
----@return nothing
 function TriggerWaitOnSleeps(whichTrigger, flag) end
 
 ---@param whichTrigger trigger
@@ -3723,7 +3654,6 @@ function GetTriggerEvalCount(whichTrigger) end
 function GetTriggerExecCount(whichTrigger) end
 
 ---@param funcName string
----@return nothing
 function ExecuteFunc(funcName) end
 
 ---@param operandA boolexpr
@@ -3745,7 +3675,6 @@ function Not(operand) end
 function Condition(func) end
 
 ---@param c conditionfunc
----@return nothing
 function DestroyCondition(c) end
 
 ---@param func code
@@ -3753,11 +3682,9 @@ function DestroyCondition(c) end
 function Filter(func) end
 
 ---@param f filterfunc
----@return nothing
 function DestroyFilter(f) end
 
 ---@param e boolexpr
----@return nothing
 function DestroyBoolExpr(e) end
 
 ---@param whichTrigger trigger
@@ -4139,11 +4066,9 @@ function TriggerAddCondition(whichTrigger, condition) end
 
 ---@param whichTrigger trigger
 ---@param whichCondition triggercondition
----@return nothing
 function TriggerRemoveCondition(whichTrigger, whichCondition) end
 
 ---@param whichTrigger trigger
----@return nothing
 function TriggerClearConditions(whichTrigger) end
 
 ---@param whichTrigger trigger
@@ -4153,20 +4078,16 @@ function TriggerAddAction(whichTrigger, actionFunc) end
 
 ---@param whichTrigger trigger
 ---@param whichAction triggeraction
----@return nothing
 function TriggerRemoveAction(whichTrigger, whichAction) end
 
 ---@param whichTrigger trigger
----@return nothing
 function TriggerClearActions(whichTrigger) end
 
 ---@param timeout real
----@return nothing
 function TriggerSleepAction(timeout) end
 
 ---@param s sound
 ---@param offset real
----@return nothing
 function TriggerWaitForSound(s, offset) end
 
 ---@param whichTrigger trigger
@@ -4174,17 +4095,13 @@ function TriggerWaitForSound(s, offset) end
 function TriggerEvaluate(whichTrigger) end
 
 ---@param whichTrigger trigger
----@return nothing
 function TriggerExecute(whichTrigger) end
 
 ---@param whichTrigger trigger
----@return nothing
 function TriggerExecuteWait(whichTrigger) end
 
----@return nothing
 function TriggerSyncStart() end
 
----@return nothing
 function TriggerSyncReady() end
 
 ---@param whichWidget widget
@@ -4193,7 +4110,6 @@ function GetWidgetLife(whichWidget) end
 
 ---@param whichWidget widget
 ---@param newLife real
----@return nothing
 function SetWidgetLife(whichWidget, newLife) end
 
 ---@param whichWidget widget
@@ -4246,16 +4162,13 @@ function CreateDeadDestructable(objectid, x, y, face, scale, variation) end
 function CreateDeadDestructableZ(objectid, x, y, z, face, scale, variation) end
 
 ---@param d destructable
----@return nothing
 function RemoveDestructable(d) end
 
 ---@param d destructable
----@return nothing
 function KillDestructable(d) end
 
 ---@param d destructable
 ---@param flag boolean
----@return nothing
 function SetDestructableInvulnerable(d, flag) end
 
 ---@param d destructable
@@ -4265,7 +4178,6 @@ function IsDestructableInvulnerable(d) end
 ---@param r rect
 ---@param filter boolexpr
 ---@param actionFunc code
----@return nothing
 function EnumDestructablesInRect(r, filter, actionFunc) end
 
 ---@param d destructable
@@ -4282,7 +4194,6 @@ function GetDestructableY(d) end
 
 ---@param d destructable
 ---@param life real
----@return nothing
 function SetDestructableLife(d, life) end
 
 ---@param d destructable
@@ -4291,7 +4202,6 @@ function GetDestructableLife(d) end
 
 ---@param d destructable
 ---@param max real
----@return nothing
 function SetDestructableMaxLife(d, max) end
 
 ---@param d destructable
@@ -4301,27 +4211,22 @@ function GetDestructableMaxLife(d) end
 ---@param d destructable
 ---@param life real
 ---@param birth boolean
----@return nothing
 function DestructableRestoreLife(d, life, birth) end
 
 ---@param d destructable
 ---@param whichAnimation string
----@return nothing
 function QueueDestructableAnimation(d, whichAnimation) end
 
 ---@param d destructable
 ---@param whichAnimation string
----@return nothing
 function SetDestructableAnimation(d, whichAnimation) end
 
 ---@param d destructable
 ---@param speedFactor real
----@return nothing
 function SetDestructableAnimationSpeed(d, speedFactor) end
 
 ---@param d destructable
 ---@param flag boolean
----@return nothing
 function ShowDestructable(d, flag) end
 
 ---@param d destructable
@@ -4330,7 +4235,6 @@ function GetDestructableOccluderHeight(d) end
 
 ---@param d destructable
 ---@param height real
----@return nothing
 function SetDestructableOccluderHeight(d, height) end
 
 ---@param d destructable
@@ -4347,7 +4251,6 @@ function GetTriggerDestructable() end
 function CreateItem(itemid, x, y) end
 
 ---@param whichItem item
----@return nothing
 function RemoveItem(whichItem) end
 
 ---@param whichItem item
@@ -4369,33 +4272,27 @@ function GetItemY(i) end
 ---@param i item
 ---@param x real
 ---@param y real
----@return nothing
 function SetItemPosition(i, x, y) end
 
 ---@param whichItem item
 ---@param flag boolean
----@return nothing
 function SetItemDropOnDeath(whichItem, flag) end
 
 ---@param i item
 ---@param flag boolean
----@return nothing
 function SetItemDroppable(i, flag) end
 
 ---@param i item
 ---@param flag boolean
----@return nothing
 function SetItemPawnable(i, flag) end
 
 ---@param whichItem item
 ---@param whichPlayer player
 ---@param changeColor boolean
----@return nothing
 function SetItemPlayer(whichItem, whichPlayer, changeColor) end
 
 ---@param whichItem item
 ---@param flag boolean
----@return nothing
 function SetItemInvulnerable(whichItem, flag) end
 
 ---@param whichItem item
@@ -4404,7 +4301,6 @@ function IsItemInvulnerable(whichItem) end
 
 ---@param whichItem item
 ---@param show boolean
----@return nothing
 function SetItemVisible(whichItem, show) end
 
 ---@param whichItem item
@@ -4442,7 +4338,6 @@ function IsItemIdPawnable(itemId) end
 ---@param r rect
 ---@param filter boolexpr
 ---@param actionFunc code
----@return nothing
 function EnumItemsInRect(r, filter, actionFunc) end
 
 ---@param whichItem item
@@ -4455,7 +4350,6 @@ function GetItemType(whichItem) end
 
 ---@param whichItem item
 ---@param unitId integer
----@return nothing
 function SetItemDropID(whichItem, unitId) end
 
 ---@param whichItem item
@@ -4468,7 +4362,6 @@ function GetItemCharges(whichItem) end
 
 ---@param whichItem item
 ---@param charges integer
----@return nothing
 function SetItemCharges(whichItem, charges) end
 
 ---@param whichItem item
@@ -4477,7 +4370,6 @@ function GetItemUserData(whichItem) end
 
 ---@param whichItem item
 ---@param data integer
----@return nothing
 function SetItemUserData(whichItem, data) end
 
 ---@param id player
@@ -4495,4 +4387,116 @@ function CreateUnit(id, unitid, x, y, face) end
 ---@param face real
 ---@return unit
 function CreateUnitByName(whichPlayer, unitname, x, y, face) end
+
+---@param id player
+---@param unitid integer
+---@param whichLocation location
+---@param face real
+---@return unit
+function CreateUnitAtLoc(id, unitid, whichLocation, face) end
+
+---@param id player
+---@param unitname string
+---@param whichLocation location
+---@param face real
+---@return unit
+function CreateUnitAtLocByName(id, unitname, whichLocation, face) end
+
+---@param whichPlayer player
+---@param unitid integer
+---@param x real
+---@param y real
+---@param face real
+---@return unit
+function CreateCorpse(whichPlayer, unitid, x, y, face) end
+
+---@param whichUnit unit
+function KillUnit(whichUnit) end
+
+---@param whichUnit unit
+function RemoveUnit(whichUnit) end
+
+---@param whichUnit unit
+---@param show boolean
+function ShowUnit(whichUnit, show) end
+
+---@param whichUnit unit
+---@param whichUnitState unitstate
+---@param newVal real
+function SetUnitState(whichUnit, whichUnitState, newVal) end
+
+---@param whichUnit unit
+---@param newX real
+function SetUnitX(whichUnit, newX) end
+
+---@param whichUnit unit
+---@param newY real
+function SetUnitY(whichUnit, newY) end
+
+---@param whichUnit unit
+---@param newX real
+---@param newY real
+function SetUnitPosition(whichUnit, newX, newY) end
+
+---@param whichUnit unit
+---@param whichLocation location
+function SetUnitPositionLoc(whichUnit, whichLocation) end
+
+---@param whichUnit unit
+---@param facingAngle real
+function SetUnitFacing(whichUnit, facingAngle) end
+
+---@param whichUnit unit
+---@param facingAngle real
+---@param duration real
+function SetUnitFacingTimed(whichUnit, facingAngle, duration) end
+
+---@param whichUnit unit
+---@param newSpeed real
+function SetUnitMoveSpeed(whichUnit, newSpeed) end
+
+---@param whichUnit unit
+---@param newHeight real
+---@param rate real
+function SetUnitFlyHeight(whichUnit, newHeight, rate) end
+
+---@param whichUnit unit
+---@param newTurnSpeed real
+function SetUnitTurnSpeed(whichUnit, newTurnSpeed) end
+
+---@param whichUnit unit
+---@param newPropWindowAngle real
+function SetUnitPropWindow(whichUnit, newPropWindowAngle) end
+
+---@param whichUnit unit
+---@param newAcquireRange real
+function SetUnitAcquireRange(whichUnit, newAcquireRange) end
+
+---@param whichUnit unit
+---@param creepGuard boolean
+function SetUnitCreepGuard(whichUnit, creepGuard) end
+
+---@param whichUnit unit
+---@return real
+function GetUnitAcquireRange(whichUnit) end
+
+---@param whichUnit unit
+---@return real
+function GetUnitTurnSpeed(whichUnit) end
+
+---@param whichUnit unit
+---@return real
+function GetUnitPropWindow(whichUnit) end
+
+---@param whichUnit unit
+---@return real
+function GetUnitFlyHeight(whichUnit) end
+
+---@param whichUnit unit
+---@return real
+function GetUnitDefaultAcquireRange(whichUnit) end
+
+---@param whichUnit unit
+---@return real
+function GetUnitDefaultTurnSpeed(whichUnit) end
 

@@ -1311,7 +1311,7 @@ bj_ELEVATOR_WALL_TYPE_WEST = nil
 ---@type force
 bj_FORCE_ALL_PLAYERS = nil
 
----@type force
+---@type force[]
 bj_FORCE_PLAYER = nil
 
 ---@type integer
@@ -1338,10 +1338,10 @@ bj_forLoopBIndexEnd = nil
 ---@type boolean
 bj_slotControlReady = nil
 
----@type boolean
+---@type boolean[]
 bj_slotControlUsed = nil
 
----@type mapcontrol
+---@type mapcontrol[]
 bj_slotControl = nil
 
 ---@type timer
@@ -1425,13 +1425,13 @@ bj_stockItemPurchased = nil
 ---@type timer
 bj_stockUpdateTimer = nil
 
----@type boolean
+---@type boolean[]
 bj_stockAllowedPermanent = nil
 
----@type boolean
+---@type boolean[]
 bj_stockAllowedCharged = nil
 
----@type boolean
+---@type boolean[]
 bj_stockAllowedArtifact = nil
 
 ---@type integer
@@ -1461,25 +1461,25 @@ bj_meleeNearestMineDist = nil
 ---@type boolean
 bj_meleeGameOver = nil
 
----@type boolean
+---@type boolean[]
 bj_meleeDefeated = nil
 
----@type boolean
+---@type boolean[]
 bj_meleeVictoried = nil
 
----@type unit
+---@type unit[]
 bj_ghoul = nil
 
----@type timer
+---@type timer[]
 bj_crippledTimer = nil
 
----@type timerdialog
+---@type timerdialog[]
 bj_crippledTimerWindows = nil
 
----@type boolean
+---@type boolean[]
 bj_playerIsCrippled = nil
 
----@type boolean
+---@type boolean[]
 bj_playerIsExposed = nil
 
 ---@type boolean
@@ -1488,7 +1488,7 @@ bj_finishSoonAllExposed = nil
 ---@type timerdialog
 bj_finishSoonTimerDialog = nil
 
----@type integer
+---@type integer[]
 bj_meleeTwinkedHeroes = nil
 
 ---@type trigger
@@ -1554,10 +1554,10 @@ bj_cineFadeContinueTex = nil
 ---@type integer
 bj_queuedExecTotal = nil
 
----@type trigger
+---@type trigger[]
 bj_queuedExecTriggers = nil
 
----@type boolean
+---@type boolean[]
 bj_queuedExecUseConds = nil
 
 ---@type timer
@@ -1692,10 +1692,10 @@ bj_lastDyingWidget = nil
 ---@type integer
 bj_randDistCount = nil
 
----@type integer
+---@type integer[]
 bj_randDistID = nil
 
----@type integer
+---@type integer[]
 bj_randDistChance = nil
 
 ---@type unit

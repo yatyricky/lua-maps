@@ -1,133 +1,5 @@
 ---@diagnostic disable
 
----@param id player
----@param unitid integer
----@param whichLocation location
----@param face real
----@return unit
-function CreateUnitAtLoc(id, unitid, whichLocation, face) end
-
----@param id player
----@param unitname string
----@param whichLocation location
----@param face real
----@return unit
-function CreateUnitAtLocByName(id, unitname, whichLocation, face) end
-
----@param whichPlayer player
----@param unitid integer
----@param x real
----@param y real
----@param face real
----@return unit
-function CreateCorpse(whichPlayer, unitid, x, y, face) end
-
----@param whichUnit unit
----@return nothing
-function KillUnit(whichUnit) end
-
----@param whichUnit unit
----@return nothing
-function RemoveUnit(whichUnit) end
-
----@param whichUnit unit
----@param show boolean
----@return nothing
-function ShowUnit(whichUnit, show) end
-
----@param whichUnit unit
----@param whichUnitState unitstate
----@param newVal real
----@return nothing
-function SetUnitState(whichUnit, whichUnitState, newVal) end
-
----@param whichUnit unit
----@param newX real
----@return nothing
-function SetUnitX(whichUnit, newX) end
-
----@param whichUnit unit
----@param newY real
----@return nothing
-function SetUnitY(whichUnit, newY) end
-
----@param whichUnit unit
----@param newX real
----@param newY real
----@return nothing
-function SetUnitPosition(whichUnit, newX, newY) end
-
----@param whichUnit unit
----@param whichLocation location
----@return nothing
-function SetUnitPositionLoc(whichUnit, whichLocation) end
-
----@param whichUnit unit
----@param facingAngle real
----@return nothing
-function SetUnitFacing(whichUnit, facingAngle) end
-
----@param whichUnit unit
----@param facingAngle real
----@param duration real
----@return nothing
-function SetUnitFacingTimed(whichUnit, facingAngle, duration) end
-
----@param whichUnit unit
----@param newSpeed real
----@return nothing
-function SetUnitMoveSpeed(whichUnit, newSpeed) end
-
----@param whichUnit unit
----@param newHeight real
----@param rate real
----@return nothing
-function SetUnitFlyHeight(whichUnit, newHeight, rate) end
-
----@param whichUnit unit
----@param newTurnSpeed real
----@return nothing
-function SetUnitTurnSpeed(whichUnit, newTurnSpeed) end
-
----@param whichUnit unit
----@param newPropWindowAngle real
----@return nothing
-function SetUnitPropWindow(whichUnit, newPropWindowAngle) end
-
----@param whichUnit unit
----@param newAcquireRange real
----@return nothing
-function SetUnitAcquireRange(whichUnit, newAcquireRange) end
-
----@param whichUnit unit
----@param creepGuard boolean
----@return nothing
-function SetUnitCreepGuard(whichUnit, creepGuard) end
-
----@param whichUnit unit
----@return real
-function GetUnitAcquireRange(whichUnit) end
-
----@param whichUnit unit
----@return real
-function GetUnitTurnSpeed(whichUnit) end
-
----@param whichUnit unit
----@return real
-function GetUnitPropWindow(whichUnit) end
-
----@param whichUnit unit
----@return real
-function GetUnitFlyHeight(whichUnit) end
-
----@param whichUnit unit
----@return real
-function GetUnitDefaultAcquireRange(whichUnit) end
-
----@param whichUnit unit
----@return real
-function GetUnitDefaultTurnSpeed(whichUnit) end
-
 ---@param whichUnit unit
 ---@return real
 function GetUnitDefaultPropWindow(whichUnit) end
@@ -139,29 +11,24 @@ function GetUnitDefaultFlyHeight(whichUnit) end
 ---@param whichUnit unit
 ---@param whichPlayer player
 ---@param changeColor boolean
----@return nothing
 function SetUnitOwner(whichUnit, whichPlayer, changeColor) end
 
 ---@param whichUnit unit
 ---@param whichColor playercolor
----@return nothing
 function SetUnitColor(whichUnit, whichColor) end
 
 ---@param whichUnit unit
 ---@param scaleX real
 ---@param scaleY real
 ---@param scaleZ real
----@return nothing
 function SetUnitScale(whichUnit, scaleX, scaleY, scaleZ) end
 
 ---@param whichUnit unit
 ---@param timeScale real
----@return nothing
 function SetUnitTimeScale(whichUnit, timeScale) end
 
 ---@param whichUnit unit
 ---@param blendTime real
----@return nothing
 function SetUnitBlendTime(whichUnit, blendTime) end
 
 ---@param whichUnit unit
@@ -169,34 +36,28 @@ function SetUnitBlendTime(whichUnit, blendTime) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function SetUnitVertexColor(whichUnit, red, green, blue, alpha) end
 
 ---@param whichUnit unit
 ---@param whichAnimation string
----@return nothing
 function QueueUnitAnimation(whichUnit, whichAnimation) end
 
 ---@param whichUnit unit
 ---@param whichAnimation string
----@return nothing
 function SetUnitAnimation(whichUnit, whichAnimation) end
 
 ---@param whichUnit unit
 ---@param whichAnimation integer
----@return nothing
 function SetUnitAnimationByIndex(whichUnit, whichAnimation) end
 
 ---@param whichUnit unit
 ---@param whichAnimation string
 ---@param rarity raritycontrol
----@return nothing
 function SetUnitAnimationWithRarity(whichUnit, whichAnimation, rarity) end
 
 ---@param whichUnit unit
 ---@param animProperties string
 ---@param add boolean
----@return nothing
 function AddUnitAnimationProperties(whichUnit, animProperties, add) end
 
 ---@param whichUnit unit
@@ -205,40 +66,33 @@ function AddUnitAnimationProperties(whichUnit, animProperties, add) end
 ---@param offsetX real
 ---@param offsetY real
 ---@param offsetZ real
----@return nothing
 function SetUnitLookAt(whichUnit, whichBone, lookAtTarget, offsetX, offsetY, offsetZ) end
 
 ---@param whichUnit unit
----@return nothing
 function ResetUnitLookAt(whichUnit) end
 
 ---@param whichUnit unit
 ---@param byWhichPlayer player
 ---@param flag boolean
----@return nothing
 function SetUnitRescuable(whichUnit, byWhichPlayer, flag) end
 
 ---@param whichUnit unit
 ---@param range real
----@return nothing
 function SetUnitRescueRange(whichUnit, range) end
 
 ---@param whichHero unit
 ---@param newStr integer
 ---@param permanent boolean
----@return nothing
 function SetHeroStr(whichHero, newStr, permanent) end
 
 ---@param whichHero unit
 ---@param newAgi integer
 ---@param permanent boolean
----@return nothing
 function SetHeroAgi(whichHero, newAgi, permanent) end
 
 ---@param whichHero unit
 ---@param newInt integer
 ---@param permanent boolean
----@return nothing
 function SetHeroInt(whichHero, newInt, permanent) end
 
 ---@param whichHero unit
@@ -268,7 +122,6 @@ function GetHeroXP(whichHero) end
 ---@param whichHero unit
 ---@param newXpVal integer
 ---@param showEyeCandy boolean
----@return nothing
 function SetHeroXP(whichHero, newXpVal, showEyeCandy) end
 
 ---@param whichHero unit
@@ -283,13 +136,11 @@ function UnitModifySkillPoints(whichHero, skillPointDelta) end
 ---@param whichHero unit
 ---@param xpToAdd integer
 ---@param showEyeCandy boolean
----@return nothing
 function AddHeroXP(whichHero, xpToAdd, showEyeCandy) end
 
 ---@param whichHero unit
 ---@param level integer
 ---@param showEyeCandy boolean
----@return nothing
 function SetHeroLevel(whichHero, level, showEyeCandy) end
 
 ---@param whichHero unit
@@ -306,7 +157,6 @@ function GetHeroProperName(whichHero) end
 
 ---@param whichHero unit
 ---@param flag boolean
----@return nothing
 function SuspendHeroXP(whichHero, flag) end
 
 ---@param whichHero unit
@@ -315,7 +165,6 @@ function IsSuspendedXP(whichHero) end
 
 ---@param whichHero unit
 ---@param abilcode integer
----@return nothing
 function SelectHeroSkill(whichHero, abilcode) end
 
 ---@param whichUnit unit
@@ -354,17 +203,14 @@ function ReviveHeroLoc(whichHero, loc, doEyecandy) end
 
 ---@param whichUnit unit
 ---@param exploded boolean
----@return nothing
 function SetUnitExploded(whichUnit, exploded) end
 
 ---@param whichUnit unit
 ---@param flag boolean
----@return nothing
 function SetUnitInvulnerable(whichUnit, flag) end
 
 ---@param whichUnit unit
 ---@param flag boolean
----@return nothing
 function PauseUnit(whichUnit, flag) end
 
 ---@param whichHero unit
@@ -373,15 +219,12 @@ function IsUnitPaused(whichHero) end
 
 ---@param whichUnit unit
 ---@param flag boolean
----@return nothing
 function SetUnitPathing(whichUnit, flag) end
 
----@return nothing
 function ClearSelection() end
 
 ---@param whichUnit unit
 ---@param flag boolean
----@return nothing
 function SelectUnit(whichUnit, flag) end
 
 ---@param whichUnit unit
@@ -410,7 +253,6 @@ function UnitAddItemToSlotById(whichUnit, itemId, itemSlot) end
 
 ---@param whichUnit unit
 ---@param whichItem item
----@return nothing
 function UnitRemoveItem(whichUnit, whichItem) end
 
 ---@param whichUnit unit
@@ -532,7 +374,6 @@ function GetFoodUsed(unitId) end
 
 ---@param whichUnit unit
 ---@param useFood boolean
----@return nothing
 function SetUnitUseFood(whichUnit, useFood) end
 
 ---@param whichUnit unit
@@ -665,12 +506,10 @@ function IsUnitIdType(unitId, whichUnitType) end
 ---@param whichUnit unit
 ---@param whichPlayer player
 ---@param share boolean
----@return nothing
 function UnitShareVision(whichUnit, whichPlayer, share) end
 
 ---@param whichUnit unit
 ---@param suspend boolean
----@return nothing
 function UnitSuspendDecay(whichUnit, suspend) end
 
 ---@param whichUnit unit
@@ -702,7 +541,6 @@ function UnitMakeAbilityPermanent(whichUnit, permanent, abilityId) end
 ---@param whichUnit unit
 ---@param removePositive boolean
 ---@param removeNegative boolean
----@return nothing
 function UnitRemoveBuffs(whichUnit, removePositive, removeNegative) end
 
 ---@param whichUnit unit
@@ -713,7 +551,6 @@ function UnitRemoveBuffs(whichUnit, removePositive, removeNegative) end
 ---@param timedLife boolean
 ---@param aura boolean
 ---@param autoDispel boolean
----@return nothing
 function UnitRemoveBuffsEx(whichUnit, removePositive, removeNegative, magic, physical, timedLife, aura, autoDispel) end
 
 ---@param whichUnit unit
@@ -740,7 +577,6 @@ function UnitCountBuffsEx(whichUnit, removePositive, removeNegative, magic, phys
 
 ---@param whichUnit unit
 ---@param add boolean
----@return nothing
 function UnitAddSleep(whichUnit, add) end
 
 ---@param whichUnit unit
@@ -749,7 +585,6 @@ function UnitCanSleep(whichUnit) end
 
 ---@param whichUnit unit
 ---@param add boolean
----@return nothing
 function UnitAddSleepPerm(whichUnit, add) end
 
 ---@param whichUnit unit
@@ -761,13 +596,11 @@ function UnitCanSleepPerm(whichUnit) end
 function UnitIsSleeping(whichUnit) end
 
 ---@param whichUnit unit
----@return nothing
 function UnitWakeUp(whichUnit) end
 
 ---@param whichUnit unit
 ---@param buffId integer
 ---@param duration real
----@return nothing
 function UnitApplyTimedLife(whichUnit, buffId, duration) end
 
 ---@param whichUnit unit
@@ -780,27 +613,22 @@ function UnitIgnoreAlarm(whichUnit, flag) end
 function UnitIgnoreAlarmToggled(whichUnit) end
 
 ---@param whichUnit unit
----@return nothing
 function UnitResetCooldown(whichUnit) end
 
 ---@param whichUnit unit
 ---@param constructionPercentage integer
----@return nothing
 function UnitSetConstructionProgress(whichUnit, constructionPercentage) end
 
 ---@param whichUnit unit
 ---@param upgradePercentage integer
----@return nothing
 function UnitSetUpgradeProgress(whichUnit, upgradePercentage) end
 
 ---@param whichUnit unit
 ---@param flag boolean
----@return nothing
 function UnitPauseTimedLife(whichUnit, flag) end
 
 ---@param whichUnit unit
 ---@param flag boolean
----@return nothing
 function UnitSetUsesAltIcon(whichUnit, flag) end
 
 ---@param whichUnit unit
@@ -968,12 +796,10 @@ function GetUnitCurrentOrder(whichUnit) end
 
 ---@param whichUnit unit
 ---@param amount integer
----@return nothing
 function SetResourceAmount(whichUnit, amount) end
 
 ---@param whichUnit unit
 ---@param amount integer
----@return nothing
 function AddResourceAmount(whichUnit, amount) end
 
 ---@param whichUnit unit
@@ -991,12 +817,10 @@ function WaygateGetDestinationY(waygate) end
 ---@param waygate unit
 ---@param x real
 ---@param y real
----@return nothing
 function WaygateSetDestination(waygate, x, y) end
 
 ---@param waygate unit
 ---@param activate boolean
----@return nothing
 function WaygateActivate(waygate, activate) end
 
 ---@param waygate unit
@@ -1006,63 +830,51 @@ function WaygateIsActive(waygate) end
 ---@param itemId integer
 ---@param currentStock integer
 ---@param stockMax integer
----@return nothing
 function AddItemToAllStock(itemId, currentStock, stockMax) end
 
 ---@param whichUnit unit
 ---@param itemId integer
 ---@param currentStock integer
 ---@param stockMax integer
----@return nothing
 function AddItemToStock(whichUnit, itemId, currentStock, stockMax) end
 
 ---@param unitId integer
 ---@param currentStock integer
 ---@param stockMax integer
----@return nothing
 function AddUnitToAllStock(unitId, currentStock, stockMax) end
 
 ---@param whichUnit unit
 ---@param unitId integer
 ---@param currentStock integer
 ---@param stockMax integer
----@return nothing
 function AddUnitToStock(whichUnit, unitId, currentStock, stockMax) end
 
 ---@param itemId integer
----@return nothing
 function RemoveItemFromAllStock(itemId) end
 
 ---@param whichUnit unit
 ---@param itemId integer
----@return nothing
 function RemoveItemFromStock(whichUnit, itemId) end
 
 ---@param unitId integer
----@return nothing
 function RemoveUnitFromAllStock(unitId) end
 
 ---@param whichUnit unit
 ---@param unitId integer
----@return nothing
 function RemoveUnitFromStock(whichUnit, unitId) end
 
 ---@param slots integer
----@return nothing
 function SetAllItemTypeSlots(slots) end
 
 ---@param slots integer
----@return nothing
 function SetAllUnitTypeSlots(slots) end
 
 ---@param whichUnit unit
 ---@param slots integer
----@return nothing
 function SetItemTypeSlots(whichUnit, slots) end
 
 ---@param whichUnit unit
 ---@param slots integer
----@return nothing
 function SetUnitTypeSlots(whichUnit, slots) end
 
 ---@param whichUnit unit
@@ -1071,7 +883,6 @@ function GetUnitUserData(whichUnit) end
 
 ---@param whichUnit unit
 ---@param data integer
----@return nothing
 function SetUnitUserData(whichUnit, data) end
 
 ---@param number integer
@@ -1192,28 +1003,23 @@ function GetPlayerHandicapDamage(whichPlayer) end
 
 ---@param whichPlayer player
 ---@param handicap real
----@return nothing
 function SetPlayerHandicap(whichPlayer, handicap) end
 
 ---@param whichPlayer player
 ---@param handicap real
----@return nothing
 function SetPlayerHandicapXP(whichPlayer, handicap) end
 
 ---@param whichPlayer player
 ---@param handicap real
----@return nothing
 function SetPlayerHandicapReviveTime(whichPlayer, handicap) end
 
 ---@param whichPlayer player
 ---@param handicap real
----@return nothing
 function SetPlayerHandicapDamage(whichPlayer, handicap) end
 
 ---@param whichPlayer player
 ---@param techid integer
 ---@param maximum integer
----@return nothing
 function SetPlayerTechMaxAllowed(whichPlayer, techid, maximum) end
 
 ---@param whichPlayer player
@@ -1224,13 +1030,11 @@ function GetPlayerTechMaxAllowed(whichPlayer, techid) end
 ---@param whichPlayer player
 ---@param techid integer
 ---@param levels integer
----@return nothing
 function AddPlayerTechResearched(whichPlayer, techid, levels) end
 
 ---@param whichPlayer player
 ---@param techid integer
 ---@param setToLevel integer
----@return nothing
 function SetPlayerTechResearched(whichPlayer, techid, setToLevel) end
 
 ---@param whichPlayer player
@@ -1247,41 +1051,34 @@ function GetPlayerTechCount(whichPlayer, techid, specificonly) end
 
 ---@param whichPlayer player
 ---@param newOwner integer
----@return nothing
 function SetPlayerUnitsOwner(whichPlayer, newOwner) end
 
 ---@param whichPlayer player
 ---@param toWhichPlayers force
 ---@param flag boolean
----@return nothing
 function CripplePlayer(whichPlayer, toWhichPlayers, flag) end
 
 ---@param whichPlayer player
 ---@param abilid integer
 ---@param avail boolean
----@return nothing
 function SetPlayerAbilityAvailable(whichPlayer, abilid, avail) end
 
 ---@param whichPlayer player
 ---@param whichPlayerState playerstate
 ---@param value integer
----@return nothing
 function SetPlayerState(whichPlayer, whichPlayerState, value) end
 
 ---@param whichPlayer player
 ---@param gameResult playergameresult
----@return nothing
 function RemovePlayer(whichPlayer, gameResult) end
 
 ---@param whichPlayer player
----@return nothing
 function CachePlayerHeroData(whichPlayer) end
 
 ---@param forWhichPlayer player
 ---@param whichState fogstate
 ---@param where rect
 ---@param useSharedVision boolean
----@return nothing
 function SetFogStateRect(forWhichPlayer, whichState, where, useSharedVision) end
 
 ---@param forWhichPlayer player
@@ -1290,7 +1087,6 @@ function SetFogStateRect(forWhichPlayer, whichState, where, useSharedVision) end
 ---@param centerY real
 ---@param radius real
 ---@param useSharedVision boolean
----@return nothing
 function SetFogStateRadius(forWhichPlayer, whichState, centerx, centerY, radius, useSharedVision) end
 
 ---@param forWhichPlayer player
@@ -1298,18 +1094,15 @@ function SetFogStateRadius(forWhichPlayer, whichState, centerx, centerY, radius,
 ---@param center location
 ---@param radius real
 ---@param useSharedVision boolean
----@return nothing
 function SetFogStateRadiusLoc(forWhichPlayer, whichState, center, radius, useSharedVision) end
 
 ---@param enable boolean
----@return nothing
 function FogMaskEnable(enable) end
 
 ---@return boolean
 function IsFogMaskEnabled() end
 
 ---@param enable boolean
----@return nothing
 function FogEnable(enable) end
 
 ---@return boolean
@@ -1343,15 +1136,12 @@ function CreateFogModifierRadius(forWhichPlayer, whichState, centerx, centerY, r
 function CreateFogModifierRadiusLoc(forWhichPlayer, whichState, center, radius, useSharedVision, afterUnits) end
 
 ---@param whichFogModifier fogmodifier
----@return nothing
 function DestroyFogModifier(whichFogModifier) end
 
 ---@param whichFogModifier fogmodifier
----@return nothing
 function FogModifierStart(whichFogModifier) end
 
 ---@param whichFogModifier fogmodifier
----@return nothing
 function FogModifierStop(whichFogModifier) end
 
 ---@return version
@@ -1366,39 +1156,30 @@ function VersionCompatible(whichVersion) end
 function VersionSupported(whichVersion) end
 
 ---@param doScoreScreen boolean
----@return nothing
 function EndGame(doScoreScreen) end
 
 ---@param newLevel string
 ---@param doScoreScreen boolean
----@return nothing
 function ChangeLevel(newLevel, doScoreScreen) end
 
 ---@param doScoreScreen boolean
----@return nothing
 function RestartGame(doScoreScreen) end
 
----@return nothing
 function ReloadGame() end
 
 ---@param r race
----@return nothing
 function SetCampaignMenuRace(r) end
 
 ---@param campaignIndex integer
----@return nothing
 function SetCampaignMenuRaceEx(campaignIndex) end
 
----@return nothing
 function ForceCampaignSelectScreen() end
 
 ---@param saveFileName string
 ---@param doScoreScreen boolean
----@return nothing
 function LoadGame(saveFileName, doScoreScreen) end
 
 ---@param saveFileName string
----@return nothing
 function SaveGame(saveFileName) end
 
 ---@param sourceDirName string
@@ -1420,20 +1201,16 @@ function CopySaveGame(sourceSaveName, destSaveName) end
 function SaveGameExists(saveName) end
 
 ---@param maxCheckpointSaves integer
----@return nothing
 function SetMaxCheckpointSaves(maxCheckpointSaves) end
 
 ---@param saveFileName string
 ---@param showWindow boolean
----@return nothing
 function SaveGameCheckpoint(saveFileName, showWindow) end
 
----@return nothing
 function SyncSelections() end
 
 ---@param whichFloatGameState fgamestate
 ---@param value real
----@return nothing
 function SetFloatGameState(whichFloatGameState, value) end
 
 ---@param whichFloatGameState fgamestate
@@ -1442,7 +1219,6 @@ function GetFloatGameState(whichFloatGameState) end
 
 ---@param whichIntegerGameState igamestate
 ---@param value integer
----@return nothing
 function SetIntegerGameState(whichIntegerGameState, value) end
 
 ---@param whichIntegerGameState igamestate
@@ -1450,63 +1226,52 @@ function SetIntegerGameState(whichIntegerGameState, value) end
 function GetIntegerGameState(whichIntegerGameState) end
 
 ---@param cleared boolean
----@return nothing
 function SetTutorialCleared(cleared) end
 
 ---@param campaignNumber integer
 ---@param missionNumber integer
 ---@param available boolean
----@return nothing
 function SetMissionAvailable(campaignNumber, missionNumber, available) end
 
 ---@param campaignNumber integer
 ---@param available boolean
----@return nothing
 function SetCampaignAvailable(campaignNumber, available) end
 
 ---@param campaignNumber integer
 ---@param available boolean
----@return nothing
 function SetOpCinematicAvailable(campaignNumber, available) end
 
 ---@param campaignNumber integer
 ---@param available boolean
----@return nothing
 function SetEdCinematicAvailable(campaignNumber, available) end
 
 ---@return gamedifficulty
 function GetDefaultDifficulty() end
 
 ---@param g gamedifficulty
----@return nothing
 function SetDefaultDifficulty(g) end
 
 ---@param whichButton integer
 ---@param visible boolean
----@return nothing
 function SetCustomCampaignButtonVisible(whichButton, visible) end
 
 ---@param whichButton integer
 ---@return boolean
 function GetCustomCampaignButtonVisible(whichButton) end
 
----@return nothing
 function DoNotSaveReplay() end
 
 ---@return dialog
 function DialogCreate() end
 
 ---@param whichDialog dialog
----@return nothing
 function DialogDestroy(whichDialog) end
 
 ---@param whichDialog dialog
----@return nothing
 function DialogClear(whichDialog) end
 
 ---@param whichDialog dialog
 ---@param messageText string
----@return nothing
 function DialogSetMessage(whichDialog, messageText) end
 
 ---@param whichDialog dialog
@@ -1525,7 +1290,6 @@ function DialogAddQuitButton(whichDialog, doScoreScreen, buttonText, hotkey) end
 ---@param whichPlayer player
 ---@param whichDialog dialog
 ---@param flag boolean
----@return nothing
 function DialogDisplay(whichPlayer, whichDialog, flag) end
 
 ---@return boolean
@@ -1543,21 +1307,18 @@ function SaveGameCache(whichCache) end
 ---@param missionKey string
 ---@param key string
 ---@param value integer
----@return nothing
 function StoreInteger(cache, missionKey, key, value) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
 ---@param value real
----@return nothing
 function StoreReal(cache, missionKey, key, value) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
 ---@param value boolean
----@return nothing
 function StoreBoolean(cache, missionKey, key, value) end
 
 ---@param cache gamecache
@@ -1577,31 +1338,26 @@ function StoreString(cache, missionKey, key, value) end
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function SyncStoredInteger(cache, missionKey, key) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function SyncStoredReal(cache, missionKey, key) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function SyncStoredBoolean(cache, missionKey, key) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function SyncStoredUnit(cache, missionKey, key) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function SyncStoredString(cache, missionKey, key) end
 
 ---@param cache gamecache
@@ -1635,42 +1391,35 @@ function HaveStoredUnit(cache, missionKey, key) end
 function HaveStoredString(cache, missionKey, key) end
 
 ---@param cache gamecache
----@return nothing
 function FlushGameCache(cache) end
 
 ---@param cache gamecache
 ---@param missionKey string
----@return nothing
 function FlushStoredMission(cache, missionKey) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function FlushStoredInteger(cache, missionKey, key) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function FlushStoredReal(cache, missionKey, key) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function FlushStoredBoolean(cache, missionKey, key) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function FlushStoredUnit(cache, missionKey, key) end
 
 ---@param cache gamecache
 ---@param missionKey string
 ---@param key string
----@return nothing
 function FlushStoredString(cache, missionKey, key) end
 
 ---@param cache gamecache
@@ -1714,21 +1463,18 @@ function InitHashtable() end
 ---@param parentKey integer
 ---@param childKey integer
 ---@param value integer
----@return nothing
 function SaveInteger(table, parentKey, childKey, value) end
 
 ---@param table hashtable
 ---@param parentKey integer
 ---@param childKey integer
 ---@param value real
----@return nothing
 function SaveReal(table, parentKey, childKey, value) end
 
 ---@param table hashtable
 ---@param parentKey integer
 ---@param childKey integer
 ---@param value boolean
----@return nothing
 function SaveBoolean(table, parentKey, childKey, value) end
 
 ---@param table hashtable
@@ -2309,40 +2055,33 @@ function HaveSavedHandle(table, parentKey, childKey) end
 ---@param table hashtable
 ---@param parentKey integer
 ---@param childKey integer
----@return nothing
 function RemoveSavedInteger(table, parentKey, childKey) end
 
 ---@param table hashtable
 ---@param parentKey integer
 ---@param childKey integer
----@return nothing
 function RemoveSavedReal(table, parentKey, childKey) end
 
 ---@param table hashtable
 ---@param parentKey integer
 ---@param childKey integer
----@return nothing
 function RemoveSavedBoolean(table, parentKey, childKey) end
 
 ---@param table hashtable
 ---@param parentKey integer
 ---@param childKey integer
----@return nothing
 function RemoveSavedString(table, parentKey, childKey) end
 
 ---@param table hashtable
 ---@param parentKey integer
 ---@param childKey integer
----@return nothing
 function RemoveSavedHandle(table, parentKey, childKey) end
 
 ---@param table hashtable
----@return nothing
 function FlushParentHashtable(table) end
 
 ---@param table hashtable
 ---@param parentKey integer
----@return nothing
 function FlushChildHashtable(table, parentKey) end
 
 ---@param lowBound integer
@@ -2359,18 +2098,15 @@ function GetRandomReal(lowBound, highBound) end
 function CreateUnitPool() end
 
 ---@param whichPool unitpool
----@return nothing
 function DestroyUnitPool(whichPool) end
 
 ---@param whichPool unitpool
 ---@param unitId integer
 ---@param weight real
----@return nothing
 function UnitPoolAddUnitType(whichPool, unitId, weight) end
 
 ---@param whichPool unitpool
 ---@param unitId integer
----@return nothing
 function UnitPoolRemoveUnitType(whichPool, unitId) end
 
 ---@param whichPool unitpool
@@ -2385,18 +2121,15 @@ function PlaceRandomUnit(whichPool, forWhichPlayer, x, y, facing) end
 function CreateItemPool() end
 
 ---@param whichItemPool itempool
----@return nothing
 function DestroyItemPool(whichItemPool) end
 
 ---@param whichItemPool itempool
 ---@param itemId integer
 ---@param weight real
----@return nothing
 function ItemPoolAddItemType(whichItemPool, itemId, weight) end
 
 ---@param whichItemPool itempool
 ---@param itemId integer
----@return nothing
 function ItemPoolRemoveItemType(whichItemPool, itemId) end
 
 ---@param whichItemPool itempool
@@ -2422,7 +2155,6 @@ function ChooseRandomItem(level) end
 function ChooseRandomItemEx(whichType, level) end
 
 ---@param seed integer
----@return nothing
 function SetRandomSeed(seed) end
 
 ---@param a real
@@ -2430,10 +2162,8 @@ function SetRandomSeed(seed) end
 ---@param c real
 ---@param d real
 ---@param e real
----@return nothing
 function SetTerrainFog(a, b, c, d, e) end
 
----@return nothing
 function ResetTerrainFog() end
 
 ---@param a real
@@ -2441,7 +2171,6 @@ function ResetTerrainFog() end
 ---@param c real
 ---@param d real
 ---@param e real
----@return nothing
 function SetUnitFog(a, b, c, d, e) end
 
 ---@param style integer
@@ -2451,14 +2180,12 @@ function SetUnitFog(a, b, c, d, e) end
 ---@param red real
 ---@param green real
 ---@param blue real
----@return nothing
 function SetTerrainFogEx(style, zstart, zend, density, red, green, blue) end
 
 ---@param toPlayer player
 ---@param x real
 ---@param y real
 ---@param message string
----@return nothing
 function DisplayTextToPlayer(toPlayer, x, y, message) end
 
 ---@param toPlayer player
@@ -2466,7 +2193,6 @@ function DisplayTextToPlayer(toPlayer, x, y, message) end
 ---@param y real
 ---@param duration real
 ---@param message string
----@return nothing
 function DisplayTimedTextToPlayer(toPlayer, x, y, duration, message) end
 
 ---@param toPlayer player
@@ -2474,39 +2200,30 @@ function DisplayTimedTextToPlayer(toPlayer, x, y, duration, message) end
 ---@param y real
 ---@param duration real
 ---@param message string
----@return nothing
 function DisplayTimedTextFromPlayer(toPlayer, x, y, duration, message) end
 
----@return nothing
 function ClearTextMessages() end
 
 ---@param terrainDNCFile string
 ---@param unitDNCFile string
----@return nothing
 function SetDayNightModels(terrainDNCFile, unitDNCFile) end
 
 ---@param portraitDNCFile string
----@return nothing
 function SetPortraitLight(portraitDNCFile) end
 
 ---@param skyModelFile string
----@return nothing
 function SetSkyModel(skyModelFile) end
 
 ---@param b boolean
----@return nothing
 function EnableUserControl(b) end
 
 ---@param b boolean
----@return nothing
 function EnableUserUI(b) end
 
 ---@param b boolean
----@return nothing
 function SuspendTimeOfDay(b) end
 
 ---@param r real
----@return nothing
 function SetTimeOfDayScale(r) end
 
 ---@return real
@@ -2514,11 +2231,9 @@ function GetTimeOfDayScale() end
 
 ---@param flag boolean
 ---@param fadeDuration real
----@return nothing
 function ShowInterface(flag, fadeDuration) end
 
 ---@param flag boolean
----@return nothing
 function PauseGame(flag) end
 
 ---@param whichUnit unit
@@ -2526,7 +2241,6 @@ function PauseGame(flag) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function UnitAddIndicator(whichUnit, red, green, blue, alpha) end
 
 ---@param whichWidget widget
@@ -2534,13 +2248,11 @@ function UnitAddIndicator(whichUnit, red, green, blue, alpha) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function AddIndicator(whichWidget, red, green, blue, alpha) end
 
 ---@param x real
 ---@param y real
 ---@param duration real
----@return nothing
 function PingMinimap(x, y, duration) end
 
 ---@param x real
@@ -2550,7 +2262,6 @@ function PingMinimap(x, y, duration) end
 ---@param green integer
 ---@param blue integer
 ---@param extraEffects boolean
----@return nothing
 function PingMinimapEx(x, y, duration, red, green, blue, extraEffects) end
 
 ---@param whichUnit unit
@@ -2586,85 +2297,67 @@ function CreateMinimapIcon(x, y, red, green, blue, pingPath, fogVisibility) end
 function SkinManagerGetLocalPath(key) end
 
 ---@param pingId minimapicon
----@return nothing
 function DestroyMinimapIcon(pingId) end
 
 ---@param whichMinimapIcon minimapicon
 ---@param visible boolean
----@return nothing
 function SetMinimapIconVisible(whichMinimapIcon, visible) end
 
 ---@param whichMinimapIcon minimapicon
 ---@param doDestroy boolean
----@return nothing
 function SetMinimapIconOrphanDestroy(whichMinimapIcon, doDestroy) end
 
 ---@param flag boolean
----@return nothing
 function EnableOcclusion(flag) end
 
 ---@param introText string
----@return nothing
 function SetIntroShotText(introText) end
 
 ---@param introModelPath string
----@return nothing
 function SetIntroShotModel(introModelPath) end
 
 ---@param b boolean
----@return nothing
 function EnableWorldFogBoundary(b) end
 
 ---@param modelName string
----@return nothing
 function PlayModelCinematic(modelName) end
 
 ---@param movieName string
----@return nothing
 function PlayCinematic(movieName) end
 
 ---@param key string
----@return nothing
 function ForceUIKey(key) end
 
----@return nothing
 function ForceUICancel() end
 
----@return nothing
 function DisplayLoadDialog() end
 
 ---@param iconPath string
----@return nothing
 function SetAltMinimapIcon(iconPath) end
 
 ---@param flag boolean
----@return nothing
 function DisableRestartMission(flag) end
 
 ---@return texttag
 function CreateTextTag() end
 
 ---@param t texttag
----@return nothing
 function DestroyTextTag(t) end
 
 ---@param t texttag
 ---@param s string
 ---@param height real
----@return nothing
 function SetTextTagText(t, s, height) end
 
 ---@param t texttag
 ---@param x real
 ---@param y real
 ---@param heightOffset real
----@return nothing
 function SetTextTagPos(t, x, y, heightOffset) end
 
 ---@param t texttag
 ---@param whichUnit unit
 ---@param heightOffset real
----@return nothing
 function SetTextTagPosUnit(t, whichUnit, heightOffset) end
 
 ---@param t texttag
@@ -2672,81 +2365,66 @@ function SetTextTagPosUnit(t, whichUnit, heightOffset) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function SetTextTagColor(t, red, green, blue, alpha) end
 
 ---@param t texttag
 ---@param xvel real
 ---@param yvel real
----@return nothing
 function SetTextTagVelocity(t, xvel, yvel) end
 
 ---@param t texttag
 ---@param flag boolean
----@return nothing
 function SetTextTagVisibility(t, flag) end
 
 ---@param t texttag
 ---@param flag boolean
----@return nothing
 function SetTextTagSuspended(t, flag) end
 
 ---@param t texttag
 ---@param flag boolean
----@return nothing
 function SetTextTagPermanent(t, flag) end
 
 ---@param t texttag
 ---@param age real
----@return nothing
 function SetTextTagAge(t, age) end
 
 ---@param t texttag
 ---@param lifespan real
----@return nothing
 function SetTextTagLifespan(t, lifespan) end
 
 ---@param t texttag
 ---@param fadepoint real
----@return nothing
 function SetTextTagFadepoint(t, fadepoint) end
 
 ---@param reserved integer
----@return nothing
 function SetReservedLocalHeroButtons(reserved) end
 
 ---@return integer
 function GetAllyColorFilterState() end
 
 ---@param state integer
----@return nothing
 function SetAllyColorFilterState(state) end
 
 ---@return boolean
 function GetCreepCampFilterState() end
 
 ---@param state boolean
----@return nothing
 function SetCreepCampFilterState(state) end
 
 ---@param enableAlly boolean
 ---@param enableCreep boolean
----@return nothing
 function EnableMinimapFilterButtons(enableAlly, enableCreep) end
 
 ---@param state boolean
 ---@param ui boolean
----@return nothing
 function EnableDragSelect(state, ui) end
 
 ---@param state boolean
 ---@param ui boolean
----@return nothing
 function EnablePreSelect(state, ui) end
 
 ---@param state boolean
 ---@param ui boolean
----@return nothing
 function EnableSelect(state, ui) end
 
 ---@param trackableModelPath string
@@ -2760,47 +2438,38 @@ function CreateTrackable(trackableModelPath, x, y, facing) end
 function CreateQuest() end
 
 ---@param whichQuest quest
----@return nothing
 function DestroyQuest(whichQuest) end
 
 ---@param whichQuest quest
 ---@param title string
----@return nothing
 function QuestSetTitle(whichQuest, title) end
 
 ---@param whichQuest quest
 ---@param description string
----@return nothing
 function QuestSetDescription(whichQuest, description) end
 
 ---@param whichQuest quest
 ---@param iconPath string
----@return nothing
 function QuestSetIconPath(whichQuest, iconPath) end
 
 ---@param whichQuest quest
 ---@param required boolean
----@return nothing
 function QuestSetRequired(whichQuest, required) end
 
 ---@param whichQuest quest
 ---@param completed boolean
----@return nothing
 function QuestSetCompleted(whichQuest, completed) end
 
 ---@param whichQuest quest
 ---@param discovered boolean
----@return nothing
 function QuestSetDiscovered(whichQuest, discovered) end
 
 ---@param whichQuest quest
 ---@param failed boolean
----@return nothing
 function QuestSetFailed(whichQuest, failed) end
 
 ---@param whichQuest quest
 ---@param enabled boolean
----@return nothing
 function QuestSetEnabled(whichQuest, enabled) end
 
 ---@param whichQuest quest
@@ -2829,12 +2498,10 @@ function QuestCreateItem(whichQuest) end
 
 ---@param whichQuestItem questitem
 ---@param description string
----@return nothing
 function QuestItemSetDescription(whichQuestItem, description) end
 
 ---@param whichQuestItem questitem
 ---@param completed boolean
----@return nothing
 function QuestItemSetCompleted(whichQuestItem, completed) end
 
 ---@param whichQuestItem questitem
@@ -2845,18 +2512,14 @@ function IsQuestItemCompleted(whichQuestItem) end
 function CreateDefeatCondition() end
 
 ---@param whichCondition defeatcondition
----@return nothing
 function DestroyDefeatCondition(whichCondition) end
 
 ---@param whichCondition defeatcondition
 ---@param description string
----@return nothing
 function DefeatConditionSetDescription(whichCondition, description) end
 
----@return nothing
 function FlashQuestDialogButton() end
 
----@return nothing
 function ForceQuestDialogUpdate() end
 
 ---@param t timer
@@ -2864,12 +2527,10 @@ function ForceQuestDialogUpdate() end
 function CreateTimerDialog(t) end
 
 ---@param whichDialog timerdialog
----@return nothing
 function DestroyTimerDialog(whichDialog) end
 
 ---@param whichDialog timerdialog
 ---@param title string
----@return nothing
 function TimerDialogSetTitle(whichDialog, title) end
 
 ---@param whichDialog timerdialog
@@ -2877,7 +2538,6 @@ function TimerDialogSetTitle(whichDialog, title) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function TimerDialogSetTitleColor(whichDialog, red, green, blue, alpha) end
 
 ---@param whichDialog timerdialog
@@ -2885,17 +2545,14 @@ function TimerDialogSetTitleColor(whichDialog, red, green, blue, alpha) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function TimerDialogSetTimeColor(whichDialog, red, green, blue, alpha) end
 
 ---@param whichDialog timerdialog
 ---@param speedMultFactor real
----@return nothing
 function TimerDialogSetSpeed(whichDialog, speedMultFactor) end
 
 ---@param whichDialog timerdialog
 ---@param display boolean
----@return nothing
 function TimerDialogDisplay(whichDialog, display) end
 
 ---@param whichDialog timerdialog
@@ -2904,19 +2561,16 @@ function IsTimerDialogDisplayed(whichDialog) end
 
 ---@param whichDialog timerdialog
 ---@param timeRemaining real
----@return nothing
 function TimerDialogSetRealTimeRemaining(whichDialog, timeRemaining) end
 
 ---@return leaderboard
 function CreateLeaderboard() end
 
 ---@param lb leaderboard
----@return nothing
 function DestroyLeaderboard(lb) end
 
 ---@param lb leaderboard
 ---@param show boolean
----@return nothing
 function LeaderboardDisplay(lb, show) end
 
 ---@param lb leaderboard
@@ -2929,43 +2583,35 @@ function LeaderboardGetItemCount(lb) end
 
 ---@param lb leaderboard
 ---@param count integer
----@return nothing
 function LeaderboardSetSizeByItemCount(lb, count) end
 
 ---@param lb leaderboard
 ---@param label string
 ---@param value integer
 ---@param p player
----@return nothing
 function LeaderboardAddItem(lb, label, value, p) end
 
 ---@param lb leaderboard
 ---@param index integer
----@return nothing
 function LeaderboardRemoveItem(lb, index) end
 
 ---@param lb leaderboard
 ---@param p player
----@return nothing
 function LeaderboardRemovePlayerItem(lb, p) end
 
 ---@param lb leaderboard
----@return nothing
 function LeaderboardClear(lb) end
 
 ---@param lb leaderboard
 ---@param ascending boolean
----@return nothing
 function LeaderboardSortItemsByValue(lb, ascending) end
 
 ---@param lb leaderboard
 ---@param ascending boolean
----@return nothing
 function LeaderboardSortItemsByPlayer(lb, ascending) end
 
 ---@param lb leaderboard
 ---@param ascending boolean
----@return nothing
 function LeaderboardSortItemsByLabel(lb, ascending) end
 
 ---@param lb leaderboard
@@ -2980,7 +2626,6 @@ function LeaderboardGetPlayerIndex(lb, p) end
 
 ---@param lb leaderboard
 ---@param label string
----@return nothing
 function LeaderboardSetLabel(lb, label) end
 
 ---@param lb leaderboard
@@ -2989,7 +2634,6 @@ function LeaderboardGetLabelText(lb) end
 
 ---@param toPlayer player
 ---@param lb leaderboard
----@return nothing
 function PlayerSetLeaderboard(toPlayer, lb) end
 
 ---@param toPlayer player
@@ -3001,7 +2645,6 @@ function PlayerGetLeaderboard(toPlayer) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function LeaderboardSetLabelColor(lb, red, green, blue, alpha) end
 
 ---@param lb leaderboard
@@ -3009,7 +2652,6 @@ function LeaderboardSetLabelColor(lb, red, green, blue, alpha) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function LeaderboardSetValueColor(lb, red, green, blue, alpha) end
 
 ---@param lb leaderboard
@@ -3017,19 +2659,16 @@ function LeaderboardSetValueColor(lb, red, green, blue, alpha) end
 ---@param showNames boolean
 ---@param showValues boolean
 ---@param showIcons boolean
----@return nothing
 function LeaderboardSetStyle(lb, showLabel, showNames, showValues, showIcons) end
 
 ---@param lb leaderboard
 ---@param whichItem integer
 ---@param val integer
----@return nothing
 function LeaderboardSetItemValue(lb, whichItem, val) end
 
 ---@param lb leaderboard
 ---@param whichItem integer
 ---@param val string
----@return nothing
 function LeaderboardSetItemLabel(lb, whichItem, val) end
 
 ---@param lb leaderboard
@@ -3037,7 +2676,6 @@ function LeaderboardSetItemLabel(lb, whichItem, val) end
 ---@param showLabel boolean
 ---@param showValue boolean
 ---@param showIcon boolean
----@return nothing
 function LeaderboardSetItemStyle(lb, whichItem, showLabel, showValue, showIcon) end
 
 ---@param lb leaderboard
@@ -3046,7 +2684,6 @@ function LeaderboardSetItemStyle(lb, whichItem, showLabel, showValue, showIcon) 
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function LeaderboardSetItemLabelColor(lb, whichItem, red, green, blue, alpha) end
 
 ---@param lb leaderboard
@@ -3055,19 +2692,16 @@ function LeaderboardSetItemLabelColor(lb, whichItem, red, green, blue, alpha) en
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function LeaderboardSetItemValueColor(lb, whichItem, red, green, blue, alpha) end
 
 ---@return multiboard
 function CreateMultiboard() end
 
 ---@param lb multiboard
----@return nothing
 function DestroyMultiboard(lb) end
 
 ---@param lb multiboard
 ---@param show boolean
----@return nothing
 function MultiboardDisplay(lb, show) end
 
 ---@param lb multiboard
@@ -3076,7 +2710,6 @@ function IsMultiboardDisplayed(lb) end
 
 ---@param lb multiboard
 ---@param minimize boolean
----@return nothing
 function MultiboardMinimize(lb, minimize) end
 
 ---@param lb multiboard
@@ -3084,12 +2717,10 @@ function MultiboardMinimize(lb, minimize) end
 function IsMultiboardMinimized(lb) end
 
 ---@param lb multiboard
----@return nothing
 function MultiboardClear(lb) end
 
 ---@param lb multiboard
 ---@param label string
----@return nothing
 function MultiboardSetTitleText(lb, label) end
 
 ---@param lb multiboard
@@ -3101,7 +2732,6 @@ function MultiboardGetTitleText(lb) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function MultiboardSetTitleTextColor(lb, red, green, blue, alpha) end
 
 ---@param lb multiboard
@@ -3114,23 +2744,19 @@ function MultiboardGetColumnCount(lb) end
 
 ---@param lb multiboard
 ---@param count integer
----@return nothing
 function MultiboardSetColumnCount(lb, count) end
 
 ---@param lb multiboard
 ---@param count integer
----@return nothing
 function MultiboardSetRowCount(lb, count) end
 
 ---@param lb multiboard
 ---@param showValues boolean
 ---@param showIcons boolean
----@return nothing
 function MultiboardSetItemsStyle(lb, showValues, showIcons) end
 
 ---@param lb multiboard
 ---@param value string
----@return nothing
 function MultiboardSetItemsValue(lb, value) end
 
 ---@param lb multiboard
@@ -3138,17 +2764,14 @@ function MultiboardSetItemsValue(lb, value) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function MultiboardSetItemsValueColor(lb, red, green, blue, alpha) end
 
 ---@param lb multiboard
 ---@param width real
----@return nothing
 function MultiboardSetItemsWidth(lb, width) end
 
 ---@param lb multiboard
 ---@param iconPath string
----@return nothing
 function MultiboardSetItemsIcon(lb, iconPath) end
 
 ---@param lb multiboard
@@ -3158,18 +2781,15 @@ function MultiboardSetItemsIcon(lb, iconPath) end
 function MultiboardGetItem(lb, row, column) end
 
 ---@param mbi multiboarditem
----@return nothing
 function MultiboardReleaseItem(mbi) end
 
 ---@param mbi multiboarditem
 ---@param showValue boolean
 ---@param showIcon boolean
----@return nothing
 function MultiboardSetItemStyle(mbi, showValue, showIcon) end
 
 ---@param mbi multiboarditem
 ---@param val string
----@return nothing
 function MultiboardSetItemValue(mbi, val) end
 
 ---@param mbi multiboarditem
@@ -3177,31 +2797,25 @@ function MultiboardSetItemValue(mbi, val) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function MultiboardSetItemValueColor(mbi, red, green, blue, alpha) end
 
 ---@param mbi multiboarditem
 ---@param width real
----@return nothing
 function MultiboardSetItemWidth(mbi, width) end
 
 ---@param mbi multiboarditem
 ---@param iconFileName string
----@return nothing
 function MultiboardSetItemIcon(mbi, iconFileName) end
 
 ---@param flag boolean
----@return nothing
 function MultiboardSuppressDisplay(flag) end
 
 ---@param x real
 ---@param y real
----@return nothing
 function SetCameraPosition(x, y) end
 
 ---@param x real
 ---@param y real
----@return nothing
 function SetCameraQuickPosition(x, y) end
 
 ---@param x1 real
@@ -3212,74 +2826,61 @@ function SetCameraQuickPosition(x, y) end
 ---@param y3 real
 ---@param x4 real
 ---@param y4 real
----@return nothing
 function SetCameraBounds(x1, y1, x2, y2, x3, y3, x4, y4) end
 
----@return nothing
 function StopCamera() end
 
 ---@param duration real
----@return nothing
 function ResetToGameCamera(duration) end
 
 ---@param x real
 ---@param y real
----@return nothing
 function PanCameraTo(x, y) end
 
 ---@param x real
 ---@param y real
 ---@param duration real
----@return nothing
 function PanCameraToTimed(x, y, duration) end
 
 ---@param x real
 ---@param y real
 ---@param zOffsetDest real
----@return nothing
 function PanCameraToWithZ(x, y, zOffsetDest) end
 
 ---@param x real
 ---@param y real
 ---@param zOffsetDest real
 ---@param duration real
----@return nothing
 function PanCameraToTimedWithZ(x, y, zOffsetDest, duration) end
 
 ---@param cameraModelFile string
----@return nothing
 function SetCinematicCamera(cameraModelFile) end
 
 ---@param x real
 ---@param y real
 ---@param radiansToSweep real
 ---@param duration real
----@return nothing
 function SetCameraRotateMode(x, y, radiansToSweep, duration) end
 
 ---@param whichField camerafield
 ---@param value real
 ---@param duration real
----@return nothing
 function SetCameraField(whichField, value, duration) end
 
 ---@param whichField camerafield
 ---@param offset real
 ---@param duration real
----@return nothing
 function AdjustCameraField(whichField, offset, duration) end
 
 ---@param whichUnit unit
 ---@param xoffset real
 ---@param yoffset real
 ---@param inheritOrientation boolean
----@return nothing
 function SetCameraTargetController(whichUnit, xoffset, yoffset, inheritOrientation) end
 
 ---@param whichUnit unit
 ---@param xoffset real
 ---@param yoffset real
----@return nothing
 function SetCameraOrientController(whichUnit, xoffset, yoffset) end
 
 ---@return camerasetup
@@ -3289,7 +2890,6 @@ function CreateCameraSetup() end
 ---@param whichField camerafield
 ---@param value real
 ---@param duration real
----@return nothing
 function CameraSetupSetField(whichSetup, whichField, value, duration) end
 
 ---@param whichSetup camerasetup
@@ -3301,7 +2901,6 @@ function CameraSetupGetField(whichSetup, whichField) end
 ---@param x real
 ---@param y real
 ---@param duration real
----@return nothing
 function CameraSetupSetDestPosition(whichSetup, x, y, duration) end
 
 ---@param whichSetup camerasetup
@@ -3319,29 +2918,24 @@ function CameraSetupGetDestPositionY(whichSetup) end
 ---@param whichSetup camerasetup
 ---@param doPan boolean
 ---@param panTimed boolean
----@return nothing
 function CameraSetupApply(whichSetup, doPan, panTimed) end
 
 ---@param whichSetup camerasetup
 ---@param zDestOffset real
----@return nothing
 function CameraSetupApplyWithZ(whichSetup, zDestOffset) end
 
 ---@param whichSetup camerasetup
 ---@param doPan boolean
 ---@param forceDuration real
----@return nothing
 function CameraSetupApplyForceDuration(whichSetup, doPan, forceDuration) end
 
 ---@param whichSetup camerasetup
 ---@param zDestOffset real
 ---@param forceDuration real
----@return nothing
 function CameraSetupApplyForceDurationWithZ(whichSetup, zDestOffset, forceDuration) end
 
 ---@param whichSetup camerasetup
 ---@param label string
----@return nothing
 function BlzCameraSetupSetLabel(whichSetup, label) end
 
 ---@param whichSetup camerasetup
@@ -3350,84 +2944,68 @@ function BlzCameraSetupGetLabel(whichSetup) end
 
 ---@param mag real
 ---@param velocity real
----@return nothing
 function CameraSetTargetNoise(mag, velocity) end
 
 ---@param mag real
 ---@param velocity real
----@return nothing
 function CameraSetSourceNoise(mag, velocity) end
 
 ---@param mag real
 ---@param velocity real
 ---@param vertOnly boolean
----@return nothing
 function CameraSetTargetNoiseEx(mag, velocity, vertOnly) end
 
 ---@param mag real
 ---@param velocity real
 ---@param vertOnly boolean
----@return nothing
 function CameraSetSourceNoiseEx(mag, velocity, vertOnly) end
 
 ---@param factor real
----@return nothing
 function CameraSetSmoothingFactor(factor) end
 
 ---@param distance real
----@return nothing
 function CameraSetFocalDistance(distance) end
 
 ---@param scale real
----@return nothing
 function CameraSetDepthOfFieldScale(scale) end
 
 ---@param filename string
----@return nothing
 function SetCineFilterTexture(filename) end
 
 ---@param whichMode blendmode
----@return nothing
 function SetCineFilterBlendMode(whichMode) end
 
 ---@param whichFlags texmapflags
----@return nothing
 function SetCineFilterTexMapFlags(whichFlags) end
 
 ---@param minu real
 ---@param minv real
 ---@param maxu real
 ---@param maxv real
----@return nothing
 function SetCineFilterStartUV(minu, minv, maxu, maxv) end
 
 ---@param minu real
 ---@param minv real
 ---@param maxu real
 ---@param maxv real
----@return nothing
 function SetCineFilterEndUV(minu, minv, maxu, maxv) end
 
 ---@param red integer
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function SetCineFilterStartColor(red, green, blue, alpha) end
 
 ---@param red integer
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function SetCineFilterEndColor(red, green, blue, alpha) end
 
 ---@param duration real
----@return nothing
 function SetCineFilterDuration(duration) end
 
 ---@param flag boolean
----@return nothing
 function DisplayCineFilter(flag) end
 
 ---@return boolean
@@ -3439,18 +3017,14 @@ function IsCineFilterDisplayed() end
 ---@param text string
 ---@param sceneDuration real
 ---@param voiceoverDuration real
----@return nothing
 function SetCinematicScene(portraitUnitId, color, speakerTitle, text, sceneDuration, voiceoverDuration) end
 
----@return nothing
 function EndCinematicScene() end
 
 ---@param flag boolean
----@return nothing
 function ForceCinematicSubtitles(flag) end
 
 ---@param cinematicAudio boolean
----@return nothing
 function SetCinematicAudio(cinematicAudio) end
 
 ---@param whichMargin integer
@@ -3498,7 +3072,6 @@ function GetCameraEyePositionZ() end
 function GetCameraEyePositionLoc() end
 
 ---@param environmentName string
----@return nothing
 function NewSoundEnvironment(environmentName) end
 
 ---@param fileName string
@@ -3538,149 +3111,119 @@ function CreateMIDISound(soundLabel, fadeInRate, fadeOutRate) end
 
 ---@param soundHandle sound
 ---@param soundLabel string
----@return nothing
 function SetSoundParamsFromLabel(soundHandle, soundLabel) end
 
 ---@param soundHandle sound
 ---@param cutoff real
----@return nothing
 function SetSoundDistanceCutoff(soundHandle, cutoff) end
 
 ---@param soundHandle sound
 ---@param channel integer
----@return nothing
 function SetSoundChannel(soundHandle, channel) end
 
 ---@param soundHandle sound
 ---@param volume integer
----@return nothing
 function SetSoundVolume(soundHandle, volume) end
 
 ---@param soundHandle sound
 ---@param pitch real
----@return nothing
 function SetSoundPitch(soundHandle, pitch) end
 
 ---@param soundHandle sound
 ---@param millisecs integer
----@return nothing
 function SetSoundPlayPosition(soundHandle, millisecs) end
 
 ---@param soundHandle sound
 ---@param minDist real
 ---@param maxDist real
----@return nothing
 function SetSoundDistances(soundHandle, minDist, maxDist) end
 
 ---@param soundHandle sound
 ---@param inside real
 ---@param outside real
 ---@param outsideVolume integer
----@return nothing
 function SetSoundConeAngles(soundHandle, inside, outside, outsideVolume) end
 
 ---@param soundHandle sound
 ---@param x real
 ---@param y real
 ---@param z real
----@return nothing
 function SetSoundConeOrientation(soundHandle, x, y, z) end
 
 ---@param soundHandle sound
 ---@param x real
 ---@param y real
 ---@param z real
----@return nothing
 function SetSoundPosition(soundHandle, x, y, z) end
 
 ---@param soundHandle sound
 ---@param x real
 ---@param y real
 ---@param z real
----@return nothing
 function SetSoundVelocity(soundHandle, x, y, z) end
 
 ---@param soundHandle sound
 ---@param whichUnit unit
----@return nothing
 function AttachSoundToUnit(soundHandle, whichUnit) end
 
 ---@param soundHandle sound
----@return nothing
 function StartSound(soundHandle) end
 
 ---@param soundHandle sound
 ---@param fadeIn boolean
----@return nothing
 function StartSoundEx(soundHandle, fadeIn) end
 
 ---@param soundHandle sound
 ---@param killWhenDone boolean
 ---@param fadeOut boolean
----@return nothing
 function StopSound(soundHandle, killWhenDone, fadeOut) end
 
 ---@param soundHandle sound
----@return nothing
 function KillSoundWhenDone(soundHandle) end
 
 ---@param musicName string
 ---@param random boolean
 ---@param index integer
----@return nothing
 function SetMapMusic(musicName, random, index) end
 
----@return nothing
 function ClearMapMusic() end
 
 ---@param musicName string
----@return nothing
 function PlayMusic(musicName) end
 
 ---@param musicName string
 ---@param frommsecs integer
 ---@param fadeinmsecs integer
----@return nothing
 function PlayMusicEx(musicName, frommsecs, fadeinmsecs) end
 
 ---@param fadeOut boolean
----@return nothing
 function StopMusic(fadeOut) end
 
----@return nothing
 function ResumeMusic() end
 
 ---@param musicFileName string
----@return nothing
 function PlayThematicMusic(musicFileName) end
 
 ---@param musicFileName string
 ---@param frommsecs integer
----@return nothing
 function PlayThematicMusicEx(musicFileName, frommsecs) end
 
----@return nothing
 function EndThematicMusic() end
 
 ---@param volume integer
----@return nothing
 function SetMusicVolume(volume) end
 
 ---@param millisecs integer
----@return nothing
 function SetMusicPlayPosition(millisecs) end
 
 ---@param volume integer
----@return nothing
 function SetThematicMusicVolume(volume) end
 
 ---@param millisecs integer
----@return nothing
 function SetThematicMusicPlayPosition(millisecs) end
 
 ---@param soundHandle sound
 ---@param duration integer
----@return nothing
 function SetSoundDuration(soundHandle, duration) end
 
 ---@param soundHandle sound
@@ -3693,10 +3236,8 @@ function GetSoundFileDuration(musicFileName) end
 
 ---@param vgroup volumegroup
 ---@param scale real
----@return nothing
 function VolumeGroupSetVolume(vgroup, scale) end
 
----@return nothing
 function VolumeGroupReset() end
 
 ---@param soundHandle sound
@@ -3711,14 +3252,12 @@ function GetSoundIsLoading(soundHandle) end
 ---@param byPosition boolean
 ---@param rectwidth real
 ---@param rectheight real
----@return nothing
 function RegisterStackedSound(soundHandle, byPosition, rectwidth, rectheight) end
 
 ---@param soundHandle sound
 ---@param byPosition boolean
 ---@param rectwidth real
 ---@param rectheight real
----@return nothing
 function UnregisterStackedSound(soundHandle, byPosition, rectwidth, rectheight) end
 
 ---@param soundHandle sound
@@ -3760,12 +3299,10 @@ function GetDialogueTextKey(soundHandle) end
 function AddWeatherEffect(where, effectID) end
 
 ---@param whichEffect weathereffect
----@return nothing
 function RemoveWeatherEffect(whichEffect) end
 
 ---@param whichEffect weathereffect
 ---@param enable boolean
----@return nothing
 function EnableWeatherEffect(whichEffect, enable) end
 
 ---@param x real
@@ -3815,10 +3352,8 @@ function TerrainDeformRandom(x, y, radius, minDelta, maxDelta, duration, updateI
 
 ---@param deformation terraindeformation
 ---@param duration integer
----@return nothing
 function TerrainDeformStop(deformation, duration) end
 
----@return nothing
 function TerrainDeformStopAll() end
 
 ---@param modelName string
@@ -3839,7 +3374,6 @@ function AddSpecialEffectLoc(modelName, where) end
 function AddSpecialEffectTarget(modelName, targetWidget, attachPointName) end
 
 ---@param whichEffect effect
----@return nothing
 function DestroyEffect(whichEffect) end
 
 ---@param abilityString string
@@ -3981,11 +3515,9 @@ function GetTerrainCliffLevel(x, y) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function SetWaterBaseColor(red, green, blue, alpha) end
 
 ---@param val boolean
----@return nothing
 function SetWaterDeforms(val) end
 
 ---@param x real
@@ -4004,7 +3536,6 @@ function GetTerrainVariance(x, y) end
 ---@param variation integer
 ---@param area integer
 ---@param shape integer
----@return nothing
 function SetTerrainType(x, y, terrainType, variation, area, shape) end
 
 ---@param x real
@@ -4017,7 +3548,6 @@ function IsTerrainPathable(x, y, t) end
 ---@param y real
 ---@param t pathingtype
 ---@param flag boolean
----@return nothing
 function SetTerrainPathable(x, y, t, flag) end
 
 ---@param file string
@@ -4035,25 +3565,21 @@ function SetTerrainPathable(x, y, t, flag) end
 function CreateImage(file, sizeX, sizeY, sizeZ, posX, posY, posZ, originX, originY, originZ, imageType) end
 
 ---@param whichImage image
----@return nothing
 function DestroyImage(whichImage) end
 
 ---@param whichImage image
 ---@param flag boolean
----@return nothing
 function ShowImage(whichImage, flag) end
 
 ---@param whichImage image
 ---@param flag boolean
 ---@param height real
----@return nothing
 function SetImageConstantHeight(whichImage, flag, height) end
 
 ---@param whichImage image
 ---@param x real
 ---@param y real
 ---@param z real
----@return nothing
 function SetImagePosition(whichImage, x, y, z) end
 
 ---@param whichImage image
@@ -4061,28 +3587,23 @@ function SetImagePosition(whichImage, x, y, z) end
 ---@param green integer
 ---@param blue integer
 ---@param alpha integer
----@return nothing
 function SetImageColor(whichImage, red, green, blue, alpha) end
 
 ---@param whichImage image
 ---@param flag boolean
----@return nothing
 function SetImageRender(whichImage, flag) end
 
 ---@param whichImage image
 ---@param flag boolean
----@return nothing
 function SetImageRenderAlways(whichImage, flag) end
 
 ---@param whichImage image
 ---@param flag boolean
 ---@param useWaterAlpha boolean
----@return nothing
 function SetImageAboveWater(whichImage, flag, useWaterAlpha) end
 
 ---@param whichImage image
 ---@param imageType integer
----@return nothing
 function SetImageType(whichImage, imageType) end
 
 ---@param x real
@@ -4098,30 +3619,24 @@ function SetImageType(whichImage, imageType) end
 function CreateUbersplat(x, y, name, red, green, blue, alpha, forcePaused, noBirthTime) end
 
 ---@param whichSplat ubersplat
----@return nothing
 function DestroyUbersplat(whichSplat) end
 
 ---@param whichSplat ubersplat
----@return nothing
 function ResetUbersplat(whichSplat) end
 
 ---@param whichSplat ubersplat
----@return nothing
 function FinishUbersplat(whichSplat) end
 
 ---@param whichSplat ubersplat
 ---@param flag boolean
----@return nothing
 function ShowUbersplat(whichSplat, flag) end
 
 ---@param whichSplat ubersplat
 ---@param flag boolean
----@return nothing
 function SetUbersplatRender(whichSplat, flag) end
 
 ---@param whichSplat ubersplat
 ---@param flag boolean
----@return nothing
 function SetUbersplatRenderAlways(whichSplat, flag) end
 
 ---@param whichPlayer player
@@ -4129,27 +3644,23 @@ function SetUbersplatRenderAlways(whichSplat, flag) end
 ---@param y real
 ---@param radius real
 ---@param addBlight boolean
----@return nothing
 function SetBlight(whichPlayer, x, y, radius, addBlight) end
 
 ---@param whichPlayer player
 ---@param r rect
 ---@param addBlight boolean
----@return nothing
 function SetBlightRect(whichPlayer, r, addBlight) end
 
 ---@param whichPlayer player
 ---@param x real
 ---@param y real
 ---@param addBlight boolean
----@return nothing
 function SetBlightPoint(whichPlayer, x, y, addBlight) end
 
 ---@param whichPlayer player
 ---@param whichLocation location
 ---@param radius real
 ---@param addBlight boolean
----@return nothing
 function SetBlightLoc(whichPlayer, whichLocation, radius, addBlight) end
 
 ---@param id player
@@ -4171,35 +3682,29 @@ function IsPointBlighted(x, y) end
 ---@param nearestOnly boolean
 ---@param animName string
 ---@param animRandom boolean
----@return nothing
 function SetDoodadAnimation(x, y, radius, doodadID, nearestOnly, animName, animRandom) end
 
 ---@param r rect
 ---@param doodadID integer
 ---@param animName string
 ---@param animRandom boolean
----@return nothing
 function SetDoodadAnimationRect(r, doodadID, animName, animRandom) end
 
 ---@param num player
 ---@param script string
----@return nothing
 function StartMeleeAI(num, script) end
 
 ---@param num player
 ---@param script string
----@return nothing
 function StartCampaignAI(num, script) end
 
 ---@param num player
 ---@param command integer
 ---@param data integer
----@return nothing
 function CommandAI(num, command, data) end
 
 ---@param p player
 ---@param pause boolean
----@return nothing
 function PauseCompAI(p, pause) end
 
 ---@param num player
@@ -4207,19 +3712,15 @@ function PauseCompAI(p, pause) end
 function GetAIDifficulty(num) end
 
 ---@param hUnit unit
----@return nothing
 function RemoveGuardPosition(hUnit) end
 
 ---@param hUnit unit
----@return nothing
 function RecycleGuardPosition(hUnit) end
 
 ---@param num player
----@return nothing
 function RemoveAllGuardPositions(num) end
 
 ---@param cheatStr string
----@return nothing
 function Cheat(cheatStr) end
 
 ---@return boolean
@@ -4229,52 +3730,38 @@ function IsNoVictoryCheat() end
 function IsNoDefeatCheat() end
 
 ---@param filename string
----@return nothing
 function Preload(filename) end
 
 ---@param timeout real
----@return nothing
 function PreloadEnd(timeout) end
 
----@return nothing
 function PreloadStart() end
 
----@return nothing
 function PreloadRefresh() end
 
----@return nothing
 function PreloadEndEx() end
 
----@return nothing
 function PreloadGenClear() end
 
----@return nothing
 function PreloadGenStart() end
 
 ---@param filename string
----@return nothing
 function PreloadGenEnd(filename) end
 
 ---@param filename string
----@return nothing
 function Preloader(filename) end
 
 ---@param enable boolean
----@return nothing
 function BlzHideCinematicPanels(enable) end
 
 ---@param testType string
----@return nothing
 function AutomationSetTestType(testType) end
 
 ---@param testName string
----@return nothing
 function AutomationTestStart(testName) end
 
----@return nothing
 function AutomationTestEnd() end
 
----@return nothing
 function AutomationTestingFinished() end
 
 ---@return real
@@ -4292,37 +3779,31 @@ function BlzGetTriggerPlayerMouseButton() end
 ---@param abilCode integer
 ---@param tooltip string
 ---@param level integer
----@return nothing
 function BlzSetAbilityTooltip(abilCode, tooltip, level) end
 
 ---@param abilCode integer
 ---@param tooltip string
 ---@param level integer
----@return nothing
 function BlzSetAbilityActivatedTooltip(abilCode, tooltip, level) end
 
 ---@param abilCode integer
 ---@param extendedTooltip string
 ---@param level integer
----@return nothing
 function BlzSetAbilityExtendedTooltip(abilCode, extendedTooltip, level) end
 
 ---@param abilCode integer
 ---@param extendedTooltip string
 ---@param level integer
----@return nothing
 function BlzSetAbilityActivatedExtendedTooltip(abilCode, extendedTooltip, level) end
 
 ---@param abilCode integer
 ---@param researchTooltip string
 ---@param level integer
----@return nothing
 function BlzSetAbilityResearchTooltip(abilCode, researchTooltip, level) end
 
 ---@param abilCode integer
 ---@param researchExtendedTooltip string
 ---@param level integer
----@return nothing
 function BlzSetAbilityResearchExtendedTooltip(abilCode, researchExtendedTooltip, level) end
 
 ---@param abilCode integer
@@ -4357,7 +3838,6 @@ function BlzGetAbilityResearchExtendedTooltip(abilCode, level) end
 
 ---@param abilCode integer
 ---@param iconPath string
----@return nothing
 function BlzSetAbilityIcon(abilCode, iconPath) end
 
 ---@param abilCode integer
@@ -4366,7 +3846,6 @@ function BlzGetAbilityIcon(abilCode) end
 
 ---@param abilCode integer
 ---@param iconPath string
----@return nothing
 function BlzSetAbilityActivatedIcon(abilCode, iconPath) end
 
 ---@param abilCode integer
@@ -4383,12 +3862,10 @@ function BlzGetAbilityPosY(abilCode) end
 
 ---@param abilCode integer
 ---@param x integer
----@return nothing
 function BlzSetAbilityPosX(abilCode, x) end
 
 ---@param abilCode integer
 ---@param y integer
----@return nothing
 function BlzSetAbilityPosY(abilCode, y) end
 
 ---@param abilCode integer
@@ -4401,12 +3878,10 @@ function BlzGetAbilityActivatedPosY(abilCode) end
 
 ---@param abilCode integer
 ---@param x integer
----@return nothing
 function BlzSetAbilityActivatedPosX(abilCode, x) end
 
 ---@param abilCode integer
 ---@param y integer
----@return nothing
 function BlzSetAbilityActivatedPosY(abilCode, y) end
 
 ---@param whichUnit unit
@@ -4415,7 +3890,6 @@ function BlzGetUnitMaxHP(whichUnit) end
 
 ---@param whichUnit unit
 ---@param hp integer
----@return nothing
 function BlzSetUnitMaxHP(whichUnit, hp) end
 
 ---@param whichUnit unit
@@ -4424,17 +3898,14 @@ function BlzGetUnitMaxMana(whichUnit) end
 
 ---@param whichUnit unit
 ---@param mana integer
----@return nothing
 function BlzSetUnitMaxMana(whichUnit, mana) end
 
 ---@param whichItem item
 ---@param name string
----@return nothing
 function BlzSetItemName(whichItem, name) end
 
 ---@param whichItem item
 ---@param description string
----@return nothing
 function BlzSetItemDescription(whichItem, description) end
 
 ---@param whichItem item
@@ -4443,7 +3914,6 @@ function BlzGetItemDescription(whichItem) end
 
 ---@param whichItem item
 ---@param tooltip string
----@return nothing
 function BlzSetItemTooltip(whichItem, tooltip) end
 
 ---@param whichItem item
@@ -4452,7 +3922,6 @@ function BlzGetItemTooltip(whichItem) end
 
 ---@param whichItem item
 ---@param extendedTooltip string
----@return nothing
 function BlzSetItemExtendedTooltip(whichItem, extendedTooltip) end
 
 ---@param whichItem item
@@ -4461,7 +3930,6 @@ function BlzGetItemExtendedTooltip(whichItem) end
 
 ---@param whichItem item
 ---@param iconPath string
----@return nothing
 function BlzSetItemIconPath(whichItem, iconPath) end
 
 ---@param whichItem item
@@ -4470,12 +3938,10 @@ function BlzGetItemIconPath(whichItem) end
 
 ---@param whichUnit unit
 ---@param name string
----@return nothing
 function BlzSetUnitName(whichUnit, name) end
 
 ---@param whichUnit unit
 ---@param heroProperName string
----@return nothing
 function BlzSetHeroProperName(whichUnit, heroProperName) end
 
 ---@param whichUnit unit
@@ -4486,7 +3952,6 @@ function BlzGetUnitBaseDamage(whichUnit, weaponIndex) end
 ---@param whichUnit unit
 ---@param baseDamage integer
 ---@param weaponIndex integer
----@return nothing
 function BlzSetUnitBaseDamage(whichUnit, baseDamage, weaponIndex) end
 
 ---@param whichUnit unit
@@ -4497,6 +3962,541 @@ function BlzGetUnitDiceNumber(whichUnit, weaponIndex) end
 ---@param whichUnit unit
 ---@param diceNumber integer
 ---@param weaponIndex integer
----@return nothing
 function BlzSetUnitDiceNumber(whichUnit, diceNumber, weaponIndex) end
+
+---@param whichUnit unit
+---@param weaponIndex integer
+---@return integer
+function BlzGetUnitDiceSides(whichUnit, weaponIndex) end
+
+---@param whichUnit unit
+---@param diceSides integer
+---@param weaponIndex integer
+function BlzSetUnitDiceSides(whichUnit, diceSides, weaponIndex) end
+
+---@param whichUnit unit
+---@param weaponIndex integer
+---@return real
+function BlzGetUnitAttackCooldown(whichUnit, weaponIndex) end
+
+---@param whichUnit unit
+---@param cooldown real
+---@param weaponIndex integer
+function BlzSetUnitAttackCooldown(whichUnit, cooldown, weaponIndex) end
+
+---@param whichEffect effect
+---@param whichPlayer player
+function BlzSetSpecialEffectColorByPlayer(whichEffect, whichPlayer) end
+
+---@param whichEffect effect
+---@param r integer
+---@param g integer
+---@param b integer
+function BlzSetSpecialEffectColor(whichEffect, r, g, b) end
+
+---@param whichEffect effect
+---@param alpha integer
+function BlzSetSpecialEffectAlpha(whichEffect, alpha) end
+
+---@param whichEffect effect
+---@param scale real
+function BlzSetSpecialEffectScale(whichEffect, scale) end
+
+---@param whichEffect effect
+---@param x real
+---@param y real
+---@param z real
+function BlzSetSpecialEffectPosition(whichEffect, x, y, z) end
+
+---@param whichEffect effect
+---@param height real
+function BlzSetSpecialEffectHeight(whichEffect, height) end
+
+---@param whichEffect effect
+---@param timeScale real
+function BlzSetSpecialEffectTimeScale(whichEffect, timeScale) end
+
+---@param whichEffect effect
+---@param time real
+function BlzSetSpecialEffectTime(whichEffect, time) end
+
+---@param whichEffect effect
+---@param yaw real
+---@param pitch real
+---@param roll real
+function BlzSetSpecialEffectOrientation(whichEffect, yaw, pitch, roll) end
+
+---@param whichEffect effect
+---@param yaw real
+function BlzSetSpecialEffectYaw(whichEffect, yaw) end
+
+---@param whichEffect effect
+---@param pitch real
+function BlzSetSpecialEffectPitch(whichEffect, pitch) end
+
+---@param whichEffect effect
+---@param roll real
+function BlzSetSpecialEffectRoll(whichEffect, roll) end
+
+---@param whichEffect effect
+---@param x real
+function BlzSetSpecialEffectX(whichEffect, x) end
+
+---@param whichEffect effect
+---@param y real
+function BlzSetSpecialEffectY(whichEffect, y) end
+
+---@param whichEffect effect
+---@param z real
+function BlzSetSpecialEffectZ(whichEffect, z) end
+
+---@param whichEffect effect
+---@param loc location
+function BlzSetSpecialEffectPositionLoc(whichEffect, loc) end
+
+---@param whichEffect effect
+---@return real
+function BlzGetLocalSpecialEffectX(whichEffect) end
+
+---@param whichEffect effect
+---@return real
+function BlzGetLocalSpecialEffectY(whichEffect) end
+
+---@param whichEffect effect
+---@return real
+function BlzGetLocalSpecialEffectZ(whichEffect) end
+
+---@param whichEffect effect
+function BlzSpecialEffectClearSubAnimations(whichEffect) end
+
+---@param whichEffect effect
+---@param whichSubAnim subanimtype
+function BlzSpecialEffectRemoveSubAnimation(whichEffect, whichSubAnim) end
+
+---@param whichEffect effect
+---@param whichSubAnim subanimtype
+function BlzSpecialEffectAddSubAnimation(whichEffect, whichSubAnim) end
+
+---@param whichEffect effect
+---@param whichAnim animtype
+function BlzPlaySpecialEffect(whichEffect, whichAnim) end
+
+---@param whichEffect effect
+---@param whichAnim animtype
+---@param timeScale real
+function BlzPlaySpecialEffectWithTimeScale(whichEffect, whichAnim, timeScale) end
+
+---@param whichAnim animtype
+---@return string
+function BlzGetAnimName(whichAnim) end
+
+---@param whichUnit unit
+---@return real
+function BlzGetUnitArmor(whichUnit) end
+
+---@param whichUnit unit
+---@param armorAmount real
+function BlzSetUnitArmor(whichUnit, armorAmount) end
+
+---@param whichUnit unit
+---@param abilId integer
+---@param flag boolean
+function BlzUnitHideAbility(whichUnit, abilId, flag) end
+
+---@param whichUnit unit
+---@param abilId integer
+---@param flag boolean
+---@param hideUI boolean
+function BlzUnitDisableAbility(whichUnit, abilId, flag, hideUI) end
+
+---@param whichUnit unit
+function BlzUnitCancelTimedLife(whichUnit) end
+
+---@param whichUnit unit
+---@return boolean
+function BlzIsUnitSelectable(whichUnit) end
+
+---@param whichUnit unit
+---@return boolean
+function BlzIsUnitInvulnerable(whichUnit) end
+
+---@param whichUnit unit
+function BlzUnitInterruptAttack(whichUnit) end
+
+---@param whichUnit unit
+---@return real
+function BlzGetUnitCollisionSize(whichUnit) end
+
+---@param abilId integer
+---@param level integer
+---@return integer
+function BlzGetAbilityManaCost(abilId, level) end
+
+---@param abilId integer
+---@param level integer
+---@return real
+function BlzGetAbilityCooldown(abilId, level) end
+
+---@param whichUnit unit
+---@param abilId integer
+---@param level integer
+---@param cooldown real
+function BlzSetUnitAbilityCooldown(whichUnit, abilId, level, cooldown) end
+
+---@param whichUnit unit
+---@param abilId integer
+---@param level integer
+---@return real
+function BlzGetUnitAbilityCooldown(whichUnit, abilId, level) end
+
+---@param whichUnit unit
+---@param abilId integer
+---@return real
+function BlzGetUnitAbilityCooldownRemaining(whichUnit, abilId) end
+
+---@param whichUnit unit
+---@param abilCode integer
+function BlzEndUnitAbilityCooldown(whichUnit, abilCode) end
+
+---@param whichUnit unit
+---@param abilCode integer
+---@param cooldown real
+function BlzStartUnitAbilityCooldown(whichUnit, abilCode, cooldown) end
+
+---@param whichUnit unit
+---@param abilId integer
+---@param level integer
+---@return integer
+function BlzGetUnitAbilityManaCost(whichUnit, abilId, level) end
+
+---@param whichUnit unit
+---@param abilId integer
+---@param level integer
+---@param manaCost integer
+function BlzSetUnitAbilityManaCost(whichUnit, abilId, level, manaCost) end
+
+---@param whichUnit unit
+---@return real
+function BlzGetLocalUnitZ(whichUnit) end
+
+---@param whichPlayer player
+---@param techid integer
+---@param levels integer
+function BlzDecPlayerTechResearched(whichPlayer, techid, levels) end
+
+---@param damage real
+function BlzSetEventDamage(damage) end
+
+---@return unit
+function BlzGetEventDamageTarget() end
+
+---@return attacktype
+function BlzGetEventAttackType() end
+
+---@return damagetype
+function BlzGetEventDamageType() end
+
+---@return weapontype
+function BlzGetEventWeaponType() end
+
+---@param attackType attacktype
+---@return boolean
+function BlzSetEventAttackType(attackType) end
+
+---@param damageType damagetype
+---@return boolean
+function BlzSetEventDamageType(damageType) end
+
+---@param weaponType weapontype
+---@return boolean
+function BlzSetEventWeaponType(weaponType) end
+
+---@return boolean
+function BlzGetEventIsAttack() end
+
+---@param whichUnit unit
+---@return real
+function BlzGetUnitZ(whichUnit) end
+
+---@param enableSelection boolean
+---@param enableSelectionCircle boolean
+function BlzEnableSelections(enableSelection, enableSelectionCircle) end
+
+---@return boolean
+function BlzIsSelectionEnabled() end
+
+---@return boolean
+function BlzIsSelectionCircleEnabled() end
+
+---@param whichSetup camerasetup
+---@param doPan boolean
+---@param forcedDuration real
+---@param easeInDuration real
+---@param easeOutDuration real
+---@param smoothFactor real
+function BlzCameraSetupApplyForceDurationSmooth(whichSetup, doPan, forcedDuration, easeInDuration, easeOutDuration, smoothFactor) end
+
+---@param enable boolean
+function BlzEnableTargetIndicator(enable) end
+
+---@return boolean
+function BlzIsTargetIndicatorEnabled() end
+
+---@param show boolean
+function BlzShowTerrain(show) end
+
+---@param show boolean
+function BlzShowSkyBox(show) end
+
+---@param fps integer
+function BlzStartRecording(fps) end
+
+function BlzEndRecording() end
+
+---@param whichUnit unit
+---@param show boolean
+function BlzShowUnitTeamGlow(whichUnit, show) end
+
+---@param frameType originframetype
+---@param index integer
+---@return framehandle
+function BlzGetOriginFrame(frameType, index) end
+
+---@param enable boolean
+function BlzEnableUIAutoPosition(enable) end
+
+---@param enable boolean
+function BlzHideOriginFrames(enable) end
+
+---@param a integer
+---@param r integer
+---@param g integer
+---@param b integer
+---@return integer
+function BlzConvertColor(a, r, g, b) end
+
+---@param TOCFile string
+---@return boolean
+function BlzLoadTOCFile(TOCFile) end
+
+---@param name string
+---@param owner framehandle
+---@param priority integer
+---@param createContext integer
+---@return framehandle
+function BlzCreateFrame(name, owner, priority, createContext) end
+
+---@param name string
+---@param owner framehandle
+---@param createContext integer
+---@return framehandle
+function BlzCreateSimpleFrame(name, owner, createContext) end
+
+---@param typeName string
+---@param name string
+---@param owner framehandle
+---@param inherits string
+---@param createContext integer
+---@return framehandle
+function BlzCreateFrameByType(typeName, name, owner, inherits, createContext) end
+
+---@param frame framehandle
+function BlzDestroyFrame(frame) end
+
+---@param frame framehandle
+---@param point framepointtype
+---@param relative framehandle
+---@param relativePoint framepointtype
+---@param x real
+---@param y real
+function BlzFrameSetPoint(frame, point, relative, relativePoint, x, y) end
+
+---@param frame framehandle
+---@param point framepointtype
+---@param x real
+---@param y real
+function BlzFrameSetAbsPoint(frame, point, x, y) end
+
+---@param frame framehandle
+function BlzFrameClearAllPoints(frame) end
+
+---@param frame framehandle
+---@param relative framehandle
+function BlzFrameSetAllPoints(frame, relative) end
+
+---@param frame framehandle
+---@param visible boolean
+function BlzFrameSetVisible(frame, visible) end
+
+---@param frame framehandle
+---@return boolean
+function BlzFrameIsVisible(frame) end
+
+---@param name string
+---@param createContext integer
+---@return framehandle
+function BlzGetFrameByName(name, createContext) end
+
+---@param frame framehandle
+---@return string
+function BlzFrameGetName(frame) end
+
+---@param frame framehandle
+function BlzFrameClick(frame) end
+
+---@param frame framehandle
+---@param text string
+function BlzFrameSetText(frame, text) end
+
+---@param frame framehandle
+---@return string
+function BlzFrameGetText(frame) end
+
+---@param frame framehandle
+---@param text string
+function BlzFrameAddText(frame, text) end
+
+---@param frame framehandle
+---@param size integer
+function BlzFrameSetTextSizeLimit(frame, size) end
+
+---@param frame framehandle
+---@return integer
+function BlzFrameGetTextSizeLimit(frame) end
+
+---@param frame framehandle
+---@param color integer
+function BlzFrameSetTextColor(frame, color) end
+
+---@param frame framehandle
+---@param flag boolean
+function BlzFrameSetFocus(frame, flag) end
+
+---@param frame framehandle
+---@param modelFile string
+---@param cameraIndex integer
+function BlzFrameSetModel(frame, modelFile, cameraIndex) end
+
+---@param frame framehandle
+---@param enabled boolean
+function BlzFrameSetEnable(frame, enabled) end
+
+---@param frame framehandle
+---@return boolean
+function BlzFrameGetEnable(frame) end
+
+---@param frame framehandle
+---@param alpha integer
+function BlzFrameSetAlpha(frame, alpha) end
+
+---@param frame framehandle
+---@return integer
+function BlzFrameGetAlpha(frame) end
+
+---@param frame framehandle
+---@param primaryProp integer
+---@param flags integer
+function BlzFrameSetSpriteAnimate(frame, primaryProp, flags) end
+
+---@param frame framehandle
+---@param texFile string
+---@param flag integer
+---@param blend boolean
+function BlzFrameSetTexture(frame, texFile, flag, blend) end
+
+---@param frame framehandle
+---@param scale real
+function BlzFrameSetScale(frame, scale) end
+
+---@param frame framehandle
+---@param tooltip framehandle
+function BlzFrameSetTooltip(frame, tooltip) end
+
+---@param frame framehandle
+---@param enable boolean
+function BlzFrameCageMouse(frame, enable) end
+
+---@param frame framehandle
+---@param value real
+function BlzFrameSetValue(frame, value) end
+
+---@param frame framehandle
+---@return real
+function BlzFrameGetValue(frame) end
+
+---@param frame framehandle
+---@param minValue real
+---@param maxValue real
+function BlzFrameSetMinMaxValue(frame, minValue, maxValue) end
+
+---@param frame framehandle
+---@param stepSize real
+function BlzFrameSetStepSize(frame, stepSize) end
+
+---@param frame framehandle
+---@param width real
+---@param height real
+function BlzFrameSetSize(frame, width, height) end
+
+---@param frame framehandle
+---@param color integer
+function BlzFrameSetVertexColor(frame, color) end
+
+---@param frame framehandle
+---@param level integer
+function BlzFrameSetLevel(frame, level) end
+
+---@param frame framehandle
+---@param parent framehandle
+function BlzFrameSetParent(frame, parent) end
+
+---@param frame framehandle
+---@return framehandle
+function BlzFrameGetParent(frame) end
+
+---@param frame framehandle
+---@return real
+function BlzFrameGetHeight(frame) end
+
+---@param frame framehandle
+---@return real
+function BlzFrameGetWidth(frame) end
+
+---@param frame framehandle
+---@param fileName string
+---@param height real
+---@param flags integer
+function BlzFrameSetFont(frame, fileName, height, flags) end
+
+---@param frame framehandle
+---@param vert textaligntype
+---@param horz textaligntype
+function BlzFrameSetTextAlignment(frame, vert, horz) end
+
+---@param frame framehandle
+---@return integer
+function BlzFrameGetChildrenCount(frame) end
+
+---@param frame framehandle
+---@param index integer
+---@return framehandle
+function BlzFrameGetChild(frame, index) end
+
+---@param whichTrigger trigger
+---@param frame framehandle
+---@param eventId frameeventtype
+---@return event
+function BlzTriggerRegisterFrameEvent(whichTrigger, frame, eventId) end
+
+---@return framehandle
+function BlzGetTriggerFrame() end
+
+---@return frameeventtype
+function BlzGetTriggerFrameEvent() end
+
+---@return real
+function BlzGetTriggerFrameValue() end
+
+---@return string
+function BlzGetTriggerFrameText() end
 

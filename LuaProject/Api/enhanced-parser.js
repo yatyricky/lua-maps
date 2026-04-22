@@ -31,10 +31,10 @@ class JassToLuaGenerator {
             /^\s*call\s+/,
             /^\s*return\s*$/,
             /^\s*return\s+/,
-            /^\s*if\s+/,
+            /^\s*if[\s(]/,
             /^\s*then\s*$/,
             /^\s*else\s*$/,
-            /^\s*elseif\s+/,
+            /^\s*elseif[\s(]/,
             /^\s*endif\s*$/,
             /^\s*loop\s*$/,
             /^\s*endloop\s*$/,
@@ -102,7 +102,7 @@ class JassToLuaGenerator {
             }
         }
         
-        output += `---@return ${type}\n`;
+        output += type !== "nothing" ? `---@return ${type}\n` : ""
         const argNames = argList.map(arg => arg.name).join(", ");
         output += `function ${name}(${argNames}) end\n\n`;
         
@@ -148,10 +148,10 @@ class JassToLuaGenerator {
 
     processComplexGlobal(line) {
         // Handle complex global declarations like "force array bj_FORCE_PLAYER"
-        const complexGlobalMatch = line.match(/^\s*(?<type>\w+)(?:\s+array)?\s+(?<name>\w+)(?:\s*=.*)?$/);
+        const complexGlobalMatch = line.match(/^\s*(?<type>\w+)(?<isArray>\s+array)?\s+(?<name>\w+)(?:\s*=.*)?$/);
         if (!complexGlobalMatch) return false;
         
-        const { type, name } = complexGlobalMatch.groups;
+        const { type, isArray, name } = complexGlobalMatch.groups;
         
         // Skip type definitions and function-like lines
         if (type === 'type' || line.includes('extends') || line.includes('takes') || line.includes('returns') || line.includes('function')) {
@@ -163,7 +163,8 @@ class JassToLuaGenerator {
             return false;
         }
         
-        let output = `---@type ${type}\n`;
+        const luaType = isArray ? `${type}[]` : type;
+        let output = `---@type ${luaType}\n`;
         output += `${name} = nil\n\n`;
         
         this.addToOutput(output);
@@ -230,16 +231,35 @@ class JassToLuaGenerator {
 }
 
 async function main() {
-    if (process.argv.length < 4) {
+    const debugMode = process.argv.includes('--debug');
+    const filteredArgs = process.argv.slice(2).filter(a => a !== '--debug');
+
+    if (filteredArgs.length === 0) {
+        // Default: process both standard WC3 files in the same directory as this script
+        const dir = path.dirname(path.resolve(process.argv[1]));
+        const pairs = [
+            { input: path.join(dir, 'common.j'),   prefix: path.join(dir, 'common') },
+            { input: path.join(dir, 'blizzard.j'), prefix: path.join(dir, 'blizzard') },
+        ];
+        for (const { input, prefix } of pairs) {
+            if (!fs.existsSync(input)) {
+                console.error(`Input file ${input} does not exist, skipping`);
+                continue;
+            }
+            const generator = new JassToLuaGenerator({ debug: debugMode });
+            await generator.processFile(input, prefix);
+        }
+        return;
+    }
+
+    if (filteredArgs.length < 2) {
         console.log("Usage: node enhanced-parser.js <input.j> <output-prefix> [--debug]");
-        console.log("Example: node enhanced-parser.js common.j common");
-        console.log("Debug mode: node enhanced-parser.js common.j common --debug");
+        console.log("       node enhanced-parser.js [--debug]   (processes common.j and blizzard.j)");
         process.exit(1);
     }
 
-    const inputFile = process.argv[2];
-    const outputPrefix = process.argv[3];
-    const debugMode = process.argv.includes('--debug');
+    const inputFile = filteredArgs[0];
+    const outputPrefix = filteredArgs[1];
 
     if (!fs.existsSync(inputFile)) {
         console.error(`Input file ${inputFile} does not exist`);
