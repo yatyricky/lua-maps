@@ -14,7 +14,7 @@
     },
     "diagnostics": {
         "disable": [
-            "undefined-global"
+            "lowercase-global"
         ],
         "workspaceDelay": 3000,
         "workspaceRate": 100
