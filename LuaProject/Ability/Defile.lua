@@ -127,7 +127,7 @@ EventCenter.RegisterPlayerUnitDamaged:Emit(function(caster, target, damage, _, _
         return
     end
 
-    if target == nil then
+    if caster == nil or target == nil then
         return
     end
 

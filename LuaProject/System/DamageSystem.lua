@@ -58,6 +58,10 @@ function cls:OnEnable()
             return
         end
 
+        if caster == nil or target == nil then
+            return
+        end
+
         local b = UnitAttribute.GetAttr(target)
         if b.dodge > 0 then
             if math.random() < b.dodge then
