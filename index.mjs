@@ -1,7 +1,11 @@
-const fs = require("fs")
-const path = require("path")
-const readline = require('readline')
-const child_process = require("child_process")
+import fs from "fs"
+import path from "path"
+import readline from "readline"
+import { execSync } from "child_process"
+import { fileURLToPath } from "url"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 function askQuestion(query) {
     const rl = readline.createInterface({
@@ -87,7 +91,7 @@ async function program() {
 
     // 3. node ./lua-bundler/bin.js ./Main.lua ./moonglade.w3x/war3map.lua -e "Api;lua-bundler"
     const mapNameNoExt = path.parse(mapName).name
-    child_process.execSync(`node ./lua-bundler/bin.js ./LuaProject/Main.lua ./${mapName}/war3map.lua -e "Api" -d "MAP_NAME_${mapNameNoExt}"`, {
+    execSync(`node ./lua-bundler/bin.js ./LuaProject/Main.lua ./${mapName}/war3map.lua -e "Api" -d "MAP_NAME_${mapNameNoExt}"`, {
         cwd: __dirname
     })
     
@@ -95,7 +99,7 @@ async function program() {
     // 4. launch
     if (process.argv[3] !== "-t") {
         const cmd = `"${exePath}" -launch -window -loadfile "${path.resolve(path.join(__dirname, mapName))}"`
-        child_process.execSync(cmd, {
+        execSync(cmd, {
             cwd: __dirname
         })
     }
