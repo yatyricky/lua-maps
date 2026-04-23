@@ -662,2051 +662,2051 @@ TRUE = nil
 ---@type integer
 JASS_MAX_ARRAY_SIZE = nil
 
----GetPlayerNeutralPassive()
+---GetPlayerNeutralPassive ( )
 ---@type integer
 PLAYER_NEUTRAL_PASSIVE = nil
 
----GetPlayerNeutralAggressive()
+---GetPlayerNeutralAggressive ( )
 ---@type integer
 PLAYER_NEUTRAL_AGGRESSIVE = nil
 
----ConvertPlayerColor(0)
+---ConvertPlayerColor ( 0 )
 ---@type playercolor
 PLAYER_COLOR_RED = nil
 
----ConvertPlayerColor(1)
+---ConvertPlayerColor ( 1 )
 ---@type playercolor
 PLAYER_COLOR_BLUE = nil
 
----ConvertPlayerColor(2)
+---ConvertPlayerColor ( 2 )
 ---@type playercolor
 PLAYER_COLOR_CYAN = nil
 
----ConvertPlayerColor(3)
+---ConvertPlayerColor ( 3 )
 ---@type playercolor
 PLAYER_COLOR_PURPLE = nil
 
----ConvertPlayerColor(4)
+---ConvertPlayerColor ( 4 )
 ---@type playercolor
 PLAYER_COLOR_YELLOW = nil
 
----ConvertPlayerColor(5)
+---ConvertPlayerColor ( 5 )
 ---@type playercolor
 PLAYER_COLOR_ORANGE = nil
 
----ConvertPlayerColor(6)
+---ConvertPlayerColor ( 6 )
 ---@type playercolor
 PLAYER_COLOR_GREEN = nil
 
----ConvertPlayerColor(7)
+---ConvertPlayerColor ( 7 )
 ---@type playercolor
 PLAYER_COLOR_PINK = nil
 
----ConvertPlayerColor(8)
+---ConvertPlayerColor ( 8 )
 ---@type playercolor
 PLAYER_COLOR_LIGHT_GRAY = nil
 
----ConvertPlayerColor(9)
+---ConvertPlayerColor ( 9 )
 ---@type playercolor
 PLAYER_COLOR_LIGHT_BLUE = nil
 
----ConvertPlayerColor(10)
+---ConvertPlayerColor ( 10 )
 ---@type playercolor
 PLAYER_COLOR_AQUA = nil
 
----ConvertPlayerColor(11)
+---ConvertPlayerColor ( 11 )
 ---@type playercolor
 PLAYER_COLOR_BROWN = nil
 
----ConvertPlayerColor(12)
+---ConvertPlayerColor ( 12 )
 ---@type playercolor
 PLAYER_COLOR_MAROON = nil
 
----ConvertPlayerColor(13)
+---ConvertPlayerColor ( 13 )
 ---@type playercolor
 PLAYER_COLOR_NAVY = nil
 
----ConvertPlayerColor(14)
+---ConvertPlayerColor ( 14 )
 ---@type playercolor
 PLAYER_COLOR_TURQUOISE = nil
 
----ConvertPlayerColor(15)
+---ConvertPlayerColor ( 15 )
 ---@type playercolor
 PLAYER_COLOR_VIOLET = nil
 
----ConvertPlayerColor(16)
+---ConvertPlayerColor ( 16 )
 ---@type playercolor
 PLAYER_COLOR_WHEAT = nil
 
----ConvertPlayerColor(17)
+---ConvertPlayerColor ( 17 )
 ---@type playercolor
 PLAYER_COLOR_PEACH = nil
 
----ConvertPlayerColor(18)
+---ConvertPlayerColor ( 18 )
 ---@type playercolor
 PLAYER_COLOR_MINT = nil
 
----ConvertPlayerColor(19)
+---ConvertPlayerColor ( 19 )
 ---@type playercolor
 PLAYER_COLOR_LAVENDER = nil
 
----ConvertPlayerColor(20)
+---ConvertPlayerColor ( 20 )
 ---@type playercolor
 PLAYER_COLOR_COAL = nil
 
----ConvertPlayerColor(21)
+---ConvertPlayerColor ( 21 )
 ---@type playercolor
 PLAYER_COLOR_SNOW = nil
 
----ConvertPlayerColor(22)
+---ConvertPlayerColor ( 22 )
 ---@type playercolor
 PLAYER_COLOR_EMERALD = nil
 
----ConvertPlayerColor(23)
+---ConvertPlayerColor ( 23 )
 ---@type playercolor
 PLAYER_COLOR_PEANUT = nil
 
----ConvertRace(1)
+---ConvertRace ( 1 )
 ---@type race
 RACE_HUMAN = nil
 
----ConvertRace(2)
+---ConvertRace ( 2 )
 ---@type race
 RACE_ORC = nil
 
----ConvertRace(3)
+---ConvertRace ( 3 )
 ---@type race
 RACE_UNDEAD = nil
 
----ConvertRace(4)
+---ConvertRace ( 4 )
 ---@type race
 RACE_NIGHTELF = nil
 
----ConvertRace(5)
+---ConvertRace ( 5 )
 ---@type race
 RACE_DEMON = nil
 
----ConvertRace(7)
+---ConvertRace ( 7 )
 ---@type race
 RACE_OTHER = nil
 
----ConvertPlayerGameResult(0)
+---ConvertPlayerGameResult ( 0 )
 ---@type playergameresult
 PLAYER_GAME_RESULT_VICTORY = nil
 
----ConvertPlayerGameResult(1)
+---ConvertPlayerGameResult ( 1 )
 ---@type playergameresult
 PLAYER_GAME_RESULT_DEFEAT = nil
 
----ConvertPlayerGameResult(2)
+---ConvertPlayerGameResult ( 2 )
 ---@type playergameresult
 PLAYER_GAME_RESULT_TIE = nil
 
----ConvertPlayerGameResult(3)
+---ConvertPlayerGameResult ( 3 )
 ---@type playergameresult
 PLAYER_GAME_RESULT_NEUTRAL = nil
 
----ConvertAllianceType(0)
+---ConvertAllianceType ( 0 )
 ---@type alliancetype
 ALLIANCE_PASSIVE = nil
 
----ConvertAllianceType(1)
+---ConvertAllianceType ( 1 )
 ---@type alliancetype
 ALLIANCE_HELP_REQUEST = nil
 
----ConvertAllianceType(2)
+---ConvertAllianceType ( 2 )
 ---@type alliancetype
 ALLIANCE_HELP_RESPONSE = nil
 
----ConvertAllianceType(3)
+---ConvertAllianceType ( 3 )
 ---@type alliancetype
 ALLIANCE_SHARED_XP = nil
 
----ConvertAllianceType(4)
+---ConvertAllianceType ( 4 )
 ---@type alliancetype
 ALLIANCE_SHARED_SPELLS = nil
 
----ConvertAllianceType(5)
+---ConvertAllianceType ( 5 )
 ---@type alliancetype
 ALLIANCE_SHARED_VISION = nil
 
----ConvertAllianceType(6)
+---ConvertAllianceType ( 6 )
 ---@type alliancetype
 ALLIANCE_SHARED_CONTROL = nil
 
----ConvertAllianceType(7)
+---ConvertAllianceType ( 7 )
 ---@type alliancetype
 ALLIANCE_SHARED_ADVANCED_CONTROL = nil
 
----ConvertAllianceType(8)
+---ConvertAllianceType ( 8 )
 ---@type alliancetype
 ALLIANCE_RESCUABLE = nil
 
----ConvertAllianceType(9)
+---ConvertAllianceType ( 9 )
 ---@type alliancetype
 ALLIANCE_SHARED_VISION_FORCED = nil
 
----ConvertVersion(0)
+---ConvertVersion ( 0 )
 ---@type version
 VERSION_REIGN_OF_CHAOS = nil
 
----ConvertVersion(1)
+---ConvertVersion ( 1 )
 ---@type version
 VERSION_FROZEN_THRONE = nil
 
----ConvertAttackType(0)
+---ConvertAttackType ( 0 )
 ---@type attacktype
 ATTACK_TYPE_NORMAL = nil
 
----ConvertAttackType(1)
+---ConvertAttackType ( 1 )
 ---@type attacktype
 ATTACK_TYPE_MELEE = nil
 
----ConvertAttackType(2)
+---ConvertAttackType ( 2 )
 ---@type attacktype
 ATTACK_TYPE_PIERCE = nil
 
----ConvertAttackType(3)
+---ConvertAttackType ( 3 )
 ---@type attacktype
 ATTACK_TYPE_SIEGE = nil
 
----ConvertAttackType(4)
+---ConvertAttackType ( 4 )
 ---@type attacktype
 ATTACK_TYPE_MAGIC = nil
 
----ConvertAttackType(5)
+---ConvertAttackType ( 5 )
 ---@type attacktype
 ATTACK_TYPE_CHAOS = nil
 
----ConvertAttackType(6)
+---ConvertAttackType ( 6 )
 ---@type attacktype
 ATTACK_TYPE_HERO = nil
 
----ConvertDamageType(0)
+---ConvertDamageType ( 0 )
 ---@type damagetype
 DAMAGE_TYPE_UNKNOWN = nil
 
----ConvertDamageType(4)
+---ConvertDamageType ( 4 )
 ---@type damagetype
 DAMAGE_TYPE_NORMAL = nil
 
----ConvertDamageType(5)
+---ConvertDamageType ( 5 )
 ---@type damagetype
 DAMAGE_TYPE_ENHANCED = nil
 
----ConvertDamageType(8)
+---ConvertDamageType ( 8 )
 ---@type damagetype
 DAMAGE_TYPE_FIRE = nil
 
----ConvertDamageType(9)
+---ConvertDamageType ( 9 )
 ---@type damagetype
 DAMAGE_TYPE_COLD = nil
 
----ConvertDamageType(10)
+---ConvertDamageType ( 10 )
 ---@type damagetype
 DAMAGE_TYPE_LIGHTNING = nil
 
----ConvertDamageType(11)
+---ConvertDamageType ( 11 )
 ---@type damagetype
 DAMAGE_TYPE_POISON = nil
 
----ConvertDamageType(12)
+---ConvertDamageType ( 12 )
 ---@type damagetype
 DAMAGE_TYPE_DISEASE = nil
 
----ConvertDamageType(13)
+---ConvertDamageType ( 13 )
 ---@type damagetype
 DAMAGE_TYPE_DIVINE = nil
 
----ConvertDamageType(14)
+---ConvertDamageType ( 14 )
 ---@type damagetype
 DAMAGE_TYPE_MAGIC = nil
 
----ConvertDamageType(15)
+---ConvertDamageType ( 15 )
 ---@type damagetype
 DAMAGE_TYPE_SONIC = nil
 
----ConvertDamageType(16)
+---ConvertDamageType ( 16 )
 ---@type damagetype
 DAMAGE_TYPE_ACID = nil
 
----ConvertDamageType(17)
+---ConvertDamageType ( 17 )
 ---@type damagetype
 DAMAGE_TYPE_FORCE = nil
 
----ConvertDamageType(18)
+---ConvertDamageType ( 18 )
 ---@type damagetype
 DAMAGE_TYPE_DEATH = nil
 
----ConvertDamageType(19)
+---ConvertDamageType ( 19 )
 ---@type damagetype
 DAMAGE_TYPE_MIND = nil
 
----ConvertDamageType(20)
+---ConvertDamageType ( 20 )
 ---@type damagetype
 DAMAGE_TYPE_PLANT = nil
 
----ConvertDamageType(21)
+---ConvertDamageType ( 21 )
 ---@type damagetype
 DAMAGE_TYPE_DEFENSIVE = nil
 
----ConvertDamageType(22)
+---ConvertDamageType ( 22 )
 ---@type damagetype
 DAMAGE_TYPE_DEMOLITION = nil
 
----ConvertDamageType(23)
+---ConvertDamageType ( 23 )
 ---@type damagetype
 DAMAGE_TYPE_SLOW_POISON = nil
 
----ConvertDamageType(24)
+---ConvertDamageType ( 24 )
 ---@type damagetype
 DAMAGE_TYPE_SPIRIT_LINK = nil
 
----ConvertDamageType(25)
+---ConvertDamageType ( 25 )
 ---@type damagetype
 DAMAGE_TYPE_SHADOW_STRIKE = nil
 
----ConvertDamageType(26)
+---ConvertDamageType ( 26 )
 ---@type damagetype
 DAMAGE_TYPE_UNIVERSAL = nil
 
----ConvertWeaponType(0)
+---ConvertWeaponType ( 0 )
 ---@type weapontype
 WEAPON_TYPE_WHOKNOWS = nil
 
----ConvertWeaponType(1)
+---ConvertWeaponType ( 1 )
 ---@type weapontype
 WEAPON_TYPE_METAL_LIGHT_CHOP = nil
 
----ConvertWeaponType(2)
+---ConvertWeaponType ( 2 )
 ---@type weapontype
 WEAPON_TYPE_METAL_MEDIUM_CHOP = nil
 
----ConvertWeaponType(3)
+---ConvertWeaponType ( 3 )
 ---@type weapontype
 WEAPON_TYPE_METAL_HEAVY_CHOP = nil
 
----ConvertWeaponType(4)
+---ConvertWeaponType ( 4 )
 ---@type weapontype
 WEAPON_TYPE_METAL_LIGHT_SLICE = nil
 
----ConvertWeaponType(5)
+---ConvertWeaponType ( 5 )
 ---@type weapontype
 WEAPON_TYPE_METAL_MEDIUM_SLICE = nil
 
----ConvertWeaponType(6)
+---ConvertWeaponType ( 6 )
 ---@type weapontype
 WEAPON_TYPE_METAL_HEAVY_SLICE = nil
 
----ConvertWeaponType(7)
+---ConvertWeaponType ( 7 )
 ---@type weapontype
 WEAPON_TYPE_METAL_MEDIUM_BASH = nil
 
----ConvertWeaponType(8)
+---ConvertWeaponType ( 8 )
 ---@type weapontype
 WEAPON_TYPE_METAL_HEAVY_BASH = nil
 
----ConvertWeaponType(9)
+---ConvertWeaponType ( 9 )
 ---@type weapontype
 WEAPON_TYPE_METAL_MEDIUM_STAB = nil
 
----ConvertWeaponType(10)
+---ConvertWeaponType ( 10 )
 ---@type weapontype
 WEAPON_TYPE_METAL_HEAVY_STAB = nil
 
----ConvertWeaponType(11)
+---ConvertWeaponType ( 11 )
 ---@type weapontype
 WEAPON_TYPE_WOOD_LIGHT_SLICE = nil
 
----ConvertWeaponType(12)
+---ConvertWeaponType ( 12 )
 ---@type weapontype
 WEAPON_TYPE_WOOD_MEDIUM_SLICE = nil
 
----ConvertWeaponType(13)
+---ConvertWeaponType ( 13 )
 ---@type weapontype
 WEAPON_TYPE_WOOD_HEAVY_SLICE = nil
 
----ConvertWeaponType(14)
+---ConvertWeaponType ( 14 )
 ---@type weapontype
 WEAPON_TYPE_WOOD_LIGHT_BASH = nil
 
----ConvertWeaponType(15)
+---ConvertWeaponType ( 15 )
 ---@type weapontype
 WEAPON_TYPE_WOOD_MEDIUM_BASH = nil
 
----ConvertWeaponType(16)
+---ConvertWeaponType ( 16 )
 ---@type weapontype
 WEAPON_TYPE_WOOD_HEAVY_BASH = nil
 
----ConvertWeaponType(17)
+---ConvertWeaponType ( 17 )
 ---@type weapontype
 WEAPON_TYPE_WOOD_LIGHT_STAB = nil
 
----ConvertWeaponType(18)
+---ConvertWeaponType ( 18 )
 ---@type weapontype
 WEAPON_TYPE_WOOD_MEDIUM_STAB = nil
 
----ConvertWeaponType(19)
+---ConvertWeaponType ( 19 )
 ---@type weapontype
 WEAPON_TYPE_CLAW_LIGHT_SLICE = nil
 
----ConvertWeaponType(20)
+---ConvertWeaponType ( 20 )
 ---@type weapontype
 WEAPON_TYPE_CLAW_MEDIUM_SLICE = nil
 
----ConvertWeaponType(21)
+---ConvertWeaponType ( 21 )
 ---@type weapontype
 WEAPON_TYPE_CLAW_HEAVY_SLICE = nil
 
----ConvertWeaponType(22)
+---ConvertWeaponType ( 22 )
 ---@type weapontype
 WEAPON_TYPE_AXE_MEDIUM_CHOP = nil
 
----ConvertWeaponType(23)
+---ConvertWeaponType ( 23 )
 ---@type weapontype
 WEAPON_TYPE_ROCK_HEAVY_BASH = nil
 
----ConvertPathingType(0)
+---ConvertPathingType ( 0 )
 ---@type pathingtype
 PATHING_TYPE_ANY = nil
 
----ConvertPathingType(1)
+---ConvertPathingType ( 1 )
 ---@type pathingtype
 PATHING_TYPE_WALKABILITY = nil
 
----ConvertPathingType(2)
+---ConvertPathingType ( 2 )
 ---@type pathingtype
 PATHING_TYPE_FLYABILITY = nil
 
----ConvertPathingType(3)
+---ConvertPathingType ( 3 )
 ---@type pathingtype
 PATHING_TYPE_BUILDABILITY = nil
 
----ConvertPathingType(4)
+---ConvertPathingType ( 4 )
 ---@type pathingtype
 PATHING_TYPE_PEONHARVESTPATHING = nil
 
----ConvertPathingType(5)
+---ConvertPathingType ( 5 )
 ---@type pathingtype
 PATHING_TYPE_BLIGHTPATHING = nil
 
----ConvertPathingType(6)
+---ConvertPathingType ( 6 )
 ---@type pathingtype
 PATHING_TYPE_FLOATABILITY = nil
 
----ConvertPathingType(7)
+---ConvertPathingType ( 7 )
 ---@type pathingtype
 PATHING_TYPE_AMPHIBIOUSPATHING = nil
 
----ConvertMouseButtonType(1)
+---ConvertMouseButtonType ( 1 )
 ---@type mousebuttontype
 MOUSE_BUTTON_TYPE_LEFT = nil
 
----ConvertMouseButtonType(2)
+---ConvertMouseButtonType ( 2 )
 ---@type mousebuttontype
 MOUSE_BUTTON_TYPE_MIDDLE = nil
 
----ConvertMouseButtonType(3)
+---ConvertMouseButtonType ( 3 )
 ---@type mousebuttontype
 MOUSE_BUTTON_TYPE_RIGHT = nil
 
----ConvertAnimType(0)
+---ConvertAnimType ( 0 )
 ---@type animtype
 ANIM_TYPE_BIRTH = nil
 
----ConvertAnimType(1)
+---ConvertAnimType ( 1 )
 ---@type animtype
 ANIM_TYPE_DEATH = nil
 
----ConvertAnimType(2)
+---ConvertAnimType ( 2 )
 ---@type animtype
 ANIM_TYPE_DECAY = nil
 
----ConvertAnimType(3)
+---ConvertAnimType ( 3 )
 ---@type animtype
 ANIM_TYPE_DISSIPATE = nil
 
----ConvertAnimType(4)
+---ConvertAnimType ( 4 )
 ---@type animtype
 ANIM_TYPE_STAND = nil
 
----ConvertAnimType(5)
+---ConvertAnimType ( 5 )
 ---@type animtype
 ANIM_TYPE_WALK = nil
 
----ConvertAnimType(6)
+---ConvertAnimType ( 6 )
 ---@type animtype
 ANIM_TYPE_ATTACK = nil
 
----ConvertAnimType(7)
+---ConvertAnimType ( 7 )
 ---@type animtype
 ANIM_TYPE_MORPH = nil
 
----ConvertAnimType(8)
+---ConvertAnimType ( 8 )
 ---@type animtype
 ANIM_TYPE_SLEEP = nil
 
----ConvertAnimType(9)
+---ConvertAnimType ( 9 )
 ---@type animtype
 ANIM_TYPE_SPELL = nil
 
----ConvertAnimType(10)
+---ConvertAnimType ( 10 )
 ---@type animtype
 ANIM_TYPE_PORTRAIT = nil
 
----ConvertSubAnimType(11)
+---ConvertSubAnimType ( 11 )
 ---@type subanimtype
 SUBANIM_TYPE_ROOTED = nil
 
----ConvertSubAnimType(12)
+---ConvertSubAnimType ( 12 )
 ---@type subanimtype
 SUBANIM_TYPE_ALTERNATE_EX = nil
 
----ConvertSubAnimType(13)
+---ConvertSubAnimType ( 13 )
 ---@type subanimtype
 SUBANIM_TYPE_LOOPING = nil
 
----ConvertSubAnimType(14)
+---ConvertSubAnimType ( 14 )
 ---@type subanimtype
 SUBANIM_TYPE_SLAM = nil
 
----ConvertSubAnimType(15)
+---ConvertSubAnimType ( 15 )
 ---@type subanimtype
 SUBANIM_TYPE_THROW = nil
 
----ConvertSubAnimType(16)
+---ConvertSubAnimType ( 16 )
 ---@type subanimtype
 SUBANIM_TYPE_SPIKED = nil
 
----ConvertSubAnimType(17)
+---ConvertSubAnimType ( 17 )
 ---@type subanimtype
 SUBANIM_TYPE_FAST = nil
 
----ConvertSubAnimType(18)
+---ConvertSubAnimType ( 18 )
 ---@type subanimtype
 SUBANIM_TYPE_SPIN = nil
 
----ConvertSubAnimType(19)
+---ConvertSubAnimType ( 19 )
 ---@type subanimtype
 SUBANIM_TYPE_READY = nil
 
----ConvertSubAnimType(20)
+---ConvertSubAnimType ( 20 )
 ---@type subanimtype
 SUBANIM_TYPE_CHANNEL = nil
 
----ConvertSubAnimType(21)
+---ConvertSubAnimType ( 21 )
 ---@type subanimtype
 SUBANIM_TYPE_DEFEND = nil
 
----ConvertSubAnimType(22)
+---ConvertSubAnimType ( 22 )
 ---@type subanimtype
 SUBANIM_TYPE_VICTORY = nil
 
----ConvertSubAnimType(23)
+---ConvertSubAnimType ( 23 )
 ---@type subanimtype
 SUBANIM_TYPE_TURN = nil
 
----ConvertSubAnimType(24)
+---ConvertSubAnimType ( 24 )
 ---@type subanimtype
 SUBANIM_TYPE_LEFT = nil
 
----ConvertSubAnimType(25)
+---ConvertSubAnimType ( 25 )
 ---@type subanimtype
 SUBANIM_TYPE_RIGHT = nil
 
----ConvertSubAnimType(26)
+---ConvertSubAnimType ( 26 )
 ---@type subanimtype
 SUBANIM_TYPE_FIRE = nil
 
----ConvertSubAnimType(27)
+---ConvertSubAnimType ( 27 )
 ---@type subanimtype
 SUBANIM_TYPE_FLESH = nil
 
----ConvertSubAnimType(28)
+---ConvertSubAnimType ( 28 )
 ---@type subanimtype
 SUBANIM_TYPE_HIT = nil
 
----ConvertSubAnimType(29)
+---ConvertSubAnimType ( 29 )
 ---@type subanimtype
 SUBANIM_TYPE_WOUNDED = nil
 
----ConvertSubAnimType(30)
+---ConvertSubAnimType ( 30 )
 ---@type subanimtype
 SUBANIM_TYPE_LIGHT = nil
 
----ConvertSubAnimType(31)
+---ConvertSubAnimType ( 31 )
 ---@type subanimtype
 SUBANIM_TYPE_MODERATE = nil
 
----ConvertSubAnimType(32)
+---ConvertSubAnimType ( 32 )
 ---@type subanimtype
 SUBANIM_TYPE_SEVERE = nil
 
----ConvertSubAnimType(33)
+---ConvertSubAnimType ( 33 )
 ---@type subanimtype
 SUBANIM_TYPE_CRITICAL = nil
 
----ConvertSubAnimType(34)
+---ConvertSubAnimType ( 34 )
 ---@type subanimtype
 SUBANIM_TYPE_COMPLETE = nil
 
----ConvertSubAnimType(35)
+---ConvertSubAnimType ( 35 )
 ---@type subanimtype
 SUBANIM_TYPE_GOLD = nil
 
----ConvertSubAnimType(36)
+---ConvertSubAnimType ( 36 )
 ---@type subanimtype
 SUBANIM_TYPE_LUMBER = nil
 
----ConvertSubAnimType(37)
+---ConvertSubAnimType ( 37 )
 ---@type subanimtype
 SUBANIM_TYPE_WORK = nil
 
----ConvertSubAnimType(38)
+---ConvertSubAnimType ( 38 )
 ---@type subanimtype
 SUBANIM_TYPE_TALK = nil
 
----ConvertSubAnimType(39)
+---ConvertSubAnimType ( 39 )
 ---@type subanimtype
 SUBANIM_TYPE_FIRST = nil
 
----ConvertSubAnimType(40)
+---ConvertSubAnimType ( 40 )
 ---@type subanimtype
 SUBANIM_TYPE_SECOND = nil
 
----ConvertSubAnimType(41)
+---ConvertSubAnimType ( 41 )
 ---@type subanimtype
 SUBANIM_TYPE_THIRD = nil
 
----ConvertSubAnimType(42)
+---ConvertSubAnimType ( 42 )
 ---@type subanimtype
 SUBANIM_TYPE_FOURTH = nil
 
----ConvertSubAnimType(43)
+---ConvertSubAnimType ( 43 )
 ---@type subanimtype
 SUBANIM_TYPE_FIFTH = nil
 
----ConvertSubAnimType(44)
+---ConvertSubAnimType ( 44 )
 ---@type subanimtype
 SUBANIM_TYPE_ONE = nil
 
----ConvertSubAnimType(45)
+---ConvertSubAnimType ( 45 )
 ---@type subanimtype
 SUBANIM_TYPE_TWO = nil
 
----ConvertSubAnimType(46)
+---ConvertSubAnimType ( 46 )
 ---@type subanimtype
 SUBANIM_TYPE_THREE = nil
 
----ConvertSubAnimType(47)
+---ConvertSubAnimType ( 47 )
 ---@type subanimtype
 SUBANIM_TYPE_FOUR = nil
 
----ConvertSubAnimType(48)
+---ConvertSubAnimType ( 48 )
 ---@type subanimtype
 SUBANIM_TYPE_FIVE = nil
 
----ConvertSubAnimType(49)
+---ConvertSubAnimType ( 49 )
 ---@type subanimtype
 SUBANIM_TYPE_SMALL = nil
 
----ConvertSubAnimType(50)
+---ConvertSubAnimType ( 50 )
 ---@type subanimtype
 SUBANIM_TYPE_MEDIUM = nil
 
----ConvertSubAnimType(51)
+---ConvertSubAnimType ( 51 )
 ---@type subanimtype
 SUBANIM_TYPE_LARGE = nil
 
----ConvertSubAnimType(52)
+---ConvertSubAnimType ( 52 )
 ---@type subanimtype
 SUBANIM_TYPE_UPGRADE = nil
 
----ConvertSubAnimType(53)
+---ConvertSubAnimType ( 53 )
 ---@type subanimtype
 SUBANIM_TYPE_DRAIN = nil
 
----ConvertSubAnimType(54)
+---ConvertSubAnimType ( 54 )
 ---@type subanimtype
 SUBANIM_TYPE_FILL = nil
 
----ConvertSubAnimType(55)
+---ConvertSubAnimType ( 55 )
 ---@type subanimtype
 SUBANIM_TYPE_CHAINLIGHTNING = nil
 
----ConvertSubAnimType(56)
+---ConvertSubAnimType ( 56 )
 ---@type subanimtype
 SUBANIM_TYPE_EATTREE = nil
 
----ConvertSubAnimType(57)
+---ConvertSubAnimType ( 57 )
 ---@type subanimtype
 SUBANIM_TYPE_PUKE = nil
 
----ConvertSubAnimType(58)
+---ConvertSubAnimType ( 58 )
 ---@type subanimtype
 SUBANIM_TYPE_FLAIL = nil
 
----ConvertSubAnimType(59)
+---ConvertSubAnimType ( 59 )
 ---@type subanimtype
 SUBANIM_TYPE_OFF = nil
 
----ConvertSubAnimType(60)
+---ConvertSubAnimType ( 60 )
 ---@type subanimtype
 SUBANIM_TYPE_SWIM = nil
 
----ConvertSubAnimType(61)
+---ConvertSubAnimType ( 61 )
 ---@type subanimtype
 SUBANIM_TYPE_ENTANGLE = nil
 
----ConvertSubAnimType(62)
+---ConvertSubAnimType ( 62 )
 ---@type subanimtype
 SUBANIM_TYPE_BERSERK = nil
 
----ConvertRacePref(1)
+---ConvertRacePref ( 1 )
 ---@type racepreference
 RACE_PREF_HUMAN = nil
 
----ConvertRacePref(2)
+---ConvertRacePref ( 2 )
 ---@type racepreference
 RACE_PREF_ORC = nil
 
----ConvertRacePref(4)
+---ConvertRacePref ( 4 )
 ---@type racepreference
 RACE_PREF_NIGHTELF = nil
 
----ConvertRacePref(8)
+---ConvertRacePref ( 8 )
 ---@type racepreference
 RACE_PREF_UNDEAD = nil
 
----ConvertRacePref(16)
+---ConvertRacePref ( 16 )
 ---@type racepreference
 RACE_PREF_DEMON = nil
 
----ConvertRacePref(32)
+---ConvertRacePref ( 32 )
 ---@type racepreference
 RACE_PREF_RANDOM = nil
 
----ConvertRacePref(64)
+---ConvertRacePref ( 64 )
 ---@type racepreference
 RACE_PREF_USER_SELECTABLE = nil
 
----ConvertMapControl(0)
+---ConvertMapControl ( 0 )
 ---@type mapcontrol
 MAP_CONTROL_USER = nil
 
----ConvertMapControl(1)
+---ConvertMapControl ( 1 )
 ---@type mapcontrol
 MAP_CONTROL_COMPUTER = nil
 
----ConvertMapControl(2)
+---ConvertMapControl ( 2 )
 ---@type mapcontrol
 MAP_CONTROL_RESCUABLE = nil
 
----ConvertMapControl(3)
+---ConvertMapControl ( 3 )
 ---@type mapcontrol
 MAP_CONTROL_NEUTRAL = nil
 
----ConvertMapControl(4)
+---ConvertMapControl ( 4 )
 ---@type mapcontrol
 MAP_CONTROL_CREEP = nil
 
----ConvertMapControl(5)
+---ConvertMapControl ( 5 )
 ---@type mapcontrol
 MAP_CONTROL_NONE = nil
 
----ConvertGameType(1)
+---ConvertGameType ( 1 )
 ---@type gametype
 GAME_TYPE_MELEE = nil
 
----ConvertGameType(2)
+---ConvertGameType ( 2 )
 ---@type gametype
 GAME_TYPE_FFA = nil
 
----ConvertGameType(4)
+---ConvertGameType ( 4 )
 ---@type gametype
 GAME_TYPE_USE_MAP_SETTINGS = nil
 
----ConvertGameType(8)
+---ConvertGameType ( 8 )
 ---@type gametype
 GAME_TYPE_BLIZ = nil
 
----ConvertGameType(16)
+---ConvertGameType ( 16 )
 ---@type gametype
 GAME_TYPE_ONE_ON_ONE = nil
 
----ConvertGameType(32)
+---ConvertGameType ( 32 )
 ---@type gametype
 GAME_TYPE_TWO_TEAM_PLAY = nil
 
----ConvertGameType(64)
+---ConvertGameType ( 64 )
 ---@type gametype
 GAME_TYPE_THREE_TEAM_PLAY = nil
 
----ConvertGameType(128)
+---ConvertGameType ( 128 )
 ---@type gametype
 GAME_TYPE_FOUR_TEAM_PLAY = nil
 
----ConvertMapFlag(1)
+---ConvertMapFlag ( 1 )
 ---@type mapflag
 MAP_FOG_HIDE_TERRAIN = nil
 
----ConvertMapFlag(2)
+---ConvertMapFlag ( 2 )
 ---@type mapflag
 MAP_FOG_MAP_EXPLORED = nil
 
----ConvertMapFlag(4)
+---ConvertMapFlag ( 4 )
 ---@type mapflag
 MAP_FOG_ALWAYS_VISIBLE = nil
 
----ConvertMapFlag(8)
+---ConvertMapFlag ( 8 )
 ---@type mapflag
 MAP_USE_HANDICAPS = nil
 
----ConvertMapFlag(16)
+---ConvertMapFlag ( 16 )
 ---@type mapflag
 MAP_OBSERVERS = nil
 
----ConvertMapFlag(32)
+---ConvertMapFlag ( 32 )
 ---@type mapflag
 MAP_OBSERVERS_ON_DEATH = nil
 
----ConvertMapFlag(128)
+---ConvertMapFlag ( 128 )
 ---@type mapflag
 MAP_FIXED_COLORS = nil
 
----ConvertMapFlag(256)
+---ConvertMapFlag ( 256 )
 ---@type mapflag
 MAP_LOCK_RESOURCE_TRADING = nil
 
----ConvertMapFlag(512)
+---ConvertMapFlag ( 512 )
 ---@type mapflag
 MAP_RESOURCE_TRADING_ALLIES_ONLY = nil
 
----ConvertMapFlag(1024)
+---ConvertMapFlag ( 1024 )
 ---@type mapflag
 MAP_LOCK_ALLIANCE_CHANGES = nil
 
----ConvertMapFlag(2048)
+---ConvertMapFlag ( 2048 )
 ---@type mapflag
 MAP_ALLIANCE_CHANGES_HIDDEN = nil
 
----ConvertMapFlag(4096)
+---ConvertMapFlag ( 4096 )
 ---@type mapflag
 MAP_CHEATS = nil
 
----ConvertMapFlag(8192)
+---ConvertMapFlag ( 8192 )
 ---@type mapflag
 MAP_CHEATS_HIDDEN = nil
 
----ConvertMapFlag(8192*2)
+---ConvertMapFlag ( 8192 2 )
 ---@type mapflag
 MAP_LOCK_SPEED = nil
 
----ConvertMapFlag(8192*4)
+---ConvertMapFlag ( 8192 4 )
 ---@type mapflag
 MAP_LOCK_RANDOM_SEED = nil
 
----ConvertMapFlag(8192*8)
+---ConvertMapFlag ( 8192 8 )
 ---@type mapflag
 MAP_SHARED_ADVANCED_CONTROL = nil
 
----ConvertMapFlag(8192*16)
+---ConvertMapFlag ( 8192 16 )
 ---@type mapflag
 MAP_RANDOM_HERO = nil
 
----ConvertMapFlag(8192*32)
+---ConvertMapFlag ( 8192 32 )
 ---@type mapflag
 MAP_RANDOM_RACES = nil
 
----ConvertMapFlag(8192*64)
+---ConvertMapFlag ( 8192 64 )
 ---@type mapflag
 MAP_RELOADED = nil
 
----ConvertPlacement(0)   // random among all slots
+---ConvertPlacement ( 0 )
 ---@type placement
 MAP_PLACEMENT_RANDOM = nil
 
----ConvertPlacement(1)   // player 0 in start loc 0...
+---ConvertPlacement ( 1 )
 ---@type placement
 MAP_PLACEMENT_FIXED = nil
 
----ConvertPlacement(2)   // whatever was specified by the script
+---ConvertPlacement ( 2 )
 ---@type placement
 MAP_PLACEMENT_USE_MAP_SETTINGS = nil
 
----ConvertPlacement(3)   // random with allies next to each other
+---ConvertPlacement ( 3 )
 ---@type placement
 MAP_PLACEMENT_TEAMS_TOGETHER = nil
 
----ConvertStartLocPrio(0)
+---ConvertStartLocPrio ( 0 )
 ---@type startlocprio
 MAP_LOC_PRIO_LOW = nil
 
----ConvertStartLocPrio(1)
+---ConvertStartLocPrio ( 1 )
 ---@type startlocprio
 MAP_LOC_PRIO_HIGH = nil
 
----ConvertStartLocPrio(2)
+---ConvertStartLocPrio ( 2 )
 ---@type startlocprio
 MAP_LOC_PRIO_NOT = nil
 
----ConvertMapDensity(0)
+---ConvertMapDensity ( 0 )
 ---@type mapdensity
 MAP_DENSITY_NONE = nil
 
----ConvertMapDensity(1)
+---ConvertMapDensity ( 1 )
 ---@type mapdensity
 MAP_DENSITY_LIGHT = nil
 
----ConvertMapDensity(2)
+---ConvertMapDensity ( 2 )
 ---@type mapdensity
 MAP_DENSITY_MEDIUM = nil
 
----ConvertMapDensity(3)
+---ConvertMapDensity ( 3 )
 ---@type mapdensity
 MAP_DENSITY_HEAVY = nil
 
----ConvertGameDifficulty(0)
+---ConvertGameDifficulty ( 0 )
 ---@type gamedifficulty
 MAP_DIFFICULTY_EASY = nil
 
----ConvertGameDifficulty(1)
+---ConvertGameDifficulty ( 1 )
 ---@type gamedifficulty
 MAP_DIFFICULTY_NORMAL = nil
 
----ConvertGameDifficulty(2)
+---ConvertGameDifficulty ( 2 )
 ---@type gamedifficulty
 MAP_DIFFICULTY_HARD = nil
 
----ConvertGameDifficulty(3)
+---ConvertGameDifficulty ( 3 )
 ---@type gamedifficulty
 MAP_DIFFICULTY_INSANE = nil
 
----ConvertGameSpeed(0)
+---ConvertGameSpeed ( 0 )
 ---@type gamespeed
 MAP_SPEED_SLOWEST = nil
 
----ConvertGameSpeed(1)
+---ConvertGameSpeed ( 1 )
 ---@type gamespeed
 MAP_SPEED_SLOW = nil
 
----ConvertGameSpeed(2)
+---ConvertGameSpeed ( 2 )
 ---@type gamespeed
 MAP_SPEED_NORMAL = nil
 
----ConvertGameSpeed(3)
+---ConvertGameSpeed ( 3 )
 ---@type gamespeed
 MAP_SPEED_FAST = nil
 
----ConvertGameSpeed(4)
+---ConvertGameSpeed ( 4 )
 ---@type gamespeed
 MAP_SPEED_FASTEST = nil
 
----ConvertPlayerSlotState(0)
+---ConvertPlayerSlotState ( 0 )
 ---@type playerslotstate
 PLAYER_SLOT_STATE_EMPTY = nil
 
----ConvertPlayerSlotState(1)
+---ConvertPlayerSlotState ( 1 )
 ---@type playerslotstate
 PLAYER_SLOT_STATE_PLAYING = nil
 
----ConvertPlayerSlotState(2)
+---ConvertPlayerSlotState ( 2 )
 ---@type playerslotstate
 PLAYER_SLOT_STATE_LEFT = nil
 
----ConvertVolumeGroup(0)
+---ConvertVolumeGroup ( 0 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_UNITMOVEMENT = nil
 
----ConvertVolumeGroup(1)
+---ConvertVolumeGroup ( 1 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_UNITSOUNDS = nil
 
----ConvertVolumeGroup(2)
+---ConvertVolumeGroup ( 2 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_COMBAT = nil
 
----ConvertVolumeGroup(3)
+---ConvertVolumeGroup ( 3 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_SPELLS = nil
 
----ConvertVolumeGroup(4)
+---ConvertVolumeGroup ( 4 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_UI = nil
 
----ConvertVolumeGroup(5)
+---ConvertVolumeGroup ( 5 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_MUSIC = nil
 
----ConvertVolumeGroup(6)
+---ConvertVolumeGroup ( 6 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_AMBIENTSOUNDS = nil
 
----ConvertVolumeGroup(7)
+---ConvertVolumeGroup ( 7 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_FIRE = nil
 
----ConvertVolumeGroup(8)
+---ConvertVolumeGroup ( 8 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_CINEMATIC_GENERAL = nil
 
----ConvertVolumeGroup(9)
+---ConvertVolumeGroup ( 9 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_CINEMATIC_AMBIENT = nil
 
----ConvertVolumeGroup(10)
+---ConvertVolumeGroup ( 10 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_CINEMATIC_MUSIC = nil
 
----ConvertVolumeGroup(11)
+---ConvertVolumeGroup ( 11 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_CINEMATIC_DIALOGUE = nil
 
----ConvertVolumeGroup(12)
+---ConvertVolumeGroup ( 12 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_CINEMATIC_SOUND_EFFECTS_1 = nil
 
----ConvertVolumeGroup(13)
+---ConvertVolumeGroup ( 13 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_CINEMATIC_SOUND_EFFECTS_2 = nil
 
----ConvertVolumeGroup(14)
+---ConvertVolumeGroup ( 14 )
 ---@type volumegroup
 SOUND_VOLUMEGROUP_CINEMATIC_SOUND_EFFECTS_3 = nil
 
----ConvertIGameState(0)
+---ConvertIGameState ( 0 )
 ---@type igamestate
 GAME_STATE_DIVINE_INTERVENTION = nil
 
----ConvertIGameState(1)
+---ConvertIGameState ( 1 )
 ---@type igamestate
 GAME_STATE_DISCONNECTED = nil
 
----ConvertFGameState(2)
+---ConvertFGameState ( 2 )
 ---@type fgamestate
 GAME_STATE_TIME_OF_DAY = nil
 
----ConvertPlayerState(0)
+---ConvertPlayerState ( 0 )
 ---@type playerstate
 PLAYER_STATE_GAME_RESULT = nil
 
----ConvertPlayerState(1)
+---ConvertPlayerState ( 1 )
 ---@type playerstate
 PLAYER_STATE_RESOURCE_GOLD = nil
 
----ConvertPlayerState(2)
+---ConvertPlayerState ( 2 )
 ---@type playerstate
 PLAYER_STATE_RESOURCE_LUMBER = nil
 
----ConvertPlayerState(3)
+---ConvertPlayerState ( 3 )
 ---@type playerstate
 PLAYER_STATE_RESOURCE_HERO_TOKENS = nil
 
----ConvertPlayerState(4)
+---ConvertPlayerState ( 4 )
 ---@type playerstate
 PLAYER_STATE_RESOURCE_FOOD_CAP = nil
 
----ConvertPlayerState(5)
+---ConvertPlayerState ( 5 )
 ---@type playerstate
 PLAYER_STATE_RESOURCE_FOOD_USED = nil
 
----ConvertPlayerState(6)
+---ConvertPlayerState ( 6 )
 ---@type playerstate
 PLAYER_STATE_FOOD_CAP_CEILING = nil
 
----ConvertPlayerState(7)
+---ConvertPlayerState ( 7 )
 ---@type playerstate
 PLAYER_STATE_GIVES_BOUNTY = nil
 
----ConvertPlayerState(8)
+---ConvertPlayerState ( 8 )
 ---@type playerstate
 PLAYER_STATE_ALLIED_VICTORY = nil
 
----ConvertPlayerState(9)
+---ConvertPlayerState ( 9 )
 ---@type playerstate
 PLAYER_STATE_PLACED = nil
 
----ConvertPlayerState(10)
+---ConvertPlayerState ( 10 )
 ---@type playerstate
 PLAYER_STATE_OBSERVER_ON_DEATH = nil
 
----ConvertPlayerState(11)
+---ConvertPlayerState ( 11 )
 ---@type playerstate
 PLAYER_STATE_OBSERVER = nil
 
----ConvertPlayerState(12)
+---ConvertPlayerState ( 12 )
 ---@type playerstate
 PLAYER_STATE_UNFOLLOWABLE = nil
 
----ConvertPlayerState(13)
+---ConvertPlayerState ( 13 )
 ---@type playerstate
 PLAYER_STATE_GOLD_UPKEEP_RATE = nil
 
----ConvertPlayerState(14)
+---ConvertPlayerState ( 14 )
 ---@type playerstate
 PLAYER_STATE_LUMBER_UPKEEP_RATE = nil
 
----ConvertPlayerState(15)
+---ConvertPlayerState ( 15 )
 ---@type playerstate
 PLAYER_STATE_GOLD_GATHERED = nil
 
----ConvertPlayerState(16)
+---ConvertPlayerState ( 16 )
 ---@type playerstate
 PLAYER_STATE_LUMBER_GATHERED = nil
 
----ConvertPlayerState(25)
+---ConvertPlayerState ( 25 )
 ---@type playerstate
 PLAYER_STATE_NO_CREEP_SLEEP = nil
 
----ConvertUnitState(0)
+---ConvertUnitState ( 0 )
 ---@type unitstate
 UNIT_STATE_LIFE = nil
 
----ConvertUnitState(1)
+---ConvertUnitState ( 1 )
 ---@type unitstate
 UNIT_STATE_MAX_LIFE = nil
 
----ConvertUnitState(2)
+---ConvertUnitState ( 2 )
 ---@type unitstate
 UNIT_STATE_MANA = nil
 
----ConvertUnitState(3)
+---ConvertUnitState ( 3 )
 ---@type unitstate
 UNIT_STATE_MAX_MANA = nil
 
----ConvertAIDifficulty(0)
+---ConvertAIDifficulty ( 0 )
 ---@type aidifficulty
 AI_DIFFICULTY_NEWBIE = nil
 
----ConvertAIDifficulty(1)
+---ConvertAIDifficulty ( 1 )
 ---@type aidifficulty
 AI_DIFFICULTY_NORMAL = nil
 
----ConvertAIDifficulty(2)
+---ConvertAIDifficulty ( 2 )
 ---@type aidifficulty
 AI_DIFFICULTY_INSANE = nil
 
----ConvertPlayerScore(0)
+---ConvertPlayerScore ( 0 )
 ---@type playerscore
 PLAYER_SCORE_UNITS_TRAINED = nil
 
----ConvertPlayerScore(1)
+---ConvertPlayerScore ( 1 )
 ---@type playerscore
 PLAYER_SCORE_UNITS_KILLED = nil
 
----ConvertPlayerScore(2)
+---ConvertPlayerScore ( 2 )
 ---@type playerscore
 PLAYER_SCORE_STRUCT_BUILT = nil
 
----ConvertPlayerScore(3)
+---ConvertPlayerScore ( 3 )
 ---@type playerscore
 PLAYER_SCORE_STRUCT_RAZED = nil
 
----ConvertPlayerScore(4)
+---ConvertPlayerScore ( 4 )
 ---@type playerscore
 PLAYER_SCORE_TECH_PERCENT = nil
 
----ConvertPlayerScore(5)
+---ConvertPlayerScore ( 5 )
 ---@type playerscore
 PLAYER_SCORE_FOOD_MAXPROD = nil
 
----ConvertPlayerScore(6)
+---ConvertPlayerScore ( 6 )
 ---@type playerscore
 PLAYER_SCORE_FOOD_MAXUSED = nil
 
----ConvertPlayerScore(7)
+---ConvertPlayerScore ( 7 )
 ---@type playerscore
 PLAYER_SCORE_HEROES_KILLED = nil
 
----ConvertPlayerScore(8)
+---ConvertPlayerScore ( 8 )
 ---@type playerscore
 PLAYER_SCORE_ITEMS_GAINED = nil
 
----ConvertPlayerScore(9)
+---ConvertPlayerScore ( 9 )
 ---@type playerscore
 PLAYER_SCORE_MERCS_HIRED = nil
 
----ConvertPlayerScore(10)
+---ConvertPlayerScore ( 10 )
 ---@type playerscore
 PLAYER_SCORE_GOLD_MINED_TOTAL = nil
 
----ConvertPlayerScore(11)
+---ConvertPlayerScore ( 11 )
 ---@type playerscore
 PLAYER_SCORE_GOLD_MINED_UPKEEP = nil
 
----ConvertPlayerScore(12)
+---ConvertPlayerScore ( 12 )
 ---@type playerscore
 PLAYER_SCORE_GOLD_LOST_UPKEEP = nil
 
----ConvertPlayerScore(13)
+---ConvertPlayerScore ( 13 )
 ---@type playerscore
 PLAYER_SCORE_GOLD_LOST_TAX = nil
 
----ConvertPlayerScore(14)
+---ConvertPlayerScore ( 14 )
 ---@type playerscore
 PLAYER_SCORE_GOLD_GIVEN = nil
 
----ConvertPlayerScore(15)
+---ConvertPlayerScore ( 15 )
 ---@type playerscore
 PLAYER_SCORE_GOLD_RECEIVED = nil
 
----ConvertPlayerScore(16)
+---ConvertPlayerScore ( 16 )
 ---@type playerscore
 PLAYER_SCORE_LUMBER_TOTAL = nil
 
----ConvertPlayerScore(17)
+---ConvertPlayerScore ( 17 )
 ---@type playerscore
 PLAYER_SCORE_LUMBER_LOST_UPKEEP = nil
 
----ConvertPlayerScore(18)
+---ConvertPlayerScore ( 18 )
 ---@type playerscore
 PLAYER_SCORE_LUMBER_LOST_TAX = nil
 
----ConvertPlayerScore(19)
+---ConvertPlayerScore ( 19 )
 ---@type playerscore
 PLAYER_SCORE_LUMBER_GIVEN = nil
 
----ConvertPlayerScore(20)
+---ConvertPlayerScore ( 20 )
 ---@type playerscore
 PLAYER_SCORE_LUMBER_RECEIVED = nil
 
----ConvertPlayerScore(21)
+---ConvertPlayerScore ( 21 )
 ---@type playerscore
 PLAYER_SCORE_UNIT_TOTAL = nil
 
----ConvertPlayerScore(22)
+---ConvertPlayerScore ( 22 )
 ---@type playerscore
 PLAYER_SCORE_HERO_TOTAL = nil
 
----ConvertPlayerScore(23)
+---ConvertPlayerScore ( 23 )
 ---@type playerscore
 PLAYER_SCORE_RESOURCE_TOTAL = nil
 
----ConvertPlayerScore(24)
+---ConvertPlayerScore ( 24 )
 ---@type playerscore
 PLAYER_SCORE_TOTAL = nil
 
----ConvertGameEvent(0)
+---ConvertGameEvent ( 0 )
 ---@type gameevent
 EVENT_GAME_VICTORY = nil
 
----ConvertGameEvent(1)
+---ConvertGameEvent ( 1 )
 ---@type gameevent
 EVENT_GAME_END_LEVEL = nil
 
----ConvertGameEvent(2)
+---ConvertGameEvent ( 2 )
 ---@type gameevent
 EVENT_GAME_VARIABLE_LIMIT = nil
 
----ConvertGameEvent(3)
+---ConvertGameEvent ( 3 )
 ---@type gameevent
 EVENT_GAME_STATE_LIMIT = nil
 
----ConvertGameEvent(4)
+---ConvertGameEvent ( 4 )
 ---@type gameevent
 EVENT_GAME_TIMER_EXPIRED = nil
 
----ConvertGameEvent(5)
+---ConvertGameEvent ( 5 )
 ---@type gameevent
 EVENT_GAME_ENTER_REGION = nil
 
----ConvertGameEvent(6)
+---ConvertGameEvent ( 6 )
 ---@type gameevent
 EVENT_GAME_LEAVE_REGION = nil
 
----ConvertGameEvent(7)
+---ConvertGameEvent ( 7 )
 ---@type gameevent
 EVENT_GAME_TRACKABLE_HIT = nil
 
----ConvertGameEvent(8)
+---ConvertGameEvent ( 8 )
 ---@type gameevent
 EVENT_GAME_TRACKABLE_TRACK = nil
 
----ConvertGameEvent(9)
+---ConvertGameEvent ( 9 )
 ---@type gameevent
 EVENT_GAME_SHOW_SKILL = nil
 
----ConvertGameEvent(10)
+---ConvertGameEvent ( 10 )
 ---@type gameevent
 EVENT_GAME_BUILD_SUBMENU = nil
 
----ConvertPlayerEvent(11)
+---ConvertPlayerEvent ( 11 )
 ---@type playerevent
 EVENT_PLAYER_STATE_LIMIT = nil
 
----ConvertPlayerEvent(12)
+---ConvertPlayerEvent ( 12 )
 ---@type playerevent
 EVENT_PLAYER_ALLIANCE_CHANGED = nil
 
----ConvertPlayerEvent(13)
+---ConvertPlayerEvent ( 13 )
 ---@type playerevent
 EVENT_PLAYER_DEFEAT = nil
 
----ConvertPlayerEvent(14)
+---ConvertPlayerEvent ( 14 )
 ---@type playerevent
 EVENT_PLAYER_VICTORY = nil
 
----ConvertPlayerEvent(15)
+---ConvertPlayerEvent ( 15 )
 ---@type playerevent
 EVENT_PLAYER_LEAVE = nil
 
----ConvertPlayerEvent(16)
+---ConvertPlayerEvent ( 16 )
 ---@type playerevent
 EVENT_PLAYER_CHAT = nil
 
----ConvertPlayerEvent(17)
+---ConvertPlayerEvent ( 17 )
 ---@type playerevent
 EVENT_PLAYER_END_CINEMATIC = nil
 
----ConvertPlayerUnitEvent(18)
+---ConvertPlayerUnitEvent ( 18 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_ATTACKED = nil
 
----ConvertPlayerUnitEvent(19)
+---ConvertPlayerUnitEvent ( 19 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_RESCUED = nil
 
----ConvertPlayerUnitEvent(20)
+---ConvertPlayerUnitEvent ( 20 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_DEATH = nil
 
----ConvertPlayerUnitEvent(21)
+---ConvertPlayerUnitEvent ( 21 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_DECAY = nil
 
----ConvertPlayerUnitEvent(22)
+---ConvertPlayerUnitEvent ( 22 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_DETECTED = nil
 
----ConvertPlayerUnitEvent(23)
+---ConvertPlayerUnitEvent ( 23 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_HIDDEN = nil
 
----ConvertPlayerUnitEvent(24)
+---ConvertPlayerUnitEvent ( 24 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SELECTED = nil
 
----ConvertPlayerUnitEvent(25)
+---ConvertPlayerUnitEvent ( 25 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_DESELECTED = nil
 
----ConvertPlayerUnitEvent(26)
+---ConvertPlayerUnitEvent ( 26 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_CONSTRUCT_START = nil
 
----ConvertPlayerUnitEvent(27)
+---ConvertPlayerUnitEvent ( 27 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_CONSTRUCT_CANCEL = nil
 
----ConvertPlayerUnitEvent(28)
+---ConvertPlayerUnitEvent ( 28 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_CONSTRUCT_FINISH = nil
 
----ConvertPlayerUnitEvent(29)
+---ConvertPlayerUnitEvent ( 29 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_UPGRADE_START = nil
 
----ConvertPlayerUnitEvent(30)
+---ConvertPlayerUnitEvent ( 30 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_UPGRADE_CANCEL = nil
 
----ConvertPlayerUnitEvent(31)
+---ConvertPlayerUnitEvent ( 31 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_UPGRADE_FINISH = nil
 
----ConvertPlayerUnitEvent(32)
+---ConvertPlayerUnitEvent ( 32 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_TRAIN_START = nil
 
----ConvertPlayerUnitEvent(33)
+---ConvertPlayerUnitEvent ( 33 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_TRAIN_CANCEL = nil
 
----ConvertPlayerUnitEvent(34)
+---ConvertPlayerUnitEvent ( 34 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_TRAIN_FINISH = nil
 
----ConvertPlayerUnitEvent(35)
+---ConvertPlayerUnitEvent ( 35 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_RESEARCH_START = nil
 
----ConvertPlayerUnitEvent(36)
+---ConvertPlayerUnitEvent ( 36 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_RESEARCH_CANCEL = nil
 
----ConvertPlayerUnitEvent(37)
+---ConvertPlayerUnitEvent ( 37 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_RESEARCH_FINISH = nil
 
----ConvertPlayerUnitEvent(38)
+---ConvertPlayerUnitEvent ( 38 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_ISSUED_ORDER = nil
 
----ConvertPlayerUnitEvent(39)
+---ConvertPlayerUnitEvent ( 39 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER = nil
 
----ConvertPlayerUnitEvent(40)
+---ConvertPlayerUnitEvent ( 40 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER = nil
 
----ConvertPlayerUnitEvent(40)    // for compat
+---ConvertPlayerUnitEvent ( 40 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER = nil
 
----ConvertPlayerUnitEvent(41)
+---ConvertPlayerUnitEvent ( 41 )
 ---@type playerunitevent
 EVENT_PLAYER_HERO_LEVEL = nil
 
----ConvertPlayerUnitEvent(42)
+---ConvertPlayerUnitEvent ( 42 )
 ---@type playerunitevent
 EVENT_PLAYER_HERO_SKILL = nil
 
----ConvertPlayerUnitEvent(43)
+---ConvertPlayerUnitEvent ( 43 )
 ---@type playerunitevent
 EVENT_PLAYER_HERO_REVIVABLE = nil
 
----ConvertPlayerUnitEvent(44)
+---ConvertPlayerUnitEvent ( 44 )
 ---@type playerunitevent
 EVENT_PLAYER_HERO_REVIVE_START = nil
 
----ConvertPlayerUnitEvent(45)
+---ConvertPlayerUnitEvent ( 45 )
 ---@type playerunitevent
 EVENT_PLAYER_HERO_REVIVE_CANCEL = nil
 
----ConvertPlayerUnitEvent(46)
+---ConvertPlayerUnitEvent ( 46 )
 ---@type playerunitevent
 EVENT_PLAYER_HERO_REVIVE_FINISH = nil
 
----ConvertPlayerUnitEvent(47)
+---ConvertPlayerUnitEvent ( 47 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SUMMON = nil
 
----ConvertPlayerUnitEvent(48)
+---ConvertPlayerUnitEvent ( 48 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_DROP_ITEM = nil
 
----ConvertPlayerUnitEvent(49)
+---ConvertPlayerUnitEvent ( 49 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_PICKUP_ITEM = nil
 
----ConvertPlayerUnitEvent(50)
+---ConvertPlayerUnitEvent ( 50 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_USE_ITEM = nil
 
----ConvertPlayerUnitEvent(51)
+---ConvertPlayerUnitEvent ( 51 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_LOADED = nil
 
----ConvertPlayerUnitEvent(308)
+---ConvertPlayerUnitEvent ( 308 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_DAMAGED = nil
 
----ConvertPlayerUnitEvent(315)
+---ConvertPlayerUnitEvent ( 315 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_DAMAGING = nil
 
----ConvertUnitEvent(52)
+---ConvertUnitEvent ( 52 )
 ---@type unitevent
 EVENT_UNIT_DAMAGED = nil
 
----ConvertUnitEvent(314)
+---ConvertUnitEvent ( 314 )
 ---@type unitevent
 EVENT_UNIT_DAMAGING = nil
 
----ConvertUnitEvent(53)
+---ConvertUnitEvent ( 53 )
 ---@type unitevent
 EVENT_UNIT_DEATH = nil
 
----ConvertUnitEvent(54)
+---ConvertUnitEvent ( 54 )
 ---@type unitevent
 EVENT_UNIT_DECAY = nil
 
----ConvertUnitEvent(55)
+---ConvertUnitEvent ( 55 )
 ---@type unitevent
 EVENT_UNIT_DETECTED = nil
 
----ConvertUnitEvent(56)
+---ConvertUnitEvent ( 56 )
 ---@type unitevent
 EVENT_UNIT_HIDDEN = nil
 
----ConvertUnitEvent(57)
+---ConvertUnitEvent ( 57 )
 ---@type unitevent
 EVENT_UNIT_SELECTED = nil
 
----ConvertUnitEvent(58)
+---ConvertUnitEvent ( 58 )
 ---@type unitevent
 EVENT_UNIT_DESELECTED = nil
 
----ConvertUnitEvent(59)
+---ConvertUnitEvent ( 59 )
 ---@type unitevent
 EVENT_UNIT_STATE_LIMIT = nil
 
----ConvertUnitEvent(60)
+---ConvertUnitEvent ( 60 )
 ---@type unitevent
 EVENT_UNIT_ACQUIRED_TARGET = nil
 
----ConvertUnitEvent(61)
+---ConvertUnitEvent ( 61 )
 ---@type unitevent
 EVENT_UNIT_TARGET_IN_RANGE = nil
 
----ConvertUnitEvent(62)
+---ConvertUnitEvent ( 62 )
 ---@type unitevent
 EVENT_UNIT_ATTACKED = nil
 
----ConvertUnitEvent(63)
+---ConvertUnitEvent ( 63 )
 ---@type unitevent
 EVENT_UNIT_RESCUED = nil
 
----ConvertUnitEvent(64)
+---ConvertUnitEvent ( 64 )
 ---@type unitevent
 EVENT_UNIT_CONSTRUCT_CANCEL = nil
 
----ConvertUnitEvent(65)
+---ConvertUnitEvent ( 65 )
 ---@type unitevent
 EVENT_UNIT_CONSTRUCT_FINISH = nil
 
----ConvertUnitEvent(66)
+---ConvertUnitEvent ( 66 )
 ---@type unitevent
 EVENT_UNIT_UPGRADE_START = nil
 
----ConvertUnitEvent(67)
+---ConvertUnitEvent ( 67 )
 ---@type unitevent
 EVENT_UNIT_UPGRADE_CANCEL = nil
 
----ConvertUnitEvent(68)
+---ConvertUnitEvent ( 68 )
 ---@type unitevent
 EVENT_UNIT_UPGRADE_FINISH = nil
 
----ConvertUnitEvent(69)
+---ConvertUnitEvent ( 69 )
 ---@type unitevent
 EVENT_UNIT_TRAIN_START = nil
 
----ConvertUnitEvent(70)
+---ConvertUnitEvent ( 70 )
 ---@type unitevent
 EVENT_UNIT_TRAIN_CANCEL = nil
 
----ConvertUnitEvent(71)
+---ConvertUnitEvent ( 71 )
 ---@type unitevent
 EVENT_UNIT_TRAIN_FINISH = nil
 
----ConvertUnitEvent(72)
+---ConvertUnitEvent ( 72 )
 ---@type unitevent
 EVENT_UNIT_RESEARCH_START = nil
 
----ConvertUnitEvent(73)
+---ConvertUnitEvent ( 73 )
 ---@type unitevent
 EVENT_UNIT_RESEARCH_CANCEL = nil
 
----ConvertUnitEvent(74)
+---ConvertUnitEvent ( 74 )
 ---@type unitevent
 EVENT_UNIT_RESEARCH_FINISH = nil
 
----ConvertUnitEvent(75)
+---ConvertUnitEvent ( 75 )
 ---@type unitevent
 EVENT_UNIT_ISSUED_ORDER = nil
 
----ConvertUnitEvent(76)
+---ConvertUnitEvent ( 76 )
 ---@type unitevent
 EVENT_UNIT_ISSUED_POINT_ORDER = nil
 
----ConvertUnitEvent(77)
+---ConvertUnitEvent ( 77 )
 ---@type unitevent
 EVENT_UNIT_ISSUED_TARGET_ORDER = nil
 
----ConvertUnitEvent(78)
+---ConvertUnitEvent ( 78 )
 ---@type unitevent
 EVENT_UNIT_HERO_LEVEL = nil
 
----ConvertUnitEvent(79)
+---ConvertUnitEvent ( 79 )
 ---@type unitevent
 EVENT_UNIT_HERO_SKILL = nil
 
----ConvertUnitEvent(80)
+---ConvertUnitEvent ( 80 )
 ---@type unitevent
 EVENT_UNIT_HERO_REVIVABLE = nil
 
----ConvertUnitEvent(81)
+---ConvertUnitEvent ( 81 )
 ---@type unitevent
 EVENT_UNIT_HERO_REVIVE_START = nil
 
----ConvertUnitEvent(82)
+---ConvertUnitEvent ( 82 )
 ---@type unitevent
 EVENT_UNIT_HERO_REVIVE_CANCEL = nil
 
----ConvertUnitEvent(83)
+---ConvertUnitEvent ( 83 )
 ---@type unitevent
 EVENT_UNIT_HERO_REVIVE_FINISH = nil
 
----ConvertUnitEvent(84)
+---ConvertUnitEvent ( 84 )
 ---@type unitevent
 EVENT_UNIT_SUMMON = nil
 
----ConvertUnitEvent(85)
+---ConvertUnitEvent ( 85 )
 ---@type unitevent
 EVENT_UNIT_DROP_ITEM = nil
 
----ConvertUnitEvent(86)
+---ConvertUnitEvent ( 86 )
 ---@type unitevent
 EVENT_UNIT_PICKUP_ITEM = nil
 
----ConvertUnitEvent(87)
+---ConvertUnitEvent ( 87 )
 ---@type unitevent
 EVENT_UNIT_USE_ITEM = nil
 
----ConvertUnitEvent(88)
+---ConvertUnitEvent ( 88 )
 ---@type unitevent
 EVENT_UNIT_LOADED = nil
 
----ConvertWidgetEvent(89)
+---ConvertWidgetEvent ( 89 )
 ---@type widgetevent
 EVENT_WIDGET_DEATH = nil
 
----ConvertDialogEvent(90)
+---ConvertDialogEvent ( 90 )
 ---@type dialogevent
 EVENT_DIALOG_BUTTON_CLICK = nil
 
----ConvertDialogEvent(91)
+---ConvertDialogEvent ( 91 )
 ---@type dialogevent
 EVENT_DIALOG_CLICK = nil
 
----ConvertGameEvent(256)
+---ConvertGameEvent ( 256 )
 ---@type gameevent
 EVENT_GAME_LOADED = nil
 
----ConvertGameEvent(257)
+---ConvertGameEvent ( 257 )
 ---@type gameevent
 EVENT_GAME_TOURNAMENT_FINISH_SOON = nil
 
----ConvertGameEvent(258)
+---ConvertGameEvent ( 258 )
 ---@type gameevent
 EVENT_GAME_TOURNAMENT_FINISH_NOW = nil
 
----ConvertGameEvent(259)
+---ConvertGameEvent ( 259 )
 ---@type gameevent
 EVENT_GAME_SAVE = nil
 
----ConvertGameEvent(310)
+---ConvertGameEvent ( 310 )
 ---@type gameevent
 EVENT_GAME_CUSTOM_UI_FRAME = nil
 
----ConvertPlayerEvent(261)
+---ConvertPlayerEvent ( 261 )
 ---@type playerevent
 EVENT_PLAYER_ARROW_LEFT_DOWN = nil
 
----ConvertPlayerEvent(262)
+---ConvertPlayerEvent ( 262 )
 ---@type playerevent
 EVENT_PLAYER_ARROW_LEFT_UP = nil
 
----ConvertPlayerEvent(263)
+---ConvertPlayerEvent ( 263 )
 ---@type playerevent
 EVENT_PLAYER_ARROW_RIGHT_DOWN = nil
 
----ConvertPlayerEvent(264)
+---ConvertPlayerEvent ( 264 )
 ---@type playerevent
 EVENT_PLAYER_ARROW_RIGHT_UP = nil
 
----ConvertPlayerEvent(265)
+---ConvertPlayerEvent ( 265 )
 ---@type playerevent
 EVENT_PLAYER_ARROW_DOWN_DOWN = nil
 
----ConvertPlayerEvent(266)
+---ConvertPlayerEvent ( 266 )
 ---@type playerevent
 EVENT_PLAYER_ARROW_DOWN_UP = nil
 
----ConvertPlayerEvent(267)
+---ConvertPlayerEvent ( 267 )
 ---@type playerevent
 EVENT_PLAYER_ARROW_UP_DOWN = nil
 
----ConvertPlayerEvent(268)
+---ConvertPlayerEvent ( 268 )
 ---@type playerevent
 EVENT_PLAYER_ARROW_UP_UP = nil
 
----ConvertPlayerEvent(305)
+---ConvertPlayerEvent ( 305 )
 ---@type playerevent
 EVENT_PLAYER_MOUSE_DOWN = nil
 
----ConvertPlayerEvent(306)
+---ConvertPlayerEvent ( 306 )
 ---@type playerevent
 EVENT_PLAYER_MOUSE_UP = nil
 
----ConvertPlayerEvent(307)
+---ConvertPlayerEvent ( 307 )
 ---@type playerevent
 EVENT_PLAYER_MOUSE_MOVE = nil
 
----ConvertPlayerEvent(309)
+---ConvertPlayerEvent ( 309 )
 ---@type playerevent
 EVENT_PLAYER_SYNC_DATA = nil
 
----ConvertPlayerEvent(311)
+---ConvertPlayerEvent ( 311 )
 ---@type playerevent
 EVENT_PLAYER_KEY = nil
 
----ConvertPlayerEvent(312)
+---ConvertPlayerEvent ( 312 )
 ---@type playerevent
 EVENT_PLAYER_KEY_DOWN = nil
 
----ConvertPlayerEvent(313)
+---ConvertPlayerEvent ( 313 )
 ---@type playerevent
 EVENT_PLAYER_KEY_UP = nil
 
----ConvertPlayerUnitEvent(269)
+---ConvertPlayerUnitEvent ( 269 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SELL = nil
 
----ConvertPlayerUnitEvent(270)
+---ConvertPlayerUnitEvent ( 270 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_CHANGE_OWNER = nil
 
----ConvertPlayerUnitEvent(271)
+---ConvertPlayerUnitEvent ( 271 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SELL_ITEM = nil
 
----ConvertPlayerUnitEvent(272)
+---ConvertPlayerUnitEvent ( 272 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SPELL_CHANNEL = nil
 
----ConvertPlayerUnitEvent(273)
+---ConvertPlayerUnitEvent ( 273 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SPELL_CAST = nil
 
----ConvertPlayerUnitEvent(274)
+---ConvertPlayerUnitEvent ( 274 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SPELL_EFFECT = nil
 
----ConvertPlayerUnitEvent(275)
+---ConvertPlayerUnitEvent ( 275 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SPELL_FINISH = nil
 
----ConvertPlayerUnitEvent(276)
+---ConvertPlayerUnitEvent ( 276 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_SPELL_ENDCAST = nil
 
----ConvertPlayerUnitEvent(277)
+---ConvertPlayerUnitEvent ( 277 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_PAWN_ITEM = nil
 
----ConvertPlayerUnitEvent(319)
+---ConvertPlayerUnitEvent ( 319 )
 ---@type playerunitevent
 EVENT_PLAYER_UNIT_STACK_ITEM = nil
 
----ConvertUnitEvent(286)
+---ConvertUnitEvent ( 286 )
 ---@type unitevent
 EVENT_UNIT_SELL = nil
 
----ConvertUnitEvent(287)
+---ConvertUnitEvent ( 287 )
 ---@type unitevent
 EVENT_UNIT_CHANGE_OWNER = nil
 
----ConvertUnitEvent(288)
+---ConvertUnitEvent ( 288 )
 ---@type unitevent
 EVENT_UNIT_SELL_ITEM = nil
 
----ConvertUnitEvent(289)
+---ConvertUnitEvent ( 289 )
 ---@type unitevent
 EVENT_UNIT_SPELL_CHANNEL = nil
 
----ConvertUnitEvent(290)
+---ConvertUnitEvent ( 290 )
 ---@type unitevent
 EVENT_UNIT_SPELL_CAST = nil
 
----ConvertUnitEvent(291)
+---ConvertUnitEvent ( 291 )
 ---@type unitevent
 EVENT_UNIT_SPELL_EFFECT = nil
 
----ConvertUnitEvent(292)
+---ConvertUnitEvent ( 292 )
 ---@type unitevent
 EVENT_UNIT_SPELL_FINISH = nil
 
----ConvertUnitEvent(293)
+---ConvertUnitEvent ( 293 )
 ---@type unitevent
 EVENT_UNIT_SPELL_ENDCAST = nil
 
----ConvertUnitEvent(294)
+---ConvertUnitEvent ( 294 )
 ---@type unitevent
 EVENT_UNIT_PAWN_ITEM = nil
 
----ConvertUnitEvent(318)
+---ConvertUnitEvent ( 318 )
 ---@type unitevent
 EVENT_UNIT_STACK_ITEM = nil
 
----ConvertLimitOp(0)
+---ConvertLimitOp ( 0 )
 ---@type limitop
 LESS_THAN = nil
 
----ConvertLimitOp(1)
+---ConvertLimitOp ( 1 )
 ---@type limitop
 LESS_THAN_OR_EQUAL = nil
 
----ConvertLimitOp(2)
+---ConvertLimitOp ( 2 )
 ---@type limitop
 EQUAL = nil
 
----ConvertLimitOp(3)
+---ConvertLimitOp ( 3 )
 ---@type limitop
 GREATER_THAN_OR_EQUAL = nil
 
----ConvertLimitOp(4)
+---ConvertLimitOp ( 4 )
 ---@type limitop
 GREATER_THAN = nil
 
----ConvertLimitOp(5)
+---ConvertLimitOp ( 5 )
 ---@type limitop
 NOT_EQUAL = nil
 
----ConvertUnitType(0)
+---ConvertUnitType ( 0 )
 ---@type unittype
 UNIT_TYPE_HERO = nil
 
----ConvertUnitType(1)
+---ConvertUnitType ( 1 )
 ---@type unittype
 UNIT_TYPE_DEAD = nil
 
----ConvertUnitType(2)
+---ConvertUnitType ( 2 )
 ---@type unittype
 UNIT_TYPE_STRUCTURE = nil
 
----ConvertUnitType(3)
+---ConvertUnitType ( 3 )
 ---@type unittype
 UNIT_TYPE_FLYING = nil
 
----ConvertUnitType(4)
+---ConvertUnitType ( 4 )
 ---@type unittype
 UNIT_TYPE_GROUND = nil
 
----ConvertUnitType(5)
+---ConvertUnitType ( 5 )
 ---@type unittype
 UNIT_TYPE_ATTACKS_FLYING = nil
 
----ConvertUnitType(6)
+---ConvertUnitType ( 6 )
 ---@type unittype
 UNIT_TYPE_ATTACKS_GROUND = nil
 
----ConvertUnitType(7)
+---ConvertUnitType ( 7 )
 ---@type unittype
 UNIT_TYPE_MELEE_ATTACKER = nil
 
----ConvertUnitType(8)
+---ConvertUnitType ( 8 )
 ---@type unittype
 UNIT_TYPE_RANGED_ATTACKER = nil
 
----ConvertUnitType(9)
+---ConvertUnitType ( 9 )
 ---@type unittype
 UNIT_TYPE_GIANT = nil
 
----ConvertUnitType(10)
+---ConvertUnitType ( 10 )
 ---@type unittype
 UNIT_TYPE_SUMMONED = nil
 
----ConvertUnitType(11)
+---ConvertUnitType ( 11 )
 ---@type unittype
 UNIT_TYPE_STUNNED = nil
 
----ConvertUnitType(12)
+---ConvertUnitType ( 12 )
 ---@type unittype
 UNIT_TYPE_PLAGUED = nil
 
----ConvertUnitType(13)
+---ConvertUnitType ( 13 )
 ---@type unittype
 UNIT_TYPE_SNARED = nil
 
----ConvertUnitType(14)
+---ConvertUnitType ( 14 )
 ---@type unittype
 UNIT_TYPE_UNDEAD = nil
 
----ConvertUnitType(15)
+---ConvertUnitType ( 15 )
 ---@type unittype
 UNIT_TYPE_MECHANICAL = nil
 
----ConvertUnitType(16)
+---ConvertUnitType ( 16 )
 ---@type unittype
 UNIT_TYPE_PEON = nil
 
----ConvertUnitType(17)
+---ConvertUnitType ( 17 )
 ---@type unittype
 UNIT_TYPE_SAPPER = nil
 
----ConvertUnitType(18)
+---ConvertUnitType ( 18 )
 ---@type unittype
 UNIT_TYPE_TOWNHALL = nil
 
----ConvertUnitType(19)
+---ConvertUnitType ( 19 )
 ---@type unittype
 UNIT_TYPE_ANCIENT = nil
 
----ConvertUnitType(20)
+---ConvertUnitType ( 20 )
 ---@type unittype
 UNIT_TYPE_TAUREN = nil
 
----ConvertUnitType(21)
+---ConvertUnitType ( 21 )
 ---@type unittype
 UNIT_TYPE_POISONED = nil
 
----ConvertUnitType(22)
+---ConvertUnitType ( 22 )
 ---@type unittype
 UNIT_TYPE_POLYMORPHED = nil
 
----ConvertUnitType(23)
+---ConvertUnitType ( 23 )
 ---@type unittype
 UNIT_TYPE_SLEEPING = nil
 
----ConvertUnitType(24)
+---ConvertUnitType ( 24 )
 ---@type unittype
 UNIT_TYPE_RESISTANT = nil
 
----ConvertUnitType(25)
+---ConvertUnitType ( 25 )
 ---@type unittype
 UNIT_TYPE_ETHEREAL = nil
 
----ConvertUnitType(26)
+---ConvertUnitType ( 26 )
 ---@type unittype
 UNIT_TYPE_MAGIC_IMMUNE = nil
 
----ConvertItemType(0)
+---ConvertItemType ( 0 )
 ---@type itemtype
 ITEM_TYPE_PERMANENT = nil
 
----ConvertItemType(1)
+---ConvertItemType ( 1 )
 ---@type itemtype
 ITEM_TYPE_CHARGED = nil
 
----ConvertItemType(2)
+---ConvertItemType ( 2 )
 ---@type itemtype
 ITEM_TYPE_POWERUP = nil
 
----ConvertItemType(3)
+---ConvertItemType ( 3 )
 ---@type itemtype
 ITEM_TYPE_ARTIFACT = nil
 
----ConvertItemType(4)
+---ConvertItemType ( 4 )
 ---@type itemtype
 ITEM_TYPE_PURCHASABLE = nil
 
----ConvertItemType(5)
+---ConvertItemType ( 5 )
 ---@type itemtype
 ITEM_TYPE_CAMPAIGN = nil
 
----ConvertItemType(6)
+---ConvertItemType ( 6 )
 ---@type itemtype
 ITEM_TYPE_MISCELLANEOUS = nil
 
----ConvertItemType(7)
+---ConvertItemType ( 7 )
 ---@type itemtype
 ITEM_TYPE_UNKNOWN = nil
 
----ConvertItemType(8)
+---ConvertItemType ( 8 )
 ---@type itemtype
 ITEM_TYPE_ANY = nil
 
----ConvertItemType(2)
+---ConvertItemType ( 2 )
 ---@type itemtype
 ITEM_TYPE_TOME = nil
 
----ConvertCameraField(0)
+---ConvertCameraField ( 0 )
 ---@type camerafield
 CAMERA_FIELD_TARGET_DISTANCE = nil
 
----ConvertCameraField(1)
+---ConvertCameraField ( 1 )
 ---@type camerafield
 CAMERA_FIELD_FARZ = nil
 
----ConvertCameraField(2)
+---ConvertCameraField ( 2 )
 ---@type camerafield
 CAMERA_FIELD_ANGLE_OF_ATTACK = nil
 
----ConvertCameraField(3)
+---ConvertCameraField ( 3 )
 ---@type camerafield
 CAMERA_FIELD_FIELD_OF_VIEW = nil
 
----ConvertCameraField(4)
+---ConvertCameraField ( 4 )
 ---@type camerafield
 CAMERA_FIELD_ROLL = nil
 
----ConvertCameraField(5)
+---ConvertCameraField ( 5 )
 ---@type camerafield
 CAMERA_FIELD_ROTATION = nil
 
----ConvertCameraField(6)
+---ConvertCameraField ( 6 )
 ---@type camerafield
 CAMERA_FIELD_ZOFFSET = nil
 
----ConvertCameraField(7)
+---ConvertCameraField ( 7 )
 ---@type camerafield
 CAMERA_FIELD_NEARZ = nil
 
----ConvertCameraField(8)
+---ConvertCameraField ( 8 )
 ---@type camerafield
 CAMERA_FIELD_LOCAL_PITCH = nil
 
----ConvertCameraField(9)
+---ConvertCameraField ( 9 )
 ---@type camerafield
 CAMERA_FIELD_LOCAL_YAW = nil
 
----ConvertCameraField(10)
+---ConvertCameraField ( 10 )
 ---@type camerafield
 CAMERA_FIELD_LOCAL_ROLL = nil
 
----ConvertBlendMode(0)
+---ConvertBlendMode ( 0 )
 ---@type blendmode
 BLEND_MODE_NONE = nil
 
----ConvertBlendMode(0)
+---ConvertBlendMode ( 0 )
 ---@type blendmode
 BLEND_MODE_DONT_CARE = nil
 
----ConvertBlendMode(1)
+---ConvertBlendMode ( 1 )
 ---@type blendmode
 BLEND_MODE_KEYALPHA = nil
 
----ConvertBlendMode(2)
+---ConvertBlendMode ( 2 )
 ---@type blendmode
 BLEND_MODE_BLEND = nil
 
----ConvertBlendMode(3)
+---ConvertBlendMode ( 3 )
 ---@type blendmode
 BLEND_MODE_ADDITIVE = nil
 
----ConvertBlendMode(4)
+---ConvertBlendMode ( 4 )
 ---@type blendmode
 BLEND_MODE_MODULATE = nil
 
----ConvertBlendMode(5)
+---ConvertBlendMode ( 5 )
 ---@type blendmode
 BLEND_MODE_MODULATE_2X = nil
 
----ConvertRarityControl(0)
+---ConvertRarityControl ( 0 )
 ---@type raritycontrol
 RARITY_FREQUENT = nil
 
----ConvertRarityControl(1)
+---ConvertRarityControl ( 1 )
 ---@type raritycontrol
 RARITY_RARE = nil
 
----ConvertTexMapFlags(0)
+---ConvertTexMapFlags ( 0 )
 ---@type texmapflags
 TEXMAP_FLAG_NONE = nil
 
----ConvertTexMapFlags(1)
+---ConvertTexMapFlags ( 1 )
 ---@type texmapflags
 TEXMAP_FLAG_WRAP_U = nil
 
----ConvertTexMapFlags(2)
+---ConvertTexMapFlags ( 2 )
 ---@type texmapflags
 TEXMAP_FLAG_WRAP_V = nil
 
----ConvertTexMapFlags(3)
+---ConvertTexMapFlags ( 3 )
 ---@type texmapflags
 TEXMAP_FLAG_WRAP_UV = nil
 
----ConvertFogState(1)
+---ConvertFogState ( 1 )
 ---@type fogstate
 FOG_OF_WAR_MASKED = nil
 
----ConvertFogState(2)
+---ConvertFogState ( 2 )
 ---@type fogstate
 FOG_OF_WAR_FOGGED = nil
 
----ConvertFogState(4)
+---ConvertFogState ( 4 )
 ---@type fogstate
 FOG_OF_WAR_VISIBLE = nil
 
@@ -2726,1775 +2726,1775 @@ CAMERA_MARGIN_TOP = nil
 ---@type integer
 CAMERA_MARGIN_BOTTOM = nil
 
----ConvertEffectType(0)
+---ConvertEffectType ( 0 )
 ---@type effecttype
 EFFECT_TYPE_EFFECT = nil
 
----ConvertEffectType(1)
+---ConvertEffectType ( 1 )
 ---@type effecttype
 EFFECT_TYPE_TARGET = nil
 
----ConvertEffectType(2)
+---ConvertEffectType ( 2 )
 ---@type effecttype
 EFFECT_TYPE_CASTER = nil
 
----ConvertEffectType(3)
+---ConvertEffectType ( 3 )
 ---@type effecttype
 EFFECT_TYPE_SPECIAL = nil
 
----ConvertEffectType(4)
+---ConvertEffectType ( 4 )
 ---@type effecttype
 EFFECT_TYPE_AREA_EFFECT = nil
 
----ConvertEffectType(5)
+---ConvertEffectType ( 5 )
 ---@type effecttype
 EFFECT_TYPE_MISSILE = nil
 
----ConvertEffectType(6)
+---ConvertEffectType ( 6 )
 ---@type effecttype
 EFFECT_TYPE_LIGHTNING = nil
 
----ConvertSoundType(0)
+---ConvertSoundType ( 0 )
 ---@type soundtype
 SOUND_TYPE_EFFECT = nil
 
----ConvertSoundType(1)
+---ConvertSoundType ( 1 )
 ---@type soundtype
 SOUND_TYPE_EFFECT_LOOPED = nil
 
----ConvertOriginFrameType(0)
+---ConvertOriginFrameType ( 0 )
 ---@type originframetype
 ORIGIN_FRAME_GAME_UI = nil
 
----ConvertOriginFrameType(1)
+---ConvertOriginFrameType ( 1 )
 ---@type originframetype
 ORIGIN_FRAME_COMMAND_BUTTON = nil
 
----ConvertOriginFrameType(2)
+---ConvertOriginFrameType ( 2 )
 ---@type originframetype
 ORIGIN_FRAME_HERO_BAR = nil
 
----ConvertOriginFrameType(3)
+---ConvertOriginFrameType ( 3 )
 ---@type originframetype
 ORIGIN_FRAME_HERO_BUTTON = nil
 
----ConvertOriginFrameType(4)
+---ConvertOriginFrameType ( 4 )
 ---@type originframetype
 ORIGIN_FRAME_HERO_HP_BAR = nil
 
----ConvertOriginFrameType(5)
+---ConvertOriginFrameType ( 5 )
 ---@type originframetype
 ORIGIN_FRAME_HERO_MANA_BAR = nil
 
----ConvertOriginFrameType(6)
+---ConvertOriginFrameType ( 6 )
 ---@type originframetype
 ORIGIN_FRAME_HERO_BUTTON_INDICATOR = nil
 
----ConvertOriginFrameType(7)
+---ConvertOriginFrameType ( 7 )
 ---@type originframetype
 ORIGIN_FRAME_ITEM_BUTTON = nil
 
----ConvertOriginFrameType(8)
+---ConvertOriginFrameType ( 8 )
 ---@type originframetype
 ORIGIN_FRAME_MINIMAP = nil
 
----ConvertOriginFrameType(9)
+---ConvertOriginFrameType ( 9 )
 ---@type originframetype
 ORIGIN_FRAME_MINIMAP_BUTTON = nil
 
----ConvertOriginFrameType(10)
+---ConvertOriginFrameType ( 10 )
 ---@type originframetype
 ORIGIN_FRAME_SYSTEM_BUTTON = nil
 
----ConvertOriginFrameType(11)
+---ConvertOriginFrameType ( 11 )
 ---@type originframetype
 ORIGIN_FRAME_TOOLTIP = nil
 
----ConvertOriginFrameType(12)
+---ConvertOriginFrameType ( 12 )
 ---@type originframetype
 ORIGIN_FRAME_UBERTOOLTIP = nil
 
----ConvertOriginFrameType(13)
+---ConvertOriginFrameType ( 13 )
 ---@type originframetype
 ORIGIN_FRAME_CHAT_MSG = nil
 
----ConvertOriginFrameType(14)
+---ConvertOriginFrameType ( 14 )
 ---@type originframetype
 ORIGIN_FRAME_UNIT_MSG = nil
 
----ConvertOriginFrameType(15)
+---ConvertOriginFrameType ( 15 )
 ---@type originframetype
 ORIGIN_FRAME_TOP_MSG = nil
 
----ConvertOriginFrameType(16)
+---ConvertOriginFrameType ( 16 )
 ---@type originframetype
 ORIGIN_FRAME_PORTRAIT = nil
 
----ConvertOriginFrameType(17)
+---ConvertOriginFrameType ( 17 )
 ---@type originframetype
 ORIGIN_FRAME_WORLD_FRAME = nil
 
----ConvertOriginFrameType(18)
+---ConvertOriginFrameType ( 18 )
 ---@type originframetype
 ORIGIN_FRAME_SIMPLE_UI_PARENT = nil
 
----ConvertOriginFrameType(19)
+---ConvertOriginFrameType ( 19 )
 ---@type originframetype
 ORIGIN_FRAME_PORTRAIT_HP_TEXT = nil
 
----ConvertOriginFrameType(20)
+---ConvertOriginFrameType ( 20 )
 ---@type originframetype
 ORIGIN_FRAME_PORTRAIT_MANA_TEXT = nil
 
----ConvertOriginFrameType(21)
+---ConvertOriginFrameType ( 21 )
 ---@type originframetype
 ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR = nil
 
----ConvertOriginFrameType(22)
+---ConvertOriginFrameType ( 22 )
 ---@type originframetype
 ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR_LABEL = nil
 
----ConvertFramePointType(0)
+---ConvertFramePointType ( 0 )
 ---@type framepointtype
 FRAMEPOINT_TOPLEFT = nil
 
----ConvertFramePointType(1)
+---ConvertFramePointType ( 1 )
 ---@type framepointtype
 FRAMEPOINT_TOP = nil
 
----ConvertFramePointType(2)
+---ConvertFramePointType ( 2 )
 ---@type framepointtype
 FRAMEPOINT_TOPRIGHT = nil
 
----ConvertFramePointType(3)
+---ConvertFramePointType ( 3 )
 ---@type framepointtype
 FRAMEPOINT_LEFT = nil
 
----ConvertFramePointType(4)
+---ConvertFramePointType ( 4 )
 ---@type framepointtype
 FRAMEPOINT_CENTER = nil
 
----ConvertFramePointType(5)
+---ConvertFramePointType ( 5 )
 ---@type framepointtype
 FRAMEPOINT_RIGHT = nil
 
----ConvertFramePointType(6)
+---ConvertFramePointType ( 6 )
 ---@type framepointtype
 FRAMEPOINT_BOTTOMLEFT = nil
 
----ConvertFramePointType(7)
+---ConvertFramePointType ( 7 )
 ---@type framepointtype
 FRAMEPOINT_BOTTOM = nil
 
----ConvertFramePointType(8)
+---ConvertFramePointType ( 8 )
 ---@type framepointtype
 FRAMEPOINT_BOTTOMRIGHT = nil
 
----ConvertTextAlignType(0)
+---ConvertTextAlignType ( 0 )
 ---@type textaligntype
 TEXT_JUSTIFY_TOP = nil
 
----ConvertTextAlignType(1)
+---ConvertTextAlignType ( 1 )
 ---@type textaligntype
 TEXT_JUSTIFY_MIDDLE = nil
 
----ConvertTextAlignType(2)
+---ConvertTextAlignType ( 2 )
 ---@type textaligntype
 TEXT_JUSTIFY_BOTTOM = nil
 
----ConvertTextAlignType(3)
+---ConvertTextAlignType ( 3 )
 ---@type textaligntype
 TEXT_JUSTIFY_LEFT = nil
 
----ConvertTextAlignType(4)
+---ConvertTextAlignType ( 4 )
 ---@type textaligntype
 TEXT_JUSTIFY_CENTER = nil
 
----ConvertTextAlignType(5)
+---ConvertTextAlignType ( 5 )
 ---@type textaligntype
 TEXT_JUSTIFY_RIGHT = nil
 
----ConvertFrameEventType(1)
+---ConvertFrameEventType ( 1 )
 ---@type frameeventtype
 FRAMEEVENT_CONTROL_CLICK = nil
 
----ConvertFrameEventType(2)
+---ConvertFrameEventType ( 2 )
 ---@type frameeventtype
 FRAMEEVENT_MOUSE_ENTER = nil
 
----ConvertFrameEventType(3)
+---ConvertFrameEventType ( 3 )
 ---@type frameeventtype
 FRAMEEVENT_MOUSE_LEAVE = nil
 
----ConvertFrameEventType(4)
+---ConvertFrameEventType ( 4 )
 ---@type frameeventtype
 FRAMEEVENT_MOUSE_UP = nil
 
----ConvertFrameEventType(5)
+---ConvertFrameEventType ( 5 )
 ---@type frameeventtype
 FRAMEEVENT_MOUSE_DOWN = nil
 
----ConvertFrameEventType(6)
+---ConvertFrameEventType ( 6 )
 ---@type frameeventtype
 FRAMEEVENT_MOUSE_WHEEL = nil
 
----ConvertFrameEventType(7)
+---ConvertFrameEventType ( 7 )
 ---@type frameeventtype
 FRAMEEVENT_CHECKBOX_CHECKED = nil
 
----ConvertFrameEventType(8)
+---ConvertFrameEventType ( 8 )
 ---@type frameeventtype
 FRAMEEVENT_CHECKBOX_UNCHECKED = nil
 
----ConvertFrameEventType(9)
+---ConvertFrameEventType ( 9 )
 ---@type frameeventtype
 FRAMEEVENT_EDITBOX_TEXT_CHANGED = nil
 
----ConvertFrameEventType(10)
+---ConvertFrameEventType ( 10 )
 ---@type frameeventtype
 FRAMEEVENT_POPUPMENU_ITEM_CHANGED = nil
 
----ConvertFrameEventType(11)
+---ConvertFrameEventType ( 11 )
 ---@type frameeventtype
 FRAMEEVENT_MOUSE_DOUBLECLICK = nil
 
----ConvertFrameEventType(12)
+---ConvertFrameEventType ( 12 )
 ---@type frameeventtype
 FRAMEEVENT_SPRITE_ANIM_UPDATE = nil
 
----ConvertFrameEventType(13)
+---ConvertFrameEventType ( 13 )
 ---@type frameeventtype
 FRAMEEVENT_SLIDER_VALUE_CHANGED = nil
 
----ConvertFrameEventType(14)
+---ConvertFrameEventType ( 14 )
 ---@type frameeventtype
 FRAMEEVENT_DIALOG_CANCEL = nil
 
----ConvertFrameEventType(15)
+---ConvertFrameEventType ( 15 )
 ---@type frameeventtype
 FRAMEEVENT_DIALOG_ACCEPT = nil
 
----ConvertFrameEventType(16)
+---ConvertFrameEventType ( 16 )
 ---@type frameeventtype
 FRAMEEVENT_EDITBOX_ENTER = nil
 
----ConvertOsKeyType($08)
+---ConvertOsKeyType ( 08 )
 ---@type oskeytype
 OSKEY_BACKSPACE = nil
 
----ConvertOsKeyType($09)
+---ConvertOsKeyType ( 09 )
 ---@type oskeytype
 OSKEY_TAB = nil
 
----ConvertOsKeyType($0C)
+---ConvertOsKeyType ( 0 C )
 ---@type oskeytype
 OSKEY_CLEAR = nil
 
----ConvertOsKeyType($0D)
+---ConvertOsKeyType ( 0 D )
 ---@type oskeytype
 OSKEY_RETURN = nil
 
----ConvertOsKeyType($10)
+---ConvertOsKeyType ( 10 )
 ---@type oskeytype
 OSKEY_SHIFT = nil
 
----ConvertOsKeyType($11)
+---ConvertOsKeyType ( 11 )
 ---@type oskeytype
 OSKEY_CONTROL = nil
 
----ConvertOsKeyType($12)
+---ConvertOsKeyType ( 12 )
 ---@type oskeytype
 OSKEY_ALT = nil
 
----ConvertOsKeyType($13)
+---ConvertOsKeyType ( 13 )
 ---@type oskeytype
 OSKEY_PAUSE = nil
 
----ConvertOsKeyType($14)
+---ConvertOsKeyType ( 14 )
 ---@type oskeytype
 OSKEY_CAPSLOCK = nil
 
----ConvertOsKeyType($15)
+---ConvertOsKeyType ( 15 )
 ---@type oskeytype
 OSKEY_KANA = nil
 
----ConvertOsKeyType($15)
+---ConvertOsKeyType ( 15 )
 ---@type oskeytype
 OSKEY_HANGUL = nil
 
----ConvertOsKeyType($17)
+---ConvertOsKeyType ( 17 )
 ---@type oskeytype
 OSKEY_JUNJA = nil
 
----ConvertOsKeyType($18)
+---ConvertOsKeyType ( 18 )
 ---@type oskeytype
 OSKEY_FINAL = nil
 
----ConvertOsKeyType($19)
+---ConvertOsKeyType ( 19 )
 ---@type oskeytype
 OSKEY_HANJA = nil
 
----ConvertOsKeyType($19)
+---ConvertOsKeyType ( 19 )
 ---@type oskeytype
 OSKEY_KANJI = nil
 
----ConvertOsKeyType($1B)
+---ConvertOsKeyType ( 1 B )
 ---@type oskeytype
 OSKEY_ESCAPE = nil
 
----ConvertOsKeyType($1C)
+---ConvertOsKeyType ( 1 C )
 ---@type oskeytype
 OSKEY_CONVERT = nil
 
----ConvertOsKeyType($1D)
+---ConvertOsKeyType ( 1 D )
 ---@type oskeytype
 OSKEY_NONCONVERT = nil
 
----ConvertOsKeyType($1E)
+---ConvertOsKeyType ( 1 E )
 ---@type oskeytype
 OSKEY_ACCEPT = nil
 
----ConvertOsKeyType($1F)
+---ConvertOsKeyType ( 1 F )
 ---@type oskeytype
 OSKEY_MODECHANGE = nil
 
----ConvertOsKeyType($20)
+---ConvertOsKeyType ( 20 )
 ---@type oskeytype
 OSKEY_SPACE = nil
 
----ConvertOsKeyType($21)
+---ConvertOsKeyType ( 21 )
 ---@type oskeytype
 OSKEY_PAGEUP = nil
 
----ConvertOsKeyType($22)
+---ConvertOsKeyType ( 22 )
 ---@type oskeytype
 OSKEY_PAGEDOWN = nil
 
----ConvertOsKeyType($23)
+---ConvertOsKeyType ( 23 )
 ---@type oskeytype
 OSKEY_END = nil
 
----ConvertOsKeyType($24)
+---ConvertOsKeyType ( 24 )
 ---@type oskeytype
 OSKEY_HOME = nil
 
----ConvertOsKeyType($25)
+---ConvertOsKeyType ( 25 )
 ---@type oskeytype
 OSKEY_LEFT = nil
 
----ConvertOsKeyType($26)
+---ConvertOsKeyType ( 26 )
 ---@type oskeytype
 OSKEY_UP = nil
 
----ConvertOsKeyType($27)
+---ConvertOsKeyType ( 27 )
 ---@type oskeytype
 OSKEY_RIGHT = nil
 
----ConvertOsKeyType($28)
+---ConvertOsKeyType ( 28 )
 ---@type oskeytype
 OSKEY_DOWN = nil
 
----ConvertOsKeyType($29)
+---ConvertOsKeyType ( 29 )
 ---@type oskeytype
 OSKEY_SELECT = nil
 
----ConvertOsKeyType($2A)
+---ConvertOsKeyType ( 2 A )
 ---@type oskeytype
 OSKEY_PRINT = nil
 
----ConvertOsKeyType($2B)
+---ConvertOsKeyType ( 2 B )
 ---@type oskeytype
 OSKEY_EXECUTE = nil
 
----ConvertOsKeyType($2C)
+---ConvertOsKeyType ( 2 C )
 ---@type oskeytype
 OSKEY_PRINTSCREEN = nil
 
----ConvertOsKeyType($2D)
+---ConvertOsKeyType ( 2 D )
 ---@type oskeytype
 OSKEY_INSERT = nil
 
----ConvertOsKeyType($2E)
+---ConvertOsKeyType ( 2 E )
 ---@type oskeytype
 OSKEY_DELETE = nil
 
----ConvertOsKeyType($2F)
+---ConvertOsKeyType ( 2 F )
 ---@type oskeytype
 OSKEY_HELP = nil
 
----ConvertOsKeyType($30)
+---ConvertOsKeyType ( 30 )
 ---@type oskeytype
 OSKEY_0 = nil
 
----ConvertOsKeyType($31)
+---ConvertOsKeyType ( 31 )
 ---@type oskeytype
 OSKEY_1 = nil
 
----ConvertOsKeyType($32)
+---ConvertOsKeyType ( 32 )
 ---@type oskeytype
 OSKEY_2 = nil
 
----ConvertOsKeyType($33)
+---ConvertOsKeyType ( 33 )
 ---@type oskeytype
 OSKEY_3 = nil
 
----ConvertOsKeyType($34)
+---ConvertOsKeyType ( 34 )
 ---@type oskeytype
 OSKEY_4 = nil
 
----ConvertOsKeyType($35)
+---ConvertOsKeyType ( 35 )
 ---@type oskeytype
 OSKEY_5 = nil
 
----ConvertOsKeyType($36)
+---ConvertOsKeyType ( 36 )
 ---@type oskeytype
 OSKEY_6 = nil
 
----ConvertOsKeyType($37)
+---ConvertOsKeyType ( 37 )
 ---@type oskeytype
 OSKEY_7 = nil
 
----ConvertOsKeyType($38)
+---ConvertOsKeyType ( 38 )
 ---@type oskeytype
 OSKEY_8 = nil
 
----ConvertOsKeyType($39)
+---ConvertOsKeyType ( 39 )
 ---@type oskeytype
 OSKEY_9 = nil
 
----ConvertOsKeyType($41)
+---ConvertOsKeyType ( 41 )
 ---@type oskeytype
 OSKEY_A = nil
 
----ConvertOsKeyType($42)
+---ConvertOsKeyType ( 42 )
 ---@type oskeytype
 OSKEY_B = nil
 
----ConvertOsKeyType($43)
+---ConvertOsKeyType ( 43 )
 ---@type oskeytype
 OSKEY_C = nil
 
----ConvertOsKeyType($44)
+---ConvertOsKeyType ( 44 )
 ---@type oskeytype
 OSKEY_D = nil
 
----ConvertOsKeyType($45)
+---ConvertOsKeyType ( 45 )
 ---@type oskeytype
 OSKEY_E = nil
 
----ConvertOsKeyType($46)
+---ConvertOsKeyType ( 46 )
 ---@type oskeytype
 OSKEY_F = nil
 
----ConvertOsKeyType($47)
+---ConvertOsKeyType ( 47 )
 ---@type oskeytype
 OSKEY_G = nil
 
----ConvertOsKeyType($48)
+---ConvertOsKeyType ( 48 )
 ---@type oskeytype
 OSKEY_H = nil
 
----ConvertOsKeyType($49)
+---ConvertOsKeyType ( 49 )
 ---@type oskeytype
 OSKEY_I = nil
 
----ConvertOsKeyType($4A)
+---ConvertOsKeyType ( 4 A )
 ---@type oskeytype
 OSKEY_J = nil
 
----ConvertOsKeyType($4B)
+---ConvertOsKeyType ( 4 B )
 ---@type oskeytype
 OSKEY_K = nil
 
----ConvertOsKeyType($4C)
+---ConvertOsKeyType ( 4 C )
 ---@type oskeytype
 OSKEY_L = nil
 
----ConvertOsKeyType($4D)
+---ConvertOsKeyType ( 4 D )
 ---@type oskeytype
 OSKEY_M = nil
 
----ConvertOsKeyType($4E)
+---ConvertOsKeyType ( 4 E )
 ---@type oskeytype
 OSKEY_N = nil
 
----ConvertOsKeyType($4F)
+---ConvertOsKeyType ( 4 F )
 ---@type oskeytype
 OSKEY_O = nil
 
----ConvertOsKeyType($50)
+---ConvertOsKeyType ( 50 )
 ---@type oskeytype
 OSKEY_P = nil
 
----ConvertOsKeyType($51)
+---ConvertOsKeyType ( 51 )
 ---@type oskeytype
 OSKEY_Q = nil
 
----ConvertOsKeyType($52)
+---ConvertOsKeyType ( 52 )
 ---@type oskeytype
 OSKEY_R = nil
 
----ConvertOsKeyType($53)
+---ConvertOsKeyType ( 53 )
 ---@type oskeytype
 OSKEY_S = nil
 
----ConvertOsKeyType($54)
+---ConvertOsKeyType ( 54 )
 ---@type oskeytype
 OSKEY_T = nil
 
----ConvertOsKeyType($55)
+---ConvertOsKeyType ( 55 )
 ---@type oskeytype
 OSKEY_U = nil
 
----ConvertOsKeyType($56)
+---ConvertOsKeyType ( 56 )
 ---@type oskeytype
 OSKEY_V = nil
 
----ConvertOsKeyType($57)
+---ConvertOsKeyType ( 57 )
 ---@type oskeytype
 OSKEY_W = nil
 
----ConvertOsKeyType($58)
+---ConvertOsKeyType ( 58 )
 ---@type oskeytype
 OSKEY_X = nil
 
----ConvertOsKeyType($59)
+---ConvertOsKeyType ( 59 )
 ---@type oskeytype
 OSKEY_Y = nil
 
----ConvertOsKeyType($5A)
+---ConvertOsKeyType ( 5 A )
 ---@type oskeytype
 OSKEY_Z = nil
 
----ConvertOsKeyType($5B)
+---ConvertOsKeyType ( 5 B )
 ---@type oskeytype
 OSKEY_LMETA = nil
 
----ConvertOsKeyType($5C)
+---ConvertOsKeyType ( 5 C )
 ---@type oskeytype
 OSKEY_RMETA = nil
 
----ConvertOsKeyType($5D)
+---ConvertOsKeyType ( 5 D )
 ---@type oskeytype
 OSKEY_APPS = nil
 
----ConvertOsKeyType($5F)
+---ConvertOsKeyType ( 5 F )
 ---@type oskeytype
 OSKEY_SLEEP = nil
 
----ConvertOsKeyType($60)
+---ConvertOsKeyType ( 60 )
 ---@type oskeytype
 OSKEY_NUMPAD0 = nil
 
----ConvertOsKeyType($61)
+---ConvertOsKeyType ( 61 )
 ---@type oskeytype
 OSKEY_NUMPAD1 = nil
 
----ConvertOsKeyType($62)
+---ConvertOsKeyType ( 62 )
 ---@type oskeytype
 OSKEY_NUMPAD2 = nil
 
----ConvertOsKeyType($63)
+---ConvertOsKeyType ( 63 )
 ---@type oskeytype
 OSKEY_NUMPAD3 = nil
 
----ConvertOsKeyType($64)
+---ConvertOsKeyType ( 64 )
 ---@type oskeytype
 OSKEY_NUMPAD4 = nil
 
----ConvertOsKeyType($65)
+---ConvertOsKeyType ( 65 )
 ---@type oskeytype
 OSKEY_NUMPAD5 = nil
 
----ConvertOsKeyType($66)
+---ConvertOsKeyType ( 66 )
 ---@type oskeytype
 OSKEY_NUMPAD6 = nil
 
----ConvertOsKeyType($67)
+---ConvertOsKeyType ( 67 )
 ---@type oskeytype
 OSKEY_NUMPAD7 = nil
 
----ConvertOsKeyType($68)
+---ConvertOsKeyType ( 68 )
 ---@type oskeytype
 OSKEY_NUMPAD8 = nil
 
----ConvertOsKeyType($69)
+---ConvertOsKeyType ( 69 )
 ---@type oskeytype
 OSKEY_NUMPAD9 = nil
 
----ConvertOsKeyType($6A)
+---ConvertOsKeyType ( 6 A )
 ---@type oskeytype
 OSKEY_MULTIPLY = nil
 
----ConvertOsKeyType($6B)
+---ConvertOsKeyType ( 6 B )
 ---@type oskeytype
 OSKEY_ADD = nil
 
----ConvertOsKeyType($6C)
+---ConvertOsKeyType ( 6 C )
 ---@type oskeytype
 OSKEY_SEPARATOR = nil
 
----ConvertOsKeyType($6D)
+---ConvertOsKeyType ( 6 D )
 ---@type oskeytype
 OSKEY_SUBTRACT = nil
 
----ConvertOsKeyType($6E)
+---ConvertOsKeyType ( 6 E )
 ---@type oskeytype
 OSKEY_DECIMAL = nil
 
----ConvertOsKeyType($6F)
+---ConvertOsKeyType ( 6 F )
 ---@type oskeytype
 OSKEY_DIVIDE = nil
 
----ConvertOsKeyType($70)
+---ConvertOsKeyType ( 70 )
 ---@type oskeytype
 OSKEY_F1 = nil
 
----ConvertOsKeyType($71)
+---ConvertOsKeyType ( 71 )
 ---@type oskeytype
 OSKEY_F2 = nil
 
----ConvertOsKeyType($72)
+---ConvertOsKeyType ( 72 )
 ---@type oskeytype
 OSKEY_F3 = nil
 
----ConvertOsKeyType($73)
+---ConvertOsKeyType ( 73 )
 ---@type oskeytype
 OSKEY_F4 = nil
 
----ConvertOsKeyType($74)
+---ConvertOsKeyType ( 74 )
 ---@type oskeytype
 OSKEY_F5 = nil
 
----ConvertOsKeyType($75)
+---ConvertOsKeyType ( 75 )
 ---@type oskeytype
 OSKEY_F6 = nil
 
----ConvertOsKeyType($76)
+---ConvertOsKeyType ( 76 )
 ---@type oskeytype
 OSKEY_F7 = nil
 
----ConvertOsKeyType($77)
+---ConvertOsKeyType ( 77 )
 ---@type oskeytype
 OSKEY_F8 = nil
 
----ConvertOsKeyType($78)
+---ConvertOsKeyType ( 78 )
 ---@type oskeytype
 OSKEY_F9 = nil
 
----ConvertOsKeyType($79)
+---ConvertOsKeyType ( 79 )
 ---@type oskeytype
 OSKEY_F10 = nil
 
----ConvertOsKeyType($7A)
+---ConvertOsKeyType ( 7 A )
 ---@type oskeytype
 OSKEY_F11 = nil
 
----ConvertOsKeyType($7B)
+---ConvertOsKeyType ( 7 B )
 ---@type oskeytype
 OSKEY_F12 = nil
 
----ConvertOsKeyType($7C)
+---ConvertOsKeyType ( 7 C )
 ---@type oskeytype
 OSKEY_F13 = nil
 
----ConvertOsKeyType($7D)
+---ConvertOsKeyType ( 7 D )
 ---@type oskeytype
 OSKEY_F14 = nil
 
----ConvertOsKeyType($7E)
+---ConvertOsKeyType ( 7 E )
 ---@type oskeytype
 OSKEY_F15 = nil
 
----ConvertOsKeyType($7F)
+---ConvertOsKeyType ( 7 F )
 ---@type oskeytype
 OSKEY_F16 = nil
 
----ConvertOsKeyType($80)
+---ConvertOsKeyType ( 80 )
 ---@type oskeytype
 OSKEY_F17 = nil
 
----ConvertOsKeyType($81)
+---ConvertOsKeyType ( 81 )
 ---@type oskeytype
 OSKEY_F18 = nil
 
----ConvertOsKeyType($82)
+---ConvertOsKeyType ( 82 )
 ---@type oskeytype
 OSKEY_F19 = nil
 
----ConvertOsKeyType($83)
+---ConvertOsKeyType ( 83 )
 ---@type oskeytype
 OSKEY_F20 = nil
 
----ConvertOsKeyType($84)
+---ConvertOsKeyType ( 84 )
 ---@type oskeytype
 OSKEY_F21 = nil
 
----ConvertOsKeyType($85)
+---ConvertOsKeyType ( 85 )
 ---@type oskeytype
 OSKEY_F22 = nil
 
----ConvertOsKeyType($86)
+---ConvertOsKeyType ( 86 )
 ---@type oskeytype
 OSKEY_F23 = nil
 
----ConvertOsKeyType($87)
+---ConvertOsKeyType ( 87 )
 ---@type oskeytype
 OSKEY_F24 = nil
 
----ConvertOsKeyType($90)
+---ConvertOsKeyType ( 90 )
 ---@type oskeytype
 OSKEY_NUMLOCK = nil
 
----ConvertOsKeyType($91)
+---ConvertOsKeyType ( 91 )
 ---@type oskeytype
 OSKEY_SCROLLLOCK = nil
 
----ConvertOsKeyType($92)
+---ConvertOsKeyType ( 92 )
 ---@type oskeytype
 OSKEY_OEM_NEC_EQUAL = nil
 
----ConvertOsKeyType($92)
+---ConvertOsKeyType ( 92 )
 ---@type oskeytype
 OSKEY_OEM_FJ_JISHO = nil
 
----ConvertOsKeyType($93)
+---ConvertOsKeyType ( 93 )
 ---@type oskeytype
 OSKEY_OEM_FJ_MASSHOU = nil
 
----ConvertOsKeyType($94)
+---ConvertOsKeyType ( 94 )
 ---@type oskeytype
 OSKEY_OEM_FJ_TOUROKU = nil
 
----ConvertOsKeyType($95)
+---ConvertOsKeyType ( 95 )
 ---@type oskeytype
 OSKEY_OEM_FJ_LOYA = nil
 
----ConvertOsKeyType($96)
+---ConvertOsKeyType ( 96 )
 ---@type oskeytype
 OSKEY_OEM_FJ_ROYA = nil
 
----ConvertOsKeyType($A0)
+---ConvertOsKeyType ( A0 )
 ---@type oskeytype
 OSKEY_LSHIFT = nil
 
----ConvertOsKeyType($A1)
+---ConvertOsKeyType ( A1 )
 ---@type oskeytype
 OSKEY_RSHIFT = nil
 
----ConvertOsKeyType($A2)
+---ConvertOsKeyType ( A2 )
 ---@type oskeytype
 OSKEY_LCONTROL = nil
 
----ConvertOsKeyType($A3)
+---ConvertOsKeyType ( A3 )
 ---@type oskeytype
 OSKEY_RCONTROL = nil
 
----ConvertOsKeyType($A4)
+---ConvertOsKeyType ( A4 )
 ---@type oskeytype
 OSKEY_LALT = nil
 
----ConvertOsKeyType($A5)
+---ConvertOsKeyType ( A5 )
 ---@type oskeytype
 OSKEY_RALT = nil
 
----ConvertOsKeyType($A6)
+---ConvertOsKeyType ( A6 )
 ---@type oskeytype
 OSKEY_BROWSER_BACK = nil
 
----ConvertOsKeyType($A7)
+---ConvertOsKeyType ( A7 )
 ---@type oskeytype
 OSKEY_BROWSER_FORWARD = nil
 
----ConvertOsKeyType($A8)
+---ConvertOsKeyType ( A8 )
 ---@type oskeytype
 OSKEY_BROWSER_REFRESH = nil
 
----ConvertOsKeyType($A9)
+---ConvertOsKeyType ( A9 )
 ---@type oskeytype
 OSKEY_BROWSER_STOP = nil
 
----ConvertOsKeyType($AA)
+---ConvertOsKeyType ( AA )
 ---@type oskeytype
 OSKEY_BROWSER_SEARCH = nil
 
----ConvertOsKeyType($AB)
+---ConvertOsKeyType ( AB )
 ---@type oskeytype
 OSKEY_BROWSER_FAVORITES = nil
 
----ConvertOsKeyType($AC)
+---ConvertOsKeyType ( AC )
 ---@type oskeytype
 OSKEY_BROWSER_HOME = nil
 
----ConvertOsKeyType($AD)
+---ConvertOsKeyType ( AD )
 ---@type oskeytype
 OSKEY_VOLUME_MUTE = nil
 
----ConvertOsKeyType($AE)
+---ConvertOsKeyType ( AE )
 ---@type oskeytype
 OSKEY_VOLUME_DOWN = nil
 
----ConvertOsKeyType($AF)
+---ConvertOsKeyType ( AF )
 ---@type oskeytype
 OSKEY_VOLUME_UP = nil
 
----ConvertOsKeyType($B0)
+---ConvertOsKeyType ( B0 )
 ---@type oskeytype
 OSKEY_MEDIA_NEXT_TRACK = nil
 
----ConvertOsKeyType($B1)
+---ConvertOsKeyType ( B1 )
 ---@type oskeytype
 OSKEY_MEDIA_PREV_TRACK = nil
 
----ConvertOsKeyType($B2)
+---ConvertOsKeyType ( B2 )
 ---@type oskeytype
 OSKEY_MEDIA_STOP = nil
 
----ConvertOsKeyType($B3)
+---ConvertOsKeyType ( B3 )
 ---@type oskeytype
 OSKEY_MEDIA_PLAY_PAUSE = nil
 
----ConvertOsKeyType($B4)
+---ConvertOsKeyType ( B4 )
 ---@type oskeytype
 OSKEY_LAUNCH_MAIL = nil
 
----ConvertOsKeyType($B5)
+---ConvertOsKeyType ( B5 )
 ---@type oskeytype
 OSKEY_LAUNCH_MEDIA_SELECT = nil
 
----ConvertOsKeyType($B6)
+---ConvertOsKeyType ( B6 )
 ---@type oskeytype
 OSKEY_LAUNCH_APP1 = nil
 
----ConvertOsKeyType($B7)
+---ConvertOsKeyType ( B7 )
 ---@type oskeytype
 OSKEY_LAUNCH_APP2 = nil
 
----ConvertOsKeyType($BA)
+---ConvertOsKeyType ( BA )
 ---@type oskeytype
 OSKEY_OEM_1 = nil
 
----ConvertOsKeyType($BB)
+---ConvertOsKeyType ( BB )
 ---@type oskeytype
 OSKEY_OEM_PLUS = nil
 
----ConvertOsKeyType($BC)
+---ConvertOsKeyType ( BC )
 ---@type oskeytype
 OSKEY_OEM_COMMA = nil
 
----ConvertOsKeyType($BD)
+---ConvertOsKeyType ( BD )
 ---@type oskeytype
 OSKEY_OEM_MINUS = nil
 
----ConvertOsKeyType($BE)
+---ConvertOsKeyType ( BE )
 ---@type oskeytype
 OSKEY_OEM_PERIOD = nil
 
----ConvertOsKeyType($BF)
+---ConvertOsKeyType ( BF )
 ---@type oskeytype
 OSKEY_OEM_2 = nil
 
----ConvertOsKeyType($C0)
+---ConvertOsKeyType ( C0 )
 ---@type oskeytype
 OSKEY_OEM_3 = nil
 
----ConvertOsKeyType($DB)
+---ConvertOsKeyType ( DB )
 ---@type oskeytype
 OSKEY_OEM_4 = nil
 
----ConvertOsKeyType($DC)
+---ConvertOsKeyType ( DC )
 ---@type oskeytype
 OSKEY_OEM_5 = nil
 
----ConvertOsKeyType($DD)
+---ConvertOsKeyType ( DD )
 ---@type oskeytype
 OSKEY_OEM_6 = nil
 
----ConvertOsKeyType($DE)
+---ConvertOsKeyType ( DE )
 ---@type oskeytype
 OSKEY_OEM_7 = nil
 
----ConvertOsKeyType($DF)
+---ConvertOsKeyType ( DF )
 ---@type oskeytype
 OSKEY_OEM_8 = nil
 
----ConvertOsKeyType($E1)
+---ConvertOsKeyType ( E1 )
 ---@type oskeytype
 OSKEY_OEM_AX = nil
 
----ConvertOsKeyType($E2)
+---ConvertOsKeyType ( E2 )
 ---@type oskeytype
 OSKEY_OEM_102 = nil
 
----ConvertOsKeyType($E3)
+---ConvertOsKeyType ( E3 )
 ---@type oskeytype
 OSKEY_ICO_HELP = nil
 
----ConvertOsKeyType($E4)
+---ConvertOsKeyType ( E4 )
 ---@type oskeytype
 OSKEY_ICO_00 = nil
 
----ConvertOsKeyType($E5)
+---ConvertOsKeyType ( E5 )
 ---@type oskeytype
 OSKEY_PROCESSKEY = nil
 
----ConvertOsKeyType($E6)
+---ConvertOsKeyType ( E6 )
 ---@type oskeytype
 OSKEY_ICO_CLEAR = nil
 
----ConvertOsKeyType($E7)
+---ConvertOsKeyType ( E7 )
 ---@type oskeytype
 OSKEY_PACKET = nil
 
----ConvertOsKeyType($E9)
+---ConvertOsKeyType ( E9 )
 ---@type oskeytype
 OSKEY_OEM_RESET = nil
 
----ConvertOsKeyType($EA)
+---ConvertOsKeyType ( EA )
 ---@type oskeytype
 OSKEY_OEM_JUMP = nil
 
----ConvertOsKeyType($EB)
+---ConvertOsKeyType ( EB )
 ---@type oskeytype
 OSKEY_OEM_PA1 = nil
 
----ConvertOsKeyType($EC)
+---ConvertOsKeyType ( EC )
 ---@type oskeytype
 OSKEY_OEM_PA2 = nil
 
----ConvertOsKeyType($ED)
+---ConvertOsKeyType ( ED )
 ---@type oskeytype
 OSKEY_OEM_PA3 = nil
 
----ConvertOsKeyType($EE)
+---ConvertOsKeyType ( EE )
 ---@type oskeytype
 OSKEY_OEM_WSCTRL = nil
 
----ConvertOsKeyType($EF)
+---ConvertOsKeyType ( EF )
 ---@type oskeytype
 OSKEY_OEM_CUSEL = nil
 
----ConvertOsKeyType($F0)
+---ConvertOsKeyType ( F0 )
 ---@type oskeytype
 OSKEY_OEM_ATTN = nil
 
----ConvertOsKeyType($F1)
+---ConvertOsKeyType ( F1 )
 ---@type oskeytype
 OSKEY_OEM_FINISH = nil
 
----ConvertOsKeyType($F2)
+---ConvertOsKeyType ( F2 )
 ---@type oskeytype
 OSKEY_OEM_COPY = nil
 
----ConvertOsKeyType($F3)
+---ConvertOsKeyType ( F3 )
 ---@type oskeytype
 OSKEY_OEM_AUTO = nil
 
----ConvertOsKeyType($F4)
+---ConvertOsKeyType ( F4 )
 ---@type oskeytype
 OSKEY_OEM_ENLW = nil
 
----ConvertOsKeyType($F5)
+---ConvertOsKeyType ( F5 )
 ---@type oskeytype
 OSKEY_OEM_BACKTAB = nil
 
----ConvertOsKeyType($F6)
+---ConvertOsKeyType ( F6 )
 ---@type oskeytype
 OSKEY_ATTN = nil
 
----ConvertOsKeyType($F7)
+---ConvertOsKeyType ( F7 )
 ---@type oskeytype
 OSKEY_CRSEL = nil
 
----ConvertOsKeyType($F8)
+---ConvertOsKeyType ( F8 )
 ---@type oskeytype
 OSKEY_EXSEL = nil
 
----ConvertOsKeyType($F9)
+---ConvertOsKeyType ( F9 )
 ---@type oskeytype
 OSKEY_EREOF = nil
 
----ConvertOsKeyType($FA)
+---ConvertOsKeyType ( FA )
 ---@type oskeytype
 OSKEY_PLAY = nil
 
----ConvertOsKeyType($FB)
+---ConvertOsKeyType ( FB )
 ---@type oskeytype
 OSKEY_ZOOM = nil
 
----ConvertOsKeyType($FC)
+---ConvertOsKeyType ( FC )
 ---@type oskeytype
 OSKEY_NONAME = nil
 
----ConvertOsKeyType($FD)
+---ConvertOsKeyType ( FD )
 ---@type oskeytype
 OSKEY_PA1 = nil
 
----ConvertOsKeyType($FE)
+---ConvertOsKeyType ( FE )
 ---@type oskeytype
 OSKEY_OEM_CLEAR = nil
 
----ConvertAbilityIntegerField('abpx')
+---ConvertAbilityIntegerField ( FourCC('abpx') )
 ---@type abilityintegerfield
 ABILITY_IF_BUTTON_POSITION_NORMAL_X = nil
 
----ConvertAbilityIntegerField('abpy')
+---ConvertAbilityIntegerField ( FourCC('abpy') )
 ---@type abilityintegerfield
 ABILITY_IF_BUTTON_POSITION_NORMAL_Y = nil
 
----ConvertAbilityIntegerField('aubx')
+---ConvertAbilityIntegerField ( FourCC('aubx') )
 ---@type abilityintegerfield
 ABILITY_IF_BUTTON_POSITION_ACTIVATED_X = nil
 
----ConvertAbilityIntegerField('auby')
+---ConvertAbilityIntegerField ( FourCC('auby') )
 ---@type abilityintegerfield
 ABILITY_IF_BUTTON_POSITION_ACTIVATED_Y = nil
 
----ConvertAbilityIntegerField('arpx')
+---ConvertAbilityIntegerField ( FourCC('arpx') )
 ---@type abilityintegerfield
 ABILITY_IF_BUTTON_POSITION_RESEARCH_X = nil
 
----ConvertAbilityIntegerField('arpy')
+---ConvertAbilityIntegerField ( FourCC('arpy') )
 ---@type abilityintegerfield
 ABILITY_IF_BUTTON_POSITION_RESEARCH_Y = nil
 
----ConvertAbilityIntegerField('amsp')
+---ConvertAbilityIntegerField ( FourCC('amsp') )
 ---@type abilityintegerfield
 ABILITY_IF_MISSILE_SPEED = nil
 
----ConvertAbilityIntegerField('atac')
+---ConvertAbilityIntegerField ( FourCC('atac') )
 ---@type abilityintegerfield
 ABILITY_IF_TARGET_ATTACHMENTS = nil
 
----ConvertAbilityIntegerField('acac')
+---ConvertAbilityIntegerField ( FourCC('acac') )
 ---@type abilityintegerfield
 ABILITY_IF_CASTER_ATTACHMENTS = nil
 
----ConvertAbilityIntegerField('apri')
+---ConvertAbilityIntegerField ( FourCC('apri') )
 ---@type abilityintegerfield
 ABILITY_IF_PRIORITY = nil
 
----ConvertAbilityIntegerField('alev')
+---ConvertAbilityIntegerField ( FourCC('alev') )
 ---@type abilityintegerfield
 ABILITY_IF_LEVELS = nil
 
----ConvertAbilityIntegerField('arlv')
+---ConvertAbilityIntegerField ( FourCC('arlv') )
 ---@type abilityintegerfield
 ABILITY_IF_REQUIRED_LEVEL = nil
 
----ConvertAbilityIntegerField('alsk')
+---ConvertAbilityIntegerField ( FourCC('alsk') )
 ---@type abilityintegerfield
 ABILITY_IF_LEVEL_SKIP_REQUIREMENT = nil
 
----ConvertAbilityBooleanField('aher') // Get only
+---ConvertAbilityBooleanField ( FourCC('aher') )
 ---@type abilitybooleanfield
 ABILITY_BF_HERO_ABILITY = nil
 
----ConvertAbilityBooleanField('aite')
+---ConvertAbilityBooleanField ( FourCC('aite') )
 ---@type abilitybooleanfield
 ABILITY_BF_ITEM_ABILITY = nil
 
----ConvertAbilityBooleanField('achd')
+---ConvertAbilityBooleanField ( FourCC('achd') )
 ---@type abilitybooleanfield
 ABILITY_BF_CHECK_DEPENDENCIES = nil
 
----ConvertAbilityRealField('amac')
+---ConvertAbilityRealField ( FourCC('amac') )
 ---@type abilityrealfield
 ABILITY_RF_ARF_MISSILE_ARC = nil
 
----ConvertAbilityStringField('anam') // Get Only
+---ConvertAbilityStringField ( FourCC('anam') )
 ---@type abilitystringfield
 ABILITY_SF_NAME = nil
 
----ConvertAbilityStringField('auar')
+---ConvertAbilityStringField ( FourCC('auar') )
 ---@type abilitystringfield
 ABILITY_SF_ICON_ACTIVATED = nil
 
----ConvertAbilityStringField('arar')
+---ConvertAbilityStringField ( FourCC('arar') )
 ---@type abilitystringfield
 ABILITY_SF_ICON_RESEARCH = nil
 
----ConvertAbilityStringField('aefs')
+---ConvertAbilityStringField ( FourCC('aefs') )
 ---@type abilitystringfield
 ABILITY_SF_EFFECT_SOUND = nil
 
----ConvertAbilityStringField('aefl')
+---ConvertAbilityStringField ( FourCC('aefl') )
 ---@type abilitystringfield
 ABILITY_SF_EFFECT_SOUND_LOOPING = nil
 
----ConvertAbilityIntegerLevelField('amcs')
+---ConvertAbilityIntegerLevelField ( FourCC('amcs') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MANA_COST = nil
 
----ConvertAbilityIntegerLevelField('Hbz1')
+---ConvertAbilityIntegerLevelField ( FourCC('Hbz1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_WAVES = nil
 
----ConvertAbilityIntegerLevelField('Hbz3')
+---ConvertAbilityIntegerLevelField ( FourCC('Hbz3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_SHARDS = nil
 
----ConvertAbilityIntegerLevelField('Hmt1')
+---ConvertAbilityIntegerLevelField ( FourCC('Hmt1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_UNITS_TELEPORTED = nil
 
----ConvertAbilityIntegerLevelField('Hwe2')
+---ConvertAbilityIntegerLevelField ( FourCC('Hwe2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_COUNT_HWE2 = nil
 
----ConvertAbilityIntegerLevelField('Omi1')
+---ConvertAbilityIntegerLevelField ( FourCC('Omi1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_IMAGES = nil
 
----ConvertAbilityIntegerLevelField('Uan1')
+---ConvertAbilityIntegerLevelField ( FourCC('Uan1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_CORPSES_RAISED_UAN1 = nil
 
----ConvertAbilityIntegerLevelField('Eme2')
+---ConvertAbilityIntegerLevelField ( FourCC('Eme2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MORPHING_FLAGS = nil
 
----ConvertAbilityIntegerLevelField('Nrg5')
+---ConvertAbilityIntegerLevelField ( FourCC('Nrg5') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_STRENGTH_BONUS_NRG5 = nil
 
----ConvertAbilityIntegerLevelField('Nrg6')
+---ConvertAbilityIntegerLevelField ( FourCC('Nrg6') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DEFENSE_BONUS_NRG6 = nil
 
----ConvertAbilityIntegerLevelField('Ocl2')
+---ConvertAbilityIntegerLevelField ( FourCC('Ocl2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_TARGETS_HIT = nil
 
----ConvertAbilityIntegerLevelField('Ofs1')
+---ConvertAbilityIntegerLevelField ( FourCC('Ofs1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DETECTION_TYPE_OFS1 = nil
 
----ConvertAbilityIntegerLevelField('Osf2')
+---ConvertAbilityIntegerLevelField ( FourCC('Osf2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_SUMMONED_UNITS_OSF2 = nil
 
----ConvertAbilityIntegerLevelField('Efn1')
+---ConvertAbilityIntegerLevelField ( FourCC('Efn1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_SUMMONED_UNITS_EFN1 = nil
 
----ConvertAbilityIntegerLevelField('Hre1')
+---ConvertAbilityIntegerLevelField ( FourCC('Hre1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_CORPSES_RAISED_HRE1 = nil
 
----ConvertAbilityIntegerLevelField('Hca4')
+---ConvertAbilityIntegerLevelField ( FourCC('Hca4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_STACK_FLAGS = nil
 
----ConvertAbilityIntegerLevelField('Ndp2')
+---ConvertAbilityIntegerLevelField ( FourCC('Ndp2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MINIMUM_NUMBER_OF_UNITS = nil
 
----ConvertAbilityIntegerLevelField('Ndp3')
+---ConvertAbilityIntegerLevelField ( FourCC('Ndp3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_NUMBER_OF_UNITS_NDP3 = nil
 
----ConvertAbilityIntegerLevelField('Nrc2')
+---ConvertAbilityIntegerLevelField ( FourCC('Nrc2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_UNITS_CREATED_NRC2 = nil
 
----ConvertAbilityIntegerLevelField('Ams3')
+---ConvertAbilityIntegerLevelField ( FourCC('Ams3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SHIELD_LIFE = nil
 
----ConvertAbilityIntegerLevelField('Ams4')
+---ConvertAbilityIntegerLevelField ( FourCC('Ams4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MANA_LOSS_AMS4 = nil
 
----ConvertAbilityIntegerLevelField('Bgm1')
+---ConvertAbilityIntegerLevelField ( FourCC('Bgm1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_GOLD_PER_INTERVAL_BGM1 = nil
 
----ConvertAbilityIntegerLevelField('Bgm3')
+---ConvertAbilityIntegerLevelField ( FourCC('Bgm3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_NUMBER_OF_MINERS = nil
 
----ConvertAbilityIntegerLevelField('Car1')
+---ConvertAbilityIntegerLevelField ( FourCC('Car1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_CARGO_CAPACITY = nil
 
----ConvertAbilityIntegerLevelField('Dev3')
+---ConvertAbilityIntegerLevelField ( FourCC('Dev3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_CREEP_LEVEL_DEV3 = nil
 
----ConvertAbilityIntegerLevelField('Dev1')
+---ConvertAbilityIntegerLevelField ( FourCC('Dev1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_CREEP_LEVEL_DEV1 = nil
 
----ConvertAbilityIntegerLevelField('Egm1')
+---ConvertAbilityIntegerLevelField ( FourCC('Egm1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_GOLD_PER_INTERVAL_EGM1 = nil
 
----ConvertAbilityIntegerLevelField('Fae1')
+---ConvertAbilityIntegerLevelField ( FourCC('Fae1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DEFENSE_REDUCTION = nil
 
----ConvertAbilityIntegerLevelField('Fla1')
+---ConvertAbilityIntegerLevelField ( FourCC('Fla1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DETECTION_TYPE_FLA1 = nil
 
----ConvertAbilityIntegerLevelField('Fla3')
+---ConvertAbilityIntegerLevelField ( FourCC('Fla3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_FLARE_COUNT = nil
 
----ConvertAbilityIntegerLevelField('Gld1')
+---ConvertAbilityIntegerLevelField ( FourCC('Gld1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_GOLD = nil
 
----ConvertAbilityIntegerLevelField('Gld3')
+---ConvertAbilityIntegerLevelField ( FourCC('Gld3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MINING_CAPACITY = nil
 
----ConvertAbilityIntegerLevelField('Gyd1')
+---ConvertAbilityIntegerLevelField ( FourCC('Gyd1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_NUMBER_OF_CORPSES_GYD1 = nil
 
----ConvertAbilityIntegerLevelField('Har1')
+---ConvertAbilityIntegerLevelField ( FourCC('Har1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DAMAGE_TO_TREE = nil
 
----ConvertAbilityIntegerLevelField('Har2')
+---ConvertAbilityIntegerLevelField ( FourCC('Har2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_LUMBER_CAPACITY = nil
 
----ConvertAbilityIntegerLevelField('Har3')
+---ConvertAbilityIntegerLevelField ( FourCC('Har3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_GOLD_CAPACITY = nil
 
----ConvertAbilityIntegerLevelField('Inf2')
+---ConvertAbilityIntegerLevelField ( FourCC('Inf2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DEFENSE_INCREASE_INF2 = nil
 
----ConvertAbilityIntegerLevelField('Neu2')
+---ConvertAbilityIntegerLevelField ( FourCC('Neu2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_INTERACTION_TYPE = nil
 
----ConvertAbilityIntegerLevelField('Ndt1')
+---ConvertAbilityIntegerLevelField ( FourCC('Ndt1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_GOLD_COST_NDT1 = nil
 
----ConvertAbilityIntegerLevelField('Ndt2')
+---ConvertAbilityIntegerLevelField ( FourCC('Ndt2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_LUMBER_COST_NDT2 = nil
 
----ConvertAbilityIntegerLevelField('Ndt3')
+---ConvertAbilityIntegerLevelField ( FourCC('Ndt3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DETECTION_TYPE_NDT3 = nil
 
----ConvertAbilityIntegerLevelField('Poi4')
+---ConvertAbilityIntegerLevelField ( FourCC('Poi4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_STACKING_TYPE_POI4 = nil
 
----ConvertAbilityIntegerLevelField('Poa5')
+---ConvertAbilityIntegerLevelField ( FourCC('Poa5') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_STACKING_TYPE_POA5 = nil
 
----ConvertAbilityIntegerLevelField('Ply1')
+---ConvertAbilityIntegerLevelField ( FourCC('Ply1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_CREEP_LEVEL_PLY1 = nil
 
----ConvertAbilityIntegerLevelField('Pos1')
+---ConvertAbilityIntegerLevelField ( FourCC('Pos1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_CREEP_LEVEL_POS1 = nil
 
----ConvertAbilityIntegerLevelField('Prg1')
+---ConvertAbilityIntegerLevelField ( FourCC('Prg1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MOVEMENT_UPDATE_FREQUENCY_PRG1 = nil
 
----ConvertAbilityIntegerLevelField('Prg2')
+---ConvertAbilityIntegerLevelField ( FourCC('Prg2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ATTACK_UPDATE_FREQUENCY_PRG2 = nil
 
----ConvertAbilityIntegerLevelField('Prg6')
+---ConvertAbilityIntegerLevelField ( FourCC('Prg6') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MANA_LOSS_PRG6 = nil
 
----ConvertAbilityIntegerLevelField('Rai1')
+---ConvertAbilityIntegerLevelField ( FourCC('Rai1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UNITS_SUMMONED_TYPE_ONE = nil
 
----ConvertAbilityIntegerLevelField('Rai2')
+---ConvertAbilityIntegerLevelField ( FourCC('Rai2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UNITS_SUMMONED_TYPE_TWO = nil
 
----ConvertAbilityIntegerLevelField('Ucb5')
+---ConvertAbilityIntegerLevelField ( FourCC('Ucb5') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_UNITS_SUMMONED = nil
 
----ConvertAbilityIntegerLevelField('Rej3')
+---ConvertAbilityIntegerLevelField ( FourCC('Rej3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ALLOW_WHEN_FULL_REJ3 = nil
 
----ConvertAbilityIntegerLevelField('Rpb5')
+---ConvertAbilityIntegerLevelField ( FourCC('Rpb5') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_UNITS_CHARGED_TO_CASTER = nil
 
----ConvertAbilityIntegerLevelField('Rpb6')
+---ConvertAbilityIntegerLevelField ( FourCC('Rpb6') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_UNITS_AFFECTED = nil
 
----ConvertAbilityIntegerLevelField('Roa2')
+---ConvertAbilityIntegerLevelField ( FourCC('Roa2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DEFENSE_INCREASE_ROA2 = nil
 
----ConvertAbilityIntegerLevelField('Roa7')
+---ConvertAbilityIntegerLevelField ( FourCC('Roa7') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_UNITS_ROA7 = nil
 
----ConvertAbilityIntegerLevelField('Roo1')
+---ConvertAbilityIntegerLevelField ( FourCC('Roo1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ROOTED_WEAPONS = nil
 
----ConvertAbilityIntegerLevelField('Roo2')
+---ConvertAbilityIntegerLevelField ( FourCC('Roo2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UPROOTED_WEAPONS = nil
 
----ConvertAbilityIntegerLevelField('Roo4')
+---ConvertAbilityIntegerLevelField ( FourCC('Roo4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UPROOTED_DEFENSE_TYPE = nil
 
----ConvertAbilityIntegerLevelField('Sal2')
+---ConvertAbilityIntegerLevelField ( FourCC('Sal2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ACCUMULATION_STEP = nil
 
----ConvertAbilityIntegerLevelField('Esn4')
+---ConvertAbilityIntegerLevelField ( FourCC('Esn4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_OWLS = nil
 
----ConvertAbilityIntegerLevelField('Spo4')
+---ConvertAbilityIntegerLevelField ( FourCC('Spo4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_STACKING_TYPE_SPO4 = nil
 
----ConvertAbilityIntegerLevelField('Sod1')
+---ConvertAbilityIntegerLevelField ( FourCC('Sod1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_UNITS = nil
 
----ConvertAbilityIntegerLevelField('Spa1')
+---ConvertAbilityIntegerLevelField ( FourCC('Spa1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SPIDER_CAPACITY = nil
 
----ConvertAbilityIntegerLevelField('Wha2')
+---ConvertAbilityIntegerLevelField ( FourCC('Wha2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_INTERVALS_BEFORE_CHANGING_TREES = nil
 
----ConvertAbilityIntegerLevelField('Iagi')
+---ConvertAbilityIntegerLevelField ( FourCC('Iagi') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_AGILITY_BONUS = nil
 
----ConvertAbilityIntegerLevelField('Iint')
+---ConvertAbilityIntegerLevelField ( FourCC('Iint') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_INTELLIGENCE_BONUS = nil
 
----ConvertAbilityIntegerLevelField('Istr')
+---ConvertAbilityIntegerLevelField ( FourCC('Istr') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_STRENGTH_BONUS_ISTR = nil
 
----ConvertAbilityIntegerLevelField('Iatt')
+---ConvertAbilityIntegerLevelField ( FourCC('Iatt') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ATTACK_BONUS = nil
 
----ConvertAbilityIntegerLevelField('Idef')
+---ConvertAbilityIntegerLevelField ( FourCC('Idef') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DEFENSE_BONUS_IDEF = nil
 
----ConvertAbilityIntegerLevelField('Isn1')
+---ConvertAbilityIntegerLevelField ( FourCC('Isn1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMON_1_AMOUNT = nil
 
----ConvertAbilityIntegerLevelField('Isn2')
+---ConvertAbilityIntegerLevelField ( FourCC('Isn2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMON_2_AMOUNT = nil
 
----ConvertAbilityIntegerLevelField('Ixpg')
+---ConvertAbilityIntegerLevelField ( FourCC('Ixpg') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_EXPERIENCE_GAINED = nil
 
----ConvertAbilityIntegerLevelField('Ihpg')
+---ConvertAbilityIntegerLevelField ( FourCC('Ihpg') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_HIT_POINTS_GAINED_IHPG = nil
 
----ConvertAbilityIntegerLevelField('Impg')
+---ConvertAbilityIntegerLevelField ( FourCC('Impg') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MANA_POINTS_GAINED_IMPG = nil
 
----ConvertAbilityIntegerLevelField('Ihp2')
+---ConvertAbilityIntegerLevelField ( FourCC('Ihp2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_HIT_POINTS_GAINED_IHP2 = nil
 
----ConvertAbilityIntegerLevelField('Imp2')
+---ConvertAbilityIntegerLevelField ( FourCC('Imp2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MANA_POINTS_GAINED_IMP2 = nil
 
----ConvertAbilityIntegerLevelField('Idic')
+---ConvertAbilityIntegerLevelField ( FourCC('Idic') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DAMAGE_BONUS_DICE = nil
 
----ConvertAbilityIntegerLevelField('Iarp')
+---ConvertAbilityIntegerLevelField ( FourCC('Iarp') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ARMOR_PENALTY_IARP = nil
 
----ConvertAbilityIntegerLevelField('Iob5')
+---ConvertAbilityIntegerLevelField ( FourCC('Iob5') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ENABLED_ATTACK_INDEX_IOB5 = nil
 
----ConvertAbilityIntegerLevelField('Ilev')
+---ConvertAbilityIntegerLevelField ( FourCC('Ilev') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_LEVELS_GAINED = nil
 
----ConvertAbilityIntegerLevelField('Ilif')
+---ConvertAbilityIntegerLevelField ( FourCC('Ilif') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_LIFE_GAINED = nil
 
----ConvertAbilityIntegerLevelField('Iman')
+---ConvertAbilityIntegerLevelField ( FourCC('Iman') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_MANA_GAINED = nil
 
----ConvertAbilityIntegerLevelField('Igol')
+---ConvertAbilityIntegerLevelField ( FourCC('Igol') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_GOLD_GIVEN = nil
 
----ConvertAbilityIntegerLevelField('Ilum')
+---ConvertAbilityIntegerLevelField ( FourCC('Ilum') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_LUMBER_GIVEN = nil
 
----ConvertAbilityIntegerLevelField('Ifa1')
+---ConvertAbilityIntegerLevelField ( FourCC('Ifa1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DETECTION_TYPE_IFA1 = nil
 
----ConvertAbilityIntegerLevelField('Icre')
+---ConvertAbilityIntegerLevelField ( FourCC('Icre') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_CREEP_LEVEL_ICRE = nil
 
----ConvertAbilityIntegerLevelField('Imvb')
+---ConvertAbilityIntegerLevelField ( FourCC('Imvb') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MOVEMENT_SPEED_BONUS = nil
 
----ConvertAbilityIntegerLevelField('Ihpr')
+---ConvertAbilityIntegerLevelField ( FourCC('Ihpr') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_HIT_POINTS_REGENERATED_PER_SECOND = nil
 
----ConvertAbilityIntegerLevelField('Isib')
+---ConvertAbilityIntegerLevelField ( FourCC('Isib') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SIGHT_RANGE_BONUS = nil
 
----ConvertAbilityIntegerLevelField('Icfd')
+---ConvertAbilityIntegerLevelField ( FourCC('Icfd') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DAMAGE_PER_DURATION = nil
 
----ConvertAbilityIntegerLevelField('Icfm')
+---ConvertAbilityIntegerLevelField ( FourCC('Icfm') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MANA_USED_PER_SECOND = nil
 
----ConvertAbilityIntegerLevelField('Icfx')
+---ConvertAbilityIntegerLevelField ( FourCC('Icfx') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_EXTRA_MANA_REQUIRED = nil
 
----ConvertAbilityIntegerLevelField('Idet')
+---ConvertAbilityIntegerLevelField ( FourCC('Idet') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DETECTION_RADIUS_IDET = nil
 
----ConvertAbilityIntegerLevelField('Idim')
+---ConvertAbilityIntegerLevelField ( FourCC('Idim') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MANA_LOSS_PER_UNIT_IDIM = nil
 
----ConvertAbilityIntegerLevelField('Idid')
+---ConvertAbilityIntegerLevelField ( FourCC('Idid') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DAMAGE_TO_SUMMONED_UNITS_IDID = nil
 
----ConvertAbilityIntegerLevelField('Irec')
+---ConvertAbilityIntegerLevelField ( FourCC('Irec') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_NUMBER_OF_UNITS_IREC = nil
 
----ConvertAbilityIntegerLevelField('Ircd')
+---ConvertAbilityIntegerLevelField ( FourCC('Ircd') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DELAY_AFTER_DEATH_SECONDS = nil
 
----ConvertAbilityIntegerLevelField('irc2')
+---ConvertAbilityIntegerLevelField ( FourCC('irc2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_RESTORED_LIFE = nil
 
----ConvertAbilityIntegerLevelField('irc3')
+---ConvertAbilityIntegerLevelField ( FourCC('irc3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_RESTORED_MANA__1_FOR_CURRENT = nil
 
----ConvertAbilityIntegerLevelField('Ihps')
+---ConvertAbilityIntegerLevelField ( FourCC('Ihps') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_HIT_POINTS_RESTORED = nil
 
----ConvertAbilityIntegerLevelField('Imps')
+---ConvertAbilityIntegerLevelField ( FourCC('Imps') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MANA_POINTS_RESTORED = nil
 
----ConvertAbilityIntegerLevelField('Itpm')
+---ConvertAbilityIntegerLevelField ( FourCC('Itpm') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_NUMBER_OF_UNITS_ITPM = nil
 
----ConvertAbilityIntegerLevelField('Cad1')
+---ConvertAbilityIntegerLevelField ( FourCC('Cad1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_CORPSES_RAISED_CAD1 = nil
 
----ConvertAbilityIntegerLevelField('Wrs3')
+---ConvertAbilityIntegerLevelField ( FourCC('Wrs3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_TERRAIN_DEFORMATION_DURATION_MS = nil
 
----ConvertAbilityIntegerLevelField('Uds1')
+---ConvertAbilityIntegerLevelField ( FourCC('Uds1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_UNITS = nil
 
----ConvertAbilityIntegerLevelField('Det1')
+---ConvertAbilityIntegerLevelField ( FourCC('Det1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DETECTION_TYPE_DET1 = nil
 
----ConvertAbilityIntegerLevelField('Nsp1')
+---ConvertAbilityIntegerLevelField ( FourCC('Nsp1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_GOLD_COST_PER_STRUCTURE = nil
 
----ConvertAbilityIntegerLevelField('Nsp2')
+---ConvertAbilityIntegerLevelField ( FourCC('Nsp2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_LUMBER_COST_PER_USE = nil
 
----ConvertAbilityIntegerLevelField('Nsp3')
+---ConvertAbilityIntegerLevelField ( FourCC('Nsp3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DETECTION_TYPE_NSP3 = nil
 
----ConvertAbilityIntegerLevelField('Uls1')
+---ConvertAbilityIntegerLevelField ( FourCC('Uls1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_SWARM_UNITS = nil
 
----ConvertAbilityIntegerLevelField('Uls3')
+---ConvertAbilityIntegerLevelField ( FourCC('Uls3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_SWARM_UNITS_PER_TARGET = nil
 
----ConvertAbilityIntegerLevelField('Nba2')
+---ConvertAbilityIntegerLevelField ( FourCC('Nba2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_SUMMONED_UNITS_NBA2 = nil
 
----ConvertAbilityIntegerLevelField('Nch1')
+---ConvertAbilityIntegerLevelField ( FourCC('Nch1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_CREEP_LEVEL_NCH1 = nil
 
----ConvertAbilityIntegerLevelField('Nsi1')
+---ConvertAbilityIntegerLevelField ( FourCC('Nsi1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ATTACKS_PREVENTED = nil
 
----ConvertAbilityIntegerLevelField('Efk3')
+---ConvertAbilityIntegerLevelField ( FourCC('Efk3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_NUMBER_OF_TARGETS_EFK3 = nil
 
----ConvertAbilityIntegerLevelField('Esv1')
+---ConvertAbilityIntegerLevelField ( FourCC('Esv1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_SUMMONED_UNITS_ESV1 = nil
 
----ConvertAbilityIntegerLevelField('exh1')
+---ConvertAbilityIntegerLevelField ( FourCC('exh1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_NUMBER_OF_CORPSES_EXH1 = nil
 
----ConvertAbilityIntegerLevelField('inv1')
+---ConvertAbilityIntegerLevelField ( FourCC('inv1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ITEM_CAPACITY = nil
 
----ConvertAbilityIntegerLevelField('spl2')
+---ConvertAbilityIntegerLevelField ( FourCC('spl2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_NUMBER_OF_TARGETS_SPL2 = nil
 
----ConvertAbilityIntegerLevelField('irl3')
+---ConvertAbilityIntegerLevelField ( FourCC('irl3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ALLOW_WHEN_FULL_IRL3 = nil
 
----ConvertAbilityIntegerLevelField('idc3')
+---ConvertAbilityIntegerLevelField ( FourCC('idc3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_DISPELLED_UNITS = nil
 
----ConvertAbilityIntegerLevelField('imo1')
+---ConvertAbilityIntegerLevelField ( FourCC('imo1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_LURES = nil
 
----ConvertAbilityIntegerLevelField('ict1')
+---ConvertAbilityIntegerLevelField ( FourCC('ict1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NEW_TIME_OF_DAY_HOUR = nil
 
----ConvertAbilityIntegerLevelField('ict2')
+---ConvertAbilityIntegerLevelField ( FourCC('ict2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NEW_TIME_OF_DAY_MINUTE = nil
 
----ConvertAbilityIntegerLevelField('mec1')
+---ConvertAbilityIntegerLevelField ( FourCC('mec1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_UNITS_CREATED_MEC1 = nil
 
----ConvertAbilityIntegerLevelField('spb3')
+---ConvertAbilityIntegerLevelField ( FourCC('spb3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MINIMUM_SPELLS = nil
 
----ConvertAbilityIntegerLevelField('spb4')
+---ConvertAbilityIntegerLevelField ( FourCC('spb4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_SPELLS = nil
 
----ConvertAbilityIntegerLevelField('gra3')
+---ConvertAbilityIntegerLevelField ( FourCC('gra3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DISABLED_ATTACK_INDEX = nil
 
----ConvertAbilityIntegerLevelField('gra4')
+---ConvertAbilityIntegerLevelField ( FourCC('gra4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ENABLED_ATTACK_INDEX_GRA4 = nil
 
----ConvertAbilityIntegerLevelField('gra5')
+---ConvertAbilityIntegerLevelField ( FourCC('gra5') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAXIMUM_ATTACKS = nil
 
----ConvertAbilityIntegerLevelField('Npr1')
+---ConvertAbilityIntegerLevelField ( FourCC('Npr1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_BUILDING_TYPES_ALLOWED_NPR1 = nil
 
----ConvertAbilityIntegerLevelField('Nsa1')
+---ConvertAbilityIntegerLevelField ( FourCC('Nsa1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_BUILDING_TYPES_ALLOWED_NSA1 = nil
 
----ConvertAbilityIntegerLevelField('Iaa1')
+---ConvertAbilityIntegerLevelField ( FourCC('Iaa1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ATTACK_MODIFICATION = nil
 
----ConvertAbilityIntegerLevelField('Npa5')
+---ConvertAbilityIntegerLevelField ( FourCC('Npa5') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_COUNT_NPA5 = nil
 
----ConvertAbilityIntegerLevelField('Igl1')
+---ConvertAbilityIntegerLevelField ( FourCC('Igl1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UPGRADE_LEVELS = nil
 
----ConvertAbilityIntegerLevelField('Ndo2')
+---ConvertAbilityIntegerLevelField ( FourCC('Ndo2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_SUMMONED_UNITS_NDO2 = nil
 
----ConvertAbilityIntegerLevelField('Nst1')
+---ConvertAbilityIntegerLevelField ( FourCC('Nst1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_BEASTS_PER_SECOND = nil
 
----ConvertAbilityIntegerLevelField('Ncl2')
+---ConvertAbilityIntegerLevelField ( FourCC('Ncl2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_TARGET_TYPE = nil
 
----ConvertAbilityIntegerLevelField('Ncl3')
+---ConvertAbilityIntegerLevelField ( FourCC('Ncl3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_OPTIONS = nil
 
----ConvertAbilityIntegerLevelField('Nab3')
+---ConvertAbilityIntegerLevelField ( FourCC('Nab3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ARMOR_PENALTY_NAB3 = nil
 
----ConvertAbilityIntegerLevelField('Nhs6')
+---ConvertAbilityIntegerLevelField ( FourCC('Nhs6') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_WAVE_COUNT_NHS6 = nil
 
----ConvertAbilityIntegerLevelField('Ntm3')
+---ConvertAbilityIntegerLevelField ( FourCC('Ntm3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_CREEP_LEVEL_NTM3 = nil
 
----ConvertAbilityIntegerLevelField('Ncs3')
+---ConvertAbilityIntegerLevelField ( FourCC('Ncs3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MISSILE_COUNT = nil
 
----ConvertAbilityIntegerLevelField('Nlm3')
+---ConvertAbilityIntegerLevelField ( FourCC('Nlm3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SPLIT_ATTACK_COUNT = nil
 
----ConvertAbilityIntegerLevelField('Nlm6')
+---ConvertAbilityIntegerLevelField ( FourCC('Nlm6') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_GENERATION_COUNT = nil
 
----ConvertAbilityIntegerLevelField('Nvc1')
+---ConvertAbilityIntegerLevelField ( FourCC('Nvc1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ROCK_RING_COUNT = nil
 
----ConvertAbilityIntegerLevelField('Nvc2')
+---ConvertAbilityIntegerLevelField ( FourCC('Nvc2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_WAVE_COUNT_NVC2 = nil
 
----ConvertAbilityIntegerLevelField('Tau1')
+---ConvertAbilityIntegerLevelField ( FourCC('Tau1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_PREFER_HOSTILES_TAU1 = nil
 
----ConvertAbilityIntegerLevelField('Tau2')
+---ConvertAbilityIntegerLevelField ( FourCC('Tau2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_PREFER_FRIENDLIES_TAU2 = nil
 
----ConvertAbilityIntegerLevelField('Tau3')
+---ConvertAbilityIntegerLevelField ( FourCC('Tau3') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_MAX_UNITS_TAU3 = nil
 
----ConvertAbilityIntegerLevelField('Tau4')
+---ConvertAbilityIntegerLevelField ( FourCC('Tau4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NUMBER_OF_PULSES = nil
 
----ConvertAbilityIntegerLevelField('Hwe1')
+---ConvertAbilityIntegerLevelField ( FourCC('Hwe1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_TYPE_HWE1 = nil
 
----ConvertAbilityIntegerLevelField('Uin4')
+---ConvertAbilityIntegerLevelField ( FourCC('Uin4') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_UIN4 = nil
 
----ConvertAbilityIntegerLevelField('Osf1')
+---ConvertAbilityIntegerLevelField ( FourCC('Osf1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_OSF1 = nil
 
----ConvertAbilityIntegerLevelField('Efnu')
+---ConvertAbilityIntegerLevelField ( FourCC('Efnu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_TYPE_EFNU = nil
 
----ConvertAbilityIntegerLevelField('Nbau')
+---ConvertAbilityIntegerLevelField ( FourCC('Nbau') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_TYPE_NBAU = nil
 
----ConvertAbilityIntegerLevelField('Ntou')
+---ConvertAbilityIntegerLevelField ( FourCC('Ntou') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_TYPE_NTOU = nil
 
----ConvertAbilityIntegerLevelField('Esvu')
+---ConvertAbilityIntegerLevelField ( FourCC('Esvu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_TYPE_ESVU = nil
 
----ConvertAbilityIntegerLevelField('Nef1')
+---ConvertAbilityIntegerLevelField ( FourCC('Nef1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_TYPES = nil
 
----ConvertAbilityIntegerLevelField('Ndou')
+---ConvertAbilityIntegerLevelField ( FourCC('Ndou') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SUMMONED_UNIT_TYPE_NDOU = nil
 
----ConvertAbilityIntegerLevelField('Emeu')
+---ConvertAbilityIntegerLevelField ( FourCC('Emeu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ALTERNATE_FORM_UNIT_EMEU = nil
 
----ConvertAbilityIntegerLevelField('Aplu')
+---ConvertAbilityIntegerLevelField ( FourCC('Aplu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_PLAGUE_WARD_UNIT_TYPE = nil
 
----ConvertAbilityIntegerLevelField('Btl1')
+---ConvertAbilityIntegerLevelField ( FourCC('Btl1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ALLOWED_UNIT_TYPE_BTL1 = nil
 
----ConvertAbilityIntegerLevelField('Cha1')
+---ConvertAbilityIntegerLevelField ( FourCC('Cha1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_NEW_UNIT_TYPE = nil
 
----ConvertAbilityIntegerLevelField('ent1')
+---ConvertAbilityIntegerLevelField ( FourCC('ent1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_RESULTING_UNIT_TYPE_ENT1 = nil
 
----ConvertAbilityIntegerLevelField('Gydu')
+---ConvertAbilityIntegerLevelField ( FourCC('Gydu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_CORPSE_UNIT_TYPE = nil
 
----ConvertAbilityIntegerLevelField('Loa1')
+---ConvertAbilityIntegerLevelField ( FourCC('Loa1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_ALLOWED_UNIT_TYPE_LOA1 = nil
 
----ConvertAbilityIntegerLevelField('Raiu')
+---ConvertAbilityIntegerLevelField ( FourCC('Raiu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UNIT_TYPE_FOR_LIMIT_CHECK = nil
 

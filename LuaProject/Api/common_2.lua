@@ -1,2902 +1,2902 @@
 ---@diagnostic disable
 
----ConvertAbilityIntegerLevelField('Stau')
+---ConvertAbilityIntegerLevelField ( FourCC('Stau') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_WARD_UNIT_TYPE_STAU = nil
 
----ConvertAbilityIntegerLevelField('Iobu')
+---ConvertAbilityIntegerLevelField ( FourCC('Iobu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_EFFECT_ABILITY = nil
 
----ConvertAbilityIntegerLevelField('Ndc2')
+---ConvertAbilityIntegerLevelField ( FourCC('Ndc2') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_CONVERSION_UNIT = nil
 
----ConvertAbilityIntegerLevelField('Nsl1')
+---ConvertAbilityIntegerLevelField ( FourCC('Nsl1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UNIT_TO_PRESERVE = nil
 
----ConvertAbilityIntegerLevelField('Chl1')
+---ConvertAbilityIntegerLevelField ( FourCC('Chl1') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UNIT_TYPE_ALLOWED = nil
 
----ConvertAbilityIntegerLevelField('Ulsu')
+---ConvertAbilityIntegerLevelField ( FourCC('Ulsu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SWARM_UNIT_TYPE = nil
 
----ConvertAbilityIntegerLevelField('coau')
+---ConvertAbilityIntegerLevelField ( FourCC('coau') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_RESULTING_UNIT_TYPE_COAU = nil
 
----ConvertAbilityIntegerLevelField('exhu')
+---ConvertAbilityIntegerLevelField ( FourCC('exhu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UNIT_TYPE_EXHU = nil
 
----ConvertAbilityIntegerLevelField('hwdu')
+---ConvertAbilityIntegerLevelField ( FourCC('hwdu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_WARD_UNIT_TYPE_HWDU = nil
 
----ConvertAbilityIntegerLevelField('imou')
+---ConvertAbilityIntegerLevelField ( FourCC('imou') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_LURE_UNIT_TYPE = nil
 
----ConvertAbilityIntegerLevelField('ipmu')
+---ConvertAbilityIntegerLevelField ( FourCC('ipmu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UNIT_TYPE_IPMU = nil
 
----ConvertAbilityIntegerLevelField('Nsyu')
+---ConvertAbilityIntegerLevelField ( FourCC('Nsyu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_FACTORY_UNIT_ID = nil
 
----ConvertAbilityIntegerLevelField('Nfyu')
+---ConvertAbilityIntegerLevelField ( FourCC('Nfyu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_SPAWN_UNIT_ID_NFYU = nil
 
----ConvertAbilityIntegerLevelField('Nvcu')
+---ConvertAbilityIntegerLevelField ( FourCC('Nvcu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_DESTRUCTIBLE_ID = nil
 
----ConvertAbilityIntegerLevelField('Iglu')
+---ConvertAbilityIntegerLevelField ( FourCC('Iglu') )
 ---@type abilityintegerlevelfield
 ABILITY_ILF_UPGRADE_TYPE = nil
 
----ConvertAbilityRealLevelField('acas')
+---ConvertAbilityRealLevelField ( FourCC('acas') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CASTING_TIME = nil
 
----ConvertAbilityRealLevelField('adur')
+---ConvertAbilityRealLevelField ( FourCC('adur') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DURATION_NORMAL = nil
 
----ConvertAbilityRealLevelField('ahdu')
+---ConvertAbilityRealLevelField ( FourCC('ahdu') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DURATION_HERO = nil
 
----ConvertAbilityRealLevelField('acdn')
+---ConvertAbilityRealLevelField ( FourCC('acdn') )
 ---@type abilityreallevelfield
 ABILITY_RLF_COOLDOWN = nil
 
----ConvertAbilityRealLevelField('aare')
+---ConvertAbilityRealLevelField ( FourCC('aare') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AREA_OF_EFFECT = nil
 
----ConvertAbilityRealLevelField('aran')
+---ConvertAbilityRealLevelField ( FourCC('aran') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CAST_RANGE = nil
 
----ConvertAbilityRealLevelField('Hbz2')
+---ConvertAbilityRealLevelField ( FourCC('Hbz2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_HBZ2 = nil
 
----ConvertAbilityRealLevelField('Hbz4')
+---ConvertAbilityRealLevelField ( FourCC('Hbz4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUILDING_REDUCTION_HBZ4 = nil
 
----ConvertAbilityRealLevelField('Hbz5')
+---ConvertAbilityRealLevelField ( FourCC('Hbz5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_HBZ5 = nil
 
----ConvertAbilityRealLevelField('Hbz6')
+---ConvertAbilityRealLevelField ( FourCC('Hbz6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAXIMUM_DAMAGE_PER_WAVE = nil
 
----ConvertAbilityRealLevelField('Hab1')
+---ConvertAbilityRealLevelField ( FourCC('Hab1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_REGENERATION_INCREASE = nil
 
----ConvertAbilityRealLevelField('Hmt2')
+---ConvertAbilityRealLevelField ( FourCC('Hmt2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CASTING_DELAY = nil
 
----ConvertAbilityRealLevelField('Oww1')
+---ConvertAbilityRealLevelField ( FourCC('Oww1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_OWW1 = nil
 
----ConvertAbilityRealLevelField('Oww2')
+---ConvertAbilityRealLevelField ( FourCC('Oww2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAGIC_DAMAGE_REDUCTION_OWW2 = nil
 
----ConvertAbilityRealLevelField('Ocr1')
+---ConvertAbilityRealLevelField ( FourCC('Ocr1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_CRITICAL_STRIKE = nil
 
----ConvertAbilityRealLevelField('Ocr2')
+---ConvertAbilityRealLevelField ( FourCC('Ocr2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_MULTIPLIER_OCR2 = nil
 
----ConvertAbilityRealLevelField('Ocr3')
+---ConvertAbilityRealLevelField ( FourCC('Ocr3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_OCR3 = nil
 
----ConvertAbilityRealLevelField('Ocr4')
+---ConvertAbilityRealLevelField ( FourCC('Ocr4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_EVADE_OCR4 = nil
 
----ConvertAbilityRealLevelField('Omi2')
+---ConvertAbilityRealLevelField ( FourCC('Omi2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_DEALT_PERCENT_OMI2 = nil
 
----ConvertAbilityRealLevelField('Omi3')
+---ConvertAbilityRealLevelField ( FourCC('Omi3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_TAKEN_PERCENT_OMI3 = nil
 
----ConvertAbilityRealLevelField('Omi4')
+---ConvertAbilityRealLevelField ( FourCC('Omi4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ANIMATION_DELAY = nil
 
----ConvertAbilityRealLevelField('Owk1')
+---ConvertAbilityRealLevelField ( FourCC('Owk1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_TRANSITION_TIME = nil
 
----ConvertAbilityRealLevelField('Owk2')
+---ConvertAbilityRealLevelField ( FourCC('Owk2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_INCREASE_PERCENT_OWK2 = nil
 
----ConvertAbilityRealLevelField('Owk3')
+---ConvertAbilityRealLevelField ( FourCC('Owk3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BACKSTAB_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Udc1')
+---ConvertAbilityRealLevelField ( FourCC('Udc1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AMOUNT_HEALED_DAMAGED_UDC1 = nil
 
----ConvertAbilityRealLevelField('Udp1')
+---ConvertAbilityRealLevelField ( FourCC('Udp1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_CONVERTED_TO_MANA = nil
 
----ConvertAbilityRealLevelField('Udp2')
+---ConvertAbilityRealLevelField ( FourCC('Udp2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_CONVERTED_TO_LIFE = nil
 
----ConvertAbilityRealLevelField('Uau1')
+---ConvertAbilityRealLevelField ( FourCC('Uau1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_INCREASE_PERCENT_UAU1 = nil
 
----ConvertAbilityRealLevelField('Uau2')
+---ConvertAbilityRealLevelField ( FourCC('Uau2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_REGENERATION_INCREASE_PERCENT = nil
 
----ConvertAbilityRealLevelField('Eev1')
+---ConvertAbilityRealLevelField ( FourCC('Eev1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_EVADE_EEV1 = nil
 
----ConvertAbilityRealLevelField('Eim1')
+---ConvertAbilityRealLevelField ( FourCC('Eim1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_INTERVAL = nil
 
----ConvertAbilityRealLevelField('Eim2')
+---ConvertAbilityRealLevelField ( FourCC('Eim2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_DRAINED_PER_SECOND_EIM2 = nil
 
----ConvertAbilityRealLevelField('Eim3')
+---ConvertAbilityRealLevelField ( FourCC('Eim3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUFFER_MANA_REQUIRED = nil
 
----ConvertAbilityRealLevelField('Emb1')
+---ConvertAbilityRealLevelField ( FourCC('Emb1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_MANA_DRAINED = nil
 
----ConvertAbilityRealLevelField('Emb2')
+---ConvertAbilityRealLevelField ( FourCC('Emb2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BOLT_DELAY = nil
 
----ConvertAbilityRealLevelField('Emb3')
+---ConvertAbilityRealLevelField ( FourCC('Emb3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BOLT_LIFETIME = nil
 
----ConvertAbilityRealLevelField('Eme3')
+---ConvertAbilityRealLevelField ( FourCC('Eme3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ALTITUDE_ADJUSTMENT_DURATION = nil
 
----ConvertAbilityRealLevelField('Eme4')
+---ConvertAbilityRealLevelField ( FourCC('Eme4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LANDING_DELAY_TIME = nil
 
----ConvertAbilityRealLevelField('Eme5')
+---ConvertAbilityRealLevelField ( FourCC('Eme5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ALTERNATE_FORM_HIT_POINT_BONUS = nil
 
----ConvertAbilityRealLevelField('Ncr5')
+---ConvertAbilityRealLevelField ( FourCC('Ncr5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVE_SPEED_BONUS_INFO_PANEL_ONLY = nil
 
----ConvertAbilityRealLevelField('Ncr6')
+---ConvertAbilityRealLevelField ( FourCC('Ncr6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_BONUS_INFO_PANEL_ONLY = nil
 
----ConvertAbilityRealLevelField('ave5')
+---ConvertAbilityRealLevelField ( FourCC('ave5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_REGENERATION_RATE_PER_SECOND = nil
 
----ConvertAbilityRealLevelField('Usl1')
+---ConvertAbilityRealLevelField ( FourCC('Usl1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_STUN_DURATION_USL1 = nil
 
----ConvertAbilityRealLevelField('Uav1')
+---ConvertAbilityRealLevelField ( FourCC('Uav1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_DAMAGE_STOLEN_PERCENT = nil
 
----ConvertAbilityRealLevelField('Ucs1')
+---ConvertAbilityRealLevelField ( FourCC('Ucs1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_UCS1 = nil
 
----ConvertAbilityRealLevelField('Ucs2')
+---ConvertAbilityRealLevelField ( FourCC('Ucs2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_DAMAGE_UCS2 = nil
 
----ConvertAbilityRealLevelField('Ucs3')
+---ConvertAbilityRealLevelField ( FourCC('Ucs3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DISTANCE_UCS3 = nil
 
----ConvertAbilityRealLevelField('Ucs4')
+---ConvertAbilityRealLevelField ( FourCC('Ucs4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FINAL_AREA_UCS4 = nil
 
----ConvertAbilityRealLevelField('Uin1')
+---ConvertAbilityRealLevelField ( FourCC('Uin1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_UIN1 = nil
 
----ConvertAbilityRealLevelField('Uin2')
+---ConvertAbilityRealLevelField ( FourCC('Uin2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DURATION = nil
 
----ConvertAbilityRealLevelField('Uin3')
+---ConvertAbilityRealLevelField ( FourCC('Uin3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_IMPACT_DELAY = nil
 
----ConvertAbilityRealLevelField('Ocl1')
+---ConvertAbilityRealLevelField ( FourCC('Ocl1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_TARGET_OCL1 = nil
 
----ConvertAbilityRealLevelField('Ocl3')
+---ConvertAbilityRealLevelField ( FourCC('Ocl3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_REDUCTION_PER_TARGET = nil
 
----ConvertAbilityRealLevelField('Oeq1')
+---ConvertAbilityRealLevelField ( FourCC('Oeq1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EFFECT_DELAY_OEQ1 = nil
 
----ConvertAbilityRealLevelField('Oeq2')
+---ConvertAbilityRealLevelField ( FourCC('Oeq2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_TO_BUILDINGS = nil
 
----ConvertAbilityRealLevelField('Oeq3')
+---ConvertAbilityRealLevelField ( FourCC('Oeq3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_UNITS_SLOWED_PERCENT = nil
 
----ConvertAbilityRealLevelField('Oeq4')
+---ConvertAbilityRealLevelField ( FourCC('Oeq4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FINAL_AREA_OEQ4 = nil
 
----ConvertAbilityRealLevelField('Eer1')
+---ConvertAbilityRealLevelField ( FourCC('Eer1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_EER1 = nil
 
----ConvertAbilityRealLevelField('Eah1')
+---ConvertAbilityRealLevelField ( FourCC('Eah1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_DEALT_TO_ATTACKERS = nil
 
----ConvertAbilityRealLevelField('Etq1')
+---ConvertAbilityRealLevelField ( FourCC('Etq1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_HEALED = nil
 
----ConvertAbilityRealLevelField('Etq2')
+---ConvertAbilityRealLevelField ( FourCC('Etq2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HEAL_INTERVAL = nil
 
----ConvertAbilityRealLevelField('Etq3')
+---ConvertAbilityRealLevelField ( FourCC('Etq3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUILDING_REDUCTION_ETQ3 = nil
 
----ConvertAbilityRealLevelField('Etq4')
+---ConvertAbilityRealLevelField ( FourCC('Etq4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_INITIAL_IMMUNITY_DURATION = nil
 
----ConvertAbilityRealLevelField('Udd1')
+---ConvertAbilityRealLevelField ( FourCC('Udd1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_LIFE_DRAINED_PER_SECOND_PERCENT = nil
 
----ConvertAbilityRealLevelField('Udd2')
+---ConvertAbilityRealLevelField ( FourCC('Udd2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUILDING_REDUCTION_UDD2 = nil
 
----ConvertAbilityRealLevelField('Ufa1')
+---ConvertAbilityRealLevelField ( FourCC('Ufa1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ARMOR_DURATION = nil
 
----ConvertAbilityRealLevelField('Ufa2')
+---ConvertAbilityRealLevelField ( FourCC('Ufa2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ARMOR_BONUS_UFA2 = nil
 
----ConvertAbilityRealLevelField('Ufn1')
+---ConvertAbilityRealLevelField ( FourCC('Ufn1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AREA_OF_EFFECT_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Ufn2')
+---ConvertAbilityRealLevelField ( FourCC('Ufn2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SPECIFIC_TARGET_DAMAGE_UFN2 = nil
 
----ConvertAbilityRealLevelField('Hfa1')
+---ConvertAbilityRealLevelField ( FourCC('Hfa1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_HFA1 = nil
 
----ConvertAbilityRealLevelField('Esf1')
+---ConvertAbilityRealLevelField ( FourCC('Esf1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_DEALT_ESF1 = nil
 
----ConvertAbilityRealLevelField('Esf2')
+---ConvertAbilityRealLevelField ( FourCC('Esf2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_INTERVAL_ESF2 = nil
 
----ConvertAbilityRealLevelField('Esf3')
+---ConvertAbilityRealLevelField ( FourCC('Esf3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUILDING_REDUCTION_ESF3 = nil
 
----ConvertAbilityRealLevelField('Ear1')
+---ConvertAbilityRealLevelField ( FourCC('Ear1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_PERCENT = nil
 
----ConvertAbilityRealLevelField('Hav1')
+---ConvertAbilityRealLevelField ( FourCC('Hav1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEFENSE_BONUS_HAV1 = nil
 
----ConvertAbilityRealLevelField('Hav2')
+---ConvertAbilityRealLevelField ( FourCC('Hav2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HIT_POINT_BONUS = nil
 
----ConvertAbilityRealLevelField('Hav3')
+---ConvertAbilityRealLevelField ( FourCC('Hav3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_HAV3 = nil
 
----ConvertAbilityRealLevelField('Hav4')
+---ConvertAbilityRealLevelField ( FourCC('Hav4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAGIC_DAMAGE_REDUCTION_HAV4 = nil
 
----ConvertAbilityRealLevelField('Hbh1')
+---ConvertAbilityRealLevelField ( FourCC('Hbh1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_BASH = nil
 
----ConvertAbilityRealLevelField('Hbh2')
+---ConvertAbilityRealLevelField ( FourCC('Hbh2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_MULTIPLIER_HBH2 = nil
 
----ConvertAbilityRealLevelField('Hbh3')
+---ConvertAbilityRealLevelField ( FourCC('Hbh3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_HBH3 = nil
 
----ConvertAbilityRealLevelField('Hbh4')
+---ConvertAbilityRealLevelField ( FourCC('Hbh4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_MISS_HBH4 = nil
 
----ConvertAbilityRealLevelField('Htb1')
+---ConvertAbilityRealLevelField ( FourCC('Htb1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_HTB1 = nil
 
----ConvertAbilityRealLevelField('Htc1')
+---ConvertAbilityRealLevelField ( FourCC('Htc1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AOE_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Htc2')
+---ConvertAbilityRealLevelField ( FourCC('Htc2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SPECIFIC_TARGET_DAMAGE_HTC2 = nil
 
----ConvertAbilityRealLevelField('Htc3')
+---ConvertAbilityRealLevelField ( FourCC('Htc3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_REDUCTION_PERCENT_HTC3 = nil
 
----ConvertAbilityRealLevelField('Htc4')
+---ConvertAbilityRealLevelField ( FourCC('Htc4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_REDUCTION_PERCENT_HTC4 = nil
 
----ConvertAbilityRealLevelField('Had1')
+---ConvertAbilityRealLevelField ( FourCC('Had1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ARMOR_BONUS_HAD1 = nil
 
----ConvertAbilityRealLevelField('Hhb1')
+---ConvertAbilityRealLevelField ( FourCC('Hhb1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AMOUNT_HEALED_DAMAGED_HHB1 = nil
 
----ConvertAbilityRealLevelField('Hca1')
+---ConvertAbilityRealLevelField ( FourCC('Hca1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EXTRA_DAMAGE_HCA1 = nil
 
----ConvertAbilityRealLevelField('Hca2')
+---ConvertAbilityRealLevelField ( FourCC('Hca2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_FACTOR_HCA2 = nil
 
----ConvertAbilityRealLevelField('Hca3')
+---ConvertAbilityRealLevelField ( FourCC('Hca3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_FACTOR_HCA3 = nil
 
----ConvertAbilityRealLevelField('Oae1')
+---ConvertAbilityRealLevelField ( FourCC('Oae1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_INCREASE_PERCENT_OAE1 = nil
 
----ConvertAbilityRealLevelField('Oae2')
+---ConvertAbilityRealLevelField ( FourCC('Oae2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_INCREASE_PERCENT_OAE2 = nil
 
----ConvertAbilityRealLevelField('Ore1')
+---ConvertAbilityRealLevelField ( FourCC('Ore1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_REINCARNATION_DELAY = nil
 
----ConvertAbilityRealLevelField('Osh1')
+---ConvertAbilityRealLevelField ( FourCC('Osh1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_OSH1 = nil
 
----ConvertAbilityRealLevelField('Osh2')
+---ConvertAbilityRealLevelField ( FourCC('Osh2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAXIMUM_DAMAGE_OSH2 = nil
 
----ConvertAbilityRealLevelField('Osh3')
+---ConvertAbilityRealLevelField ( FourCC('Osh3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DISTANCE_OSH3 = nil
 
----ConvertAbilityRealLevelField('Osh4')
+---ConvertAbilityRealLevelField ( FourCC('Osh4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FINAL_AREA_OSH4 = nil
 
----ConvertAbilityRealLevelField('Nfd1')
+---ConvertAbilityRealLevelField ( FourCC('Nfd1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_GRAPHIC_DELAY_NFD1 = nil
 
----ConvertAbilityRealLevelField('Nfd2')
+---ConvertAbilityRealLevelField ( FourCC('Nfd2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_GRAPHIC_DURATION_NFD2 = nil
 
----ConvertAbilityRealLevelField('Nfd3')
+---ConvertAbilityRealLevelField ( FourCC('Nfd3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_NFD3 = nil
 
----ConvertAbilityRealLevelField('Ams1')
+---ConvertAbilityRealLevelField ( FourCC('Ams1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DAMAGE_AMS1 = nil
 
----ConvertAbilityRealLevelField('Ams2')
+---ConvertAbilityRealLevelField ( FourCC('Ams2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAGIC_DAMAGE_REDUCTION_AMS2 = nil
 
----ConvertAbilityRealLevelField('Apl1')
+---ConvertAbilityRealLevelField ( FourCC('Apl1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AURA_DURATION = nil
 
----ConvertAbilityRealLevelField('Apl2')
+---ConvertAbilityRealLevelField ( FourCC('Apl2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_APL2 = nil
 
----ConvertAbilityRealLevelField('Apl3')
+---ConvertAbilityRealLevelField ( FourCC('Apl3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DURATION_OF_PLAGUE_WARD = nil
 
----ConvertAbilityRealLevelField('Oar1')
+---ConvertAbilityRealLevelField ( FourCC('Oar1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AMOUNT_OF_HIT_POINTS_REGENERATED = nil
 
----ConvertAbilityRealLevelField('Akb1')
+---ConvertAbilityRealLevelField ( FourCC('Akb1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_DAMAGE_INCREASE_AKB1 = nil
 
----ConvertAbilityRealLevelField('Adm1')
+---ConvertAbilityRealLevelField ( FourCC('Adm1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_LOSS_ADM1 = nil
 
----ConvertAbilityRealLevelField('Adm2')
+---ConvertAbilityRealLevelField ( FourCC('Adm2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DAMAGE_ADM2 = nil
 
----ConvertAbilityRealLevelField('Bli1')
+---ConvertAbilityRealLevelField ( FourCC('Bli1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EXPANSION_AMOUNT = nil
 
----ConvertAbilityRealLevelField('Bgm2')
+---ConvertAbilityRealLevelField ( FourCC('Bgm2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_INTERVAL_DURATION_BGM2 = nil
 
----ConvertAbilityRealLevelField('Bgm4')
+---ConvertAbilityRealLevelField ( FourCC('Bgm4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_RADIUS_OF_MINING_RING = nil
 
----ConvertAbilityRealLevelField('Blo1')
+---ConvertAbilityRealLevelField ( FourCC('Blo1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_INCREASE_PERCENT_BLO1 = nil
 
----ConvertAbilityRealLevelField('Blo2')
+---ConvertAbilityRealLevelField ( FourCC('Blo2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_INCREASE_PERCENT_BLO2 = nil
 
----ConvertAbilityRealLevelField('Blo3')
+---ConvertAbilityRealLevelField ( FourCC('Blo3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SCALING_FACTOR = nil
 
----ConvertAbilityRealLevelField('Can1')
+---ConvertAbilityRealLevelField ( FourCC('Can1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HIT_POINTS_PER_SECOND_CAN1 = nil
 
----ConvertAbilityRealLevelField('Can2')
+---ConvertAbilityRealLevelField ( FourCC('Can2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_HIT_POINTS = nil
 
----ConvertAbilityRealLevelField('Dev2')
+---ConvertAbilityRealLevelField ( FourCC('Dev2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_DEV2 = nil
 
----ConvertAbilityRealLevelField('Chd1')
+---ConvertAbilityRealLevelField ( FourCC('Chd1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_UPDATE_FREQUENCY_CHD1 = nil
 
----ConvertAbilityRealLevelField('Chd2')
+---ConvertAbilityRealLevelField ( FourCC('Chd2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_UPDATE_FREQUENCY_CHD2 = nil
 
----ConvertAbilityRealLevelField('Chd3')
+---ConvertAbilityRealLevelField ( FourCC('Chd3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DAMAGE_CHD3 = nil
 
----ConvertAbilityRealLevelField('Cri1')
+---ConvertAbilityRealLevelField ( FourCC('Cri1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_REDUCTION_PERCENT_CRI1 = nil
 
----ConvertAbilityRealLevelField('Cri2')
+---ConvertAbilityRealLevelField ( FourCC('Cri2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_REDUCTION_PERCENT_CRI2 = nil
 
----ConvertAbilityRealLevelField('Cri3')
+---ConvertAbilityRealLevelField ( FourCC('Cri3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_REDUCTION_CRI3 = nil
 
----ConvertAbilityRealLevelField('Crs1')
+---ConvertAbilityRealLevelField ( FourCC('Crs1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_MISS_CRS = nil
 
----ConvertAbilityRealLevelField('Dda1')
+---ConvertAbilityRealLevelField ( FourCC('Dda1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FULL_DAMAGE_RADIUS_DDA1 = nil
 
----ConvertAbilityRealLevelField('Dda2')
+---ConvertAbilityRealLevelField ( FourCC('Dda2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FULL_DAMAGE_AMOUNT_DDA2 = nil
 
----ConvertAbilityRealLevelField('Dda3')
+---ConvertAbilityRealLevelField ( FourCC('Dda3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_PARTIAL_DAMAGE_RADIUS = nil
 
----ConvertAbilityRealLevelField('Dda4')
+---ConvertAbilityRealLevelField ( FourCC('Dda4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_PARTIAL_DAMAGE_AMOUNT = nil
 
----ConvertAbilityRealLevelField('Sds1')
+---ConvertAbilityRealLevelField ( FourCC('Sds1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUILDING_DAMAGE_FACTOR_SDS1 = nil
 
----ConvertAbilityRealLevelField('Uco5')
+---ConvertAbilityRealLevelField ( FourCC('Uco5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_DAMAGE_UCO5 = nil
 
----ConvertAbilityRealLevelField('Uco6')
+---ConvertAbilityRealLevelField ( FourCC('Uco6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVE_SPEED_BONUS_UCO6 = nil
 
----ConvertAbilityRealLevelField('Def1')
+---ConvertAbilityRealLevelField ( FourCC('Def1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_TAKEN_PERCENT_DEF1 = nil
 
----ConvertAbilityRealLevelField('Def2')
+---ConvertAbilityRealLevelField ( FourCC('Def2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_DEALT_PERCENT_DEF2 = nil
 
----ConvertAbilityRealLevelField('Def3')
+---ConvertAbilityRealLevelField ( FourCC('Def3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_FACTOR_DEF3 = nil
 
----ConvertAbilityRealLevelField('Def4')
+---ConvertAbilityRealLevelField ( FourCC('Def4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_FACTOR_DEF4 = nil
 
----ConvertAbilityRealLevelField('Def5')
+---ConvertAbilityRealLevelField ( FourCC('Def5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAGIC_DAMAGE_REDUCTION_DEF5 = nil
 
----ConvertAbilityRealLevelField('Def6')
+---ConvertAbilityRealLevelField ( FourCC('Def6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_DEFLECT = nil
 
----ConvertAbilityRealLevelField('Def7')
+---ConvertAbilityRealLevelField ( FourCC('Def7') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEFLECT_DAMAGE_TAKEN_PIERCING = nil
 
----ConvertAbilityRealLevelField('Def8')
+---ConvertAbilityRealLevelField ( FourCC('Def8') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEFLECT_DAMAGE_TAKEN_SPELLS = nil
 
----ConvertAbilityRealLevelField('Eat1')
+---ConvertAbilityRealLevelField ( FourCC('Eat1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_RIP_DELAY = nil
 
----ConvertAbilityRealLevelField('Eat2')
+---ConvertAbilityRealLevelField ( FourCC('Eat2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EAT_DELAY = nil
 
----ConvertAbilityRealLevelField('Eat3')
+---ConvertAbilityRealLevelField ( FourCC('Eat3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HIT_POINTS_GAINED_EAT3 = nil
 
----ConvertAbilityRealLevelField('Ens1')
+---ConvertAbilityRealLevelField ( FourCC('Ens1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AIR_UNIT_LOWER_DURATION = nil
 
----ConvertAbilityRealLevelField('Ens2')
+---ConvertAbilityRealLevelField ( FourCC('Ens2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AIR_UNIT_HEIGHT = nil
 
----ConvertAbilityRealLevelField('Ens3')
+---ConvertAbilityRealLevelField ( FourCC('Ens3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MELEE_ATTACK_RANGE = nil
 
----ConvertAbilityRealLevelField('Egm2')
+---ConvertAbilityRealLevelField ( FourCC('Egm2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_INTERVAL_DURATION_EGM2 = nil
 
----ConvertAbilityRealLevelField('Fla2')
+---ConvertAbilityRealLevelField ( FourCC('Fla2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EFFECT_DELAY_FLA2 = nil
 
----ConvertAbilityRealLevelField('Gld2')
+---ConvertAbilityRealLevelField ( FourCC('Gld2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MINING_DURATION = nil
 
----ConvertAbilityRealLevelField('Gyd2')
+---ConvertAbilityRealLevelField ( FourCC('Gyd2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_RADIUS_OF_GRAVESTONES = nil
 
----ConvertAbilityRealLevelField('Gyd3')
+---ConvertAbilityRealLevelField ( FourCC('Gyd3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_RADIUS_OF_CORPSES = nil
 
----ConvertAbilityRealLevelField('Hea1')
+---ConvertAbilityRealLevelField ( FourCC('Hea1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HIT_POINTS_GAINED_HEA1 = nil
 
----ConvertAbilityRealLevelField('Inf1')
+---ConvertAbilityRealLevelField ( FourCC('Inf1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_INCREASE_PERCENT_INF1 = nil
 
----ConvertAbilityRealLevelField('Inf3')
+---ConvertAbilityRealLevelField ( FourCC('Inf3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AUTOCAST_RANGE = nil
 
----ConvertAbilityRealLevelField('Inf4')
+---ConvertAbilityRealLevelField ( FourCC('Inf4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_REGEN_RATE = nil
 
----ConvertAbilityRealLevelField('Lit1')
+---ConvertAbilityRealLevelField ( FourCC('Lit1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_GRAPHIC_DELAY_LIT1 = nil
 
----ConvertAbilityRealLevelField('Lit2')
+---ConvertAbilityRealLevelField ( FourCC('Lit2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_GRAPHIC_DURATION_LIT2 = nil
 
----ConvertAbilityRealLevelField('Lsh1')
+---ConvertAbilityRealLevelField ( FourCC('Lsh1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_LSH1 = nil
 
----ConvertAbilityRealLevelField('Mbt1')
+---ConvertAbilityRealLevelField ( FourCC('Mbt1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_GAINED = nil
 
----ConvertAbilityRealLevelField('Mbt2')
+---ConvertAbilityRealLevelField ( FourCC('Mbt2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HIT_POINTS_GAINED_MBT2 = nil
 
----ConvertAbilityRealLevelField('Mbt3')
+---ConvertAbilityRealLevelField ( FourCC('Mbt3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AUTOCAST_REQUIREMENT = nil
 
----ConvertAbilityRealLevelField('Mbt4')
+---ConvertAbilityRealLevelField ( FourCC('Mbt4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_WATER_HEIGHT = nil
 
----ConvertAbilityRealLevelField('Min1')
+---ConvertAbilityRealLevelField ( FourCC('Min1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ACTIVATION_DELAY_MIN1 = nil
 
----ConvertAbilityRealLevelField('Min2')
+---ConvertAbilityRealLevelField ( FourCC('Min2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_INVISIBILITY_TRANSITION_TIME = nil
 
----ConvertAbilityRealLevelField('Neu1')
+---ConvertAbilityRealLevelField ( FourCC('Neu1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ACTIVATION_RADIUS = nil
 
----ConvertAbilityRealLevelField('Arm1')
+---ConvertAbilityRealLevelField ( FourCC('Arm1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AMOUNT_REGENERATED = nil
 
----ConvertAbilityRealLevelField('Poi1')
+---ConvertAbilityRealLevelField ( FourCC('Poi1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_POI1 = nil
 
----ConvertAbilityRealLevelField('Poi2')
+---ConvertAbilityRealLevelField ( FourCC('Poi2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_FACTOR_POI2 = nil
 
----ConvertAbilityRealLevelField('Poi3')
+---ConvertAbilityRealLevelField ( FourCC('Poi3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_FACTOR_POI3 = nil
 
----ConvertAbilityRealLevelField('Poa1')
+---ConvertAbilityRealLevelField ( FourCC('Poa1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EXTRA_DAMAGE_POA1 = nil
 
----ConvertAbilityRealLevelField('Poa2')
+---ConvertAbilityRealLevelField ( FourCC('Poa2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_POA2 = nil
 
----ConvertAbilityRealLevelField('Poa3')
+---ConvertAbilityRealLevelField ( FourCC('Poa3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_FACTOR_POA3 = nil
 
----ConvertAbilityRealLevelField('Poa4')
+---ConvertAbilityRealLevelField ( FourCC('Poa4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_FACTOR_POA4 = nil
 
----ConvertAbilityRealLevelField('Pos2')
+---ConvertAbilityRealLevelField ( FourCC('Pos2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_AMPLIFICATION = nil
 
----ConvertAbilityRealLevelField('War1')
+---ConvertAbilityRealLevelField ( FourCC('War1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_STOMP_PERCENT = nil
 
----ConvertAbilityRealLevelField('War2')
+---ConvertAbilityRealLevelField ( FourCC('War2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_DEALT_WAR2 = nil
 
----ConvertAbilityRealLevelField('War3')
+---ConvertAbilityRealLevelField ( FourCC('War3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FULL_DAMAGE_RADIUS_WAR3 = nil
 
----ConvertAbilityRealLevelField('War4')
+---ConvertAbilityRealLevelField ( FourCC('War4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HALF_DAMAGE_RADIUS_WAR4 = nil
 
----ConvertAbilityRealLevelField('Prg3')
+---ConvertAbilityRealLevelField ( FourCC('Prg3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DAMAGE_PRG3 = nil
 
----ConvertAbilityRealLevelField('Prg4')
+---ConvertAbilityRealLevelField ( FourCC('Prg4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_UNIT_PAUSE_DURATION = nil
 
----ConvertAbilityRealLevelField('Prg5')
+---ConvertAbilityRealLevelField ( FourCC('Prg5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HERO_PAUSE_DURATION = nil
 
----ConvertAbilityRealLevelField('Rej1')
+---ConvertAbilityRealLevelField ( FourCC('Rej1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HIT_POINTS_GAINED_REJ1 = nil
 
----ConvertAbilityRealLevelField('Rej2')
+---ConvertAbilityRealLevelField ( FourCC('Rej2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_POINTS_GAINED_REJ2 = nil
 
----ConvertAbilityRealLevelField('Rpb3')
+---ConvertAbilityRealLevelField ( FourCC('Rpb3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MINIMUM_LIFE_REQUIRED = nil
 
----ConvertAbilityRealLevelField('Rpb4')
+---ConvertAbilityRealLevelField ( FourCC('Rpb4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MINIMUM_MANA_REQUIRED = nil
 
----ConvertAbilityRealLevelField('Rep1')
+---ConvertAbilityRealLevelField ( FourCC('Rep1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_REPAIR_COST_RATIO = nil
 
----ConvertAbilityRealLevelField('Rep2')
+---ConvertAbilityRealLevelField ( FourCC('Rep2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_REPAIR_TIME_RATIO = nil
 
----ConvertAbilityRealLevelField('Rep3')
+---ConvertAbilityRealLevelField ( FourCC('Rep3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_POWERBUILD_COST = nil
 
----ConvertAbilityRealLevelField('Rep4')
+---ConvertAbilityRealLevelField ( FourCC('Rep4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_POWERBUILD_RATE = nil
 
----ConvertAbilityRealLevelField('Rep5')
+---ConvertAbilityRealLevelField ( FourCC('Rep5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_NAVAL_RANGE_BONUS = nil
 
----ConvertAbilityRealLevelField('Roa1')
+---ConvertAbilityRealLevelField ( FourCC('Roa1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_INCREASE_PERCENT_ROA1 = nil
 
----ConvertAbilityRealLevelField('Roa3')
+---ConvertAbilityRealLevelField ( FourCC('Roa3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_REGENERATION_RATE = nil
 
----ConvertAbilityRealLevelField('Roa4')
+---ConvertAbilityRealLevelField ( FourCC('Roa4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_REGEN = nil
 
----ConvertAbilityRealLevelField('Nbr1')
+---ConvertAbilityRealLevelField ( FourCC('Nbr1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_INCREASE = nil
 
----ConvertAbilityRealLevelField('Sal1')
+---ConvertAbilityRealLevelField ( FourCC('Sal1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SALVAGE_COST_RATIO = nil
 
----ConvertAbilityRealLevelField('Esn1')
+---ConvertAbilityRealLevelField ( FourCC('Esn1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_IN_FLIGHT_SIGHT_RADIUS = nil
 
----ConvertAbilityRealLevelField('Esn2')
+---ConvertAbilityRealLevelField ( FourCC('Esn2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HOVERING_SIGHT_RADIUS = nil
 
----ConvertAbilityRealLevelField('Esn3')
+---ConvertAbilityRealLevelField ( FourCC('Esn3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HOVERING_HEIGHT = nil
 
----ConvertAbilityRealLevelField('Esn5')
+---ConvertAbilityRealLevelField ( FourCC('Esn5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DURATION_OF_OWLS = nil
 
----ConvertAbilityRealLevelField('Shm1')
+---ConvertAbilityRealLevelField ( FourCC('Shm1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FADE_DURATION = nil
 
----ConvertAbilityRealLevelField('Shm2')
+---ConvertAbilityRealLevelField ( FourCC('Shm2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAY_NIGHT_DURATION = nil
 
----ConvertAbilityRealLevelField('Shm3')
+---ConvertAbilityRealLevelField ( FourCC('Shm3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ACTION_DURATION = nil
 
----ConvertAbilityRealLevelField('Slo1')
+---ConvertAbilityRealLevelField ( FourCC('Slo1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_FACTOR_SLO1 = nil
 
----ConvertAbilityRealLevelField('Slo2')
+---ConvertAbilityRealLevelField ( FourCC('Slo2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_FACTOR_SLO2 = nil
 
----ConvertAbilityRealLevelField('Spo1')
+---ConvertAbilityRealLevelField ( FourCC('Spo1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_SPO1 = nil
 
----ConvertAbilityRealLevelField('Spo2')
+---ConvertAbilityRealLevelField ( FourCC('Spo2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_FACTOR_SPO2 = nil
 
----ConvertAbilityRealLevelField('Spo3')
+---ConvertAbilityRealLevelField ( FourCC('Spo3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_FACTOR_SPO3 = nil
 
----ConvertAbilityRealLevelField('Sta1')
+---ConvertAbilityRealLevelField ( FourCC('Sta1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ACTIVATION_DELAY_STA1 = nil
 
----ConvertAbilityRealLevelField('Sta2')
+---ConvertAbilityRealLevelField ( FourCC('Sta2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DETECTION_RADIUS_STA2 = nil
 
----ConvertAbilityRealLevelField('Sta3')
+---ConvertAbilityRealLevelField ( FourCC('Sta3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DETONATION_RADIUS = nil
 
----ConvertAbilityRealLevelField('Sta4')
+---ConvertAbilityRealLevelField ( FourCC('Sta4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_STUN_DURATION_STA4 = nil
 
----ConvertAbilityRealLevelField('Uhf1')
+---ConvertAbilityRealLevelField ( FourCC('Uhf1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_BONUS_PERCENT = nil
 
----ConvertAbilityRealLevelField('Uhf2')
+---ConvertAbilityRealLevelField ( FourCC('Uhf2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_UHF2 = nil
 
----ConvertAbilityRealLevelField('Wha1')
+---ConvertAbilityRealLevelField ( FourCC('Wha1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LUMBER_PER_INTERVAL = nil
 
----ConvertAbilityRealLevelField('Wha3')
+---ConvertAbilityRealLevelField ( FourCC('Wha3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ART_ATTACHMENT_HEIGHT = nil
 
----ConvertAbilityRealLevelField('Wrp1')
+---ConvertAbilityRealLevelField ( FourCC('Wrp1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_TELEPORT_AREA_WIDTH = nil
 
----ConvertAbilityRealLevelField('Wrp2')
+---ConvertAbilityRealLevelField ( FourCC('Wrp2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_TELEPORT_AREA_HEIGHT = nil
 
----ConvertAbilityRealLevelField('Ivam')
+---ConvertAbilityRealLevelField ( FourCC('Ivam') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_STOLEN_PER_ATTACK = nil
 
----ConvertAbilityRealLevelField('Idam')
+---ConvertAbilityRealLevelField ( FourCC('Idam') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_IDAM = nil
 
----ConvertAbilityRealLevelField('Iob2')
+---ConvertAbilityRealLevelField ( FourCC('Iob2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_HIT_UNITS_PERCENT = nil
 
----ConvertAbilityRealLevelField('Iob3')
+---ConvertAbilityRealLevelField ( FourCC('Iob3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_HIT_HEROS_PERCENT = nil
 
----ConvertAbilityRealLevelField('Iob4')
+---ConvertAbilityRealLevelField ( FourCC('Iob4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_HIT_SUMMONS_PERCENT = nil
 
----ConvertAbilityRealLevelField('Idel')
+---ConvertAbilityRealLevelField ( FourCC('Idel') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DELAY_FOR_TARGET_EFFECT = nil
 
----ConvertAbilityRealLevelField('Iild')
+---ConvertAbilityRealLevelField ( FourCC('Iild') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_DEALT_PERCENT_OF_NORMAL = nil
 
----ConvertAbilityRealLevelField('Iilw')
+---ConvertAbilityRealLevelField ( FourCC('Iilw') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_RECEIVED_MULTIPLIER = nil
 
----ConvertAbilityRealLevelField('Imrp')
+---ConvertAbilityRealLevelField ( FourCC('Imrp') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_REGENERATION_BONUS_AS_FRACTION_OF_NORMAL = nil
 
----ConvertAbilityRealLevelField('Ispi')
+---ConvertAbilityRealLevelField ( FourCC('Ispi') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_INCREASE_ISPI = nil
 
----ConvertAbilityRealLevelField('Idps')
+---ConvertAbilityRealLevelField ( FourCC('Idps') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_IDPS = nil
 
----ConvertAbilityRealLevelField('Cac1')
+---ConvertAbilityRealLevelField ( FourCC('Cac1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_DAMAGE_INCREASE_CAC1 = nil
 
----ConvertAbilityRealLevelField('Cor1')
+---ConvertAbilityRealLevelField ( FourCC('Cor1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_COR1 = nil
 
----ConvertAbilityRealLevelField('Isx1')
+---ConvertAbilityRealLevelField ( FourCC('Isx1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_INCREASE_ISX1 = nil
 
----ConvertAbilityRealLevelField('Wrs1')
+---ConvertAbilityRealLevelField ( FourCC('Wrs1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_WRS1 = nil
 
----ConvertAbilityRealLevelField('Wrs2')
+---ConvertAbilityRealLevelField ( FourCC('Wrs2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_TERRAIN_DEFORMATION_AMPLITUDE = nil
 
----ConvertAbilityRealLevelField('Ctc1')
+---ConvertAbilityRealLevelField ( FourCC('Ctc1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_CTC1 = nil
 
----ConvertAbilityRealLevelField('Ctc2')
+---ConvertAbilityRealLevelField ( FourCC('Ctc2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EXTRA_DAMAGE_TO_TARGET = nil
 
----ConvertAbilityRealLevelField('Ctc3')
+---ConvertAbilityRealLevelField ( FourCC('Ctc3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_REDUCTION_CTC3 = nil
 
----ConvertAbilityRealLevelField('Ctc4')
+---ConvertAbilityRealLevelField ( FourCC('Ctc4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_REDUCTION_CTC4 = nil
 
----ConvertAbilityRealLevelField('Ctb1')
+---ConvertAbilityRealLevelField ( FourCC('Ctb1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_CTB1 = nil
 
----ConvertAbilityRealLevelField('Uds2')
+---ConvertAbilityRealLevelField ( FourCC('Uds2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CASTING_DELAY_SECONDS = nil
 
----ConvertAbilityRealLevelField('Dtn1')
+---ConvertAbilityRealLevelField ( FourCC('Dtn1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_LOSS_PER_UNIT_DTN1 = nil
 
----ConvertAbilityRealLevelField('Dtn2')
+---ConvertAbilityRealLevelField ( FourCC('Dtn2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_TO_SUMMONED_UNITS_DTN2 = nil
 
----ConvertAbilityRealLevelField('Ivs1')
+---ConvertAbilityRealLevelField ( FourCC('Ivs1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_TRANSITION_TIME_SECONDS = nil
 
----ConvertAbilityRealLevelField('Nmr1')
+---ConvertAbilityRealLevelField ( FourCC('Nmr1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_DRAINED_PER_SECOND_NMR1 = nil
 
----ConvertAbilityRealLevelField('Ssk1')
+---ConvertAbilityRealLevelField ( FourCC('Ssk1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_REDUCE_DAMAGE_PERCENT = nil
 
----ConvertAbilityRealLevelField('Ssk2')
+---ConvertAbilityRealLevelField ( FourCC('Ssk2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MINIMUM_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Ssk3')
+---ConvertAbilityRealLevelField ( FourCC('Ssk3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_IGNORED_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Hfs1')
+---ConvertAbilityRealLevelField ( FourCC('Hfs1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FULL_DAMAGE_DEALT = nil
 
----ConvertAbilityRealLevelField('Hfs2')
+---ConvertAbilityRealLevelField ( FourCC('Hfs2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FULL_DAMAGE_INTERVAL = nil
 
----ConvertAbilityRealLevelField('Hfs3')
+---ConvertAbilityRealLevelField ( FourCC('Hfs3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HALF_DAMAGE_DEALT = nil
 
----ConvertAbilityRealLevelField('Hfs4')
+---ConvertAbilityRealLevelField ( FourCC('Hfs4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HALF_DAMAGE_INTERVAL = nil
 
----ConvertAbilityRealLevelField('Hfs5')
+---ConvertAbilityRealLevelField ( FourCC('Hfs5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUILDING_REDUCTION_HFS5 = nil
 
----ConvertAbilityRealLevelField('Hfs6')
+---ConvertAbilityRealLevelField ( FourCC('Hfs6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAXIMUM_DAMAGE_HFS6 = nil
 
----ConvertAbilityRealLevelField('Nms1')
+---ConvertAbilityRealLevelField ( FourCC('Nms1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_PER_HIT_POINT = nil
 
----ConvertAbilityRealLevelField('Nms2')
+---ConvertAbilityRealLevelField ( FourCC('Nms2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_ABSORBED_PERCENT = nil
 
----ConvertAbilityRealLevelField('Uim1')
+---ConvertAbilityRealLevelField ( FourCC('Uim1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_WAVE_DISTANCE = nil
 
----ConvertAbilityRealLevelField('Uim2')
+---ConvertAbilityRealLevelField ( FourCC('Uim2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_WAVE_TIME_SECONDS = nil
 
----ConvertAbilityRealLevelField('Uim3')
+---ConvertAbilityRealLevelField ( FourCC('Uim3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_DEALT_UIM3 = nil
 
----ConvertAbilityRealLevelField('Uim4')
+---ConvertAbilityRealLevelField ( FourCC('Uim4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AIR_TIME_SECONDS_UIM4 = nil
 
----ConvertAbilityRealLevelField('Uls2')
+---ConvertAbilityRealLevelField ( FourCC('Uls2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_UNIT_RELEASE_INTERVAL_SECONDS = nil
 
----ConvertAbilityRealLevelField('Uls4')
+---ConvertAbilityRealLevelField ( FourCC('Uls4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_RETURN_FACTOR = nil
 
----ConvertAbilityRealLevelField('Uls5')
+---ConvertAbilityRealLevelField ( FourCC('Uls5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_RETURN_THRESHOLD = nil
 
----ConvertAbilityRealLevelField('Uts1')
+---ConvertAbilityRealLevelField ( FourCC('Uts1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_RETURNED_DAMAGE_FACTOR = nil
 
----ConvertAbilityRealLevelField('Uts2')
+---ConvertAbilityRealLevelField ( FourCC('Uts2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_RECEIVED_DAMAGE_FACTOR = nil
 
----ConvertAbilityRealLevelField('Uts3')
+---ConvertAbilityRealLevelField ( FourCC('Uts3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEFENSE_BONUS_UTS3 = nil
 
----ConvertAbilityRealLevelField('Nba1')
+---ConvertAbilityRealLevelField ( FourCC('Nba1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_NBA1 = nil
 
----ConvertAbilityRealLevelField('Nba3')
+---ConvertAbilityRealLevelField ( FourCC('Nba3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DURATION_SECONDS_NBA3 = nil
 
----ConvertAbilityRealLevelField('Cmg2')
+---ConvertAbilityRealLevelField ( FourCC('Cmg2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_PER_SUMMONED_HITPOINT = nil
 
----ConvertAbilityRealLevelField('Cmg3')
+---ConvertAbilityRealLevelField ( FourCC('Cmg3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHARGE_FOR_CURRENT_LIFE = nil
 
----ConvertAbilityRealLevelField('Ndr1')
+---ConvertAbilityRealLevelField ( FourCC('Ndr1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HIT_POINTS_DRAINED = nil
 
----ConvertAbilityRealLevelField('Ndr2')
+---ConvertAbilityRealLevelField ( FourCC('Ndr2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_POINTS_DRAINED = nil
 
----ConvertAbilityRealLevelField('Ndr3')
+---ConvertAbilityRealLevelField ( FourCC('Ndr3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DRAIN_INTERVAL_SECONDS = nil
 
----ConvertAbilityRealLevelField('Ndr4')
+---ConvertAbilityRealLevelField ( FourCC('Ndr4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_TRANSFERRED_PER_SECOND = nil
 
----ConvertAbilityRealLevelField('Ndr5')
+---ConvertAbilityRealLevelField ( FourCC('Ndr5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_TRANSFERRED_PER_SECOND = nil
 
----ConvertAbilityRealLevelField('Ndr6')
+---ConvertAbilityRealLevelField ( FourCC('Ndr6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BONUS_LIFE_FACTOR = nil
 
----ConvertAbilityRealLevelField('Ndr7')
+---ConvertAbilityRealLevelField ( FourCC('Ndr7') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BONUS_LIFE_DECAY = nil
 
----ConvertAbilityRealLevelField('Ndr8')
+---ConvertAbilityRealLevelField ( FourCC('Ndr8') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BONUS_MANA_FACTOR = nil
 
----ConvertAbilityRealLevelField('Ndr9')
+---ConvertAbilityRealLevelField ( FourCC('Ndr9') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BONUS_MANA_DECAY = nil
 
----ConvertAbilityRealLevelField('Nsi2')
+---ConvertAbilityRealLevelField ( FourCC('Nsi2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_MISS_PERCENT = nil
 
----ConvertAbilityRealLevelField('Nsi3')
+---ConvertAbilityRealLevelField ( FourCC('Nsi3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_MODIFIER = nil
 
----ConvertAbilityRealLevelField('Nsi4')
+---ConvertAbilityRealLevelField ( FourCC('Nsi4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_MODIFIER = nil
 
----ConvertAbilityRealLevelField('Tdg1')
+---ConvertAbilityRealLevelField ( FourCC('Tdg1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_TDG1 = nil
 
----ConvertAbilityRealLevelField('Tdg2')
+---ConvertAbilityRealLevelField ( FourCC('Tdg2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MEDIUM_DAMAGE_RADIUS_TDG2 = nil
 
----ConvertAbilityRealLevelField('Tdg3')
+---ConvertAbilityRealLevelField ( FourCC('Tdg3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MEDIUM_DAMAGE_PER_SECOND = nil
 
----ConvertAbilityRealLevelField('Tdg4')
+---ConvertAbilityRealLevelField ( FourCC('Tdg4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SMALL_DAMAGE_RADIUS_TDG4 = nil
 
----ConvertAbilityRealLevelField('Tdg5')
+---ConvertAbilityRealLevelField ( FourCC('Tdg5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SMALL_DAMAGE_PER_SECOND = nil
 
----ConvertAbilityRealLevelField('Tsp1')
+---ConvertAbilityRealLevelField ( FourCC('Tsp1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_AIR_TIME_SECONDS_TSP1 = nil
 
----ConvertAbilityRealLevelField('Tsp2')
+---ConvertAbilityRealLevelField ( FourCC('Tsp2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MINIMUM_HIT_INTERVAL_SECONDS = nil
 
----ConvertAbilityRealLevelField('Nbf5')
+---ConvertAbilityRealLevelField ( FourCC('Nbf5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_NBF5 = nil
 
----ConvertAbilityRealLevelField('Ebl1')
+---ConvertAbilityRealLevelField ( FourCC('Ebl1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAXIMUM_RANGE = nil
 
----ConvertAbilityRealLevelField('Ebl2')
+---ConvertAbilityRealLevelField ( FourCC('Ebl2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MINIMUM_RANGE = nil
 
----ConvertAbilityRealLevelField('Efk1')
+---ConvertAbilityRealLevelField ( FourCC('Efk1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_TARGET_EFK1 = nil
 
----ConvertAbilityRealLevelField('Efk2')
+---ConvertAbilityRealLevelField ( FourCC('Efk2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAXIMUM_TOTAL_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Efk4')
+---ConvertAbilityRealLevelField ( FourCC('Efk4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAXIMUM_SPEED_ADJUSTMENT = nil
 
----ConvertAbilityRealLevelField('Esh1')
+---ConvertAbilityRealLevelField ( FourCC('Esh1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DECAYING_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Esh2')
+---ConvertAbilityRealLevelField ( FourCC('Esh2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_FACTOR_ESH2 = nil
 
----ConvertAbilityRealLevelField('Esh3')
+---ConvertAbilityRealLevelField ( FourCC('Esh3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_FACTOR_ESH3 = nil
 
----ConvertAbilityRealLevelField('Esh4')
+---ConvertAbilityRealLevelField ( FourCC('Esh4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DECAY_POWER = nil
 
----ConvertAbilityRealLevelField('Esh5')
+---ConvertAbilityRealLevelField ( FourCC('Esh5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_INITIAL_DAMAGE_ESH5 = nil
 
----ConvertAbilityRealLevelField('abs1')
+---ConvertAbilityRealLevelField ( FourCC('abs1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAXIMUM_LIFE_ABSORBED = nil
 
----ConvertAbilityRealLevelField('abs2')
+---ConvertAbilityRealLevelField ( FourCC('abs2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAXIMUM_MANA_ABSORBED = nil
 
----ConvertAbilityRealLevelField('bsk1')
+---ConvertAbilityRealLevelField ( FourCC('bsk1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_INCREASE_BSK1 = nil
 
----ConvertAbilityRealLevelField('bsk2')
+---ConvertAbilityRealLevelField ( FourCC('bsk2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_INCREASE_BSK2 = nil
 
----ConvertAbilityRealLevelField('bsk3')
+---ConvertAbilityRealLevelField ( FourCC('bsk3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_TAKEN_INCREASE = nil
 
----ConvertAbilityRealLevelField('dvm1')
+---ConvertAbilityRealLevelField ( FourCC('dvm1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_PER_UNIT = nil
 
----ConvertAbilityRealLevelField('dvm2')
+---ConvertAbilityRealLevelField ( FourCC('dvm2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_PER_UNIT = nil
 
----ConvertAbilityRealLevelField('dvm3')
+---ConvertAbilityRealLevelField ( FourCC('dvm3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_PER_BUFF = nil
 
----ConvertAbilityRealLevelField('dvm4')
+---ConvertAbilityRealLevelField ( FourCC('dvm4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_PER_BUFF = nil
 
----ConvertAbilityRealLevelField('dvm5')
+---ConvertAbilityRealLevelField ( FourCC('dvm5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DAMAGE_DVM5 = nil
 
----ConvertAbilityRealLevelField('fak1')
+---ConvertAbilityRealLevelField ( FourCC('fak1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_FAK1 = nil
 
----ConvertAbilityRealLevelField('fak2')
+---ConvertAbilityRealLevelField ( FourCC('fak2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MEDIUM_DAMAGE_FACTOR_FAK2 = nil
 
----ConvertAbilityRealLevelField('fak3')
+---ConvertAbilityRealLevelField ( FourCC('fak3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SMALL_DAMAGE_FACTOR_FAK3 = nil
 
----ConvertAbilityRealLevelField('fak4')
+---ConvertAbilityRealLevelField ( FourCC('fak4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FULL_DAMAGE_RADIUS_FAK4 = nil
 
----ConvertAbilityRealLevelField('fak5')
+---ConvertAbilityRealLevelField ( FourCC('fak5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HALF_DAMAGE_RADIUS_FAK5 = nil
 
----ConvertAbilityRealLevelField('liq1')
+---ConvertAbilityRealLevelField ( FourCC('liq1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EXTRA_DAMAGE_PER_SECOND = nil
 
----ConvertAbilityRealLevelField('liq2')
+---ConvertAbilityRealLevelField ( FourCC('liq2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_REDUCTION_LIQ2 = nil
 
----ConvertAbilityRealLevelField('liq3')
+---ConvertAbilityRealLevelField ( FourCC('liq3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_REDUCTION_LIQ3 = nil
 
----ConvertAbilityRealLevelField('mim1')
+---ConvertAbilityRealLevelField ( FourCC('mim1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAGIC_DAMAGE_FACTOR = nil
 
----ConvertAbilityRealLevelField('mfl1')
+---ConvertAbilityRealLevelField ( FourCC('mfl1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_UNIT_DAMAGE_PER_MANA_POINT = nil
 
----ConvertAbilityRealLevelField('mfl2')
+---ConvertAbilityRealLevelField ( FourCC('mfl2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HERO_DAMAGE_PER_MANA_POINT = nil
 
----ConvertAbilityRealLevelField('mfl3')
+---ConvertAbilityRealLevelField ( FourCC('mfl3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_UNIT_MAXIMUM_DAMAGE = nil
 
----ConvertAbilityRealLevelField('mfl4')
+---ConvertAbilityRealLevelField ( FourCC('mfl4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HERO_MAXIMUM_DAMAGE = nil
 
----ConvertAbilityRealLevelField('mfl5')
+---ConvertAbilityRealLevelField ( FourCC('mfl5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_COOLDOWN = nil
 
----ConvertAbilityRealLevelField('spl1')
+---ConvertAbilityRealLevelField ( FourCC('spl1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DISTRIBUTED_DAMAGE_FACTOR_SPL1 = nil
 
----ConvertAbilityRealLevelField('irl1')
+---ConvertAbilityRealLevelField ( FourCC('irl1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_REGENERATED = nil
 
----ConvertAbilityRealLevelField('irl2')
+---ConvertAbilityRealLevelField ( FourCC('irl2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_REGENERATED = nil
 
----ConvertAbilityRealLevelField('idc1')
+---ConvertAbilityRealLevelField ( FourCC('idc1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_LOSS_PER_UNIT_IDC1 = nil
 
----ConvertAbilityRealLevelField('idc2')
+---ConvertAbilityRealLevelField ( FourCC('idc2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DAMAGE_IDC2 = nil
 
----ConvertAbilityRealLevelField('imo2')
+---ConvertAbilityRealLevelField ( FourCC('imo2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ACTIVATION_DELAY_IMO2 = nil
 
----ConvertAbilityRealLevelField('imo3')
+---ConvertAbilityRealLevelField ( FourCC('imo3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LURE_INTERVAL_SECONDS = nil
 
----ConvertAbilityRealLevelField('isr1')
+---ConvertAbilityRealLevelField ( FourCC('isr1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_ISR1 = nil
 
----ConvertAbilityRealLevelField('isr2')
+---ConvertAbilityRealLevelField ( FourCC('isr2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_REDUCTION_ISR2 = nil
 
----ConvertAbilityRealLevelField('ipv1')
+---ConvertAbilityRealLevelField ( FourCC('ipv1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_IPV1 = nil
 
----ConvertAbilityRealLevelField('ipv2')
+---ConvertAbilityRealLevelField ( FourCC('ipv2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_STEAL_AMOUNT = nil
 
----ConvertAbilityRealLevelField('ast1')
+---ConvertAbilityRealLevelField ( FourCC('ast1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_RESTORED_FACTOR = nil
 
----ConvertAbilityRealLevelField('ast2')
+---ConvertAbilityRealLevelField ( FourCC('ast2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MANA_RESTORED_FACTOR = nil
 
----ConvertAbilityRealLevelField('gra1')
+---ConvertAbilityRealLevelField ( FourCC('gra1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACH_DELAY = nil
 
----ConvertAbilityRealLevelField('gra2')
+---ConvertAbilityRealLevelField ( FourCC('gra2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_REMOVE_DELAY = nil
 
----ConvertAbilityRealLevelField('Nsa2')
+---ConvertAbilityRealLevelField ( FourCC('Nsa2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HERO_REGENERATION_DELAY = nil
 
----ConvertAbilityRealLevelField('Nsa3')
+---ConvertAbilityRealLevelField ( FourCC('Nsa3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_UNIT_REGENERATION_DELAY = nil
 
----ConvertAbilityRealLevelField('Nsa4')
+---ConvertAbilityRealLevelField ( FourCC('Nsa4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAGIC_DAMAGE_REDUCTION_NSA4 = nil
 
----ConvertAbilityRealLevelField('Nsa5')
+---ConvertAbilityRealLevelField ( FourCC('Nsa5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HIT_POINTS_PER_SECOND_NSA5 = nil
 
----ConvertAbilityRealLevelField('Ixs1')
+---ConvertAbilityRealLevelField ( FourCC('Ixs1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_TO_SUMMONED_UNITS_IXS1 = nil
 
----ConvertAbilityRealLevelField('Ixs2')
+---ConvertAbilityRealLevelField ( FourCC('Ixs2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAGIC_DAMAGE_REDUCTION_IXS2 = nil
 
----ConvertAbilityRealLevelField('Npa6')
+---ConvertAbilityRealLevelField ( FourCC('Npa6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DURATION = nil
 
----ConvertAbilityRealLevelField('Nse1')
+---ConvertAbilityRealLevelField ( FourCC('Nse1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SHIELD_COOLDOWN_TIME = nil
 
----ConvertAbilityRealLevelField('Ndo1')
+---ConvertAbilityRealLevelField ( FourCC('Ndo1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_NDO1 = nil
 
----ConvertAbilityRealLevelField('Ndo3')
+---ConvertAbilityRealLevelField ( FourCC('Ndo3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_UNIT_DURATION_SECONDS_NDO3 = nil
 
----ConvertAbilityRealLevelField('flk1')
+---ConvertAbilityRealLevelField ( FourCC('flk1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MEDIUM_DAMAGE_RADIUS_FLK1 = nil
 
----ConvertAbilityRealLevelField('flk2')
+---ConvertAbilityRealLevelField ( FourCC('flk2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SMALL_DAMAGE_RADIUS_FLK2 = nil
 
----ConvertAbilityRealLevelField('flk3')
+---ConvertAbilityRealLevelField ( FourCC('flk3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FULL_DAMAGE_AMOUNT_FLK3 = nil
 
----ConvertAbilityRealLevelField('flk4')
+---ConvertAbilityRealLevelField ( FourCC('flk4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MEDIUM_DAMAGE_AMOUNT = nil
 
----ConvertAbilityRealLevelField('flk5')
+---ConvertAbilityRealLevelField ( FourCC('flk5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SMALL_DAMAGE_AMOUNT = nil
 
----ConvertAbilityRealLevelField('Hbn1')
+---ConvertAbilityRealLevelField ( FourCC('Hbn1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_REDUCTION_PERCENT_HBN1 = nil
 
----ConvertAbilityRealLevelField('Hbn2')
+---ConvertAbilityRealLevelField ( FourCC('Hbn2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_REDUCTION_PERCENT_HBN2 = nil
 
----ConvertAbilityRealLevelField('fbk1')
+---ConvertAbilityRealLevelField ( FourCC('fbk1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_MANA_DRAINED_UNITS = nil
 
----ConvertAbilityRealLevelField('fbk2')
+---ConvertAbilityRealLevelField ( FourCC('fbk2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_RATIO_UNITS_PERCENT = nil
 
----ConvertAbilityRealLevelField('fbk3')
+---ConvertAbilityRealLevelField ( FourCC('fbk3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_MANA_DRAINED_HEROS = nil
 
----ConvertAbilityRealLevelField('fbk4')
+---ConvertAbilityRealLevelField ( FourCC('fbk4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_RATIO_HEROS_PERCENT = nil
 
----ConvertAbilityRealLevelField('fbk5')
+---ConvertAbilityRealLevelField ( FourCC('fbk5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SUMMONED_DAMAGE = nil
 
----ConvertAbilityRealLevelField('nca1')
+---ConvertAbilityRealLevelField ( FourCC('nca1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DISTRIBUTED_DAMAGE_FACTOR_NCA1 = nil
 
----ConvertAbilityRealLevelField('pxf1')
+---ConvertAbilityRealLevelField ( FourCC('pxf1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_INITIAL_DAMAGE_PXF1 = nil
 
----ConvertAbilityRealLevelField('pxf2')
+---ConvertAbilityRealLevelField ( FourCC('pxf2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_PXF2 = nil
 
----ConvertAbilityRealLevelField('mls1')
+---ConvertAbilityRealLevelField ( FourCC('mls1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PER_SECOND_MLS1 = nil
 
----ConvertAbilityRealLevelField('Nst2')
+---ConvertAbilityRealLevelField ( FourCC('Nst2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BEAST_COLLISION_RADIUS = nil
 
----ConvertAbilityRealLevelField('Nst3')
+---ConvertAbilityRealLevelField ( FourCC('Nst3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_AMOUNT_NST3 = nil
 
----ConvertAbilityRealLevelField('Nst4')
+---ConvertAbilityRealLevelField ( FourCC('Nst4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_RADIUS = nil
 
----ConvertAbilityRealLevelField('Nst5')
+---ConvertAbilityRealLevelField ( FourCC('Nst5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_DELAY = nil
 
----ConvertAbilityRealLevelField('Ncl1')
+---ConvertAbilityRealLevelField ( FourCC('Ncl1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FOLLOW_THROUGH_TIME = nil
 
----ConvertAbilityRealLevelField('Ncl4')
+---ConvertAbilityRealLevelField ( FourCC('Ncl4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ART_DURATION = nil
 
----ConvertAbilityRealLevelField('Nab1')
+---ConvertAbilityRealLevelField ( FourCC('Nab1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_REDUCTION_PERCENT_NAB1 = nil
 
----ConvertAbilityRealLevelField('Nab2')
+---ConvertAbilityRealLevelField ( FourCC('Nab2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_REDUCTION_PERCENT_NAB2 = nil
 
----ConvertAbilityRealLevelField('Nab4')
+---ConvertAbilityRealLevelField ( FourCC('Nab4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_PRIMARY_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Nab5')
+---ConvertAbilityRealLevelField ( FourCC('Nab5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SECONDARY_DAMAGE = nil
 
----ConvertAbilityRealLevelField('Nab6')
+---ConvertAbilityRealLevelField ( FourCC('Nab6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_INTERVAL_NAB6 = nil
 
----ConvertAbilityRealLevelField('Ntm1')
+---ConvertAbilityRealLevelField ( FourCC('Ntm1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_GOLD_COST_FACTOR = nil
 
----ConvertAbilityRealLevelField('Ntm2')
+---ConvertAbilityRealLevelField ( FourCC('Ntm2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LUMBER_COST_FACTOR = nil
 
----ConvertAbilityRealLevelField('Neg1')
+---ConvertAbilityRealLevelField ( FourCC('Neg1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVE_SPEED_BONUS_NEG1 = nil
 
----ConvertAbilityRealLevelField('Neg2')
+---ConvertAbilityRealLevelField ( FourCC('Neg2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_BONUS_NEG2 = nil
 
----ConvertAbilityRealLevelField('Ncs1')
+---ConvertAbilityRealLevelField ( FourCC('Ncs1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_AMOUNT_NCS1 = nil
 
----ConvertAbilityRealLevelField('Ncs2')
+---ConvertAbilityRealLevelField ( FourCC('Ncs2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_INTERVAL_NCS2 = nil
 
----ConvertAbilityRealLevelField('Ncs4')
+---ConvertAbilityRealLevelField ( FourCC('Ncs4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_DAMAGE_NCS4 = nil
 
----ConvertAbilityRealLevelField('Ncs5')
+---ConvertAbilityRealLevelField ( FourCC('Ncs5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUILDING_DAMAGE_FACTOR_NCS5 = nil
 
----ConvertAbilityRealLevelField('Ncs6')
+---ConvertAbilityRealLevelField ( FourCC('Ncs6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_EFFECT_DURATION = nil
 
----ConvertAbilityRealLevelField('Nsy1')
+---ConvertAbilityRealLevelField ( FourCC('Nsy1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SPAWN_INTERVAL_NSY1 = nil
 
----ConvertAbilityRealLevelField('Nsy3')
+---ConvertAbilityRealLevelField ( FourCC('Nsy3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SPAWN_UNIT_DURATION = nil
 
----ConvertAbilityRealLevelField('Nsy4')
+---ConvertAbilityRealLevelField ( FourCC('Nsy4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SPAWN_UNIT_OFFSET = nil
 
----ConvertAbilityRealLevelField('Nsy5')
+---ConvertAbilityRealLevelField ( FourCC('Nsy5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LEASH_RANGE_NSY5 = nil
 
----ConvertAbilityRealLevelField('Nfy1')
+---ConvertAbilityRealLevelField ( FourCC('Nfy1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SPAWN_INTERVAL_NFY1 = nil
 
----ConvertAbilityRealLevelField('Nfy2')
+---ConvertAbilityRealLevelField ( FourCC('Nfy2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LEASH_RANGE_NFY2 = nil
 
----ConvertAbilityRealLevelField('Nde1')
+---ConvertAbilityRealLevelField ( FourCC('Nde1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_CHANCE_TO_DEMOLISH = nil
 
----ConvertAbilityRealLevelField('Nde2')
+---ConvertAbilityRealLevelField ( FourCC('Nde2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_MULTIPLIER_BUILDINGS = nil
 
----ConvertAbilityRealLevelField('Nde3')
+---ConvertAbilityRealLevelField ( FourCC('Nde3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_MULTIPLIER_UNITS = nil
 
----ConvertAbilityRealLevelField('Nde4')
+---ConvertAbilityRealLevelField ( FourCC('Nde4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_MULTIPLIER_HEROES = nil
 
----ConvertAbilityRealLevelField('Nic1')
+---ConvertAbilityRealLevelField ( FourCC('Nic1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BONUS_DAMAGE_MULTIPLIER = nil
 
----ConvertAbilityRealLevelField('Nic2')
+---ConvertAbilityRealLevelField ( FourCC('Nic2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEATH_DAMAGE_FULL_AMOUNT = nil
 
----ConvertAbilityRealLevelField('Nic3')
+---ConvertAbilityRealLevelField ( FourCC('Nic3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEATH_DAMAGE_FULL_AREA = nil
 
----ConvertAbilityRealLevelField('Nic4')
+---ConvertAbilityRealLevelField ( FourCC('Nic4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEATH_DAMAGE_HALF_AMOUNT = nil
 
----ConvertAbilityRealLevelField('Nic5')
+---ConvertAbilityRealLevelField ( FourCC('Nic5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEATH_DAMAGE_HALF_AREA = nil
 
----ConvertAbilityRealLevelField('Nic6')
+---ConvertAbilityRealLevelField ( FourCC('Nic6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DEATH_DAMAGE_DELAY = nil
 
----ConvertAbilityRealLevelField('Nso1')
+---ConvertAbilityRealLevelField ( FourCC('Nso1') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_AMOUNT_NSO1 = nil
 
----ConvertAbilityRealLevelField('Nso2')
+---ConvertAbilityRealLevelField ( FourCC('Nso2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PERIOD = nil
 
----ConvertAbilityRealLevelField('Nso3')
+---ConvertAbilityRealLevelField ( FourCC('Nso3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_DAMAGE_PENALTY = nil
 
----ConvertAbilityRealLevelField('Nso4')
+---ConvertAbilityRealLevelField ( FourCC('Nso4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MOVEMENT_SPEED_REDUCTION_PERCENT_NSO4 = nil
 
----ConvertAbilityRealLevelField('Nso5')
+---ConvertAbilityRealLevelField ( FourCC('Nso5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_ATTACK_SPEED_REDUCTION_PERCENT_NSO5 = nil
 
----ConvertAbilityRealLevelField('Nlm2')
+---ConvertAbilityRealLevelField ( FourCC('Nlm2') )
 ---@type abilityreallevelfield
 ABILITY_RLF_SPLIT_DELAY = nil
 
----ConvertAbilityRealLevelField('Nlm4')
+---ConvertAbilityRealLevelField ( FourCC('Nlm4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_MAX_HITPOINT_FACTOR = nil
 
----ConvertAbilityRealLevelField('Nlm5')
+---ConvertAbilityRealLevelField ( FourCC('Nlm5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_LIFE_DURATION_SPLIT_BONUS = nil
 
----ConvertAbilityRealLevelField('Nvc3')
+---ConvertAbilityRealLevelField ( FourCC('Nvc3') )
 ---@type abilityreallevelfield
 ABILITY_RLF_WAVE_INTERVAL = nil
 
----ConvertAbilityRealLevelField('Nvc4')
+---ConvertAbilityRealLevelField ( FourCC('Nvc4') )
 ---@type abilityreallevelfield
 ABILITY_RLF_BUILDING_DAMAGE_FACTOR_NVC4 = nil
 
----ConvertAbilityRealLevelField('Nvc5')
+---ConvertAbilityRealLevelField ( FourCC('Nvc5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_FULL_DAMAGE_AMOUNT_NVC5 = nil
 
----ConvertAbilityRealLevelField('Nvc6')
+---ConvertAbilityRealLevelField ( FourCC('Nvc6') )
 ---@type abilityreallevelfield
 ABILITY_RLF_HALF_DAMAGE_FACTOR = nil
 
----ConvertAbilityRealLevelField('Tau5')
+---ConvertAbilityRealLevelField ( FourCC('Tau5') )
 ---@type abilityreallevelfield
 ABILITY_RLF_INTERVAL_BETWEEN_PULSES = nil
 
----ConvertAbilityBooleanLevelField('Hab2')
+---ConvertAbilityBooleanLevelField ( FourCC('Hab2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_PERCENT_BONUS_HAB2 = nil
 
----ConvertAbilityBooleanLevelField('Hmt3')
+---ConvertAbilityBooleanLevelField ( FourCC('Hmt3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_USE_TELEPORT_CLUSTERING_HMT3 = nil
 
----ConvertAbilityBooleanLevelField('Ocr5')
+---ConvertAbilityBooleanLevelField ( FourCC('Ocr5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_NEVER_MISS_OCR5 = nil
 
----ConvertAbilityBooleanLevelField('Ocr6')
+---ConvertAbilityBooleanLevelField ( FourCC('Ocr6') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_EXCLUDE_ITEM_DAMAGE = nil
 
----ConvertAbilityBooleanLevelField('Owk4')
+---ConvertAbilityBooleanLevelField ( FourCC('Owk4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_BACKSTAB_DAMAGE = nil
 
----ConvertAbilityBooleanLevelField('Uan3')
+---ConvertAbilityBooleanLevelField ( FourCC('Uan3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_INHERIT_UPGRADES_UAN3 = nil
 
----ConvertAbilityBooleanLevelField('Udp3')
+---ConvertAbilityBooleanLevelField ( FourCC('Udp3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_MANA_CONVERSION_AS_PERCENT = nil
 
----ConvertAbilityBooleanLevelField('Udp4')
+---ConvertAbilityBooleanLevelField ( FourCC('Udp4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_LIFE_CONVERSION_AS_PERCENT = nil
 
----ConvertAbilityBooleanLevelField('Udp5')
+---ConvertAbilityBooleanLevelField ( FourCC('Udp5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_LEAVE_TARGET_ALIVE = nil
 
----ConvertAbilityBooleanLevelField('Uau3')
+---ConvertAbilityBooleanLevelField ( FourCC('Uau3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_PERCENT_BONUS_UAU3 = nil
 
----ConvertAbilityBooleanLevelField('Eah2')
+---ConvertAbilityBooleanLevelField ( FourCC('Eah2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_DAMAGE_IS_PERCENT_RECEIVED = nil
 
----ConvertAbilityBooleanLevelField('Ear2')
+---ConvertAbilityBooleanLevelField ( FourCC('Ear2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_MELEE_BONUS = nil
 
----ConvertAbilityBooleanLevelField('Ear3')
+---ConvertAbilityBooleanLevelField ( FourCC('Ear3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_RANGED_BONUS = nil
 
----ConvertAbilityBooleanLevelField('Ear4')
+---ConvertAbilityBooleanLevelField ( FourCC('Ear4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_FLAT_BONUS = nil
 
----ConvertAbilityBooleanLevelField('Hbh5')
+---ConvertAbilityBooleanLevelField ( FourCC('Hbh5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_NEVER_MISS_HBH5 = nil
 
----ConvertAbilityBooleanLevelField('Had2')
+---ConvertAbilityBooleanLevelField ( FourCC('Had2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_PERCENT_BONUS_HAD2 = nil
 
----ConvertAbilityBooleanLevelField('Hds1')
+---ConvertAbilityBooleanLevelField ( FourCC('Hds1') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_CAN_DEACTIVATE = nil
 
----ConvertAbilityBooleanLevelField('Hre2')
+---ConvertAbilityBooleanLevelField ( FourCC('Hre2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_RAISED_UNITS_ARE_INVULNERABLE = nil
 
----ConvertAbilityBooleanLevelField('Oar2')
+---ConvertAbilityBooleanLevelField ( FourCC('Oar2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_PERCENTAGE_OAR2 = nil
 
----ConvertAbilityBooleanLevelField('Btl2')
+---ConvertAbilityBooleanLevelField ( FourCC('Btl2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_SUMMON_BUSY_UNITS = nil
 
----ConvertAbilityBooleanLevelField('Bli2')
+---ConvertAbilityBooleanLevelField ( FourCC('Bli2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_CREATES_BLIGHT = nil
 
----ConvertAbilityBooleanLevelField('Sds6')
+---ConvertAbilityBooleanLevelField ( FourCC('Sds6') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_EXPLODES_ON_DEATH = nil
 
----ConvertAbilityBooleanLevelField('Fae2')
+---ConvertAbilityBooleanLevelField ( FourCC('Fae2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_ALWAYS_AUTOCAST_FAE2 = nil
 
----ConvertAbilityBooleanLevelField('Mbt5')
+---ConvertAbilityBooleanLevelField ( FourCC('Mbt5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_REGENERATE_ONLY_AT_NIGHT = nil
 
----ConvertAbilityBooleanLevelField('Neu3')
+---ConvertAbilityBooleanLevelField ( FourCC('Neu3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_SHOW_SELECT_UNIT_BUTTON = nil
 
----ConvertAbilityBooleanLevelField('Neu4')
+---ConvertAbilityBooleanLevelField ( FourCC('Neu4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_SHOW_UNIT_INDICATOR = nil
 
----ConvertAbilityBooleanLevelField('Ans6')
+---ConvertAbilityBooleanLevelField ( FourCC('Ans6') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_CHARGE_OWNING_PLAYER = nil
 
----ConvertAbilityBooleanLevelField('Arm2')
+---ConvertAbilityBooleanLevelField ( FourCC('Arm2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_PERCENTAGE_ARM2 = nil
 
----ConvertAbilityBooleanLevelField('Pos3')
+---ConvertAbilityBooleanLevelField ( FourCC('Pos3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_TARGET_IS_INVULNERABLE = nil
 
----ConvertAbilityBooleanLevelField('Pos4')
+---ConvertAbilityBooleanLevelField ( FourCC('Pos4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_TARGET_IS_MAGIC_IMMUNE = nil
 
----ConvertAbilityBooleanLevelField('Ucb6')
+---ConvertAbilityBooleanLevelField ( FourCC('Ucb6') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_KILL_ON_CASTER_DEATH = nil
 
----ConvertAbilityBooleanLevelField('Rej4')
+---ConvertAbilityBooleanLevelField ( FourCC('Rej4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_NO_TARGET_REQUIRED_REJ4 = nil
 
----ConvertAbilityBooleanLevelField('Rtn1')
+---ConvertAbilityBooleanLevelField ( FourCC('Rtn1') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_ACCEPTS_GOLD = nil
 
----ConvertAbilityBooleanLevelField('Rtn2')
+---ConvertAbilityBooleanLevelField ( FourCC('Rtn2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_ACCEPTS_LUMBER = nil
 
----ConvertAbilityBooleanLevelField('Roa5')
+---ConvertAbilityBooleanLevelField ( FourCC('Roa5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_PREFER_HOSTILES_ROA5 = nil
 
----ConvertAbilityBooleanLevelField('Roa6')
+---ConvertAbilityBooleanLevelField ( FourCC('Roa6') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_PREFER_FRIENDLIES_ROA6 = nil
 
----ConvertAbilityBooleanLevelField('Roo3')
+---ConvertAbilityBooleanLevelField ( FourCC('Roo3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_ROOTED_TURNING = nil
 
----ConvertAbilityBooleanLevelField('Slo3')
+---ConvertAbilityBooleanLevelField ( FourCC('Slo3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_ALWAYS_AUTOCAST_SLO3 = nil
 
----ConvertAbilityBooleanLevelField('Ihid')
+---ConvertAbilityBooleanLevelField ( FourCC('Ihid') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_HIDE_BUTTON = nil
 
----ConvertAbilityBooleanLevelField('Itp2')
+---ConvertAbilityBooleanLevelField ( FourCC('Itp2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_USE_TELEPORT_CLUSTERING_ITP2 = nil
 
----ConvertAbilityBooleanLevelField('Eth1')
+---ConvertAbilityBooleanLevelField ( FourCC('Eth1') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_IMMUNE_TO_MORPH_EFFECTS = nil
 
----ConvertAbilityBooleanLevelField('Eth2')
+---ConvertAbilityBooleanLevelField ( FourCC('Eth2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_DOES_NOT_BLOCK_BUILDINGS = nil
 
----ConvertAbilityBooleanLevelField('Gho1')
+---ConvertAbilityBooleanLevelField ( FourCC('Gho1') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_AUTO_ACQUIRE_ATTACK_TARGETS = nil
 
----ConvertAbilityBooleanLevelField('Gho2')
+---ConvertAbilityBooleanLevelField ( FourCC('Gho2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_IMMUNE_TO_MORPH_EFFECTS_GHO2 = nil
 
----ConvertAbilityBooleanLevelField('Gho3')
+---ConvertAbilityBooleanLevelField ( FourCC('Gho3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_DO_NOT_BLOCK_BUILDINGS = nil
 
----ConvertAbilityBooleanLevelField('Ssk4')
+---ConvertAbilityBooleanLevelField ( FourCC('Ssk4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_INCLUDE_RANGED_DAMAGE = nil
 
----ConvertAbilityBooleanLevelField('Ssk5')
+---ConvertAbilityBooleanLevelField ( FourCC('Ssk5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_INCLUDE_MELEE_DAMAGE = nil
 
----ConvertAbilityBooleanLevelField('coa2')
+---ConvertAbilityBooleanLevelField ( FourCC('coa2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_MOVE_TO_PARTNER = nil
 
----ConvertAbilityBooleanLevelField('cyc1')
+---ConvertAbilityBooleanLevelField ( FourCC('cyc1') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_CAN_BE_DISPELLED = nil
 
----ConvertAbilityBooleanLevelField('dvm6')
+---ConvertAbilityBooleanLevelField ( FourCC('dvm6') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_IGNORE_FRIENDLY_BUFFS = nil
 
----ConvertAbilityBooleanLevelField('inv2')
+---ConvertAbilityBooleanLevelField ( FourCC('inv2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_DROP_ITEMS_ON_DEATH = nil
 
----ConvertAbilityBooleanLevelField('inv3')
+---ConvertAbilityBooleanLevelField ( FourCC('inv3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_CAN_USE_ITEMS = nil
 
----ConvertAbilityBooleanLevelField('inv4')
+---ConvertAbilityBooleanLevelField ( FourCC('inv4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_CAN_GET_ITEMS = nil
 
----ConvertAbilityBooleanLevelField('inv5')
+---ConvertAbilityBooleanLevelField ( FourCC('inv5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_CAN_DROP_ITEMS = nil
 
----ConvertAbilityBooleanLevelField('liq4')
+---ConvertAbilityBooleanLevelField ( FourCC('liq4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_REPAIRS_ALLOWED = nil
 
----ConvertAbilityBooleanLevelField('mfl6')
+---ConvertAbilityBooleanLevelField ( FourCC('mfl6') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_CASTER_ONLY_SPLASH = nil
 
----ConvertAbilityBooleanLevelField('irl4')
+---ConvertAbilityBooleanLevelField ( FourCC('irl4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_NO_TARGET_REQUIRED_IRL4 = nil
 
----ConvertAbilityBooleanLevelField('irl5')
+---ConvertAbilityBooleanLevelField ( FourCC('irl5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_DISPEL_ON_ATTACK = nil
 
----ConvertAbilityBooleanLevelField('ipv3')
+---ConvertAbilityBooleanLevelField ( FourCC('ipv3') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_AMOUNT_IS_RAW_VALUE = nil
 
----ConvertAbilityBooleanLevelField('spb2')
+---ConvertAbilityBooleanLevelField ( FourCC('spb2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_SHARED_SPELL_COOLDOWN = nil
 
----ConvertAbilityBooleanLevelField('sla1')
+---ConvertAbilityBooleanLevelField ( FourCC('sla1') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_SLEEP_ONCE = nil
 
----ConvertAbilityBooleanLevelField('sla2')
+---ConvertAbilityBooleanLevelField ( FourCC('sla2') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_ALLOW_ON_ANY_PLAYER_SLOT = nil
 
----ConvertAbilityBooleanLevelField('Ncl5')
+---ConvertAbilityBooleanLevelField ( FourCC('Ncl5') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_DISABLE_OTHER_ABILITIES = nil
 
----ConvertAbilityBooleanLevelField('Ntm4')
+---ConvertAbilityBooleanLevelField ( FourCC('Ntm4') )
 ---@type abilitybooleanlevelfield
 ABILITY_BLF_ALLOW_BOUNTY = nil
 
----ConvertAbilityStringLevelField('aart')
+---ConvertAbilityStringLevelField ( FourCC('aart') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_ICON_NORMAL = nil
 
----ConvertAbilityStringLevelField('acat')
+---ConvertAbilityStringLevelField ( FourCC('acat') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_CASTER = nil
 
----ConvertAbilityStringLevelField('atat')
+---ConvertAbilityStringLevelField ( FourCC('atat') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_TARGET = nil
 
----ConvertAbilityStringLevelField('asat')
+---ConvertAbilityStringLevelField ( FourCC('asat') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_SPECIAL = nil
 
----ConvertAbilityStringLevelField('aeat')
+---ConvertAbilityStringLevelField ( FourCC('aeat') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_EFFECT = nil
 
----ConvertAbilityStringLevelField('aaea')
+---ConvertAbilityStringLevelField ( FourCC('aaea') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_AREA_EFFECT = nil
 
----ConvertAbilityStringLevelField('alig')
+---ConvertAbilityStringLevelField ( FourCC('alig') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_LIGHTNING_EFFECTS = nil
 
----ConvertAbilityStringLevelField('amat')
+---ConvertAbilityStringLevelField ( FourCC('amat') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_MISSILE_ART = nil
 
----ConvertAbilityStringLevelField('aret')
+---ConvertAbilityStringLevelField ( FourCC('aret') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_TOOLTIP_LEARN = nil
 
----ConvertAbilityStringLevelField('arut')
+---ConvertAbilityStringLevelField ( FourCC('arut') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_TOOLTIP_LEARN_EXTENDED = nil
 
----ConvertAbilityStringLevelField('atp1')
+---ConvertAbilityStringLevelField ( FourCC('atp1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_TOOLTIP_NORMAL = nil
 
----ConvertAbilityStringLevelField('aut1')
+---ConvertAbilityStringLevelField ( FourCC('aut1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_TOOLTIP_TURN_OFF = nil
 
----ConvertAbilityStringLevelField('aub1')
+---ConvertAbilityStringLevelField ( FourCC('aub1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_TOOLTIP_NORMAL_EXTENDED = nil
 
----ConvertAbilityStringLevelField('auu1')
+---ConvertAbilityStringLevelField ( FourCC('auu1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_TOOLTIP_TURN_OFF_EXTENDED = nil
 
----ConvertAbilityStringLevelField('Eme1')
+---ConvertAbilityStringLevelField ( FourCC('Eme1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_NORMAL_FORM_UNIT_EME1 = nil
 
----ConvertAbilityStringLevelField('Ndp1')
+---ConvertAbilityStringLevelField ( FourCC('Ndp1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_SPAWNED_UNITS = nil
 
----ConvertAbilityStringLevelField('Nrc1')
+---ConvertAbilityStringLevelField ( FourCC('Nrc1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_ABILITY_FOR_UNIT_CREATION = nil
 
----ConvertAbilityStringLevelField('Mil1')
+---ConvertAbilityStringLevelField ( FourCC('Mil1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_NORMAL_FORM_UNIT_MIL1 = nil
 
----ConvertAbilityStringLevelField('Mil2')
+---ConvertAbilityStringLevelField ( FourCC('Mil2') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_ALTERNATE_FORM_UNIT_MIL2 = nil
 
----ConvertAbilityStringLevelField('Ans5')
+---ConvertAbilityStringLevelField ( FourCC('Ans5') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_BASE_ORDER_ID_ANS5 = nil
 
----ConvertAbilityStringLevelField('Ply2')
+---ConvertAbilityStringLevelField ( FourCC('Ply2') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_MORPH_UNITS_GROUND = nil
 
----ConvertAbilityStringLevelField('Ply3')
+---ConvertAbilityStringLevelField ( FourCC('Ply3') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_MORPH_UNITS_AIR = nil
 
----ConvertAbilityStringLevelField('Ply4')
+---ConvertAbilityStringLevelField ( FourCC('Ply4') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_MORPH_UNITS_AMPHIBIOUS = nil
 
----ConvertAbilityStringLevelField('Ply5')
+---ConvertAbilityStringLevelField ( FourCC('Ply5') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_MORPH_UNITS_WATER = nil
 
----ConvertAbilityStringLevelField('Rai3')
+---ConvertAbilityStringLevelField ( FourCC('Rai3') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_UNIT_TYPE_ONE = nil
 
----ConvertAbilityStringLevelField('Rai4')
+---ConvertAbilityStringLevelField ( FourCC('Rai4') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_UNIT_TYPE_TWO = nil
 
----ConvertAbilityStringLevelField('Sod2')
+---ConvertAbilityStringLevelField ( FourCC('Sod2') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_UNIT_TYPE_SOD2 = nil
 
----ConvertAbilityStringLevelField('Ist1')
+---ConvertAbilityStringLevelField ( FourCC('Ist1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_SUMMON_1_UNIT_TYPE = nil
 
----ConvertAbilityStringLevelField('Ist2')
+---ConvertAbilityStringLevelField ( FourCC('Ist2') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_SUMMON_2_UNIT_TYPE = nil
 
----ConvertAbilityStringLevelField('Ndc1')
+---ConvertAbilityStringLevelField ( FourCC('Ndc1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_RACE_TO_CONVERT = nil
 
----ConvertAbilityStringLevelField('coa1')
+---ConvertAbilityStringLevelField ( FourCC('coa1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_PARTNER_UNIT_TYPE = nil
 
----ConvertAbilityStringLevelField('dcp1')
+---ConvertAbilityStringLevelField ( FourCC('dcp1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_PARTNER_UNIT_TYPE_ONE = nil
 
----ConvertAbilityStringLevelField('dcp2')
+---ConvertAbilityStringLevelField ( FourCC('dcp2') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_PARTNER_UNIT_TYPE_TWO = nil
 
----ConvertAbilityStringLevelField('tpi1')
+---ConvertAbilityStringLevelField ( FourCC('tpi1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_REQUIRED_UNIT_TYPE = nil
 
----ConvertAbilityStringLevelField('tpi2')
+---ConvertAbilityStringLevelField ( FourCC('tpi2') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_CONVERTED_UNIT_TYPE = nil
 
----ConvertAbilityStringLevelField('spb1')
+---ConvertAbilityStringLevelField ( FourCC('spb1') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_SPELL_LIST = nil
 
----ConvertAbilityStringLevelField('spb5')
+---ConvertAbilityStringLevelField ( FourCC('spb5') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_BASE_ORDER_ID_SPB5 = nil
 
----ConvertAbilityStringLevelField('Ncl6')
+---ConvertAbilityStringLevelField ( FourCC('Ncl6') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_BASE_ORDER_ID_NCL6 = nil
 
----ConvertAbilityStringLevelField('Neg3')
+---ConvertAbilityStringLevelField ( FourCC('Neg3') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_ABILITY_UPGRADE_1 = nil
 
----ConvertAbilityStringLevelField('Neg4')
+---ConvertAbilityStringLevelField ( FourCC('Neg4') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_ABILITY_UPGRADE_2 = nil
 
----ConvertAbilityStringLevelField('Neg5')
+---ConvertAbilityStringLevelField ( FourCC('Neg5') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_ABILITY_UPGRADE_3 = nil
 
----ConvertAbilityStringLevelField('Neg6')
+---ConvertAbilityStringLevelField ( FourCC('Neg6') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_ABILITY_UPGRADE_4 = nil
 
----ConvertAbilityStringLevelField('Nsy2')
+---ConvertAbilityStringLevelField ( FourCC('Nsy2') )
 ---@type abilitystringlevelfield
 ABILITY_SLF_SPAWN_UNIT_ID_NSY2 = nil
 
----ConvertItemIntegerField('ilev')
+---ConvertItemIntegerField ( FourCC('ilev') )
 ---@type itemintegerfield
 ITEM_IF_LEVEL = nil
 
----ConvertItemIntegerField('iuse')
+---ConvertItemIntegerField ( FourCC('iuse') )
 ---@type itemintegerfield
 ITEM_IF_NUMBER_OF_CHARGES = nil
 
----ConvertItemIntegerField('icid')
+---ConvertItemIntegerField ( FourCC('icid') )
 ---@type itemintegerfield
 ITEM_IF_COOLDOWN_GROUP = nil
 
----ConvertItemIntegerField('ihtp')
+---ConvertItemIntegerField ( FourCC('ihtp') )
 ---@type itemintegerfield
 ITEM_IF_MAX_HIT_POINTS = nil
 
----ConvertItemIntegerField('ihpc')
+---ConvertItemIntegerField ( FourCC('ihpc') )
 ---@type itemintegerfield
 ITEM_IF_HIT_POINTS = nil
 
----ConvertItemIntegerField('ipri')
+---ConvertItemIntegerField ( FourCC('ipri') )
 ---@type itemintegerfield
 ITEM_IF_PRIORITY = nil
 
----ConvertItemIntegerField('iarm')
+---ConvertItemIntegerField ( FourCC('iarm') )
 ---@type itemintegerfield
 ITEM_IF_ARMOR_TYPE = nil
 
----ConvertItemIntegerField('iclr')
+---ConvertItemIntegerField ( FourCC('iclr') )
 ---@type itemintegerfield
 ITEM_IF_TINTING_COLOR_RED = nil
 
----ConvertItemIntegerField('iclg')
+---ConvertItemIntegerField ( FourCC('iclg') )
 ---@type itemintegerfield
 ITEM_IF_TINTING_COLOR_GREEN = nil
 
----ConvertItemIntegerField('iclb')
+---ConvertItemIntegerField ( FourCC('iclb') )
 ---@type itemintegerfield
 ITEM_IF_TINTING_COLOR_BLUE = nil
 
----ConvertItemIntegerField('ical')
+---ConvertItemIntegerField ( FourCC('ical') )
 ---@type itemintegerfield
 ITEM_IF_TINTING_COLOR_ALPHA = nil
 
----ConvertItemRealField('isca')
+---ConvertItemRealField ( FourCC('isca') )
 ---@type itemrealfield
 ITEM_RF_SCALING_VALUE = nil
 
----ConvertItemBooleanField('idrp')
+---ConvertItemBooleanField ( FourCC('idrp') )
 ---@type itembooleanfield
 ITEM_BF_DROPPED_WHEN_CARRIER_DIES = nil
 
----ConvertItemBooleanField('idro')
+---ConvertItemBooleanField ( FourCC('idro') )
 ---@type itembooleanfield
 ITEM_BF_CAN_BE_DROPPED = nil
 
----ConvertItemBooleanField('iper')
+---ConvertItemBooleanField ( FourCC('iper') )
 ---@type itembooleanfield
 ITEM_BF_PERISHABLE = nil
 
----ConvertItemBooleanField('iprn')
+---ConvertItemBooleanField ( FourCC('iprn') )
 ---@type itembooleanfield
 ITEM_BF_INCLUDE_AS_RANDOM_CHOICE = nil
 
----ConvertItemBooleanField('ipow')
+---ConvertItemBooleanField ( FourCC('ipow') )
 ---@type itembooleanfield
 ITEM_BF_USE_AUTOMATICALLY_WHEN_ACQUIRED = nil
 
----ConvertItemBooleanField('ipaw')
+---ConvertItemBooleanField ( FourCC('ipaw') )
 ---@type itembooleanfield
 ITEM_BF_CAN_BE_SOLD_TO_MERCHANTS = nil
 
----ConvertItemBooleanField('iusa')
+---ConvertItemBooleanField ( FourCC('iusa') )
 ---@type itembooleanfield
 ITEM_BF_ACTIVELY_USED = nil
 
----ConvertItemStringField('ifil')
+---ConvertItemStringField ( FourCC('ifil') )
 ---@type itemstringfield
 ITEM_SF_MODEL_USED = nil
 
----ConvertUnitIntegerField('udty')
+---ConvertUnitIntegerField ( FourCC('udty') )
 ---@type unitintegerfield
 UNIT_IF_DEFENSE_TYPE = nil
 
----ConvertUnitIntegerField('uarm')
+---ConvertUnitIntegerField ( FourCC('uarm') )
 ---@type unitintegerfield
 UNIT_IF_ARMOR_TYPE = nil
 
----ConvertUnitIntegerField('ulfi')
+---ConvertUnitIntegerField ( FourCC('ulfi') )
 ---@type unitintegerfield
 UNIT_IF_LOOPING_FADE_IN_RATE = nil
 
----ConvertUnitIntegerField('ulfo')
+---ConvertUnitIntegerField ( FourCC('ulfo') )
 ---@type unitintegerfield
 UNIT_IF_LOOPING_FADE_OUT_RATE = nil
 
----ConvertUnitIntegerField('uagc')
+---ConvertUnitIntegerField ( FourCC('uagc') )
 ---@type unitintegerfield
 UNIT_IF_AGILITY = nil
 
----ConvertUnitIntegerField('uinc')
+---ConvertUnitIntegerField ( FourCC('uinc') )
 ---@type unitintegerfield
 UNIT_IF_INTELLIGENCE = nil
 
----ConvertUnitIntegerField('ustc')
+---ConvertUnitIntegerField ( FourCC('ustc') )
 ---@type unitintegerfield
 UNIT_IF_STRENGTH = nil
 
----ConvertUnitIntegerField('uagm')
+---ConvertUnitIntegerField ( FourCC('uagm') )
 ---@type unitintegerfield
 UNIT_IF_AGILITY_PERMANENT = nil
 
----ConvertUnitIntegerField('uinm')
+---ConvertUnitIntegerField ( FourCC('uinm') )
 ---@type unitintegerfield
 UNIT_IF_INTELLIGENCE_PERMANENT = nil
 
----ConvertUnitIntegerField('ustm')
+---ConvertUnitIntegerField ( FourCC('ustm') )
 ---@type unitintegerfield
 UNIT_IF_STRENGTH_PERMANENT = nil
 
----ConvertUnitIntegerField('uagb')
+---ConvertUnitIntegerField ( FourCC('uagb') )
 ---@type unitintegerfield
 UNIT_IF_AGILITY_WITH_BONUS = nil
 
----ConvertUnitIntegerField('uinb')
+---ConvertUnitIntegerField ( FourCC('uinb') )
 ---@type unitintegerfield
 UNIT_IF_INTELLIGENCE_WITH_BONUS = nil
 
----ConvertUnitIntegerField('ustb')
+---ConvertUnitIntegerField ( FourCC('ustb') )
 ---@type unitintegerfield
 UNIT_IF_STRENGTH_WITH_BONUS = nil
 
----ConvertUnitIntegerField('ubdi')
+---ConvertUnitIntegerField ( FourCC('ubdi') )
 ---@type unitintegerfield
 UNIT_IF_GOLD_BOUNTY_AWARDED_NUMBER_OF_DICE = nil
 
----ConvertUnitIntegerField('ubba')
+---ConvertUnitIntegerField ( FourCC('ubba') )
 ---@type unitintegerfield
 UNIT_IF_GOLD_BOUNTY_AWARDED_BASE = nil
 
----ConvertUnitIntegerField('ubsi')
+---ConvertUnitIntegerField ( FourCC('ubsi') )
 ---@type unitintegerfield
 UNIT_IF_GOLD_BOUNTY_AWARDED_SIDES_PER_DIE = nil
 
----ConvertUnitIntegerField('ulbd')
+---ConvertUnitIntegerField ( FourCC('ulbd') )
 ---@type unitintegerfield
 UNIT_IF_LUMBER_BOUNTY_AWARDED_NUMBER_OF_DICE = nil
 
----ConvertUnitIntegerField('ulba')
+---ConvertUnitIntegerField ( FourCC('ulba') )
 ---@type unitintegerfield
 UNIT_IF_LUMBER_BOUNTY_AWARDED_BASE = nil
 
----ConvertUnitIntegerField('ulbs')
+---ConvertUnitIntegerField ( FourCC('ulbs') )
 ---@type unitintegerfield
 UNIT_IF_LUMBER_BOUNTY_AWARDED_SIDES_PER_DIE = nil
 
----ConvertUnitIntegerField('ulev')
+---ConvertUnitIntegerField ( FourCC('ulev') )
 ---@type unitintegerfield
 UNIT_IF_LEVEL = nil
 
----ConvertUnitIntegerField('ufor')
+---ConvertUnitIntegerField ( FourCC('ufor') )
 ---@type unitintegerfield
 UNIT_IF_FORMATION_RANK = nil
 
----ConvertUnitIntegerField('uori')
+---ConvertUnitIntegerField ( FourCC('uori') )
 ---@type unitintegerfield
 UNIT_IF_ORIENTATION_INTERPOLATION = nil
 
----ConvertUnitIntegerField('uept')
+---ConvertUnitIntegerField ( FourCC('uept') )
 ---@type unitintegerfield
 UNIT_IF_ELEVATION_SAMPLE_POINTS = nil
 
----ConvertUnitIntegerField('uclr')
+---ConvertUnitIntegerField ( FourCC('uclr') )
 ---@type unitintegerfield
 UNIT_IF_TINTING_COLOR_RED = nil
 
----ConvertUnitIntegerField('uclg')
+---ConvertUnitIntegerField ( FourCC('uclg') )
 ---@type unitintegerfield
 UNIT_IF_TINTING_COLOR_GREEN = nil
 
----ConvertUnitIntegerField('uclb')
+---ConvertUnitIntegerField ( FourCC('uclb') )
 ---@type unitintegerfield
 UNIT_IF_TINTING_COLOR_BLUE = nil
 
----ConvertUnitIntegerField('ucal')
+---ConvertUnitIntegerField ( FourCC('ucal') )
 ---@type unitintegerfield
 UNIT_IF_TINTING_COLOR_ALPHA = nil
 
----ConvertUnitIntegerField('umvt')
+---ConvertUnitIntegerField ( FourCC('umvt') )
 ---@type unitintegerfield
 UNIT_IF_MOVE_TYPE = nil
 
----ConvertUnitIntegerField('utar')
+---ConvertUnitIntegerField ( FourCC('utar') )
 ---@type unitintegerfield
 UNIT_IF_TARGETED_AS = nil
 
----ConvertUnitIntegerField('utyp')
+---ConvertUnitIntegerField ( FourCC('utyp') )
 ---@type unitintegerfield
 UNIT_IF_UNIT_CLASSIFICATION = nil
 
----ConvertUnitIntegerField('uhrt')
+---ConvertUnitIntegerField ( FourCC('uhrt') )
 ---@type unitintegerfield
 UNIT_IF_HIT_POINTS_REGENERATION_TYPE = nil
 
----ConvertUnitIntegerField('upar')
+---ConvertUnitIntegerField ( FourCC('upar') )
 ---@type unitintegerfield
 UNIT_IF_PLACEMENT_PREVENTED_BY = nil
 
----ConvertUnitIntegerField('upra')
+---ConvertUnitIntegerField ( FourCC('upra') )
 ---@type unitintegerfield
 UNIT_IF_PRIMARY_ATTRIBUTE = nil
 
----ConvertUnitRealField('ustp')
+---ConvertUnitRealField ( FourCC('ustp') )
 ---@type unitrealfield
 UNIT_RF_STRENGTH_PER_LEVEL = nil
 
----ConvertUnitRealField('uagp')
+---ConvertUnitRealField ( FourCC('uagp') )
 ---@type unitrealfield
 UNIT_RF_AGILITY_PER_LEVEL = nil
 
----ConvertUnitRealField('uinp')
+---ConvertUnitRealField ( FourCC('uinp') )
 ---@type unitrealfield
 UNIT_RF_INTELLIGENCE_PER_LEVEL = nil
 
----ConvertUnitRealField('uhpr')
+---ConvertUnitRealField ( FourCC('uhpr') )
 ---@type unitrealfield
 UNIT_RF_HIT_POINTS_REGENERATION_RATE = nil
 
----ConvertUnitRealField('umpr')
+---ConvertUnitRealField ( FourCC('umpr') )
 ---@type unitrealfield
 UNIT_RF_MANA_REGENERATION = nil
 
----ConvertUnitRealField('udtm')
+---ConvertUnitRealField ( FourCC('udtm') )
 ---@type unitrealfield
 UNIT_RF_DEATH_TIME = nil
 
----ConvertUnitRealField('ufyh')
+---ConvertUnitRealField ( FourCC('ufyh') )
 ---@type unitrealfield
 UNIT_RF_FLY_HEIGHT = nil
 
----ConvertUnitRealField('ufmh')
+---ConvertUnitRealField ( FourCC('ufmh') )
 ---@type unitrealfield
 UNIT_RF_FLY_MAX_HEIGHT = nil
 
----ConvertUnitRealField('umvr')
+---ConvertUnitRealField ( FourCC('umvr') )
 ---@type unitrealfield
 UNIT_RF_TURN_RATE = nil
 
----ConvertUnitRealField('uerd')
+---ConvertUnitRealField ( FourCC('uerd') )
 ---@type unitrealfield
 UNIT_RF_ELEVATION_SAMPLE_RADIUS = nil
 
----ConvertUnitRealField('ufrd')
+---ConvertUnitRealField ( FourCC('ufrd') )
 ---@type unitrealfield
 UNIT_RF_FOG_OF_WAR_SAMPLE_RADIUS = nil
 
----ConvertUnitRealField('umxp')
+---ConvertUnitRealField ( FourCC('umxp') )
 ---@type unitrealfield
 UNIT_RF_MAXIMUM_PITCH_ANGLE_DEGREES = nil
 
----ConvertUnitRealField('umxr')
+---ConvertUnitRealField ( FourCC('umxr') )
 ---@type unitrealfield
 UNIT_RF_MAXIMUM_ROLL_ANGLE_DEGREES = nil
 
----ConvertUnitRealField('usca')
+---ConvertUnitRealField ( FourCC('usca') )
 ---@type unitrealfield
 UNIT_RF_SCALING_VALUE = nil
 
----ConvertUnitRealField('urun')
+---ConvertUnitRealField ( FourCC('urun') )
 ---@type unitrealfield
 UNIT_RF_ANIMATION_RUN_SPEED = nil
 
----ConvertUnitRealField('ussc')
+---ConvertUnitRealField ( FourCC('ussc') )
 ---@type unitrealfield
 UNIT_RF_SELECTION_SCALE = nil
 
----ConvertUnitRealField('uslz')
+---ConvertUnitRealField ( FourCC('uslz') )
 ---@type unitrealfield
 UNIT_RF_SELECTION_CIRCLE_HEIGHT = nil
 
----ConvertUnitRealField('ushh')
+---ConvertUnitRealField ( FourCC('ushh') )
 ---@type unitrealfield
 UNIT_RF_SHADOW_IMAGE_HEIGHT = nil
 
----ConvertUnitRealField('ushw')
+---ConvertUnitRealField ( FourCC('ushw') )
 ---@type unitrealfield
 UNIT_RF_SHADOW_IMAGE_WIDTH = nil
 
----ConvertUnitRealField('ushx')
+---ConvertUnitRealField ( FourCC('ushx') )
 ---@type unitrealfield
 UNIT_RF_SHADOW_IMAGE_CENTER_X = nil
 
----ConvertUnitRealField('ushy')
+---ConvertUnitRealField ( FourCC('ushy') )
 ---@type unitrealfield
 UNIT_RF_SHADOW_IMAGE_CENTER_Y = nil
 
----ConvertUnitRealField('uwal')
+---ConvertUnitRealField ( FourCC('uwal') )
 ---@type unitrealfield
 UNIT_RF_ANIMATION_WALK_SPEED = nil
 
----ConvertUnitRealField('udfc')
+---ConvertUnitRealField ( FourCC('udfc') )
 ---@type unitrealfield
 UNIT_RF_DEFENSE = nil
 
----ConvertUnitRealField('usir')
+---ConvertUnitRealField ( FourCC('usir') )
 ---@type unitrealfield
 UNIT_RF_SIGHT_RADIUS = nil
 
----ConvertUnitRealField('upri')
+---ConvertUnitRealField ( FourCC('upri') )
 ---@type unitrealfield
 UNIT_RF_PRIORITY = nil
 
----ConvertUnitRealField('umvc')
+---ConvertUnitRealField ( FourCC('umvc') )
 ---@type unitrealfield
 UNIT_RF_SPEED = nil
 
----ConvertUnitRealField('uocc')
+---ConvertUnitRealField ( FourCC('uocc') )
 ---@type unitrealfield
 UNIT_RF_OCCLUDER_HEIGHT = nil
 
----ConvertUnitRealField('uhpc')
+---ConvertUnitRealField ( FourCC('uhpc') )
 ---@type unitrealfield
 UNIT_RF_HP = nil
 
----ConvertUnitRealField('umpc')
+---ConvertUnitRealField ( FourCC('umpc') )
 ---@type unitrealfield
 UNIT_RF_MANA = nil
 
----ConvertUnitRealField('uacq')
+---ConvertUnitRealField ( FourCC('uacq') )
 ---@type unitrealfield
 UNIT_RF_ACQUISITION_RANGE = nil
 
----ConvertUnitRealField('ucbs')
+---ConvertUnitRealField ( FourCC('ucbs') )
 ---@type unitrealfield
 UNIT_RF_CAST_BACK_SWING = nil
 
----ConvertUnitRealField('ucpt')
+---ConvertUnitRealField ( FourCC('ucpt') )
 ---@type unitrealfield
 UNIT_RF_CAST_POINT = nil
 
----ConvertUnitRealField('uamn')
+---ConvertUnitRealField ( FourCC('uamn') )
 ---@type unitrealfield
 UNIT_RF_MINIMUM_ATTACK_RANGE = nil
 
----ConvertUnitBooleanField('urai')
+---ConvertUnitBooleanField ( FourCC('urai') )
 ---@type unitbooleanfield
 UNIT_BF_RAISABLE = nil
 
----ConvertUnitBooleanField('udec')
+---ConvertUnitBooleanField ( FourCC('udec') )
 ---@type unitbooleanfield
 UNIT_BF_DECAYABLE = nil
 
----ConvertUnitBooleanField('ubdg')
+---ConvertUnitBooleanField ( FourCC('ubdg') )
 ---@type unitbooleanfield
 UNIT_BF_IS_A_BUILDING = nil
 
----ConvertUnitBooleanField('ulos')
+---ConvertUnitBooleanField ( FourCC('ulos') )
 ---@type unitbooleanfield
 UNIT_BF_USE_EXTENDED_LINE_OF_SIGHT = nil
 
----ConvertUnitBooleanField('unbm')
+---ConvertUnitBooleanField ( FourCC('unbm') )
 ---@type unitbooleanfield
 UNIT_BF_NEUTRAL_BUILDING_SHOWS_MINIMAP_ICON = nil
 
----ConvertUnitBooleanField('uhhb')
+---ConvertUnitBooleanField ( FourCC('uhhb') )
 ---@type unitbooleanfield
 UNIT_BF_HERO_HIDE_HERO_INTERFACE_ICON = nil
 
----ConvertUnitBooleanField('uhhm')
+---ConvertUnitBooleanField ( FourCC('uhhm') )
 ---@type unitbooleanfield
 UNIT_BF_HERO_HIDE_HERO_MINIMAP_DISPLAY = nil
 
----ConvertUnitBooleanField('uhhd')
+---ConvertUnitBooleanField ( FourCC('uhhd') )
 ---@type unitbooleanfield
 UNIT_BF_HERO_HIDE_HERO_DEATH_MESSAGE = nil
 
----ConvertUnitBooleanField('uhom')
+---ConvertUnitBooleanField ( FourCC('uhom') )
 ---@type unitbooleanfield
 UNIT_BF_HIDE_MINIMAP_DISPLAY = nil
 
----ConvertUnitBooleanField('uscb')
+---ConvertUnitBooleanField ( FourCC('uscb') )
 ---@type unitbooleanfield
 UNIT_BF_SCALE_PROJECTILES = nil
 
----ConvertUnitBooleanField('usew')
+---ConvertUnitBooleanField ( FourCC('usew') )
 ---@type unitbooleanfield
 UNIT_BF_SELECTION_CIRCLE_ON_WATER = nil
 
----ConvertUnitBooleanField('ushr')
+---ConvertUnitBooleanField ( FourCC('ushr') )
 ---@type unitbooleanfield
 UNIT_BF_HAS_WATER_SHADOW = nil
 
----ConvertUnitStringField('unam')
+---ConvertUnitStringField ( FourCC('unam') )
 ---@type unitstringfield
 UNIT_SF_NAME = nil
 
----ConvertUnitStringField('upro')
+---ConvertUnitStringField ( FourCC('upro') )
 ---@type unitstringfield
 UNIT_SF_PROPER_NAMES = nil
 
----ConvertUnitStringField('uubs')
+---ConvertUnitStringField ( FourCC('uubs') )
 ---@type unitstringfield
 UNIT_SF_GROUND_TEXTURE = nil
 
----ConvertUnitStringField('ushu')
+---ConvertUnitStringField ( FourCC('ushu') )
 ---@type unitstringfield
 UNIT_SF_SHADOW_IMAGE_UNIT = nil
 
----ConvertUnitWeaponIntegerField('ua1d')
+---ConvertUnitWeaponIntegerField ( FourCC('ua1d') )
 ---@type unitweaponintegerfield
 UNIT_WEAPON_IF_ATTACK_DAMAGE_NUMBER_OF_DICE = nil
 
----ConvertUnitWeaponIntegerField('ua1b')
+---ConvertUnitWeaponIntegerField ( FourCC('ua1b') )
 ---@type unitweaponintegerfield
 UNIT_WEAPON_IF_ATTACK_DAMAGE_BASE = nil
 
----ConvertUnitWeaponIntegerField('ua1s')
+---ConvertUnitWeaponIntegerField ( FourCC('ua1s') )
 ---@type unitweaponintegerfield
 UNIT_WEAPON_IF_ATTACK_DAMAGE_SIDES_PER_DIE = nil
 
----ConvertUnitWeaponIntegerField('utc1')
+---ConvertUnitWeaponIntegerField ( FourCC('utc1') )
 ---@type unitweaponintegerfield
 UNIT_WEAPON_IF_ATTACK_MAXIMUM_NUMBER_OF_TARGETS = nil
 
----ConvertUnitWeaponIntegerField('ua1t')
+---ConvertUnitWeaponIntegerField ( FourCC('ua1t') )
 ---@type unitweaponintegerfield
 UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE = nil
 
----ConvertUnitWeaponIntegerField('ucs1')
+---ConvertUnitWeaponIntegerField ( FourCC('ucs1') )
 ---@type unitweaponintegerfield
 UNIT_WEAPON_IF_ATTACK_WEAPON_SOUND = nil
 
----ConvertUnitWeaponIntegerField('ua1p')
+---ConvertUnitWeaponIntegerField ( FourCC('ua1p') )
 ---@type unitweaponintegerfield
 UNIT_WEAPON_IF_ATTACK_AREA_OF_EFFECT_TARGETS = nil
 
----ConvertUnitWeaponIntegerField('ua1g')
+---ConvertUnitWeaponIntegerField ( FourCC('ua1g') )
 ---@type unitweaponintegerfield
 UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED = nil
 
----ConvertUnitWeaponRealField('ubs1')
+---ConvertUnitWeaponRealField ( FourCC('ubs1') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT = nil
 
----ConvertUnitWeaponRealField('udp1')
+---ConvertUnitWeaponRealField ( FourCC('udp1') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT = nil
 
----ConvertUnitWeaponRealField('ua1c')
+---ConvertUnitWeaponRealField ( FourCC('ua1c') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_BASE_COOLDOWN = nil
 
----ConvertUnitWeaponRealField('udl1')
+---ConvertUnitWeaponRealField ( FourCC('udl1') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_DAMAGE_LOSS_FACTOR = nil
 
----ConvertUnitWeaponRealField('uhd1')
+---ConvertUnitWeaponRealField ( FourCC('uhd1') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_DAMAGE_FACTOR_MEDIUM = nil
 
----ConvertUnitWeaponRealField('uqd1')
+---ConvertUnitWeaponRealField ( FourCC('uqd1') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_DAMAGE_FACTOR_SMALL = nil
 
----ConvertUnitWeaponRealField('usd1')
+---ConvertUnitWeaponRealField ( FourCC('usd1') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_DAMAGE_SPILL_DISTANCE = nil
 
----ConvertUnitWeaponRealField('usr1')
+---ConvertUnitWeaponRealField ( FourCC('usr1') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_DAMAGE_SPILL_RADIUS = nil
 
----ConvertUnitWeaponRealField('ua1z')
+---ConvertUnitWeaponRealField ( FourCC('ua1z') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_PROJECTILE_SPEED = nil
 
----ConvertUnitWeaponRealField('uma1')
+---ConvertUnitWeaponRealField ( FourCC('uma1') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_PROJECTILE_ARC = nil
 
----ConvertUnitWeaponRealField('ua1f')
+---ConvertUnitWeaponRealField ( FourCC('ua1f') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_FULL_DAMAGE = nil
 
----ConvertUnitWeaponRealField('ua1h')
+---ConvertUnitWeaponRealField ( FourCC('ua1h') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_MEDIUM_DAMAGE = nil
 
----ConvertUnitWeaponRealField('ua1q')
+---ConvertUnitWeaponRealField ( FourCC('ua1q') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_SMALL_DAMAGE = nil
 
----ConvertUnitWeaponRealField('ua1r')
+---ConvertUnitWeaponRealField ( FourCC('ua1r') )
 ---@type unitweaponrealfield
 UNIT_WEAPON_RF_ATTACK_RANGE = nil
 
----ConvertUnitWeaponBooleanField('uwu1')
+---ConvertUnitWeaponBooleanField ( FourCC('uwu1') )
 ---@type unitweaponbooleanfield
 UNIT_WEAPON_BF_ATTACK_SHOW_UI = nil
 
----ConvertUnitWeaponBooleanField('uaen')
+---ConvertUnitWeaponBooleanField ( FourCC('uaen') )
 ---@type unitweaponbooleanfield
 UNIT_WEAPON_BF_ATTACKS_ENABLED = nil
 
----ConvertUnitWeaponBooleanField('umh1')
+---ConvertUnitWeaponBooleanField ( FourCC('umh1') )
 ---@type unitweaponbooleanfield
 UNIT_WEAPON_BF_ATTACK_PROJECTILE_HOMING_ENABLED = nil
 
----ConvertUnitWeaponStringField('ua1m')
+---ConvertUnitWeaponStringField ( FourCC('ua1m') )
 ---@type unitweaponstringfield
 UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART = nil
 
----ConvertMoveType(0)
+---ConvertMoveType ( 0 )
 ---@type movetype
 MOVE_TYPE_UNKNOWN = nil
 
----ConvertMoveType(1)
+---ConvertMoveType ( 1 )
 ---@type movetype
 MOVE_TYPE_FOOT = nil
 
----ConvertMoveType(2)
+---ConvertMoveType ( 2 )
 ---@type movetype
 MOVE_TYPE_FLY = nil
 
----ConvertMoveType(4)
+---ConvertMoveType ( 4 )
 ---@type movetype
 MOVE_TYPE_HORSE = nil
 
----ConvertMoveType(8)
+---ConvertMoveType ( 8 )
 ---@type movetype
 MOVE_TYPE_HOVER = nil
 
----ConvertMoveType(16)
+---ConvertMoveType ( 16 )
 ---@type movetype
 MOVE_TYPE_FLOAT = nil
 
----ConvertMoveType(32)
+---ConvertMoveType ( 32 )
 ---@type movetype
 MOVE_TYPE_AMPHIBIOUS = nil
 
----ConvertMoveType(64)
+---ConvertMoveType ( 64 )
 ---@type movetype
 MOVE_TYPE_UNBUILDABLE = nil
 
----ConvertTargetFlag(1)
+---ConvertTargetFlag ( 1 )
 ---@type targetflag
 TARGET_FLAG_NONE = nil
 
----ConvertTargetFlag(2)
+---ConvertTargetFlag ( 2 )
 ---@type targetflag
 TARGET_FLAG_GROUND = nil
 
----ConvertTargetFlag(4)
+---ConvertTargetFlag ( 4 )
 ---@type targetflag
 TARGET_FLAG_AIR = nil
 
----ConvertTargetFlag(8)
+---ConvertTargetFlag ( 8 )
 ---@type targetflag
 TARGET_FLAG_STRUCTURE = nil
 
----ConvertTargetFlag(16)
+---ConvertTargetFlag ( 16 )
 ---@type targetflag
 TARGET_FLAG_WARD = nil
 
----ConvertTargetFlag(32)
+---ConvertTargetFlag ( 32 )
 ---@type targetflag
 TARGET_FLAG_ITEM = nil
 
----ConvertTargetFlag(64)
+---ConvertTargetFlag ( 64 )
 ---@type targetflag
 TARGET_FLAG_TREE = nil
 
----ConvertTargetFlag(128)
+---ConvertTargetFlag ( 128 )
 ---@type targetflag
 TARGET_FLAG_WALL = nil
 
----ConvertTargetFlag(256)
+---ConvertTargetFlag ( 256 )
 ---@type targetflag
 TARGET_FLAG_DEBRIS = nil
 
----ConvertTargetFlag(512)
+---ConvertTargetFlag ( 512 )
 ---@type targetflag
 TARGET_FLAG_DECORATION = nil
 
----ConvertTargetFlag(1024)
+---ConvertTargetFlag ( 1024 )
 ---@type targetflag
 TARGET_FLAG_BRIDGE = nil
 
----ConvertDefenseType(0)
+---ConvertDefenseType ( 0 )
 ---@type defensetype
 DEFENSE_TYPE_LIGHT = nil
 
----ConvertDefenseType(1)
+---ConvertDefenseType ( 1 )
 ---@type defensetype
 DEFENSE_TYPE_MEDIUM = nil
 
----ConvertDefenseType(2)
+---ConvertDefenseType ( 2 )
 ---@type defensetype
 DEFENSE_TYPE_LARGE = nil
 
----ConvertDefenseType(3)
+---ConvertDefenseType ( 3 )
 ---@type defensetype
 DEFENSE_TYPE_FORT = nil
 
----ConvertDefenseType(4)
+---ConvertDefenseType ( 4 )
 ---@type defensetype
 DEFENSE_TYPE_NORMAL = nil
 
----ConvertDefenseType(5)
+---ConvertDefenseType ( 5 )
 ---@type defensetype
 DEFENSE_TYPE_HERO = nil
 
----ConvertDefenseType(6)
+---ConvertDefenseType ( 6 )
 ---@type defensetype
 DEFENSE_TYPE_DIVINE = nil
 
----ConvertDefenseType(7)
+---ConvertDefenseType ( 7 )
 ---@type defensetype
 DEFENSE_TYPE_NONE = nil
 
----ConvertHeroAttribute(1)
+---ConvertHeroAttribute ( 1 )
 ---@type heroattribute
 HERO_ATTRIBUTE_STR = nil
 
----ConvertHeroAttribute(2)
+---ConvertHeroAttribute ( 2 )
 ---@type heroattribute
 HERO_ATTRIBUTE_INT = nil
 
----ConvertHeroAttribute(3)
+---ConvertHeroAttribute ( 3 )
 ---@type heroattribute
 HERO_ATTRIBUTE_AGI = nil
 
----ConvertArmorType(0)
+---ConvertArmorType ( 0 )
 ---@type armortype
 ARMOR_TYPE_WHOKNOWS = nil
 
----ConvertArmorType(1)
+---ConvertArmorType ( 1 )
 ---@type armortype
 ARMOR_TYPE_FLESH = nil
 
----ConvertArmorType(2)
+---ConvertArmorType ( 2 )
 ---@type armortype
 ARMOR_TYPE_METAL = nil
 
----ConvertArmorType(3)
+---ConvertArmorType ( 3 )
 ---@type armortype
 ARMOR_TYPE_WOOD = nil
 
----ConvertArmorType(4)
+---ConvertArmorType ( 4 )
 ---@type armortype
 ARMOR_TYPE_ETHREAL = nil
 
----ConvertArmorType(5)
+---ConvertArmorType ( 5 )
 ---@type armortype
 ARMOR_TYPE_STONE = nil
 
----ConvertRegenType(0)
+---ConvertRegenType ( 0 )
 ---@type regentype
 REGENERATION_TYPE_NONE = nil
 
----ConvertRegenType(1)
+---ConvertRegenType ( 1 )
 ---@type regentype
 REGENERATION_TYPE_ALWAYS = nil
 
----ConvertRegenType(2)
+---ConvertRegenType ( 2 )
 ---@type regentype
 REGENERATION_TYPE_BLIGHT = nil
 
----ConvertRegenType(3)
+---ConvertRegenType ( 3 )
 ---@type regentype
 REGENERATION_TYPE_DAY = nil
 
----ConvertRegenType(4)
+---ConvertRegenType ( 4 )
 ---@type regentype
 REGENERATION_TYPE_NIGHT = nil
 
----ConvertUnitCategory(1)
+---ConvertUnitCategory ( 1 )
 ---@type unitcategory
 UNIT_CATEGORY_GIANT = nil
 
----ConvertUnitCategory(2)
+---ConvertUnitCategory ( 2 )
 ---@type unitcategory
 UNIT_CATEGORY_UNDEAD = nil
 
----ConvertUnitCategory(4)
+---ConvertUnitCategory ( 4 )
 ---@type unitcategory
 UNIT_CATEGORY_SUMMONED = nil
 
----ConvertUnitCategory(8)
+---ConvertUnitCategory ( 8 )
 ---@type unitcategory
 UNIT_CATEGORY_MECHANICAL = nil
 
----ConvertUnitCategory(16)
+---ConvertUnitCategory ( 16 )
 ---@type unitcategory
 UNIT_CATEGORY_PEON = nil
 
----ConvertUnitCategory(32)
+---ConvertUnitCategory ( 32 )
 ---@type unitcategory
 UNIT_CATEGORY_SAPPER = nil
 
----ConvertUnitCategory(64)
+---ConvertUnitCategory ( 64 )
 ---@type unitcategory
 UNIT_CATEGORY_TOWNHALL = nil
 
----ConvertUnitCategory(128)
+---ConvertUnitCategory ( 128 )
 ---@type unitcategory
 UNIT_CATEGORY_ANCIENT = nil
 
----ConvertUnitCategory(256)
+---ConvertUnitCategory ( 256 )
 ---@type unitcategory
 UNIT_CATEGORY_NEUTRAL = nil
 
----ConvertUnitCategory(512)
+---ConvertUnitCategory ( 512 )
 ---@type unitcategory
 UNIT_CATEGORY_WARD = nil
 
----ConvertUnitCategory(1024)
+---ConvertUnitCategory ( 1024 )
 ---@type unitcategory
 UNIT_CATEGORY_STANDON = nil
 
----ConvertUnitCategory(2048)
+---ConvertUnitCategory ( 2048 )
 ---@type unitcategory
 UNIT_CATEGORY_TAUREN = nil
 
----ConvertPathingFlag(2)
+---ConvertPathingFlag ( 2 )
 ---@type pathingflag
 PATHING_FLAG_UNWALKABLE = nil
 
----ConvertPathingFlag(4)
+---ConvertPathingFlag ( 4 )
 ---@type pathingflag
 PATHING_FLAG_UNFLYABLE = nil
 
----ConvertPathingFlag(8)
+---ConvertPathingFlag ( 8 )
 ---@type pathingflag
 PATHING_FLAG_UNBUILDABLE = nil
 
----ConvertPathingFlag(16)
+---ConvertPathingFlag ( 16 )
 ---@type pathingflag
 PATHING_FLAG_UNPEONHARVEST = nil
 
----ConvertPathingFlag(32)
+---ConvertPathingFlag ( 32 )
 ---@type pathingflag
 PATHING_FLAG_BLIGHTED = nil
 
----ConvertPathingFlag(64)
+---ConvertPathingFlag ( 64 )
 ---@type pathingflag
 PATHING_FLAG_UNFLOATABLE = nil
 
----ConvertPathingFlag(128)
+---ConvertPathingFlag ( 128 )
 ---@type pathingflag
 PATHING_FLAG_UNAMPHIBIOUS = nil
 
----ConvertPathingFlag(256)
+---ConvertPathingFlag ( 256 )
 ---@type pathingflag
 PATHING_FLAG_UNITEMPLACABLE = nil
 
