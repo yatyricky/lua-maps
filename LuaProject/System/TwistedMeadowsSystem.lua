@@ -20,7 +20,7 @@ local Army = {
     [UTID_Archer] = 7,   -- 8
 }
 
----@class TwistedMeadowsSystem : SystemBase, __ClassBase<TwistedMeadowsSystem>
+---@class TwistedMeadowsSystem : SystemBase
 local cls = class("TwistedMeadowsSystem", SystemBase)
 
 function cls:ctor()

@@ -15,7 +15,7 @@ EventCenter.PlayerUnitAttackMiss = Event.new()
 
 local SystemBase = require("System.SystemBase")
 
----@class DamageSystem : SystemBase, __ClassBase<DamageSystem>
+---@class DamageSystem : SystemBase
 local cls = class("DamageSystem", SystemBase)
 
 function cls:ctor()

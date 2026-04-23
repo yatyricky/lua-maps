@@ -1,4 +1,4 @@
----@class SystemBase : __ClassBase<SystemBase>
+---@class SystemBase
 local cls = class("SystemBase")
 
 function cls:Awake()

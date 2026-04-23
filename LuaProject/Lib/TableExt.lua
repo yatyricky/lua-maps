@@ -87,7 +87,7 @@ end
 ---@generic V
 ---@param t V[]
 ---@param func fun(i: integer, v: V): boolean
----@return V, integer | nil
+---@return V, integer
 function table.iFind(t, func)
     for i, v in ipairs(t) do
         if func(i, v) == true then
@@ -116,7 +116,7 @@ end
 
 ---@generic K, V
 ---@param source table<K, V> | V[]
----@param copy table<K, V> | V[]?
+---@param copy table<K, V> | V[]
 ---@return table<K, V> | V[]
 function table.shallow(source, copy)
     copy = copy or {}

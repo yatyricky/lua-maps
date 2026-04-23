@@ -43,7 +43,7 @@ local function i2b(v)
     return bin
 end
 
----@class UnitAttribute : __ClassBase<UnitAttribute>
+---@class UnitAttribute
 local cls = class("UnitAttribute")
 
 cls.HeroAttributeType = {

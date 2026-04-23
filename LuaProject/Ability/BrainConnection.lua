@@ -19,7 +19,7 @@ Abilities.BrainConnection = Meta
 
 --endregion
 
----@class BrainConnection : __ClassBase<BrainConnection>
+---@class BrainConnection
 local cls = class("BrainConnection")
 
 cls.instances = {} ---@type table<unit, BrainConnection>

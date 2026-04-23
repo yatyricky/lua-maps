@@ -14,10 +14,10 @@ local SystemBase = require("System.SystemBase")
 ---@field interrupted ISpellData
 ---@field _effectDone boolean
 
----@class IRegisterSpellEvent : Event, __ClassBase<IRegisterSpellEvent>
+---@class IRegisterSpellEvent : Event
 ---@field Emit fun(arg: { id: integer, handler: (fun(data: ISpellData): void), ctx: table }): void
 
----@class SpellSystem : SystemBase, __ClassBase<SpellSystem>
+---@class SpellSystem : SystemBase
 local cls = class("SpellSystem", SystemBase)
 
 ---@type IRegisterSpellEvent

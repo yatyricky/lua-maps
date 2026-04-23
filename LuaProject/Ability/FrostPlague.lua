@@ -2,7 +2,7 @@ local BuffBase = require("Objects.BuffBase")
 local Abilities = require("Config.Abilities")
 local Time = require("Lib.Time")
 
----@class FrostPlague : BuffBase, __ClassBase<FrostPlague>
+---@class FrostPlague : BuffBase
 local cls = class("FrostPlague", BuffBase)
 
 function cls:Awake()

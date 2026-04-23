@@ -31,7 +31,7 @@ Abilities.SaraGreenCloud = Meta
 
 --endregion
 
----@class SaraGreenCloud : __ClassBase<SaraGreenCloud>
+---@class SaraGreenCloud
 local cls = class("SaraGreenCloud")
 
 cls.instances = {} ---@type SaraGreenCloud[]

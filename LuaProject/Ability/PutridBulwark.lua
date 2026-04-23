@@ -18,7 +18,7 @@ BlzSetAbilityExtendedTooltip(Abilities.PutridBulwark.ID, string.format("发出�
 
 --endregion
 
----@class PutridBulwark : BuffBase, __ClassBase<PutridBulwark>
+---@class PutridBulwark : BuffBase
 local cls = class("PutridBulwark", BuffBase)
 
 function cls:OnEnable()

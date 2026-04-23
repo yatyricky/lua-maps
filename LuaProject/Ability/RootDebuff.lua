@@ -1,6 +1,6 @@
 local BuffBase = require("Objects.BuffBase")
 
----@class SlowDebuff : BuffBase, __ClassBase<SlowDebuff>
+---@class SlowDebuff : BuffBase
 local cls = class("RootDebuff", BuffBase)
 
 function cls:OnEnable()

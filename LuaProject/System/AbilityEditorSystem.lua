@@ -4,7 +4,7 @@ local SystemBase = require("System.SystemBase")
 
 EventCenter.EditUnitAbility = Event.new()
 
----@class AbilityEditorSystem : SystemBase, __ClassBase<AbilityEditorSystem>
+---@class AbilityEditorSystem : SystemBase
 local cls = class("AbilityEditorSystem", SystemBase)
 
 function cls:Awake()

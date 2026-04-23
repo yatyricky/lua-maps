@@ -14,7 +14,7 @@ Abilities.RageGenerator = {
 
 --endregion
 
----@class RageGenerator : __ClassBase<RageGenerator>
+---@class RageGenerator
 local cls = class("RageGenerator")
 
 local combatUnits = {}

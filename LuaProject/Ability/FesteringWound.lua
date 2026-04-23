@@ -26,7 +26,7 @@ BlzSetAbilityExtendedTooltip(Abilities.FesteringWound.ID, string.format(
 
 --endregion
 
----@class FesteringWound : BuffBase, __ClassBase<FesteringWound>
+---@class FesteringWound : BuffBase
 local cls = class("FesteringWound", BuffBase)
 
 function cls:OnEnable()

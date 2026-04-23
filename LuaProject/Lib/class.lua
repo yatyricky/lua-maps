@@ -1,17 +1,12 @@
 require("Lib.clone")
 
----@class __ClassBase<T>
----@field new fun(...): T
-
----@generic T
----@param classname `T`
----@param super any?
----@return T
+---@param classname string
+---@param super table?
 function class(classname, super)
     local superType = type(super)
     local cls
     if superType ~= "function" and superType ~= "table" then
-        superType = "nil"
+        superType = nil
         super = nil
     end
     if superType == "function" or (super and super.__ctype == 1) then
@@ -23,7 +18,7 @@ function class(classname, super)
         else
             cls.__create = super
         end
-        cls.ctor = function(...) end
+        cls.ctor = function() end
         cls.__cname = classname
         cls.__ctype = 1
         function cls.new(...)
@@ -38,7 +33,7 @@ function class(classname, super)
             cls = clone(super)
             cls.super = super
         else
-            cls = { ctor = function(...) end }
+            cls = { ctor = function() end }
         end
 
         cls.__cname = classname

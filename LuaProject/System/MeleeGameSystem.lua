@@ -1,6 +1,6 @@
 local SystemBase = require("System.SystemBase")
 
----@class MeleeGameSystem : SystemBase, __ClassBase<MeleeGameSystem>
+---@class MeleeGameSystem : SystemBase
 local cls = class("MeleeGameSystem", SystemBase)
 
 function cls:ctor()

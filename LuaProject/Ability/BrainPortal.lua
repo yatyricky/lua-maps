@@ -18,7 +18,7 @@ Abilities.BrainConnection = Meta
 
 --endregion
 
----@class BrainPortal : __ClassBase<BrainPortal>
+---@class BrainPortal
 local cls = class("BrainPortal")
 
 EventCenter.RegisterPlayerUnitSpellEffect:Emit({

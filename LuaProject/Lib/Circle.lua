@@ -1,4 +1,4 @@
----@class Circle : __ClassBase<Circle>
+---@class Circle
 local cls = class("Circle")
 
 ---@param center Vector2

@@ -14,11 +14,11 @@ EventCenter.PlayerUnitPickupItem = Event.new()
 ---@field result item
 ---@field recipe table<item, integer>
 
----@class EventRegisterItemRecipe : Event, __ClassBase<EventRegisterItemRecipe>
+---@class EventRegisterItemRecipe : Event
 ---@field data EventRegisterItemRecipeData
 EventCenter.RegisterItemRecipe = Event.new()
 
----@class ItemSystem : SystemBase, __ClassBase<ItemSystem>
+---@class ItemSystem : SystemBase
 local cls = class("ItemSystem", SystemBase)
 
 function cls:ctor()

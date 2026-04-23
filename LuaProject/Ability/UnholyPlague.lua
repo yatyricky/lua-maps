@@ -1,7 +1,7 @@
 local BuffBase = require("Objects.BuffBase")
 local Abilities = require("Config.Abilities")
 
----@class UnholyPlague : BuffBase, __ClassBase<UnholyPlague>
+---@class UnholyPlague : BuffBase
 local cls = class("UnholyPlague", BuffBase)
 
 function cls:Awake()

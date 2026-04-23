@@ -42,8 +42,8 @@ local function trueFilter()
 end
 
 ---@param trigger trigger
----@param action fun(): nothing
----@return nothing
+---@param action fun(): void
+---@return void
 function ExTriggerAddAction(trigger, action)
     TriggerAddAction(trigger, function()
         local s, m = pcall(action)
@@ -60,8 +60,8 @@ local group = CreateGroup()
 ---@param x real
 ---@param y real
 ---@param radius real
----@param callback fun(unit: unit): nothing
----@return nothing
+---@param callback fun(unit: unit): void
+---@return void
 function ExGroupEnumUnitsInRange(x, y, radius, callback)
     GroupClear(group)
     GroupEnumUnitsInRange(group, x, y, radius, Filter(function()
@@ -73,7 +73,7 @@ function ExGroupEnumUnitsInRange(x, y, radius, callback)
     end))
 end
 
----@param callback fun(unit: unit): nothing
+---@param callback fun(unit: unit): void
 function ExGroupEnumUnitsInMap(callback)
     GroupClear(group)
     GroupEnumUnitsInRect(group, bj_mapInitialPlayableArea, Filter(function()
@@ -221,7 +221,7 @@ ExTriggerAddAction(enterTrigger, function()
     ExTriggerRegisterNewUnitExec(GetTriggerUnit())
 end)
 
----@param callback fun(unit: unit): nothing
+---@param callback fun(unit: unit): void
 function ExTriggerRegisterNewUnit(callback)
     t_insert(enterMapCalls, callback)
 end
@@ -240,7 +240,7 @@ ExTriggerAddAction(deathTrigger, function()
     end
 end)
 
----@param callback fun(unit: unit): nothing
+---@param callback fun(unit: unit): void
 function ExTriggerRegisterUnitDeath(callback)
     t_insert(unitDeathCalls, callback)
 end
@@ -261,7 +261,7 @@ ExTriggerAddAction(learnTrigger, function()
         v(u, l, s)
     end
 end)
----@param callback fun(unit: unit, level: integer, skill: integer): nothing
+---@param callback fun(unit: unit, level: integer, skill: integer): void
 function ExTriggerRegisterUnitLearn(id, callback)
     if id == 0 then
         t_insert(anySkillLearnCalls, callback)

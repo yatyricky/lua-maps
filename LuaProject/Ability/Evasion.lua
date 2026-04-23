@@ -21,7 +21,7 @@ Abilities.Evasion = Meta
 
 --endregion
 
----@class Evasion : __ClassBase<Evasion>
+---@class Evasion
 local cls = class("Evasion")
 
 ExTriggerRegisterUnitLearn(Meta.ID, function(unit, level, _)
