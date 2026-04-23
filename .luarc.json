@@ -1,11 +1,8 @@
 {
     "workspace": {
         "ignoreDir": [
-            "demo.w3x",
-            "echoisles.w3x",
-            "moonglade.w3x", 
-            "turtlerock.w3x",
-            "twistedmeadows.w3x"
+            "**/*.w3x",
+            "lua-bundler"
         ],
         "ignoreSubmodules": true,
         "library": [
