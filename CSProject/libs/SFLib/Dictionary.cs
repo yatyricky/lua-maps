@@ -1,0 +1,53 @@
+namespace SFLib;
+
+public sealed class Dictionary<K, V>
+{
+    public int Count => 0;
+
+    public V this[K key]
+    {
+        get => default!;
+        set { }
+    }
+
+    public void Add(K key, V value)
+    {
+    }
+
+    public bool ContainsKey(K key)
+    {
+        return false;
+    }
+
+    public V? Get(K key)
+    {
+        return default;
+    }
+
+    public void Set(K key, V value)
+    {
+    }
+
+    public bool Remove(K key)
+    {
+        return false;
+    }
+
+    public Enumerator GetEnumerator() => default!;
+
+    public class Enumerator
+    {
+        public KeyValue<K, V> Current => default!;
+
+        public bool MoveNext()
+        {
+            return false;
+        }
+    }
+}
+
+public class KeyValue<K, V>
+{
+    public K Key => default!;
+    public V Value => default!;
+}

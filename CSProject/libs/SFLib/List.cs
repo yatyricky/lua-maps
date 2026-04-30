@@ -1,0 +1,36 @@
+namespace SFLib;
+
+public sealed class List<T>
+{
+    public int Count => 0;
+
+    public T this[int index]
+    {
+        get => default!;
+        set { }
+    }
+
+    public void Add(T item)
+    {
+    }
+
+    public void Clear()
+    {
+    }
+
+    public void Sort()
+    {
+    }
+
+    public Enumerator GetEnumerator() => default!;
+
+    public class Enumerator
+    {
+        public T Current => default!;
+
+        public bool MoveNext()
+        {
+            return false;
+        }
+    }
+}
