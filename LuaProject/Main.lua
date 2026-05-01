@@ -62,3 +62,5 @@ local game = FrameTimer.new(function(dt)
     end
 end, 1, -1)
 game:Start()
+
+require("sf")
