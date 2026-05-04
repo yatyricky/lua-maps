@@ -2538,11 +2538,11 @@ public static partial class JASS
     /// <summary>JASS native <c>Not</c>.</summary>
     public static boolexpr Not(boolexpr operand) => throw null!;
     /// <summary>JASS native <c>Condition</c>.</summary>
-    public static conditionfunc Condition(global::System.Action func) => throw null!;
+    public static conditionfunc Condition(global::System.Func<bool> func) => throw null!;
     /// <summary>JASS native <c>DestroyCondition</c>.</summary>
     public static void DestroyCondition(conditionfunc c) => throw null!;
     /// <summary>JASS native <c>Filter</c>.</summary>
-    public static filterfunc Filter(global::System.Action func) => throw null!;
+    public static filterfunc Filter(global::System.Func<bool> func) => throw null!;
     /// <summary>JASS native <c>DestroyFilter</c>.</summary>
     public static void DestroyFilter(filterfunc f) => throw null!;
     /// <summary>JASS native <c>DestroyBoolExpr</c>.</summary>

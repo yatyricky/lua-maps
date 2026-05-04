@@ -45,6 +45,7 @@ public class Program
         GroupEnumUnitsInRect(group, bj_mapInitialPlayableArea, Filter(() =>
         {
             LuaInterop.CallGlobal("ExTriggerRegisterNewUnitExec", GetFilterUnit());
+            return false;
         }));
         DestroyGroup(group);
 

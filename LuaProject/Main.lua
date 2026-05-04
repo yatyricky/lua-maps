@@ -76,6 +76,7 @@ function SF__.Program.Main(args)
     local group = CreateGroup()
     GroupEnumUnitsInRect(group, bj_mapInitialPlayableArea, Filter(function()
         ExTriggerRegisterNewUnitExec(GetFilterUnit())
+        return false
     end))
     DestroyGroup(group)
     do
