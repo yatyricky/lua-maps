@@ -7,23 +7,8 @@
 系统/软件要求：
 - Windows 11 x64
 - 重制版1.36
-- Nodejs
+- SharpForge
 - Git
-
-部署和测试步骤：
-```bash
-git clone https://github.com/yatyricky/lua-maps.git # 下载工程
-cd .\lua-maps # 进入工程目录
-git submodule update --init --recursive # 更新子模块
-cd .\lua-bundler # 进入子模块目录
-npm i # 安装nodeejs依赖
-cd .. # 返回工程目录
-# 新建 `config.json` 并进行如下配置，填写war3安装路径
-{
-    "WC3Path": "C:\\Users\\yatyricky\\Games\\Warcraft III"
-}
-node index # 或者 node index <地图名称>
-```
 
 ## 8. 暗牧
 
