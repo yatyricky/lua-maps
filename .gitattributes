@@ -1,0 +1,30 @@
+* text=auto
+
+# Warcraft III map/archive and binary asset formats.
+*.w3x binary
+*.w3m binary
+*.w3a binary
+*.w3b binary
+*.w3c binary
+*.w3d binary
+*.w3e binary
+*.w3h binary
+*.w3i binary
+*.w3m binary
+*.w3q binary
+*.w3r binary
+*.w3s binary
+*.w3t binary
+*.w3u binary
+*.wct binary
+*.doo binary
+*.mmp binary
+*.shd binary
+*.wpm binary
+*.wtg binary
+*.blp binary
+
+# Build outputs and other packaged binaries.
+*.dll binary
+*.exe binary
+*.pdb binary
