@@ -17,14 +17,10 @@ public class Program
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.BuffSystem"), "new"));
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.DamageSystem"), "new"));
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.ProjectileSystem"), "new"));
-        systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.ManagedAISystem"), "new"));
         
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.InitAbilitiesSystem"), "new"));
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.BuffDisplaySystem"), "new"));
-
-#if MAP_NAME_echoisles || MAP_NAME_turtlerock || MAP_NAME_twistedmeadows
-        systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.MeleeGameSystem"), "new"));
-#endif
+        systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.AIDebugSystem"), "new"));
 
 #if MAP_NAME_moonglade
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.MoonGladeSystem"), "new"));
@@ -32,6 +28,10 @@ public class Program
 
 #if MAP_NAME_twistedmeadows
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.TwistedMeadowsSystem"), "new"));
+#endif
+
+#if MAP_NAME_echoisles || MAP_NAME_turtlerock || MAP_NAME_twistedmeadows
+        systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.MeleeGameSystem"), "new"));
 #endif
 
         foreach (var system in systems)

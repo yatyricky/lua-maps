@@ -64,9 +64,11 @@ function SF__.Program.Main(args)
     SF__.ListAdd__(systems, require("System.BuffSystem").new())
     SF__.ListAdd__(systems, require("System.DamageSystem").new())
     SF__.ListAdd__(systems, require("System.ProjectileSystem").new())
-    SF__.ListAdd__(systems, require("System.ManagedAISystem").new())
     SF__.ListAdd__(systems, require("System.InitAbilitiesSystem").new())
     SF__.ListAdd__(systems, require("System.BuffDisplaySystem").new())
+    SF__.ListAdd__(systems, require("System.AIDebugSystem").new())
+    SF__.ListAdd__(systems, require("System.TwistedMeadowsSystem").new())
+    SF__.ListAdd__(systems, require("System.MeleeGameSystem").new())
     do
         local collection = systems
         for i, system in SF__.ListIterate__(collection) do

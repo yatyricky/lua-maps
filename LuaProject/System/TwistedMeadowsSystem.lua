@@ -29,51 +29,54 @@ function cls:ctor()
 end
 
 function cls:Awake()
-    ExTriggerRegisterNewUnit(function(unit)
-        if ExGetUnitPlayerId(unit) == 1 then
-            table.addNum(self.army, GetUnitTypeId(unit), 1)
-        end
-    end)
+    -- ExTriggerRegisterNewUnit(function(unit)
+    --     if ExGetUnitPlayerId(unit) == 1 then
+    --         table.addNum(self.army, GetUnitTypeId(unit), 1)
+    --     end
+    -- end)
 
-    ExTriggerRegisterUnitDeath(function(unit)
-        if ExGetUnitPlayerId(unit) == 1 then
-            table.addNum(self.army, GetUnitTypeId(unit), -1)
-        end
-    end)
+    -- ExTriggerRegisterUnitDeath(function(unit)
+    --     if ExGetUnitPlayerId(unit) == 1 then
+    --         table.addNum(self.army, GetUnitTypeId(unit), -1)
+    --     end
+    -- end)
+
+    print(GetPlayerController(Player(1)) == MAP_CONTROL_COMPUTER)
+    print(GetPlayerRace(Player(1)) == RACE_NIGHTELF)
 end
 
-function cls:Update(dt)
-    self.time = self.time + dt
-    if self.time >= Interval then
-        self.time = self.time % Interval
-        self:_run()
-    end
-end
+-- function cls:Update(dt)
+--     self.time = self.time + dt
+--     if self.time >= Interval then
+--         self.time = self.time % Interval
+--         self:_run()
+--     end
+-- end
 
-function cls:_run()
-    if Time.Time < 360 then
-        return
-    end
-    local trained = TrainCount
-    for utid, maxSize in pairs(Army) do
-        local current = self.army[utid] or 0
-        local diff = maxSize - current
-        if diff > 0 then
-            local train = math.min(diff, trained)
-            for _ = 1, train do
-                CreateUnit(p1, utid, basePos.x, basePos.y, 0)
-            end
-            trained = trained - train
-        end
+-- function cls:_run()
+--     if Time.Time < 360 then
+--         return
+--     end
+--     local trained = TrainCount
+--     for utid, maxSize in pairs(Army) do
+--         local current = self.army[utid] or 0
+--         local diff = maxSize - current
+--         if diff > 0 then
+--             local train = math.min(diff, trained)
+--             for _ = 1, train do
+--                 CreateUnit(p1, utid, basePos.x, basePos.y, 0)
+--             end
+--             trained = trained - train
+--         end
 
-        if trained <= 0 then
-            break
-        end
-    end
+--         if trained <= 0 then
+--             break
+--         end
+--     end
 
-    if Time.Time > 300 and trained <= 0 then
-        Interval = Interval + 0.4
-    end
-end
+--     if Time.Time > 300 and trained <= 0 then
+--         Interval = Interval + 0.4
+--     end
+-- end
 
 return cls
