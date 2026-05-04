@@ -1,13 +1,11 @@
 using SFLib;
+using Lua;
 
 public class Program
 {
     public static void Main(string[] args)
     {
         LuaInterop.SetGlobal("CLI", LuaInterop.CreateTable());
-        
-        var FrameTimer = LuaInterop.Require("Lib.FrameTimer");
-        var Time = LuaInterop.Require("Lib.Time");
         LuaInterop.Require("Lib.CoroutineExt");
         LuaInterop.Require("Lib.TableExt");
         LuaInterop.Require("Lib.StringExt");
@@ -54,14 +52,14 @@ public class Program
             LuaInterop.CallMethod(system, "OnEnable");
         }
 
-        var game = LuaInterop.Call<LuaObject>(FrameTimer, "new", (float dt) =>
+        var game = new FrameTimer(dt =>
         {
-            var now = MathRound(LuaInterop.Get<float>(Time, "Time") * 100) * 0.01f;
+            var now = MathRound(Time.CurrentTime * 100) * 0.01f;
             foreach (var system in systems)
             {
                 LuaInterop.CallMethod(system, "Update", dt, now);
             }
         }, 1, -1);
-        LuaInterop.CallMethod(game, "Start");
+        game.Start();
     }
 }

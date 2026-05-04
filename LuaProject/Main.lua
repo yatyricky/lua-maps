@@ -52,8 +52,8 @@ end
 SF__.Program = SF__.Program or {}
 function SF__.Program.Main(args)
     CLI = {}
-    local FrameTimer = require("Lib.FrameTimer")
     local Time = require("Lib.Time")
+    local FrameTimer = require("Lib.FrameTimer")
     require("Lib.CoroutineExt")
     require("Lib.TableExt")
     require("Lib.StringExt")
