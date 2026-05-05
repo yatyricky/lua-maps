@@ -1,0 +1,70 @@
+﻿STRING 0
+{
+Player 1
+}
+
+STRING 1
+{
+Player 2
+}
+
+STRING 2
+{
+Player 3
+}
+
+STRING 3
+{
+Player 4
+}
+
+STRING 4
+{
+Force 1
+}
+
+STRING 5
+{
+Force 2
+}
+
+STRING 6
+{
+Force 3
+}
+
+STRING 7
+{
+Force 4
+}
+
+STRING 8
+{
+Force 5
+}
+
+STRING 9
+{
+Force 6
+}
+
+STRING 10
+{
+Lost Temple LV
+}
+
+STRING 11
+{
+1v1 or 2v2
+}
+
+STRING 12
+{
+Ringed by gold mines, the Fountain of Health beckons. Expand quickly or risk being crushed by your opponents.
+}
+
+STRING 13
+{
+Blizzard
+}
+

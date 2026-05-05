@@ -31,8 +31,8 @@ public class Program
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.TwistedMeadowsSystem"), "new"));
 #endif
 
-#if MAP_NAME_echoisles || MAP_NAME_turtlerock || MAP_NAME_twistedmeadows
-        systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.MeleeGameSystem"), "new"));
+#if MAP_NAME_echoisles || MAP_NAME_turtlerock || MAP_NAME_twistedmeadows || MAP_NAME_losttemple
+        systems.Add(new MeleeGameSystem());
 #endif
 
         foreach (var system in systems)

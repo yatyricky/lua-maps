@@ -67,8 +67,7 @@ function SF__.Program.Main(args)
     SF__.ListAdd__(systems, require("System.ProjectileSystem").new())
     SF__.ListAdd__(systems, SF__.Systems.InitAbilitiesSystem.New())
     SF__.ListAdd__(systems, require("System.BuffDisplaySystem").new())
-    SF__.ListAdd__(systems, require("System.TwistedMeadowsSystem").new())
-    SF__.ListAdd__(systems, require("System.MeleeGameSystem").new())
+    SF__.ListAdd__(systems, SF__.Systems.MeleeGameSystem.New())
     do
         local collection = systems
         for i, system in SF__.ListIterate__(collection) do
@@ -114,18 +113,6 @@ local SystemBase = require("System.SystemBase")
 SF__.Systems.InitAbilitiesSystem = SF__.Systems.InitAbilitiesSystem or class("InitAbilitiesSystem", SystemBase)
 SF__.Systems.InitAbilitiesSystem.__sf_base = SystemBase
 function SF__.Systems.InitAbilitiesSystem:Awake()
-    -- 默认 技能
-    require("Ability.Evasion")
-    require("Ability.MoonWellHeal")
-    require("Ability.NativeRejuvenation")
-    -- 武器战
-    require("Ability.RageGenerator")
-    require("Ability.DeepWounds")
-    require("Ability.Overpower")
-    require("Ability.Charge")
-    require("Ability.MortalStrike")
-    require("Ability.Condemn")
-    require("Ability.BladeStorm")
 end
 
 function SF__.Systems.InitAbilitiesSystem.__Init(self)
@@ -135,6 +122,27 @@ end
 function SF__.Systems.InitAbilitiesSystem.New()
     local self = SF__.Systems.InitAbilitiesSystem.new()
     SF__.Systems.InitAbilitiesSystem.__Init(self)
+    return self
+end
+-- Systems.MeleeGameSystem
+local SystemBase3 = require("System.SystemBase")
+SF__.Systems.MeleeGameSystem = SF__.Systems.MeleeGameSystem or class("MeleeGameSystem", SystemBase3)
+SF__.Systems.MeleeGameSystem.__sf_base = SystemBase3
+function SF__.Systems.MeleeGameSystem.__Init(self)
+    self.__sf_type = SF__.Systems.MeleeGameSystem
+    MeleeStartingVisibility()
+    MeleeStartingHeroLimit()
+    MeleeGrantHeroItems()
+    MeleeStartingResources()
+    MeleeClearExcessUnits()
+    MeleeStartingUnits()
+    MeleeStartingAI()
+    MeleeInitVictoryDefeat()
+end
+
+function SF__.Systems.MeleeGameSystem.New()
+    local self = SF__.Systems.MeleeGameSystem.new()
+    SF__.Systems.MeleeGameSystem.__Init(self)
     return self
 end
 
