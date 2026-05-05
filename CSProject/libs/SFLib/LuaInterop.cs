@@ -16,6 +16,7 @@ public sealed class LuaAttribute : Attribute
     public string? Module;
     public string? Class;
     public string? Require;
+    public bool TableLiteral;
 
     public LuaAttribute()
     {

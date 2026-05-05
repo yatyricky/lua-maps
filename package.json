@@ -1,0 +1,7 @@
+{
+  "name": "lua-maps",
+  "type": "module",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
+}

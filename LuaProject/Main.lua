@@ -48,6 +48,26 @@ function SF__.ListSort__(list, less)
     return list
 end
 
+-- CrusaderStrike
+SF__.CrusaderStrike = SF__.CrusaderStrike or {}
+SF__.CrusaderStrike._1 = SF__.CrusaderStrike.Register()
+function SF__.CrusaderStrike.Register()
+    local EventCenter = require("Lib.EventCenter")
+    EventCenter.RegisterPlayerUnitSpellEffect:Emit({id = FourCC("A001"), handler = function(data)
+        local level = GetUnitAbilityLevel(data.caster, FourCC("A001"))
+    end})
+    return 0
+end
+
+function SF__.CrusaderStrike.__Init(self)
+    self.__sf_type = SF__.CrusaderStrike
+end
+
+function SF__.CrusaderStrike.New()
+    local self = setmetatable({}, { __index = SF__.CrusaderStrike })
+    SF__.CrusaderStrike.__Init(self)
+    return self
+end
 -- Program
 require("Lib.class")
 SF__.Program = SF__.Program or {}

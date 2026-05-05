@@ -2,3 +2,4 @@
 .vscode
 obj
 *.sln
+node_modules
