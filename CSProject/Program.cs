@@ -1,6 +1,8 @@
 using SFLib;
-using Lua;
+using LuaWrapper;
+using Systems;
 
+[Lua(Require = "Lib.class")]
 public class Program
 {
     public static void Main(string[] args)
@@ -18,7 +20,7 @@ public class Program
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.DamageSystem"), "new"));
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.ProjectileSystem"), "new"));
         
-        systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.InitAbilitiesSystem"), "new"));
+        systems.Add(new InitAbilitiesSystem());
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.BuffDisplaySystem"), "new"));
 
 #if MAP_NAME_moonglade

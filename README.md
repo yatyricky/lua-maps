@@ -6,7 +6,7 @@
 
 系统/软件要求：
 - Windows 11 x64
-- 重制版1.36
+- 重制版2.0.4
 - SharpForge
 - Git
 

@@ -49,6 +49,7 @@ function SF__.ListSort__(list, less)
 end
 
 -- Program
+require("Lib.class")
 SF__.Program = SF__.Program or {}
 function SF__.Program.Main(args)
     CLI = {}
@@ -64,7 +65,7 @@ function SF__.Program.Main(args)
     SF__.ListAdd__(systems, require("System.BuffSystem").new())
     SF__.ListAdd__(systems, require("System.DamageSystem").new())
     SF__.ListAdd__(systems, require("System.ProjectileSystem").new())
-    SF__.ListAdd__(systems, require("System.InitAbilitiesSystem").new())
+    SF__.ListAdd__(systems, SF__.Systems.InitAbilitiesSystem.New())
     SF__.ListAdd__(systems, require("System.BuffDisplaySystem").new())
     SF__.ListAdd__(systems, require("System.TwistedMeadowsSystem").new())
     SF__.ListAdd__(systems, require("System.MeleeGameSystem").new())
@@ -105,6 +106,35 @@ end
 function SF__.Program.New()
     local self = setmetatable({}, { __index = SF__.Program })
     SF__.Program.__Init(self)
+    return self
+end
+SF__.Systems = SF__.Systems or {}
+-- Systems.InitAbilitiesSystem
+local SystemBase = require("System.SystemBase")
+SF__.Systems.InitAbilitiesSystem = SF__.Systems.InitAbilitiesSystem or class("InitAbilitiesSystem", SystemBase)
+SF__.Systems.InitAbilitiesSystem.__sf_base = SystemBase
+function SF__.Systems.InitAbilitiesSystem:Awake()
+    -- 默认 技能
+    require("Ability.Evasion")
+    require("Ability.MoonWellHeal")
+    require("Ability.NativeRejuvenation")
+    -- 武器战
+    require("Ability.RageGenerator")
+    require("Ability.DeepWounds")
+    require("Ability.Overpower")
+    require("Ability.Charge")
+    require("Ability.MortalStrike")
+    require("Ability.Condemn")
+    require("Ability.BladeStorm")
+end
+
+function SF__.Systems.InitAbilitiesSystem.__Init(self)
+    self.__sf_type = SF__.Systems.InitAbilitiesSystem
+end
+
+function SF__.Systems.InitAbilitiesSystem.New()
+    local self = SF__.Systems.InitAbilitiesSystem.new()
+    SF__.Systems.InitAbilitiesSystem.__Init(self)
     return self
 end
 

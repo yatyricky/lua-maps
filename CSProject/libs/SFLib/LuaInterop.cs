@@ -7,12 +7,15 @@ using System;
 
 namespace SFLib;
 
+[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 public sealed class LuaAttribute : Attribute
 {
     public string? Name;
     public string? StaticMethod;
     public string? Method;
     public string? Module;
+    public string? Class;
+    public string? Require;
 
     public LuaAttribute()
     {
