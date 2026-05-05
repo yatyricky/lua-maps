@@ -40,9 +40,6 @@ function cls:Awake()
     --         table.addNum(self.army, GetUnitTypeId(unit), -1)
     --     end
     -- end)
-
-    print(GetPlayerController(Player(1)) == MAP_CONTROL_COMPUTER)
-    print(GetPlayerRace(Player(1)) == RACE_NIGHTELF)
 end
 
 -- function cls:Update(dt)

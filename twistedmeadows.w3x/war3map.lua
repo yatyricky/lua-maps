@@ -1,4 +1,4 @@
---sf-builder:000224600/f0c8da14cd811c27
+--sf-builder:000214070/9cb80494992a4fa6
 function SF__Bundle()
 local __sf_modules = {}
 local require = function(path)
@@ -6497,270 +6497,6 @@ end
 return cls
 end}
 
-__sf_modules["System.AIDebugSystem"]={loader=function()
----@diagnostic disable: undefined-global, missing-return
-
-local SystemBase = require("System.SystemBase")
-local Utils = require("Lib.Utils")
-
-local DebugPlayerId = 1
-local DebugPlayer = Player(DebugPlayerId)
-local SnapshotInterval = 15
-
-local HeroIds = {
-    [FourCC("Ekee")] = true,
-    [FourCC("Emoo")] = true,
-    [FourCC("Edem")] = true,
-    [FourCC("Ewar")] = true,
-}
-
-local WatchIds = {
-    FourCC("etol"),
-    FourCC("eaom"),
-    FourCC("emow"),
-    FourCC("eate"),
-    FourCC("ewsp"),
-    FourCC("earc"),
-    FourCC("esen"),
-    FourCC("edry"),
-    FourCC("edoc"),
-    FourCC("ebal"),
-    FourCC("Ekee"),
-    FourCC("Emoo"),
-    FourCC("Edem"),
-    FourCC("Ewar"),
-}
-
-local WatchIdLookup = {}
-for _, unitType in ipairs(WatchIds) do
-    WatchIdLookup[unitType] = true
-end
-
-local function idName(id)
-    if not id or id == 0 then
-        return "none"
-    end
-    return Utils.CCFour(id)
-end
-
-local function samePlayer(unit)
-    return unit and GetOwningPlayer(unit) == DebugPlayer
-end
-
-local function log(message)
-    print("[AI DEBUG] " .. message)
-end
-
-local function raceName(race)
-    if race == RACE_HUMAN then
-        return "human"
-    elseif race == RACE_ORC then
-        return "orc"
-    elseif race == RACE_UNDEAD then
-        return "undead"
-    elseif race == RACE_NIGHTELF then
-        return "nightelf"
-    end
-    return tostring(race)
-end
-
-local function controllerName(controller)
-    if controller == MAP_CONTROL_USER then
-        return "user"
-    elseif controller == MAP_CONTROL_COMPUTER then
-        return "computer"
-    elseif controller == MAP_CONTROL_RESCUABLE then
-        return "rescuable"
-    elseif controller == MAP_CONTROL_NEUTRAL then
-        return "neutral"
-    elseif controller == MAP_CONTROL_CREEP then
-        return "creep"
-    end
-    return tostring(controller)
-end
-
-local function playerStateLine()
-    return "player=" .. tostring(DebugPlayerId)
-            .. " controller=" .. controllerName(GetPlayerController(DebugPlayer))
-            .. " race=" .. raceName(GetPlayerRace(DebugPlayer))
-            .. " slot=" .. tostring(GetPlayerSlotState(DebugPlayer))
-            .. " aiDifficulty=" .. tostring(GetAIDifficulty(DebugPlayer))
-            .. " gold=" .. tostring(GetPlayerState(DebugPlayer, PLAYER_STATE_RESOURCE_GOLD))
-            .. " lumber=" .. tostring(GetPlayerState(DebugPlayer, PLAYER_STATE_RESOURCE_LUMBER))
-            .. " food=" .. tostring(GetPlayerState(DebugPlayer, PLAYER_STATE_RESOURCE_FOOD_USED))
-            .. "/" .. tostring(GetPlayerState(DebugPlayer, PLAYER_STATE_RESOURCE_FOOD_CAP))
-end
-
-local function describeUnit(unit)
-    if not unit then
-        return "nil"
-    end
-    return idName(GetUnitTypeId(unit))
-            .. " name=" .. GetUnitName(unit)
-            .. " order=" .. idName(GetUnitCurrentOrder(unit))
-            .. " hp=" .. tostring(math.floor(GetWidgetLife(unit)))
-            .. " xy=" .. tostring(math.floor(GetUnitX(unit))) .. "," .. tostring(math.floor(GetUnitY(unit)))
-end
-
-local function registerPlayerUnitEvent(eventId, callback)
-    local trigger = CreateTrigger()
-    TriggerRegisterAnyUnitEventBJ(trigger, eventId)
-    ExTriggerAddAction(trigger, callback)
-end
-
----@class AIDebugSystem : SystemBase
-local cls = class("AIDebugSystem", SystemBase)
-
-function cls:ctor()
-    self.time = 0
-    self.lastHeroCount = -1
-    self:_registerEvents()
-    log("constructed before melee startup: " .. playerStateLine())
-end
-
-function cls:Awake()
-    log("awake after melee startup: " .. playerStateLine())
-    self:_snapshot("awake")
-end
-
-function cls:Update(dt)
-    self.time = self.time + dt
-    if self.time >= SnapshotInterval then
-        self.time = self.time % SnapshotInterval
-        self:_snapshot("periodic")
-    end
-end
-
-function cls:_registerEvents()
-    ExTriggerRegisterNewUnit(function(unit)
-        if samePlayer(unit) then
-            log("unit enters map: " .. describeUnit(unit))
-        end
-    end)
-
-    ExTriggerRegisterUnitDeath(function(unit)
-        if samePlayer(unit) then
-            log("unit dies: " .. describeUnit(unit))
-        end
-    end)
-
-    ExTriggerRegisterUnitLearn(0, function(unit, level, skill)
-        if samePlayer(unit) then
-            log("hero learns: " .. describeUnit(unit) .. " skill=" .. idName(skill) .. " level=" .. tostring(level))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_START, function()
-        local unit = GetConstructingStructure()
-        if samePlayer(unit) then
-            log("construct start: " .. describeUnit(unit))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH, function()
-        local unit = GetConstructingStructure()
-        if samePlayer(unit) then
-            log("construct finish: " .. describeUnit(unit))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_CANCEL, function()
-        local unit = GetConstructingStructure()
-        if samePlayer(unit) then
-            log("construct cancel: " .. describeUnit(unit))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_TRAIN_START, function()
-        local trainer = GetTriggerUnit()
-        if samePlayer(trainer) then
-            log("train start: trainer=" .. describeUnit(trainer) .. " type=" .. idName(GetTrainedUnitType()))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_TRAIN_FINISH, function()
-        local trained = GetTrainedUnit()
-        if samePlayer(trained) then
-            log("train finish: " .. describeUnit(trained))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_TRAIN_CANCEL, function()
-        local trainer = GetTriggerUnit()
-        if samePlayer(trainer) then
-            log("train cancel: trainer=" .. describeUnit(trainer) .. " type=" .. idName(GetTrainedUnitType()))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_ISSUED_ORDER, function()
-        local unit = GetTriggerUnit()
-        if samePlayer(unit) then
-            log("order immediate: " .. describeUnit(unit) .. " issued=" .. idName(GetIssuedOrderId()))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER, function()
-        local unit = GetTriggerUnit()
-        if samePlayer(unit) then
-            log("order point: " .. describeUnit(unit) .. " issued=" .. idName(GetIssuedOrderId()))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER, function()
-        local unit = GetTriggerUnit()
-        if samePlayer(unit) then
-            log("order target: " .. describeUnit(unit) .. " issued=" .. idName(GetIssuedOrderId())
-                    .. " target=" .. describeUnit(GetOrderTargetUnit()))
-        end
-    end)
-
-    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER, function()
-        local unit = GetTriggerUnit()
-        if samePlayer(unit) then
-            log("order unit: " .. describeUnit(unit) .. " issued=" .. idName(GetIssuedOrderId())
-                    .. " target=" .. describeUnit(GetOrderTargetUnit()))
-        end
-    end)
-end
-
-function cls:_snapshot(reason)
-    local counts = {}
-    local details = {}
-    local heroes = 0
-    ExGroupEnumUnitsInMap(function(unit)
-        if samePlayer(unit) then
-            local unitType = GetUnitTypeId(unit)
-            counts[unitType] = (counts[unitType] or 0) + 1
-            if WatchIdLookup[unitType] then
-                table.insert(details, describeUnit(unit))
-            end
-            if HeroIds[unitType] then
-                heroes = heroes + 1
-            end
-        end
-    end)
-
-    log("snapshot " .. reason .. ": " .. playerStateLine() .. " heroes=" .. tostring(heroes))
-    if heroes ~= self.lastHeroCount then
-        self.lastHeroCount = heroes
-        log("hero count changed: " .. tostring(heroes))
-    end
-
-    for _, unitType in ipairs(WatchIds) do
-        local count = counts[unitType] or 0
-        if count > 0 then
-            log("count " .. idName(unitType) .. "=" .. tostring(count))
-        end
-    end
-
-    for _, detail in ipairs(details) do
-        log("unit " .. detail)
-    end
-end
-
-return cls
-end}
-
 __sf_modules["System.TwistedMeadowsSystem"]={loader=function()
 local SystemBase = require("System.SystemBase")
 local Vector2 = require("Lib.Vector2")
@@ -6935,7 +6671,6 @@ function SF__.Program.Main(args)
     SF__.ListAdd__(systems, require("System.ProjectileSystem").new())
     SF__.ListAdd__(systems, require("System.InitAbilitiesSystem").new())
     SF__.ListAdd__(systems, require("System.BuffDisplaySystem").new())
-    SF__.ListAdd__(systems, require("System.AIDebugSystem").new())
     SF__.ListAdd__(systems, require("System.TwistedMeadowsSystem").new())
     SF__.ListAdd__(systems, require("System.MeleeGameSystem").new())
     do
@@ -6983,7 +6718,7 @@ end}
 
 require("Main")
 end
---sf-builder:000224600/f0c8da14cd811c27
+--sf-builder:000214070/9cb80494992a4fa6
 function InitGlobals()
 end
 
@@ -8622,27 +8357,6 @@ u = BlzCreateUnitWithSkin(p, FourCC("nshe"), 3281.4, -1502.5, 234.796, FourCC("n
 u = BlzCreateUnitWithSkin(p, FourCC("nshe"), 4881.1, -1089.0, 210.603, FourCC("nshe"))
 u = BlzCreateUnitWithSkin(p, FourCC("nshe"), -2927.1, 2228.2, 353.529, FourCC("nshe"))
 u = BlzCreateUnitWithSkin(p, FourCC("nshe"), -1125.9, 2726.2, 240.960, FourCC("nshe"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -2328.8, 186.8, 20.193, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -522.4, -2671.6, 192.398, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 2255.9, -820.8, 227.940, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 539.1, 2240.9, 242.498, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -480.1, 2739.7, 288.817, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 2754.6, 308.6, 218.668, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 382.5, -3206.2, 349.189, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -2601.0, -910.8, 287.268, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -4246.1, 2122.9, 82.477, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -2378.6, -4601.3, 99.418, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 3518.6, -2278.5, 82.664, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 2578.9, 4334.1, 56.449, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 2482.2, 6432.7, 335.489, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 4910.9, 3730.4, 35.069, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 6505.9, -2341.8, 161.768, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 3816.0, -5398.5, 252.342, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), 2530.6, -7244.3, 181.774, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -2700.9, -6689.5, 63.865, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -7104.0, -2636.9, 24.764, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -6387.0, 2170.9, 52.802, FourCC("e001"))
-u = BlzCreateUnitWithSkin(p, FourCC("e001"), -2483.4, 6472.4, 73.688, FourCC("e001"))
 end
 
 function CreatePlayerBuildings()

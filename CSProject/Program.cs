@@ -20,7 +20,6 @@ public class Program
         
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.InitAbilitiesSystem"), "new"));
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.BuffDisplaySystem"), "new"));
-        systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.AIDebugSystem"), "new"));
 
 #if MAP_NAME_moonglade
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.MoonGladeSystem"), "new"));
