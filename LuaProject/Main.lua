@@ -50,13 +50,27 @@ end
 
 -- CrusaderStrike
 SF__.CrusaderStrike = SF__.CrusaderStrike or {}
-SF__.CrusaderStrike._1 = SF__.CrusaderStrike.Register()
-function SF__.CrusaderStrike.Register()
+SF__.CrusaderStrike.ID = FourCC("A000")
+SF__.CrusaderStrike.thePlayer = Player(0)
+function SF__.CrusaderStrike.Init()
     local EventCenter = require("Lib.EventCenter")
-    EventCenter.RegisterPlayerUnitSpellEffect:Emit({id = FourCC("A001"), handler = function(data)
-        local level = GetUnitAbilityLevel(data.caster, FourCC("A001"))
-    end})
-    return 0
+    EventCenter.RegisterPlayerUnitSpellEffect:Emit({id = SF__.CrusaderStrike.ID, handler = SF__.CrusaderStrike.Start})
+    ExTriggerRegisterNewUnit(function(u)
+        if (GetUnitTypeId(u) == FourCC("Hpal")) then
+            SF__.CrusaderStrike.UpdateAbilityMeta(u)
+        end
+    end)
+end
+
+function SF__.CrusaderStrike.UpdateAbilityMeta(u4)
+    local p5 = GetOwningPlayer(u4)
+    local UnitAttribute = require("Objects.UnitAttribute")
+    local attr = UnitAttribute.GetAttr(u4)
+    SF__.Utils.ExSetAbilityResearchTooltip(p5, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
+end
+
+function SF__.CrusaderStrike.Start(data)
+    local level6 = GetUnitAbilityLevel(data.caster, SF__.CrusaderStrike.ID)
 end
 
 function SF__.CrusaderStrike.__Init(self)
@@ -133,6 +147,7 @@ local SystemBase = require("System.SystemBase")
 SF__.Systems.InitAbilitiesSystem = SF__.Systems.InitAbilitiesSystem or class("InitAbilitiesSystem", SystemBase)
 SF__.Systems.InitAbilitiesSystem.__sf_base = SystemBase
 function SF__.Systems.InitAbilitiesSystem:Awake()
+    SF__.CrusaderStrike.Init()
 end
 
 function SF__.Systems.InitAbilitiesSystem.__Init(self)
@@ -163,6 +178,24 @@ end
 function SF__.Systems.MeleeGameSystem.New()
     local self = SF__.Systems.MeleeGameSystem.new()
     SF__.Systems.MeleeGameSystem.__Init(self)
+    return self
+end
+-- Utils
+SF__.Utils = SF__.Utils or {}
+function SF__.Utils.ExSetAbilityResearchTooltip(p, abilCode, researchTooltip, level)
+    if (GetLocalPlayer() == p) then
+        BlzSetAbilityResearchTooltip(abilCode, researchTooltip, level)
+        BJDebugMsg("update tooltip for ")
+    end
+end
+
+function SF__.Utils.__Init(self)
+    self.__sf_type = SF__.Utils
+end
+
+function SF__.Utils.New()
+    local self = setmetatable({}, { __index = SF__.Utils })
+    SF__.Utils.__Init(self)
     return self
 end
 

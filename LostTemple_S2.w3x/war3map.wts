@@ -68,3 +68,15 @@ STRING 13
 Blizzard
 }
 
+STRING 14
+// 技能: A000 (引导), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 15
+// 技能: A000 (引导), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+

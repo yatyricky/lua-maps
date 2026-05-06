@@ -1,4 +1,4 @@
---sf-builder:000070892/cfd87432b69269f1
+--sf-builder:000072959/02b0255b0a2dbbfb
 function SF__Bundle()
 local __sf_modules = {}
 local require = function(path)
@@ -176,6 +176,162 @@ function cls.Report()
     print("--- FrameUpdate ---")
     print(cls.FrameUpdate:ToString())
 end
+
+return cls
+end}
+
+__sf_modules["Objects.UnitAttribute"]={loader=function()
+local Power = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 }
+local Temp = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+
+local PositiveAtk = {
+    FourCC("A00C"),
+    FourCC("A00D"),
+    FourCC("A00E"),
+    FourCC("A00F"),
+    FourCC("A00G"),
+    FourCC("A00H"),
+    FourCC("A00I"),
+    FourCC("A00J"),
+    FourCC("A00K"),
+    FourCC("A00L"),
+    FourCC("A00M"),
+    FourCC("A00N"),
+}
+
+local PositiveHp = {
+    FourCC("A00O"),
+    FourCC("A00P"),
+    FourCC("A00Q"),
+    FourCC("A00R"),
+    FourCC("A00S"),
+    FourCC("A00T"),
+    FourCC("A00U"),
+    FourCC("A00V"),
+    FourCC("A00W"),
+    FourCC("A00X"),
+    FourCC("A00Y"),
+    FourCC("A00Z"),
+}
+
+local function i2b(v)
+    local bin = table.shallow(Temp)
+    for i = #Power, 1, -1 do
+        local b = Power[i]
+        if v >= b then
+            v = v - b
+            bin[i] = 1
+        end
+    end
+    return bin
+end
+
+---@class UnitAttribute
+local cls = class("UnitAttribute")
+
+cls.HeroAttributeType = {
+    Strength = 1,
+    Agility = 2,
+    Intelligent = 3,
+}
+
+cls.tab = {}---@type table<unit, UnitAttribute>
+
+---@return UnitAttribute
+function cls.GetAttr(unit)
+    local inst = cls.tab[unit]
+    if not inst then
+        inst = cls.new(unit)
+        if unit == nil then
+            print(GetStackTrace())
+        end
+        cls.tab[unit] = inst
+    end
+
+    return inst
+end
+
+function cls:ctor(unit)
+    self.owner = unit
+
+    self.baseAtk = BlzGetUnitBaseDamage(unit, 0) + (BlzGetUnitDiceSides(unit, 0) + 1) / 2 * BlzGetUnitDiceNumber(unit, 0)
+    self.baseHp = BlzGetUnitMaxHP(unit)
+    self.baseMs = GetUnitDefaultMoveSpeed(unit)
+
+    self._atk = table.shallow(Temp)
+    self.atk = 0
+
+    self._hp = table.shallow(Temp)
+    self.hp = 0
+
+    self.ms = 0
+    self.msp = 0
+
+    self.dodge = 0
+
+    self.damageAmplification = 0
+    self.damageReduction = 0
+    self.healingTaken = 0
+
+    self.taunted = {} ---被嘲讽的目标
+    self.absorbShields = {} ---吸收盾
+
+    self.sanity = 0
+end
+
+function cls:GetHeroMainAttr(type, ignoreBonus)
+    if not IsUnitType(self.owner, UNIT_TYPE_HERO) then
+        return 0
+    end
+    if type == cls.HeroAttributeType.Strength then
+        return GetHeroStr(self.owner, not ignoreBonus)
+    end
+    if type == cls.HeroAttributeType.Agility then
+        return GetHeroAgi(self.owner, not ignoreBonus)
+    end
+    if type == cls.HeroAttributeType.Intelligent then
+        return GetHeroInt(self.owner, not ignoreBonus)
+    end
+    return 0
+end
+
+---@param type integer HeroAttributeType
+function cls:SimAttack(type)
+    return BlzGetUnitBaseDamage(self.owner, 0) + math.random(1, BlzGetUnitDiceSides(self.owner, 0)) * BlzGetUnitDiceNumber(self.owner, 0) + self:GetHeroMainAttr(type)
+end
+
+function cls:_reflect(targetValue, currentBits, lookup)
+    local newBits = i2b(math.round(targetValue))
+    for i, b in ipairs(newBits) do
+        if b ~= currentBits[i] then
+            if b == 1 then
+                UnitAddAbility(self.owner, lookup[i])
+                UnitMakeAbilityPermanent(self.owner, true, lookup[i])
+            else
+                UnitRemoveAbility(self.owner, lookup[i])
+            end
+            currentBits[i] = b
+        end
+    end
+end
+
+function cls:Commit()
+    self:_reflect(self.atk, self._atk, PositiveAtk)
+    self:_reflect(self.hp, self._hp, PositiveHp)
+
+    local ms = self.baseMs * (1 + self.msp) + self.ms
+    SetUnitMoveSpeed(self.owner, ms)
+end
+
+function cls:TauntedBy(caster, duration)
+    table.insert(self.taunted, caster)
+    coroutine.start(function()
+        coroutine.wait(duration)
+        table.iRemoveOneLeft(self.taunted, caster)
+    end)
+end
+
+ExTriggerRegisterNewUnit(cls.GetAttr)
 
 return cls
 end}
@@ -1472,162 +1628,6 @@ end
 return cls
 end}
 
-__sf_modules["Objects.UnitAttribute"]={loader=function()
-local Power = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 }
-local Temp = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-
-local PositiveAtk = {
-    FourCC("A00C"),
-    FourCC("A00D"),
-    FourCC("A00E"),
-    FourCC("A00F"),
-    FourCC("A00G"),
-    FourCC("A00H"),
-    FourCC("A00I"),
-    FourCC("A00J"),
-    FourCC("A00K"),
-    FourCC("A00L"),
-    FourCC("A00M"),
-    FourCC("A00N"),
-}
-
-local PositiveHp = {
-    FourCC("A00O"),
-    FourCC("A00P"),
-    FourCC("A00Q"),
-    FourCC("A00R"),
-    FourCC("A00S"),
-    FourCC("A00T"),
-    FourCC("A00U"),
-    FourCC("A00V"),
-    FourCC("A00W"),
-    FourCC("A00X"),
-    FourCC("A00Y"),
-    FourCC("A00Z"),
-}
-
-local function i2b(v)
-    local bin = table.shallow(Temp)
-    for i = #Power, 1, -1 do
-        local b = Power[i]
-        if v >= b then
-            v = v - b
-            bin[i] = 1
-        end
-    end
-    return bin
-end
-
----@class UnitAttribute
-local cls = class("UnitAttribute")
-
-cls.HeroAttributeType = {
-    Strength = 1,
-    Agility = 2,
-    Intelligent = 3,
-}
-
-cls.tab = {}---@type table<unit, UnitAttribute>
-
----@return UnitAttribute
-function cls.GetAttr(unit)
-    local inst = cls.tab[unit]
-    if not inst then
-        inst = cls.new(unit)
-        if unit == nil then
-            print(GetStackTrace())
-        end
-        cls.tab[unit] = inst
-    end
-
-    return inst
-end
-
-function cls:ctor(unit)
-    self.owner = unit
-
-    self.baseAtk = BlzGetUnitBaseDamage(unit, 0) + (BlzGetUnitDiceSides(unit, 0) + 1) / 2 * BlzGetUnitDiceNumber(unit, 0)
-    self.baseHp = BlzGetUnitMaxHP(unit)
-    self.baseMs = GetUnitDefaultMoveSpeed(unit)
-
-    self._atk = table.shallow(Temp)
-    self.atk = 0
-
-    self._hp = table.shallow(Temp)
-    self.hp = 0
-
-    self.ms = 0
-    self.msp = 0
-
-    self.dodge = 0
-
-    self.damageAmplification = 0
-    self.damageReduction = 0
-    self.healingTaken = 0
-
-    self.taunted = {} ---被嘲讽的目标
-    self.absorbShields = {} ---吸收盾
-
-    self.sanity = 0
-end
-
-function cls:GetHeroMainAttr(type, ignoreBonus)
-    if not IsUnitType(self.owner, UNIT_TYPE_HERO) then
-        return 0
-    end
-    if type == cls.HeroAttributeType.Strength then
-        return GetHeroStr(self.owner, not ignoreBonus)
-    end
-    if type == cls.HeroAttributeType.Agility then
-        return GetHeroAgi(self.owner, not ignoreBonus)
-    end
-    if type == cls.HeroAttributeType.Intelligent then
-        return GetHeroInt(self.owner, not ignoreBonus)
-    end
-    return 0
-end
-
----@param type integer HeroAttributeType
-function cls:SimAttack(type)
-    return BlzGetUnitBaseDamage(self.owner, 0) + math.random(1, BlzGetUnitDiceSides(self.owner, 0)) * BlzGetUnitDiceNumber(self.owner, 0) + self:GetHeroMainAttr(type)
-end
-
-function cls:_reflect(targetValue, currentBits, lookup)
-    local newBits = i2b(math.round(targetValue))
-    for i, b in ipairs(newBits) do
-        if b ~= currentBits[i] then
-            if b == 1 then
-                UnitAddAbility(self.owner, lookup[i])
-                UnitMakeAbilityPermanent(self.owner, true, lookup[i])
-            else
-                UnitRemoveAbility(self.owner, lookup[i])
-            end
-            currentBits[i] = b
-        end
-    end
-end
-
-function cls:Commit()
-    self:_reflect(self.atk, self._atk, PositiveAtk)
-    self:_reflect(self.hp, self._hp, PositiveHp)
-
-    local ms = self.baseMs * (1 + self.msp) + self.ms
-    SetUnitMoveSpeed(self.owner, ms)
-end
-
-function cls:TauntedBy(caster, duration)
-    table.insert(self.taunted, caster)
-    coroutine.start(function()
-        coroutine.wait(duration)
-        table.iRemoveOneLeft(self.taunted, caster)
-    end)
-end
-
-ExTriggerRegisterNewUnit(cls.GetAttr)
-
-return cls
-end}
-
 __sf_modules["Config.Const"]={loader=function()
 local cls = {}
 
@@ -2454,6 +2454,40 @@ function SF__.ListSort__(list, less)
     return list
 end
 
+-- CrusaderStrike
+SF__.CrusaderStrike = SF__.CrusaderStrike or {}
+SF__.CrusaderStrike.ID = FourCC("A000")
+SF__.CrusaderStrike.thePlayer = Player(0)
+function SF__.CrusaderStrike.Init()
+    local EventCenter = require("Lib.EventCenter")
+    EventCenter.RegisterPlayerUnitSpellEffect:Emit({id = SF__.CrusaderStrike.ID, handler = SF__.CrusaderStrike.Start})
+    ExTriggerRegisterNewUnit(function(u)
+        if (GetUnitTypeId(u) == FourCC("Hpal")) then
+            SF__.CrusaderStrike.UpdateAbilityMeta(u)
+        end
+    end)
+end
+
+function SF__.CrusaderStrike.UpdateAbilityMeta(u4)
+    local p5 = GetOwningPlayer(u4)
+    local UnitAttribute = require("Objects.UnitAttribute")
+    local attr = UnitAttribute.GetAttr(u4)
+    SF__.Utils.ExSetAbilityResearchTooltip(p5, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
+end
+
+function SF__.CrusaderStrike.Start(data)
+    local level6 = GetUnitAbilityLevel(data.caster, SF__.CrusaderStrike.ID)
+end
+
+function SF__.CrusaderStrike.__Init(self)
+    self.__sf_type = SF__.CrusaderStrike
+end
+
+function SF__.CrusaderStrike.New()
+    local self = setmetatable({}, { __index = SF__.CrusaderStrike })
+    SF__.CrusaderStrike.__Init(self)
+    return self
+end
 -- Program
 require("Lib.class")
 SF__.Program = SF__.Program or {}
@@ -2519,6 +2553,7 @@ local SystemBase = require("System.SystemBase")
 SF__.Systems.InitAbilitiesSystem = SF__.Systems.InitAbilitiesSystem or class("InitAbilitiesSystem", SystemBase)
 SF__.Systems.InitAbilitiesSystem.__sf_base = SystemBase
 function SF__.Systems.InitAbilitiesSystem:Awake()
+    SF__.CrusaderStrike.Init()
 end
 
 function SF__.Systems.InitAbilitiesSystem.__Init(self)
@@ -2551,13 +2586,31 @@ function SF__.Systems.MeleeGameSystem.New()
     SF__.Systems.MeleeGameSystem.__Init(self)
     return self
 end
+-- Utils
+SF__.Utils = SF__.Utils or {}
+function SF__.Utils.ExSetAbilityResearchTooltip(p, abilCode, researchTooltip, level)
+    if (GetLocalPlayer() == p) then
+        BlzSetAbilityResearchTooltip(abilCode, researchTooltip, level)
+        BJDebugMsg("update tooltip for ")
+    end
+end
+
+function SF__.Utils.__Init(self)
+    self.__sf_type = SF__.Utils
+end
+
+function SF__.Utils.New()
+    local self = setmetatable({}, { __index = SF__.Utils })
+    SF__.Utils.__Init(self)
+    return self
+end
 
 SF__.Program.Main()
 end}
 
 require("Main")
 end
---sf-builder:000070892/cfd87432b69269f1
+--sf-builder:000072959/02b0255b0a2dbbfb
 function InitGlobals()
 end
 
@@ -3761,6 +3814,16 @@ bj_lastDyingWidget = nil
 DestroyTrigger(GetTriggeringTrigger())
 end
 
+function CreateUnitsForPlayer0()
+local p = Player(0)
+local u
+local unitID
+local t
+local life
+
+u = BlzCreateUnitWithSkin(p, FourCC("Hpal"), 485.9, -6713.5, 266.921, FourCC("Hpal"))
+end
+
 function CreateNeutralHostile()
 local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
 local u
@@ -4172,6 +4235,7 @@ function CreatePlayerBuildings()
 end
 
 function CreatePlayerUnits()
+CreateUnitsForPlayer0()
 end
 
 function CreateAllUnits()

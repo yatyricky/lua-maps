@@ -66,5 +66,9 @@ public class InitAbilitiesSystem : SystemBase
         LuaInterop.Require("Ability.DarkHeal");
         LuaInterop.Require("Ability.DarkShield");
 #endif
+
+#if MAP_NAME_losttemple
+        CrusaderStrike.Init();
+#endif
     }
 }
