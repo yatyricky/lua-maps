@@ -1,4 +1,15 @@
 SF__ = SF__ or {}
+function SF__.StrConcat__(...)
+    local result = ""
+    for i = 1, select("#", ...) do
+        local part = select(i, ...)
+        if part ~= nil then
+            result = result .. tostring(part)
+        end
+    end
+    return result
+end
+
 function SF__.ListNew__(items)
     return { items = items or {}, version = 0 }
 end
@@ -52,6 +63,10 @@ end
 SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 SF__.CrusaderStrike.ID = FourCC("A000")
 SF__.CrusaderStrike.thePlayer = Player(0)
+function SF__.CrusaderStrike.GetAbilityData(level4)
+    return (0.6499999761581421 + (0.3499999940395355 * level4)), (0.15000000596046448 * (level4 - 1))
+end
+
 function SF__.CrusaderStrike.Init()
     local EventCenter = require("Lib.EventCenter")
     EventCenter.RegisterPlayerUnitSpellEffect:Emit({id = SF__.CrusaderStrike.ID, handler = SF__.CrusaderStrike.Start})
@@ -62,19 +77,33 @@ function SF__.CrusaderStrike.Init()
     end)
 end
 
-function SF__.CrusaderStrike.UpdateAbilityMeta(u4)
-    local p5 = GetOwningPlayer(u4)
-    local UnitAttribute = require("Objects.UnitAttribute")
-    local attr = UnitAttribute.GetAttr(u4)
-    SF__.Utils.ExSetAbilityResearchTooltip(p5, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
+function SF__.CrusaderStrike.UpdateAbilityMeta(u5)
+    local p6 = GetOwningPlayer(u5)
+    SF__.Utils.ExSetAbilityResearchTooltip(p6, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
+    do
+        local i = 0
+        while (i < 3) do
+            local data__DamageScaling, data__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData((i + 1))
+            BJDebugMsg(SF__.StrConcat__("十字军打击", (i + 1), "级：伤害系数", data__DamageScaling, "，战术大师触发几率", (data__ArtOfWarChance * 100), "%"))
+            ::continue::
+            i = (i + 1)
+        end
+    end
 end
 
 function SF__.CrusaderStrike.Start(data)
-    local level6 = GetUnitAbilityLevel(data.caster, SF__.CrusaderStrike.ID)
+    local level7 = GetUnitAbilityLevel(data.caster, SF__.CrusaderStrike.ID)
+end
+
+function SF__.CrusaderStrike:OnInspector()
+    local scaleX = (self._template__DamageScaling * 15)
+    BJDebugMsg(SF__.StrConcat__("十字军打击伤害系数：", scaleX, " ", self._template__ArtOfWarChance))
 end
 
 function SF__.CrusaderStrike.__Init(self)
     self.__sf_type = SF__.CrusaderStrike
+    self._template__DamageScaling = 0
+    self._template__ArtOfWarChance = 0
 end
 
 function SF__.CrusaderStrike.New()
@@ -104,7 +133,7 @@ function SF__.Program.Main(args)
     SF__.ListAdd__(systems, SF__.Systems.MeleeGameSystem.New())
     do
         local collection = systems
-        for i, system in SF__.ListIterate__(collection) do
+        for i1, system in SF__.ListIterate__(collection) do
             system:Awake()
         end
     end
@@ -115,16 +144,16 @@ function SF__.Program.Main(args)
     end))
     DestroyGroup(group)
     do
-        local collection1 = systems
-        for i2, system1 in SF__.ListIterate__(collection1) do
+        local collection2 = systems
+        for i3, system1 in SF__.ListIterate__(collection2) do
             system1:OnEnable()
         end
     end
     local game = FrameTimer.new(function(dt)
         local now = (MathRound((Time.Time * 100)) * 0.009999999776482582)
         do
-            local collection3 = systems
-            for i4, system2 in SF__.ListIterate__(collection3) do
+            local collection4 = systems
+            for i5, system2 in SF__.ListIterate__(collection4) do
                 system2:Update(dt, now)
             end
         end
