@@ -3,10 +3,29 @@ using SFLib;
 
 public class CrusaderStrike
 {
-    public struct IAbilityData
+    public struct IAbilityData : IEquatable<IAbilityData>
     {
         public float DamageScaling;
         public float ArtOfWarChance;
+
+        public IAbilityData Scale(int scale)
+        {
+            return new IAbilityData
+            {
+                DamageScaling = DamageScaling * scale,
+                ArtOfWarChance = ArtOfWarChance * scale
+            };
+        }
+
+        public bool Equals(IAbilityData other)
+        {
+            return math.abs(DamageScaling - other.DamageScaling) < 0.0001f && math.abs(ArtOfWarChance - other.ArtOfWarChance) < 0.0001f;
+        }
+
+        public int GetHashValue()
+        {
+            return 0;
+        }
     }
 
     public static readonly int ID = FourCC("A000");
@@ -46,6 +65,12 @@ public class CrusaderStrike
         {
             var data = GetAbilityData(i + 1);
             BJDebugMsg($"十字军打击{i + 1}级：伤害系数{data.DamageScaling:F2}，战术大师触发几率{data.ArtOfWarChance * 100:F2}%");
+
+            var compare = new IAbilityData{DamageScaling = 1.5f,ArtOfWarChance = 0.25f};
+            if (compare.Equals(data))
+            {
+                BJDebugMsg("Same");
+            }
         }
     }
 

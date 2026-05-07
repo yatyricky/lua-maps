@@ -83,16 +83,20 @@ function SF__.CrusaderStrike.UpdateAbilityMeta(u5)
     do
         local i = 0
         while (i < 3) do
-            local data__DamageScaling, data__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData((i + 1))
-            BJDebugMsg(SF__.StrConcat__("十字军打击", (i + 1), "级：伤害系数", data__DamageScaling, "，战术大师触发几率", (data__ArtOfWarChance * 100), "%"))
+            local data = SF__.CrusaderStrike.GetAbilityData((i + 1))
+            BJDebugMsg(SF__.StrConcat__("十字军打击", (i + 1), "级：伤害系数", data.DamageScaling, "，战术大师触发几率", (data.ArtOfWarChance * 100), "%"))
+            local compare__DamageScaling, compare__ArtOfWarChance = 1.5, 0.25
+            if SF__.CrusaderStrike.IAbilityData.Equals(compare__DamageScaling, compare__ArtOfWarChance, data.DamageScaling, data.ArtOfWarChance) then
+                BJDebugMsg("Same")
+            end
             ::continue::
             i = (i + 1)
         end
     end
 end
 
-function SF__.CrusaderStrike.Start(data)
-    local level7 = GetUnitAbilityLevel(data.caster, SF__.CrusaderStrike.ID)
+function SF__.CrusaderStrike.Start(data7)
+    local level8 = GetUnitAbilityLevel(data7.caster, SF__.CrusaderStrike.ID)
 end
 
 function SF__.CrusaderStrike:OnInspector()
@@ -110,6 +114,20 @@ function SF__.CrusaderStrike.New()
     local self = setmetatable({}, { __index = SF__.CrusaderStrike })
     SF__.CrusaderStrike.__Init(self)
     return self
+end
+SF__.CrusaderStrike = SF__.CrusaderStrike or {}
+-- CrusaderStrike.IAbilityData
+SF__.CrusaderStrike.IAbilityData = SF__.CrusaderStrike.IAbilityData or {}
+function SF__.CrusaderStrike.IAbilityData.Scale(self__DamageScaling, self__ArtOfWarChance, scale)
+    return (self__DamageScaling * scale), (self__ArtOfWarChance * scale)
+end
+
+function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling9, self__ArtOfWarChance10, other__DamageScaling, other__ArtOfWarChance)
+    return ((math.abs((self__DamageScaling9 - other__DamageScaling)) < 9.999999747378752E-05) and (math.abs((self__ArtOfWarChance10 - other__ArtOfWarChance)) < 9.999999747378752E-05))
+end
+
+function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling11, self__ArtOfWarChance12)
+    return 0
 end
 -- Program
 require("Lib.class")
