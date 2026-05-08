@@ -60,23 +60,35 @@ public class CrusaderStrike
     public static void UpdateAbilityMeta(unit u)
     {
         var p = GetOwningPlayer(u);
-        Utils.ExSetAbilityResearchTooltip(p, ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0);
+        var datas = new List<IAbilityData>();
         for (int i = 0; i < 3; i++)
         {
-            var data = GetAbilityData(i + 1);
-            BJDebugMsg($"十字军打击{i + 1}级：伤害系数{data.DamageScaling:F2}，战术大师触发几率{data.ArtOfWarChance * 100:F2}%");
+            datas.Add(GetAbilityData(i + 1));
+        }
+        Utils.ExSetAbilityResearchTooltip(p, ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0);
+        Utils.ExBlzSetAbilityResearchExtendedTooltip(p, ID, @$"十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。
 
-            var compare = new IAbilityData{DamageScaling = 1.5f,ArtOfWarChance = 0.25f};
-            if (compare.Equals(data))
-            {
-                BJDebugMsg("Same");
-            }
+|cff99ccff冷却时间|r - 6秒
+
+|cffffcc001级|r - |cffff8c00{datas[0].DamageScaling * 100:F0}%|r的攻击伤害。
+|cffffcc002级|r - |cffff8c00{datas[1].DamageScaling * 100:F0}%|r的攻击伤害，{datas[1].ArtOfWarChance * 100:F0}%的战争艺术触发几率。
+|cffffcc003级|r - |cffff8c00{datas[2].DamageScaling * 100:F0}%|r的攻击伤害，{datas[2].ArtOfWarChance * 100:F0}%的战争艺术触发几率。", 0);
+        for (int i = 0; i < 3; i++)
+        {
+            var data = datas[i];
+            Utils.ExBlzSetAbilityTooltip(p, ID, $"十字军打击 - [|cffffcc00{i + 1}级|r]", i);
+            Utils.ExBlzSetAbilityExtendedTooltip(p, ID, @$"十字军打击造成一次攻击伤害，造成|cffff8c00{data.DamageScaling * 100:F0}%|r的攻击伤害{(i > 0 ? $"，{data.ArtOfWarChance * 100:F0}%的战争艺术触发几率" : "")}。产生|cffff8c001|r点圣能。
+
+|cff99ccff冷却时间|r - 6秒", i);
         }
     }
 
     public static void Start(ISpellData data)
     {
         var level = GetUnitAbilityLevel(data.caster, ID);
+        var ad = GetAbilityData(level);
+        var attr = UnitAttribute.GetAttr(data.caster);
+        var damage = attr.SimAttack(UnitAttribute.HeroAttributeType.Strength) * ad.DamageScaling;
     }
 
     private IAbilityData _template;
