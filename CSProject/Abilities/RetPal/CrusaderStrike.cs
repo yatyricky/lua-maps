@@ -28,6 +28,21 @@ public class CrusaderStrike
         }
     }
 
+    public class BluntData : IEquatable<BluntData>
+    {
+        public float BluntDamage;
+
+        public bool Equals(BluntData other)
+        {
+            return math.abs(BluntDamage - other.BluntDamage) < 0.0001f;
+        }
+
+        public int GetHashValue()
+        {
+            return 0;
+        }
+    }
+
     public static readonly int ID = FourCC("A000");
     public static readonly player thePlayer = Player(0);
 

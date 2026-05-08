@@ -59,12 +59,16 @@ function SF__.ListSort__(list, less)
     return list
 end
 
+function SF__.Ternary__(cond, a, b)
+    if cond then return a else return b end
+end
+
 -- CrusaderStrike
 SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 SF__.CrusaderStrike.ID = FourCC("A000")
 SF__.CrusaderStrike.thePlayer = Player(0)
-function SF__.CrusaderStrike.GetAbilityData(level4)
-    return (0.6499999761581421 + (0.3499999940395355 * level4)), (0.15000000596046448 * (level4 - 1))
+function SF__.CrusaderStrike.GetAbilityData(level13)
+    return (0.65 + (0.35 * level13)), (0.15 * (level13 - 1))
 end
 
 function SF__.CrusaderStrike.Init()
@@ -77,26 +81,37 @@ function SF__.CrusaderStrike.Init()
     end)
 end
 
-function SF__.CrusaderStrike.UpdateAbilityMeta(u5)
-    local p6 = GetOwningPlayer(u5)
-    SF__.Utils.ExSetAbilityResearchTooltip(p6, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
+function SF__.CrusaderStrike.UpdateAbilityMeta(u14)
+    local p15 = GetOwningPlayer(u14)
+    local datas = SF__.ListNew__({})
     do
         local i = 0
         while (i < 3) do
-            local data = SF__.CrusaderStrike.GetAbilityData((i + 1))
-            BJDebugMsg(SF__.StrConcat__("十字军打击", (i + 1), "级：伤害系数", data.DamageScaling, "，战术大师触发几率", (data.ArtOfWarChance * 100), "%"))
-            local compare__DamageScaling, compare__ArtOfWarChance = 1.5, 0.25
-            if SF__.CrusaderStrike.IAbilityData.Equals(compare__DamageScaling, compare__ArtOfWarChance, data.DamageScaling, data.ArtOfWarChance) then
-                BJDebugMsg("Same")
-            end
+            SF__.ListAdd__(datas, SF__.CrusaderStrike.GetAbilityData((i + 1)))
             ::continue::
             i = (i + 1)
         end
     end
+    SF__.Utils.ExSetAbilityResearchTooltip(p15, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒\r\n\r\n|cffffcc001级|r - |cffff8c00", (SF__.ListGet__(datas, 0).DamageScaling * 100), "%|r的攻击伤害。\r\n|cffffcc002级|r - |cffff8c00", (SF__.ListGet__(datas, 1).DamageScaling * 100), "%|r的攻击伤害，", (SF__.ListGet__(datas, 1).ArtOfWarChance * 100), "%的战争艺术触发几率。\r\n|cffffcc003级|r - |cffff8c00", (SF__.ListGet__(datas, 2).DamageScaling * 100), "%|r的攻击伤害，", (SF__.ListGet__(datas, 2).ArtOfWarChance * 100), "%的战争艺术触发几率。"), 0)
+    do
+        local i16 = 0
+        while (i16 < 3) do
+            local data__DamageScaling, data__ArtOfWarChance = SF__.ListGet__(datas, i16)
+            SF__.Utils.ExBlzSetAbilityTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击 - [|cffffcc00", (i16 + 1), "级|r]"), i16)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", (data__DamageScaling * 100), "%|r的攻击伤害", SF__.Ternary__((i16 > 0), SF__.StrConcat__("，", (data__ArtOfWarChance * 100), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒"), i16)
+            ::continue::
+            i16 = (i16 + 1)
+        end
+    end
 end
 
-function SF__.CrusaderStrike.Start(data7)
-    local level8 = GetUnitAbilityLevel(data7.caster, SF__.CrusaderStrike.ID)
+function SF__.CrusaderStrike.Start(data)
+    local level17 = GetUnitAbilityLevel(data.caster, SF__.CrusaderStrike.ID)
+    local UnitAttribute = require("Objects.UnitAttribute")
+    local ad__DamageScaling, ad__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData(level17)
+    local attr = UnitAttribute.GetAttr(data.caster)
+    local damage = (attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * ad__DamageScaling)
 end
 
 function SF__.CrusaderStrike:OnInspector()
@@ -115,18 +130,42 @@ function SF__.CrusaderStrike.New()
     SF__.CrusaderStrike.__Init(self)
     return self
 end
+SF__.SFLib = SF__.SFLib or {}
+-- SFLib.IEquatable
+SF__.SFLib.IEquatable = SF__.SFLib.IEquatable or {}
 SF__.CrusaderStrike = SF__.CrusaderStrike or {}
+-- CrusaderStrike.BluntData
+SF__.CrusaderStrike.BluntData = SF__.CrusaderStrike.BluntData or {}
+SF__.CrusaderStrike.BluntData.__sf_interfaces = {[SF__.SFLib.IEquatable] = true}
+function SF__.CrusaderStrike.BluntData:Equals(other)
+    return (math.abs((self.BluntDamage - other.BluntDamage)) < 0.0001)
+end
+
+function SF__.CrusaderStrike.BluntData:GetHashValue()
+    return 0
+end
+
+function SF__.CrusaderStrike.BluntData.__Init(self)
+    self.__sf_type = SF__.CrusaderStrike.BluntData
+    self.BluntDamage = 0
+end
+
+function SF__.CrusaderStrike.BluntData.New()
+    local self = setmetatable({}, { __index = SF__.CrusaderStrike.BluntData })
+    SF__.CrusaderStrike.BluntData.__Init(self)
+    return self
+end
 -- CrusaderStrike.IAbilityData
 SF__.CrusaderStrike.IAbilityData = SF__.CrusaderStrike.IAbilityData or {}
 function SF__.CrusaderStrike.IAbilityData.Scale(self__DamageScaling, self__ArtOfWarChance, scale)
     return (self__DamageScaling * scale), (self__ArtOfWarChance * scale)
 end
 
-function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling9, self__ArtOfWarChance10, other__DamageScaling, other__ArtOfWarChance)
-    return ((math.abs((self__DamageScaling9 - other__DamageScaling)) < 9.999999747378752E-05) and (math.abs((self__ArtOfWarChance10 - other__ArtOfWarChance)) < 9.999999747378752E-05))
+function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling18, self__ArtOfWarChance19, other__DamageScaling, other__ArtOfWarChance)
+    return ((math.abs((self__DamageScaling18 - other__DamageScaling)) < 0.0001) and (math.abs((self__ArtOfWarChance19 - other__ArtOfWarChance)) < 0.0001))
 end
 
-function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling11, self__ArtOfWarChance12)
+function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling20, self__ArtOfWarChance21)
     return 0
 end
 -- Program
@@ -168,7 +207,7 @@ function SF__.Program.Main(args)
         end
     end
     local game = FrameTimer.new(function(dt)
-        local now = (MathRound((Time.Time * 100)) * 0.009999999776482582)
+        local now = (MathRound((Time.Time * 100)) * 0.01)
         do
             local collection4 = systems
             for i5, system2 in SF__.ListIterate__(collection4) do
@@ -230,10 +269,31 @@ end
 -- Utils
 SF__.Utils = SF__.Utils or {}
 function SF__.Utils.ExSetAbilityResearchTooltip(p, abilCode, researchTooltip, level)
-    if (GetLocalPlayer() == p) then
-        BlzSetAbilityResearchTooltip(abilCode, researchTooltip, level)
-        BJDebugMsg("update tooltip for ")
+    if (GetLocalPlayer() ~= p) then
+        return
     end
+    BlzSetAbilityResearchTooltip(abilCode, researchTooltip, level)
+end
+
+function SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p4, abilCode5, researchExtendedTooltip, level6)
+    if (GetLocalPlayer() ~= p4) then
+        return
+    end
+    BlzSetAbilityResearchExtendedTooltip(abilCode5, researchExtendedTooltip, level6)
+end
+
+function SF__.Utils.ExBlzSetAbilityTooltip(p7, abilCode8, tooltip, level9)
+    if (GetLocalPlayer() ~= p7) then
+        return
+    end
+    BlzSetAbilityTooltip(abilCode8, tooltip, level9)
+end
+
+function SF__.Utils.ExBlzSetAbilityExtendedTooltip(p10, abilCode11, extendedTooltip, level12)
+    if (GetLocalPlayer() ~= p10) then
+        return
+    end
+    BlzSetAbilityExtendedTooltip(abilCode11, extendedTooltip, level12)
 end
 
 function SF__.Utils.__Init(self)
