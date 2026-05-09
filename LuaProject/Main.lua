@@ -10,25 +10,28 @@ function SF__.StrConcat__(...)
     return result
 end
 
+SF__.ListNil__ = SF__.ListNil__ or {}
+function SF__.ListWrap__(value)
+    return value == nil and SF__.ListNil__ or value
+end
+
+function SF__.ListUnwrap__(value)
+    if value == SF__.ListNil__ then return nil end
+    return value
+end
+
 function SF__.ListNew__(items)
-    return { items = items or {}, version = 0 }
-end
-
-function SF__.ListCount__(list)
-    return #list.items
-end
-
-function SF__.ListGet__(list, index)
-    return list.items[index + 1]
-end
-
-function SF__.ListSet__(list, index, value)
-    list.items[index + 1] = value
-    list.version = list.version + 1
+    local list = { items = {}, version = 0 }
+    if items ~= nil then
+        for i = 1, #items do
+            list.items[i] = SF__.ListWrap__(items[i])
+        end
+    end
+    return list
 end
 
 function SF__.ListAdd__(list, value)
-    table.insert(list.items, value)
+    table.insert(list.items, SF__.ListWrap__(value))
     list.version = list.version + 1
 end
 
@@ -39,24 +42,8 @@ function SF__.ListIterate__(list)
         if list.version ~= version then error("collection was modified during iteration") end
         i = i + 1
         local value = list.items[i]
-        if value ~= nil then return i, value end
+        if value ~= nil then return i, SF__.ListUnwrap__(value) end
     end
-end
-
-function SF__.ListSort__(list, less)
-    local compare = less or function(a, b) return a < b end
-    local items = list.items
-    for i = 2, #items do
-        local value = items[i]
-        local j = i - 1
-        while j >= 1 and compare(value, items[j]) do
-            items[j + 1] = items[j]
-            j = j - 1
-        end
-        items[j + 1] = value
-    end
-    list.version = list.version + 1
-    return list
 end
 
 function SF__.Ternary__(cond, a, b)
@@ -83,23 +70,27 @@ end
 
 function SF__.CrusaderStrike.UpdateAbilityMeta(u14)
     local p15 = GetOwningPlayer(u14)
-    local datas = SF__.ListNew__({})
+    local datas__DamageScaling, datas__ArtOfWarChance = {}, {}
     do
         local i = 0
         while (i < 3) do
-            SF__.ListAdd__(datas, SF__.CrusaderStrike.GetAbilityData((i + 1)))
+            do
+                local item__DamageScaling, item__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData((i + 1))
+                table.insert(datas__DamageScaling, item__DamageScaling)
+                table.insert(datas__ArtOfWarChance, item__ArtOfWarChance)
+            end
             ::continue::
             i = (i + 1)
         end
     end
     SF__.Utils.ExSetAbilityResearchTooltip(p15, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒\r\n\r\n|cffffcc001级|r - |cffff8c00", (SF__.ListGet__(datas, 0).DamageScaling * 100), "%|r的攻击伤害。\r\n|cffffcc002级|r - |cffff8c00", (SF__.ListGet__(datas, 1).DamageScaling * 100), "%|r的攻击伤害，", (SF__.ListGet__(datas, 1).ArtOfWarChance * 100), "%的战争艺术触发几率。\r\n|cffffcc003级|r - |cffff8c00", (SF__.ListGet__(datas, 2).DamageScaling * 100), "%|r的攻击伤害，", (SF__.ListGet__(datas, 2).ArtOfWarChance * 100), "%的战争艺术触发几率。"), 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害。\r\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(1 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(1 + 1)] * 100)), "%的战争艺术触发几率。\r\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(2 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(2 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
     do
         local i16 = 0
         while (i16 < 3) do
-            local data__DamageScaling, data__ArtOfWarChance = SF__.ListGet__(datas, i16)
+            local data__DamageScaling, data__ArtOfWarChance = datas__DamageScaling[(i16 + 1)], datas__ArtOfWarChance[(i16 + 1)]
             SF__.Utils.ExBlzSetAbilityTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击 - [|cffffcc00", (i16 + 1), "级|r]"), i16)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", (data__DamageScaling * 100), "%|r的攻击伤害", SF__.Ternary__((i16 > 0), SF__.StrConcat__("，", (data__ArtOfWarChance * 100), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒"), i16)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling * 100)), "%|r的攻击伤害", SF__.Ternary__((i16 > 0), SF__.StrConcat__("，", string.format("%.0f", (data__ArtOfWarChance * 100)), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒"), i16)
             ::continue::
             i16 = (i16 + 1)
         end

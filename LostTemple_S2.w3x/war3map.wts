@@ -69,13 +69,289 @@ Blizzard
 }
 
 STRING 14
-// 技能: A000 (引导), Researchtip (提示工具 - 学习)
+// 技能: A000 (crusader strike), Researchtip (提示工具 - 学习)
 {
 1
 }
 
 STRING 15
-// 技能: A000 (引导), Researchubertip (提示工具 - 学习 - 扩展)
+// 技能: A000 (crusader strike), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 16
+// 技能: A000 (crusader strike), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 17
+// 技能: A000 (crusader strike), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 18
+// 技能: A000 (crusader strike), Name (名字)
+{
+crusader strike
+}
+
+STRING 19
+// 技能: A000 (crusader strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 20
+// 技能: A000 (crusader strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 21
+// 技能: A000 (crusader strike), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 22
+// 技能: A000 (crusader strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 23
+// 技能: A000 (crusader strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 24
+// 技能: A000 (crusader strike), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 25
+// 技能: A001 (sword of justice), Name (名字)
+{
+sword of justice
+}
+
+STRING 26
+// 技能: A001 (sword of justice), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 27
+// 技能: A001 (sword of justice), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 28
+// 技能: A001 (sword of justice), Researchhotkey (热键 - 学习)
+{
+W
+}
+
+STRING 29
+// 技能: A001 (sword of justice), Hotkey (热键 - 普通)
+{
+W
+}
+
+STRING 30
+// 技能: A001 (sword of justice), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 31
+// 技能: A001 (sword of justice), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 32
+// 技能: A001 (sword of justice), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 33
+// 技能: A001 (sword of justice), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 34
+// 技能: A001 (sword of justice), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 35
+// 技能: A001 (sword of justice), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 36
+// 技能: A002 (judgement), Name (名字)
+{
+judgement
+}
+
+STRING 37
+// 技能: A002 (judgement), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 38
+// 技能: A002 (judgement), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 39
+// 技能: A002 (judgement), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 40
+// 技能: A002 (judgement), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 41
+// 技能: A002 (judgement), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 42
+// 技能: A002 (judgement), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 43
+// 技能: A002 (judgement), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 44
+// 技能: A002 (judgement), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 45
+// 技能: A002 (judgement), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 46
+// 技能: A002 (judgement), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 47
+// 技能: A003 (avenger wrath), Name (名字)
+{
+avenger wrath
+}
+
+STRING 48
+// 技能: A003 (avenger wrath), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 49
+// 技能: A003 (avenger wrath), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 50
+// 技能: A003 (avenger wrath), Researchhotkey (热键 - 学习)
+{
+R
+}
+
+STRING 51
+// 技能: A003 (avenger wrath), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 52
+// 技能: A003 (avenger wrath), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 53
+// 技能: A003 (avenger wrath), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 54
+// 技能: A003 (avenger wrath), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 55
+// 技能: A003 (avenger wrath), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 56
+// 技能: A003 (avenger wrath), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 57
+// 技能: A003 (avenger wrath), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 58
+// 技能: A004 (templar verdict), Name (名字)
+{
+templar verdict
+}
+
+STRING 59
+// 技能: A004 (templar verdict), Hotkey (热键 - 普通)
+{
+D
+}
+
+STRING 60
+// 技能: A004 (templar verdict), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 61
+// 技能: A004 (templar verdict), Ubertip (提示工具 - 普通 - 扩展)
 {
 1
 }

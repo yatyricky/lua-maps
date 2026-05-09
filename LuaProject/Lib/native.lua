@@ -213,7 +213,10 @@ TriggerRegisterEnterRegion(enterTrigger, mapArea, Filter(function() return true 
 function ExTriggerRegisterNewUnitExec(u)
     TriggerRegisterUnitEvent(acquireTrigger, u, EVENT_UNIT_ACQUIRED_TARGET)
     for _, v in ipairs(enterMapCalls) do
-        v(u)
+        local ok, msg = pcall(v, u)
+        if not ok then
+            print(msg)
+        end
     end
 end
 local ExTriggerRegisterNewUnitExec = ExTriggerRegisterNewUnitExec

@@ -17,12 +17,56 @@ public sealed class List<T>
     {
     }
 
+    public void AddRange(List<T> items)
+    {
+    }
+
+    public void AddRange(T[] items)
+    {
+    }
+
     public void Clear()
+    {
+    }
+
+    public bool Contains(T item)
+    {
+        return false;
+    }
+
+    public int IndexOf(T item)
+    {
+        return -1;
+    }
+
+    public void Insert(int index, T item)
+    {
+    }
+
+    public bool Remove(T item)
+    {
+        return false;
+    }
+
+    public void RemoveAt(int index)
+    {
+    }
+
+    public void Reverse()
     {
     }
 
     public void Sort()
     {
+    }
+
+    public void Sort(global::System.Func<T, T, bool> less)
+    {
+    }
+
+    public T[] ToArray()
+    {
+        return default!;
     }
 
     public Enumerator GetEnumerator() => default!;

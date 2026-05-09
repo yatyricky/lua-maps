@@ -2,10 +2,9 @@
 //   Do not edit by hand.
 // </auto-generated>
 #nullable enable
+namespace SFLib;
 
 using System;
-
-namespace SFLib;
 
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 public sealed class LuaAttribute : Attribute

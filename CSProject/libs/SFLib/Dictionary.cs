@@ -7,6 +7,10 @@ public sealed class Dictionary<K, V>
 {
     public int Count => 0;
 
+    public List<K> Keys => default!;
+
+    public List<V> Values => default!;
+
     public V this[K key]
     {
         get => default!;
@@ -14,6 +18,10 @@ public sealed class Dictionary<K, V>
     }
 
     public void Add(K key, V value)
+    {
+    }
+
+    public void Clear()
     {
     }
 
