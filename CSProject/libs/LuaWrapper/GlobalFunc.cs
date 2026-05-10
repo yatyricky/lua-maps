@@ -1,5 +1,6 @@
 using System;
-using SFLib;
+using SFLib.Interop;
+using SFLib.Collections;
 
 [Lua(TableLiteral = true)]
 public class IColor : LuaObject

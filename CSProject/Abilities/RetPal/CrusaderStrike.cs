@@ -1,5 +1,6 @@
 using LuaWrapper;
-using SFLib;
+using SFLib.Contracts;
+using SFLib.Collections;
 
 public class CrusaderStrike
 {
@@ -96,6 +97,9 @@ public class CrusaderStrike
 
 |cff99ccff冷却时间|r - 6秒", i);
         }
+
+        // datas.Remove(new IAbilityData { DamageScaling = 0.65f, ArtOfWarChance = 0 });
+        // datas.RemoveAt(0);
     }
 
     public static void Start(ISpellData data)

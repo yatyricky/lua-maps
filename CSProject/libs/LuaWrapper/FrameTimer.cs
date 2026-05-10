@@ -1,7 +1,7 @@
-namespace LuaWrapper;
-
 using System;
-using SFLib;
+using SFLib.Interop;
+
+namespace LuaWrapper;
 
 [Lua(Module = "Lib.FrameTimer")]
 public class FrameTimer : LuaObject

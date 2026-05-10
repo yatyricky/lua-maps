@@ -1,4 +1,5 @@
-using SFLib;
+using SFLib.Interop;
+using SFLib.Collections;
 using LuaWrapper;
 using Systems;
 

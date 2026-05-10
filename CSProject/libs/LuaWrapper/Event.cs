@@ -1,7 +1,7 @@
-namespace LuaWrapper;
-
 using System;
-using SFLib;
+using SFLib.Interop;
+
+namespace LuaWrapper;
 
 [Lua(Module = "Lib.Event.lua")]
 public class Event<T, E> : LuaObject

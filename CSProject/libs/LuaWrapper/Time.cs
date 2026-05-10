@@ -1,6 +1,6 @@
 namespace LuaWrapper;
 
-using SFLib;
+using SFLib.Interop;
 
 [Lua(Module = "Lib.Time")]
 public class Time : LuaObject

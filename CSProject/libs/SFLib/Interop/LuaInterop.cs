@@ -2,7 +2,7 @@
 //   Do not edit by hand.
 // </auto-generated>
 #nullable enable
-namespace SFLib;
+namespace SFLib.Interop;
 
 using System;
 

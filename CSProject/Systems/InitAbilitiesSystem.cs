@@ -1,7 +1,7 @@
-namespace Systems;
-
 using LuaWrapper;
-using SFLib;
+using SFLib.Interop;
+
+namespace Systems;
 
 [Lua(Class = "InitAbilitiesSystem")]
 public class InitAbilitiesSystem : SystemBase

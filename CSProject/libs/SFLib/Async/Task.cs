@@ -4,7 +4,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace SFLib;
+namespace SFLib.Async;
 
 [AsyncMethodBuilder(typeof(TaskMethodBuilder))]
 public readonly struct Task
