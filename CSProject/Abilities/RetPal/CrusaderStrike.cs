@@ -99,7 +99,7 @@ public class CrusaderStrike
         }
 
         // datas.Remove(new IAbilityData { DamageScaling = 0.65f, ArtOfWarChance = 0 });
-        // datas.RemoveAt(0);
+        datas.RemoveAt(0);
     }
 
     public static void Start(ISpellData data)
