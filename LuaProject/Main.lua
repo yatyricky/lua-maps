@@ -30,17 +30,8 @@ function SF__.ListNew__(items)
     return list
 end
 
-function SF__.ListGet__(list, index)
-    return SF__.ListUnwrap__(list.items[index + 1])
-end
-
 function SF__.ListAdd__(list, value)
     table.insert(list.items, SF__.ListWrap__(value))
-    list.version = list.version + 1
-end
-
-function SF__.ListRemoveAt__(list, index)
-    table.remove(list.items, index + 1)
     list.version = list.version + 1
 end
 
@@ -64,7 +55,7 @@ SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 SF__.CrusaderStrike.ID = FourCC("A000")
 SF__.CrusaderStrike.thePlayer = Player(0)
 function SF__.CrusaderStrike.GetAbilityData(level13)
-    return (0.65 + (0.35 * level13)), (0.15 * (level13 - 1))
+    return (1.65 + (0.35 * level13)), (0.15 * (level13 - 1))
 end
 
 function SF__.CrusaderStrike.Init()
@@ -79,21 +70,25 @@ end
 
 function SF__.CrusaderStrike.UpdateAbilityMeta(u14)
     local p15 = GetOwningPlayer(u14)
-    local datas = SF__.ListNew__({})
+    local datas__DamageScaling, datas__ArtOfWarChance = {}, {}
     do
         local i = 0
         while (i < 3) do
-            SF__.ListAdd__(datas, (function(__sf_v1, __sf_v2) return {DamageScaling = __sf_v1, ArtOfWarChance = __sf_v2} end)(SF__.CrusaderStrike.GetAbilityData((i + 1))))
+            do
+                local item__DamageScaling, item__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData((i + 1))
+                table.insert(datas__DamageScaling, item__DamageScaling)
+                table.insert(datas__ArtOfWarChance, item__ArtOfWarChance)
+            end
             ::continue::
             i = (i + 1)
         end
     end
     SF__.Utils.ExSetAbilityResearchTooltip(p15, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (SF__.ListGet__(datas, 0).DamageScaling * 100)), "%|r的攻击伤害。\r\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (SF__.ListGet__(datas, 1).DamageScaling * 100)), "%|r的攻击伤害，", string.format("%.0f", (SF__.ListGet__(datas, 1).ArtOfWarChance * 100)), "%的战争艺术触发几率。\r\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (SF__.ListGet__(datas, 2).DamageScaling * 100)), "%|r的攻击伤害，", string.format("%.0f", (SF__.ListGet__(datas, 2).ArtOfWarChance * 100)), "%的战争艺术触发几率。"), 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害。\r\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(1 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(1 + 1)] * 100)), "%的战争艺术触发几率。\r\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(2 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(2 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
     do
         local i16 = 0
         while (i16 < 3) do
-            local data__DamageScaling, data__ArtOfWarChance = SF__.ListGet__(datas, i16).DamageScaling, SF__.ListGet__(datas, i16).ArtOfWarChance
+            local data__DamageScaling, data__ArtOfWarChance = datas__DamageScaling[(i16 + 1)], datas__ArtOfWarChance[(i16 + 1)]
             SF__.Utils.ExBlzSetAbilityTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击 - [|cffffcc00", (i16 + 1), "级|r]"), i16)
             SF__.Utils.ExBlzSetAbilityExtendedTooltip(p15, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling * 100)), "%|r的攻击伤害", SF__.Ternary__((i16 > 0), SF__.StrConcat__("，", string.format("%.0f", (data__ArtOfWarChance * 100)), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒"), i16)
             ::continue::
@@ -101,15 +96,21 @@ function SF__.CrusaderStrike.UpdateAbilityMeta(u14)
         end
     end
     -- datas.Remove(new IAbilityData { DamageScaling = 0.65f, ArtOfWarChance = 0 });
-    SF__.ListRemoveAt__(datas, 0)
+    do
+        local index = 0
+        table.remove(datas__DamageScaling, (index + 1))
+        table.remove(datas__ArtOfWarChance, (index + 1))
+    end
 end
 
 function SF__.CrusaderStrike.Start(data)
     local level17 = GetUnitAbilityLevel(data.caster, SF__.CrusaderStrike.ID)
     local UnitAttribute = require("Objects.UnitAttribute")
+    local EventCenter18 = require("Lib.EventCenter")
     local ad__DamageScaling, ad__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData(level17)
     local attr = UnitAttribute.GetAttr(data.caster)
     local damage = (attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * ad__DamageScaling)
+    EventCenter18.Damage:Emit({whichUnit = data.caster, target = data.target, amount = damage, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
 end
 
 function SF__.CrusaderStrike:OnInspector()
@@ -160,11 +161,11 @@ function SF__.CrusaderStrike.IAbilityData.Scale(self__DamageScaling, self__ArtOf
     return (self__DamageScaling * scale), (self__ArtOfWarChance * scale)
 end
 
-function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling18, self__ArtOfWarChance19, other__DamageScaling, other__ArtOfWarChance)
-    return ((math.abs((self__DamageScaling18 - other__DamageScaling)) < 0.0001) and (math.abs((self__ArtOfWarChance19 - other__ArtOfWarChance)) < 0.0001))
+function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling19, self__ArtOfWarChance20, other__DamageScaling, other__ArtOfWarChance)
+    return ((math.abs((self__DamageScaling19 - other__DamageScaling)) < 0.0001) and (math.abs((self__ArtOfWarChance20 - other__ArtOfWarChance)) < 0.0001))
 end
 
-function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling20, self__ArtOfWarChance21)
+function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling21, self__ArtOfWarChance22)
     return 0
 end
 -- Program

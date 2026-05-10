@@ -1,4 +1,4 @@
---sf-builder:000079273/21d64afe31b6b677
+--sf-builder:000079903/405d35d285408e89
 function SF__Bundle()
 local __sf_modules = {}
 local require = function(path)
@@ -2464,7 +2464,7 @@ SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 SF__.CrusaderStrike.ID = FourCC("A000")
 SF__.CrusaderStrike.thePlayer = Player(0)
 function SF__.CrusaderStrike.GetAbilityData(level13)
-    return (0.65 + (0.35 * level13)), (0.15 * (level13 - 1))
+    return (1.65 + (0.35 * level13)), (0.15 * (level13 - 1))
 end
 
 function SF__.CrusaderStrike.Init()
@@ -2504,14 +2504,22 @@ function SF__.CrusaderStrike.UpdateAbilityMeta(u14)
             i16 = (i16 + 1)
         end
     end
+    -- datas.Remove(new IAbilityData { DamageScaling = 0.65f, ArtOfWarChance = 0 });
+    do
+        local index = 0
+        table.remove(datas__DamageScaling, (index + 1))
+        table.remove(datas__ArtOfWarChance, (index + 1))
+    end
 end
 
 function SF__.CrusaderStrike.Start(data)
     local level17 = GetUnitAbilityLevel(data.caster, SF__.CrusaderStrike.ID)
     local UnitAttribute = require("Objects.UnitAttribute")
+    local EventCenter18 = require("Lib.EventCenter")
     local ad__DamageScaling, ad__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData(level17)
     local attr = UnitAttribute.GetAttr(data.caster)
     local damage = (attr:SimAttack(UnitAttribute.HeroAttributeType.Strength) * ad__DamageScaling)
+    EventCenter18.Damage:Emit({whichUnit = data.caster, target = data.target, amount = damage, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
 end
 
 function SF__.CrusaderStrike:OnInspector()
@@ -2531,12 +2539,13 @@ function SF__.CrusaderStrike.New()
     return self
 end
 SF__.SFLib = SF__.SFLib or {}
--- SFLib.IEquatable
-SF__.SFLib.IEquatable = SF__.SFLib.IEquatable or {}
+SF__.SFLib.Contracts = SF__.SFLib.Contracts or {}
+-- SFLib.Contracts.IEquatable
+SF__.SFLib.Contracts.IEquatable = SF__.SFLib.Contracts.IEquatable or {}
 SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 -- CrusaderStrike.BluntData
 SF__.CrusaderStrike.BluntData = SF__.CrusaderStrike.BluntData or {}
-SF__.CrusaderStrike.BluntData.__sf_interfaces = {[SF__.SFLib.IEquatable] = true}
+SF__.CrusaderStrike.BluntData.__sf_interfaces = {[SF__.SFLib.Contracts.IEquatable] = true}
 function SF__.CrusaderStrike.BluntData:Equals(other)
     return (math.abs((self.BluntDamage - other.BluntDamage)) < 0.0001)
 end
@@ -2561,11 +2570,11 @@ function SF__.CrusaderStrike.IAbilityData.Scale(self__DamageScaling, self__ArtOf
     return (self__DamageScaling * scale), (self__ArtOfWarChance * scale)
 end
 
-function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling18, self__ArtOfWarChance19, other__DamageScaling, other__ArtOfWarChance)
-    return ((math.abs((self__DamageScaling18 - other__DamageScaling)) < 0.0001) and (math.abs((self__ArtOfWarChance19 - other__ArtOfWarChance)) < 0.0001))
+function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling19, self__ArtOfWarChance20, other__DamageScaling, other__ArtOfWarChance)
+    return ((math.abs((self__DamageScaling19 - other__DamageScaling)) < 0.0001) and (math.abs((self__ArtOfWarChance20 - other__ArtOfWarChance)) < 0.0001))
 end
 
-function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling20, self__ArtOfWarChance21)
+function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling21, self__ArtOfWarChance22)
     return 0
 end
 -- Program
@@ -2711,7 +2720,7 @@ end}
 
 require("Main")
 end
---sf-builder:000079273/21d64afe31b6b677
+--sf-builder:000079903/405d35d285408e89
 function InitGlobals()
 end
 

@@ -108,6 +108,19 @@ public class CrusaderStrike
         var ad = GetAbilityData(level);
         var attr = UnitAttribute.GetAttr(data.caster);
         var damage = attr.SimAttack(UnitAttribute.HeroAttributeType.Strength) * ad.DamageScaling;
+
+        EventCenter.Damage.Emit(new IDamageData
+        {
+            whichUnit = data.caster,
+            target = data.target,
+            amount = damage,
+            attack = true,
+            ranged = false,
+            attackType = ATTACK_TYPE_HERO,
+            damageType = DAMAGE_TYPE_NORMAL,
+            weaponType = WEAPON_TYPE_METAL_HEAVY_BASH,
+            outResult = new IDamageDataResult()
+        });
     }
 
     private IAbilityData _template;
