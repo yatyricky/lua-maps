@@ -1,4 +1,4 @@
---sf-builder:000079903/405d35d285408e89
+--sf-builder:000079069/0c060812f0c854ee
 function SF__Bundle()
 local __sf_modules = {}
 local require = function(path)
@@ -2464,7 +2464,7 @@ SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 SF__.CrusaderStrike.ID = FourCC("A000")
 SF__.CrusaderStrike.thePlayer = Player(0)
 function SF__.CrusaderStrike.GetAbilityData(level13)
-    return (1.65 + (0.35 * level13)), (0.15 * (level13 - 1))
+    return (0.65 + (0.35 * level13)), (0.15 * (level13 - 1))
 end
 
 function SF__.CrusaderStrike.Init()
@@ -2720,7 +2720,7 @@ end}
 
 require("Main")
 end
---sf-builder:000079903/405d35d285408e89
+--sf-builder:000079069/0c060812f0c854ee
 function InitGlobals()
 end
 

@@ -55,7 +55,7 @@ SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 SF__.CrusaderStrike.ID = FourCC("A000")
 SF__.CrusaderStrike.thePlayer = Player(0)
 function SF__.CrusaderStrike.GetAbilityData(level13)
-    return (1.65 + (0.35 * level13)), (0.15 * (level13 - 1))
+    return (0.65 + (0.35 * level13)), (0.15 * (level13 - 1))
 end
 
 function SF__.CrusaderStrike.Init()
