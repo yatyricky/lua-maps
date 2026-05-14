@@ -68,6 +68,7 @@ public class InitAbilitiesSystem : SystemBase
 #endif
 
 #if MAP_NAME_losttemple
+        RetributionPaladinGlobal.Instance.Init();
         CrusaderStrike.Init();
 #endif
     }

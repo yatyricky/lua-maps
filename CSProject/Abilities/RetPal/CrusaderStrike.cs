@@ -119,7 +119,15 @@ public class CrusaderStrike
             attackType = ATTACK_TYPE_HERO,
             damageType = DAMAGE_TYPE_NORMAL,
             weaponType = WEAPON_TYPE_METAL_HEAVY_BASH,
-            outResult = new IDamageDataResult()
+            outResult = new IDamageDataResult(),
+        });
+
+        EventCenter.HealMana.Emit(new IHealManaData
+        {
+            caster = data.caster,
+            target = data.caster,
+            amount = 20,
+            isPercentage = true,
         });
     }
 
