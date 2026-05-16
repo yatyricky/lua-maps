@@ -30,11 +30,11 @@ public class RetributionPaladinGlobal
                 ExSetUnitMana(u, ExGetUnitMaxMana(u) * attr.retPalHolyEnergy * 0.2f);
                 if (attr.retPalHolyEnergy >= 3)
                 {
-                    Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A004"), "ReplaceableTextures/CommandButtons/BTNspell_paladin_templarsverdict.tga");
+                    Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A006"), "ReplaceableTextures/CommandButtons/BTNinv_helmet_96.tga");
                 }
                 else
                 {
-                    Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A004"), "ReplaceableTextures/CommandButtonsDisabled/DISBTNspell_paladin_templarsverdict.tga");
+                    Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A006"), "ReplaceableTextures/PassiveButtons/PASBTNinv_helmet_96.tga");
                 }
             }
 

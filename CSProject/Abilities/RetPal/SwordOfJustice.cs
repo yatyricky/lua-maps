@@ -102,13 +102,28 @@ public class SwordOfJustice
         x = GetUnitX(target);
         y = GetUnitY(target);
         var eff = ExAddSpecialEffect("Abilities/Spells/Orc/LiquidFire/Liquidfire.mdl", x, y, ad.Duration);
+        var p = GetOwningPlayer(caster);
 
         for (int i = 0; i < ad.Duration; i++)
         {
             await Task.Delay(1000);
             ExGroupEnumUnitsInRange(x, y, 300f, u =>
             {
-                if (!IsUnitEnemy(u, GetOwningPlayer(caster))) return;
+                if (!IsUnitEnemy(u, p)) return;
+                if (ExIsUnitDead(u)) return;
+
+                EventCenter.Damage.Emit(new IDamageData
+                {
+                    whichUnit = caster,
+                    target = u,
+                    amount = ad.DamagePerSecond,
+                    attack = false,
+                    ranged = true,
+                    attackType = ATTACK_TYPE_MAGIC,
+                    damageType = DAMAGE_TYPE_MAGIC,
+                    weaponType = WEAPON_TYPE_WHOKNOWS,
+                    outResult = new IDamageDataResult(),
+                });
             });
         }
 

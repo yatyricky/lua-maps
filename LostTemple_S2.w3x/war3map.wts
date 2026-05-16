@@ -380,3 +380,27 @@ STRING 65
 F
 }
 
+STRING 66
+// 技能: A006 (word of glory), Name (名字)
+{
+word of glory
+}
+
+STRING 67
+// 技能: A006 (word of glory), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 68
+// 技能: A006 (word of glory), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 69
+// 技能: A006 (word of glory), Hotkey (热键 - 普通)
+{
+D
+}
+
