@@ -18,6 +18,7 @@ public static partial class JASS
     public static void ExGroupEnumUnitsInMap(Action<unit> callback) => throw null!;
     public static List<unit> ExGroupGetUnitsInRange(float x, float y, float radius, Action<unit> filter) => throw null!;
     public static void ExAddSpecialEffectTarget(string modelName, unit target, string attachPoint, float duration) => throw null!;
+    public static effect ExAddSpecialEffect(string modelName, float x, float y, float duration) => throw null!;
     public static effect ExAddSpecialEffect(string modelName, float x, float y, float duration, IColor color) => throw null!;
     public static void ExAddLightningPosPos(string modelName, float x1, float y1, float z1, float x2, float y2, float z2, float duration, IColor color, bool check) => throw null!;
     public static Tuple<lightning, LuaObject> ExAddLightningUnitUnit(string modelName, unit unit1, unit unit2, float duration, IColor color, bool checkVisibility) => throw null!;
