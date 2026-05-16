@@ -70,6 +70,7 @@ public class InitAbilitiesSystem : SystemBase
 #if MAP_NAME_losttemple
         RetributionPaladinGlobal.Instance.Init();
         CrusaderStrike.Init();
+        TemplarVerdict.Init();
 #endif
     }
 }

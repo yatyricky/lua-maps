@@ -32,6 +32,7 @@ public class UnitAttribute : LuaObject
     public List<unit> taunted;
     public List<BuffBase> absorbShields;
     public float sanity;
+    public int retPalHolyEnergy;
 
     public UnitAttribute(unit u) => throw null;
     public int GetHeroMainAttr(unittype type, bool ignoreBonus) => throw null;

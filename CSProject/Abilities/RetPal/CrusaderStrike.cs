@@ -29,23 +29,7 @@ public class CrusaderStrike
         }
     }
 
-    public class BluntData : IEquatable<BluntData>
-    {
-        public float BluntDamage;
-
-        public bool Equals(BluntData other)
-        {
-            return math.abs(BluntDamage - other.BluntDamage) < 0.0001f;
-        }
-
-        public int GetHashValue()
-        {
-            return 0;
-        }
-    }
-
     public static readonly int ID = FourCC("A000");
-    public static readonly player thePlayer = Player(0);
 
     public static IAbilityData GetAbilityData(int level)
     {
@@ -122,13 +106,7 @@ public class CrusaderStrike
             outResult = new IDamageDataResult(),
         });
 
-        EventCenter.HealMana.Emit(new IHealManaData
-        {
-            caster = data.caster,
-            target = data.caster,
-            amount = 20,
-            isPercentage = true,
-        });
+        attr.retPalHolyEnergy++;
     }
 
     private IAbilityData _template;

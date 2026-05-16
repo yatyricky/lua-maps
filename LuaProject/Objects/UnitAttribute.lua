@@ -94,6 +94,7 @@ function cls:ctor(unit)
     self.absorbShields = {} ---吸收盾
 
     self.sanity = 0
+    self.retPalHolyEnergy = 0
 end
 
 function cls:GetHeroMainAttr(type, ignoreBonus)

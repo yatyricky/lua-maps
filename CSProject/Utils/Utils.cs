@@ -23,4 +23,10 @@ public class Utils
         if (GetLocalPlayer() != p) return;
         BlzSetAbilityExtendedTooltip(abilCode, extendedTooltip, level);
     }
+
+    public static void ExBlzSetAbilityIcon(player p, int abilCode, string iconPath)
+    {
+        if (GetLocalPlayer() != p) return;
+        BlzSetAbilityIcon(abilCode, iconPath);
+    }
 }

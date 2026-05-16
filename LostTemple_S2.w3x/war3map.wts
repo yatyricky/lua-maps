@@ -356,3 +356,27 @@ STRING 61
 1
 }
 
+STRING 62
+// 技能: A005 (divine storm), Name (名字)
+{
+divine storm
+}
+
+STRING 63
+// 技能: A005 (divine storm), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 64
+// 技能: A005 (divine storm), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 65
+// 技能: A005 (divine storm), Hotkey (热键 - 普通)
+{
+F
+}
+
