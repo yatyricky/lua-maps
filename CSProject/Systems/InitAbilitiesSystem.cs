@@ -71,6 +71,7 @@ public class InitAbilitiesSystem : SystemBase
         RetributionPaladinGlobal.Instance.Init();
         TemplarStrikes.Init();
         BladeOfJustice.Init();
+        DivineToll.Init();
         WordOfGlory.Init();
 #endif
     }

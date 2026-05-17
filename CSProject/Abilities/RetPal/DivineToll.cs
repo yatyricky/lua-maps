@@ -9,13 +9,14 @@ public class DivineToll
 
     public struct IAbilityData : IEquatable<IAbilityData>
     {
+        public int TargetCount;
         public float Damage;
+        public float RadiantDmgAmp;
         public float Duration;
-        public float DamagePerSecond;
 
         public bool Equals(IAbilityData other)
         {
-            return math.abs(Damage - other.Damage) < 0.0001f && math.abs(Duration - other.Duration) < 0.0001f && math.abs(DamagePerSecond - other.DamagePerSecond) < 0.0001f;
+            return math.abs(Damage - other.Damage) < 0.0001f && math.abs(Duration - other.Duration) < 0.0001f && math.abs(RadiantDmgAmp - other.RadiantDmgAmp) < 0.0001f;
         }
     }
 
@@ -23,9 +24,10 @@ public class DivineToll
     {
         return new IAbilityData
         {
-            Damage = 75f * level,
-            Duration = 5f,
-            DamagePerSecond = 10f * level
+            TargetCount = 2 + level,
+            Damage = 50f * level,
+            RadiantDmgAmp = 0.1f,
+            Duration = 10f,
         };
     }
 
@@ -50,23 +52,25 @@ public class DivineToll
     {
         var p = GetOwningPlayer(u);
         var datas = new List<IAbilityData>();
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 3; i++)
         {
             datas.Add(GetAbilityData(i + 1));
         }
-        Utils.ExSetAbilityResearchTooltip(p, ID, "学习公正之剑 - [|cffffcc00%d级|r]", 0);
-        Utils.ExBlzSetAbilityResearchExtendedTooltip(p, ID, @$"公正之剑造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。
+        Utils.ExSetAbilityResearchTooltip(p, ID, "学习圣洁鸣钟 - [|cffffcc00%d级|r]", 0);
+        Utils.ExBlzSetAbilityResearchExtendedTooltip(p, ID, @$"对附近的多个目标施展审判，造成法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高。每个审判产生|cffff8c001|r点圣能。
 
-|cff99ccff冷却时间|r - 5秒
+|cff99ccff冷却时间|r - 30秒
 
-|cffffcc001级|r - |cffff8c00{datas[0].Damage * 100:F0}%|r的攻击伤害，{datas[0].Damage * 100:F0}%的战争艺术触发几率。", 0);
-        for (int i = 0; i < 1; i++)
+|cffffcc001级|r - 审判最多|cffff8c00{datas[0].TargetCount}|r个目标，造成|cffff8c00{datas[0].Damage}|r点法术伤害，神圣之锤造成|cffff8c00{datas[0].RadiantDmgAmp*100:F0}%|r的光辉易伤，持续|cffff8c00{datas[0].Duration}|r秒。
+|cffffcc002级|r - 审判最多|cffff8c00{datas[1].TargetCount}|r个目标，造成|cffff8c00{datas[1].Damage}|r点法术伤害，神圣之锤造成|cffff8c00{datas[1].RadiantDmgAmp*100:F0}%|r的光辉易伤，持续|cffff8c00{datas[1].Duration}|r秒。
+|cffffcc003级|r - 审判最多|cffff8c00{datas[2].TargetCount}|r个目标，造成|cffff8c00{datas[2].Damage}|r点法术伤害，神圣之锤造成|cffff8c00{datas[2].RadiantDmgAmp*100:F0}%|r的光辉易伤，持续|cffff8c00{datas[2].Duration}|r秒。", 0);
+        for (int i = 0; i < 3; i++)
         {
             var data = datas[i];
-            Utils.ExBlzSetAbilityTooltip(p, ID, $"公正之剑 - [|cffffcc00{i + 1}级|r]", i);
-            Utils.ExBlzSetAbilityExtendedTooltip(p, ID, @$"公正之剑造成一次攻击伤害，造成|cffff8c00{data.Damage * 100:F0}%|r的攻击伤害。消耗|cffff8c003|r点圣能。
+            Utils.ExBlzSetAbilityTooltip(p, ID, $"圣洁鸣钟 - [|cffffcc00{i + 1}级|r]", i);
+            Utils.ExBlzSetAbilityExtendedTooltip(p, ID, @$"对附近的最多|cffff8c00{data.TargetCount}|r个目标施展审判，造成|cffff8c00{data.Damage}|r点法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高|cffff8c00{data.RadiantDmgAmp*100:F0}%|r，持续|cffff8c00{data.Duration}|r秒。每个审判产生|cffff8c001|r点圣能。
 
-|cff99ccff冷却时间|r - 5秒", i);
+|cff99ccff冷却时间|r - 30秒", i);
         }
     }
 
@@ -89,7 +93,7 @@ public class DivineToll
         });
 
         RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1);
-        new BladeOfJustice().StartGroudDamage(data.caster, data.target, ad);
+        // new BladeOfJustice().StartGroudDamage(data.caster, data.target, ad);
     }
 
     private float x;
@@ -111,12 +115,12 @@ public class DivineToll
                 if (ExIsUnitDead(u)) return;
 
                 var tarAttr = UnitAttribute.GetAttr(u);
-                var damage = ad.DamagePerSecond * (1 - tarAttr.radiantResistance);
+                // var damage = ad.DamagePerSecond * (1 - tarAttr.radiantResistance);
                 EventCenter.Damage.Emit(new IDamageData
                 {
                     whichUnit = caster,
                     target = u,
-                    amount = damage,
+                    amount = 100f,
                     attack = false,
                     ranged = true,
                     attackType = ATTACK_TYPE_HERO,
