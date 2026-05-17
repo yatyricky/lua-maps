@@ -6,6 +6,9 @@ using SFLib.Interop;
 public class math : LuaObject
 { 
     public static float abs(float value) => throw null;
+    public static float min(float val1, float val2) => throw null;
+    public static int min(int val1, int val2) => throw null;
+    public static int round(float value) => throw null;
 }
 
 #pragma warning restore CS8597 // Thrown value may be null.

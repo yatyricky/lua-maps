@@ -1,10 +1,17 @@
 using SFLib.Collections;
 using SFLib.Async;
+using SFLib.Interop;
 using LuaWrapper;
 
 public class RetributionPaladinGlobal
 {
     public static RetributionPaladinGlobal Instance { get; } = new RetributionPaladinGlobal();
+
+    public static void IncreaseHolyEnergy(unit u, int amount)
+    {
+        var attr = UnitAttribute.GetAttr(u);
+        attr.retPalHolyEnergy = math.min(attr.retPalHolyEnergy + amount, 5);
+    }
 
     private List<unit> _units = new();
 

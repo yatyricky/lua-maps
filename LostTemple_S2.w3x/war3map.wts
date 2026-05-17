@@ -404,3 +404,69 @@ STRING 69
 D
 }
 
+STRING 70
+// 技能: A007 (templar strikes), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 71
+// 技能: A007 (templar strikes), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 72
+// 技能: A007 (templar strikes), Researchhotkey (热键 - 学习)
+{
+Q
+}
+
+STRING 73
+// 技能: A007 (templar strikes), Hotkey (热键 - 普通)
+{
+Q
+}
+
+STRING 74
+// 技能: A007 (templar strikes), Name (名字)
+{
+templar strikes
+}
+
+STRING 75
+// 技能: A007 (templar strikes), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 76
+// 技能: A007 (templar strikes), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 77
+// 技能: A007 (templar strikes), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 78
+// 技能: A007 (templar strikes), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 79
+// 技能: A007 (templar strikes), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 80
+// 技能: A007 (templar strikes), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
