@@ -37,6 +37,7 @@ public class UnitAttribute : LuaObject
     public UnitAttribute(unit u) => throw null;
     public int GetHeroMainAttr(unittype type, bool ignoreBonus) => throw null;
     public int SimAttack(int type) => throw null;
+    public int SimMeleeAttack() => throw null;
     public void Commit() => throw null;
     public void TauntedBy(unit caster, float duration) => throw null;
 #pragma warning restore CS8597 // Thrown value may be null.

@@ -1,4 +1,4 @@
---sf-builder:000102138/53e16fbe7ac2d773
+--sf-builder:000102402/3db28d26696854c3
 function SF__Bundle()
 local __sf_modules = {}
 local require = function(path)
@@ -299,6 +299,10 @@ end
 ---@param type integer HeroAttributeType
 function cls:SimAttack(type)
     return BlzGetUnitBaseDamage(self.owner, 0) + math.random(1, BlzGetUnitDiceSides(self.owner, 0)) * BlzGetUnitDiceNumber(self.owner, 0) + self:GetHeroMainAttr(type)
+end
+
+function cls:SimMeleeAttack()
+    return BlzGetUnitBaseDamage(self.owner, 0) + math.random(1, BlzGetUnitDiceSides(self.owner, 0)) * BlzGetUnitDiceNumber(self.owner, 0)
 end
 
 function cls:_reflect(targetValue, currentBits, lookup)
@@ -2926,15 +2930,18 @@ function SF__.TemplarStrikes.Start(data61)
         local UnitAttribute64 = require("Objects.UnitAttribute")
         local EventCenter65 = require("Lib.EventCenter")
         local attr63 = UnitAttribute64.GetAttr(data61.caster)
-        local normalDamage = attr63:SimAttack(UnitAttribute64.HeroAttributeType.Strength)
-        SetUnitTimeScale(data61.caster, 2)
+        local normalDamage = attr63:SimMeleeAttack()
         EventCenter65.Damage:Emit({whichUnit = data61.caster, target = data61.target, amount = normalDamage, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
-        SF__.CorWait__(math.round(((1.166 * 0.5) * 1000)))
-        SetUnitAnimationByIndex(data61.caster, 11)
+        SetUnitTimeScale(data61.caster, 3)
+        ResetUnitAnimation(data61.caster)
+        SetUnitAnimation(data61.caster, "attack - 2")
+        SF__.CorWait__(math.round(((1.166 * 0.33) * 1000)))
         local ad__AttackCount, ad__DamageScaling66, ad__ResetBOJChance = SF__.TemplarStrikes.GetAbilityData(level62)
-        local radiantDamage = (attr63:SimAttack(UnitAttribute64.HeroAttributeType.Strength) * ad__DamageScaling66)
+        local radiantDamage = (attr63:SimMeleeAttack() * ad__DamageScaling66)
         EventCenter65.Damage:Emit({whichUnit = data61.caster, target = data61.target, amount = radiantDamage, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_MAGIC, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
         SetUnitTimeScale(data61.caster, 1)
+        ResetUnitAnimation(data61.caster)
+        BlzEndUnitAbilityCooldown(data61.caster, SF__.TemplarStrikes.ID)
     end)
 end
 
@@ -3148,7 +3155,7 @@ end}
 
 require("Main")
 end
---sf-builder:000102138/53e16fbe7ac2d773
+--sf-builder:000102402/3db28d26696854c3
 function InitGlobals()
 end
 

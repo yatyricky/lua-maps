@@ -79,9 +79,8 @@ public class TemplarStrikes
     {
         var level = GetUnitAbilityLevel(data.caster, ID);
         var attr = UnitAttribute.GetAttr(data.caster);
-        var normalDamage = attr.SimAttack(UnitAttribute.HeroAttributeType.Strength);
+        var normalDamage = attr.SimMeleeAttack();
 
-        SetUnitTimeScale(data.caster, 2f);
         EventCenter.Damage.Emit(new IDamageData
         {
             whichUnit = data.caster,
@@ -95,11 +94,13 @@ public class TemplarStrikes
             outResult = new IDamageDataResult(),
         });
 
-        await Task.Delay(math.round(1.166f * 0.5f * 1000));
-        SetUnitAnimationByIndex(data.caster, 11);
+        SetUnitTimeScale(data.caster, 3f);
+        ResetUnitAnimation(data.caster);
+        SetUnitAnimation(data.caster, "attack - 2");
+        await Task.Delay(math.round(1.166f * 0.33f * 1000));
 
         var ad = GetAbilityData(level);
-        var radiantDamage = attr.SimAttack(UnitAttribute.HeroAttributeType.Strength) * ad.DamageScaling;
+        var radiantDamage = attr.SimMeleeAttack() * ad.DamageScaling;
         EventCenter.Damage.Emit(new IDamageData
         {
             whichUnit = data.caster,
@@ -114,5 +115,6 @@ public class TemplarStrikes
         });
 
         SetUnitTimeScale(data.caster, 1f);
+        ResetUnitAnimation(data.caster);
     }
 }

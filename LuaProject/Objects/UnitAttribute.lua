@@ -118,6 +118,10 @@ function cls:SimAttack(type)
     return BlzGetUnitBaseDamage(self.owner, 0) + math.random(1, BlzGetUnitDiceSides(self.owner, 0)) * BlzGetUnitDiceNumber(self.owner, 0) + self:GetHeroMainAttr(type)
 end
 
+function cls:SimMeleeAttack()
+    return BlzGetUnitBaseDamage(self.owner, 0) + math.random(1, BlzGetUnitDiceSides(self.owner, 0)) * BlzGetUnitDiceNumber(self.owner, 0)
+end
+
 function cls:_reflect(targetValue, currentBits, lookup)
     local newBits = i2b(math.round(targetValue))
     for i, b in ipairs(newBits) do
