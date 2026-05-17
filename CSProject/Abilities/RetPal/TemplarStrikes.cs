@@ -47,6 +47,26 @@ public class TemplarStrikes
                 SetHeroLevel(u, 10, true);
             }
         });
+
+        EventCenter.RegisterPlayerUnitDamaged.Emit((caster, target, damage, weapType, dmgType, isAttack) =>
+        {
+            if (GetUnitAbilityLevel(caster, ID) <= 0) return;
+            if (!isAttack) return;
+            if (target == null) return;
+            if (ExIsUnitDead(target)) return;
+
+            TryResetBOJ(caster);
+        });
+    }
+
+    private static void TryResetBOJ(unit caster)
+    {
+        var level = GetUnitAbilityLevel(caster, ID);
+        var ad = GetAbilityData(level);
+        if (math.random() >= ad.ResetBOJChance) return;
+
+        BlzEndUnitAbilityCooldown(caster, BladeOfJustice.ID);
+        ExAddSpecialEffectTarget("Abilities/Spells/Items/AIam/AIamTarget.mdl", caster, "origin", 0.3f);
     }
 
     public static void UpdateAbilityMeta(unit u)
@@ -93,14 +113,16 @@ public class TemplarStrikes
             weaponType = WEAPON_TYPE_METAL_HEAVY_BASH,
             outResult = new IDamageDataResult(),
         });
+        TryResetBOJ(data.caster);
 
         SetUnitTimeScale(data.caster, 3f);
         ResetUnitAnimation(data.caster);
         SetUnitAnimation(data.caster, "attack - 2");
         await Task.Delay(math.round(1.166f * 0.33f * 1000));
 
+        var tarAttr = UnitAttribute.GetAttr(data.target);
         var ad = GetAbilityData(level);
-        var radiantDamage = attr.SimMeleeAttack() * ad.DamageScaling;
+        var radiantDamage = attr.SimMeleeAttack() * ad.DamageScaling * (1 - tarAttr.radiantResistance);
         EventCenter.Damage.Emit(new IDamageData
         {
             whichUnit = data.caster,
@@ -113,6 +135,7 @@ public class TemplarStrikes
             weaponType = WEAPON_TYPE_METAL_HEAVY_BASH,
             outResult = new IDamageDataResult(),
         });
+        TryResetBOJ(data.caster);
 
         SetUnitTimeScale(data.caster, 1f);
         ResetUnitAnimation(data.caster);

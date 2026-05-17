@@ -95,6 +95,7 @@ function cls:ctor(unit)
 
     self.sanity = 0
     self.retPalHolyEnergy = 0
+    self.radiantResistance = 0
 end
 
 function cls:GetHeroMainAttr(type, ignoreBonus)

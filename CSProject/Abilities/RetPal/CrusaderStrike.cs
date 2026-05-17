@@ -108,12 +108,4 @@ public class CrusaderStrike
 
         attr.retPalHolyEnergy++;
     }
-
-    private IAbilityData _template;
-
-    private void OnInspector()
-    {
-        var scaleX = _template.DamageScaling * 15;
-        BJDebugMsg($"十字军打击伤害系数：{scaleX} {_template.ArtOfWarChance}");
-    }
 }

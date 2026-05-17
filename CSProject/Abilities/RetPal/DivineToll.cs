@@ -3,9 +3,9 @@ using SFLib.Contracts;
 using SFLib.Collections;
 using System.Threading.Tasks;
 
-public class SwordOfJustice
+public class DivineToll
 {
-    public static readonly int ID = FourCC("A001");
+    public static readonly int ID = FourCC("A008");
 
     public struct IAbilityData : IEquatable<IAbilityData>
     {
@@ -74,7 +74,6 @@ public class SwordOfJustice
     {
         var level = GetUnitAbilityLevel(data.caster, ID);
         var ad = GetAbilityData(level);
-        var attr = UnitAttribute.GetAttr(data.caster);
 
         EventCenter.Damage.Emit(new IDamageData
         {
@@ -83,15 +82,14 @@ public class SwordOfJustice
             amount = ad.Damage,
             attack = false,
             ranged = true,
-            attackType = ATTACK_TYPE_MAGIC,
+            attackType = ATTACK_TYPE_HERO,
             damageType = DAMAGE_TYPE_MAGIC,
             weaponType = WEAPON_TYPE_WHOKNOWS,
             outResult = new IDamageDataResult(),
         });
 
-        attr.retPalHolyEnergy++;
-
-        new SwordOfJustice().StartGroudDamage(data.caster, data.target, ad);
+        RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1);
+        new BladeOfJustice().StartGroudDamage(data.caster, data.target, ad);
     }
 
     private float x;
@@ -112,14 +110,16 @@ public class SwordOfJustice
                 if (!IsUnitEnemy(u, p)) return;
                 if (ExIsUnitDead(u)) return;
 
+                var tarAttr = UnitAttribute.GetAttr(u);
+                var damage = ad.DamagePerSecond * (1 - tarAttr.radiantResistance);
                 EventCenter.Damage.Emit(new IDamageData
                 {
                     whichUnit = caster,
                     target = u,
-                    amount = ad.DamagePerSecond,
+                    amount = damage,
                     attack = false,
                     ranged = true,
-                    attackType = ATTACK_TYPE_MAGIC,
+                    attackType = ATTACK_TYPE_HERO,
                     damageType = DAMAGE_TYPE_MAGIC,
                     weaponType = WEAPON_TYPE_WHOKNOWS,
                     outResult = new IDamageDataResult(),

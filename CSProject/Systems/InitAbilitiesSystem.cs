@@ -70,7 +70,7 @@ public class InitAbilitiesSystem : SystemBase
 #if MAP_NAME_losttemple
         RetributionPaladinGlobal.Instance.Init();
         TemplarStrikes.Init();
-        SwordOfJustice.Init();
+        BladeOfJustice.Init();
         WordOfGlory.Init();
 #endif
     }

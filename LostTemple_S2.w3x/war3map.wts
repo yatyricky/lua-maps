@@ -470,3 +470,69 @@ STRING 80
 1
 }
 
+STRING 81
+// 技能: A008 (divine toll), Name (名字)
+{
+divine toll
+}
+
+STRING 82
+// 技能: A008 (divine toll), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 83
+// 技能: A008 (divine toll), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 84
+// 技能: A008 (divine toll), Hotkey (热键 - 普通)
+{
+E
+}
+
+STRING 85
+// 技能: A008 (divine toll), Researchhotkey (热键 - 学习)
+{
+E
+}
+
+STRING 86
+// 技能: A008 (divine toll), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 87
+// 技能: A008 (divine toll), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 88
+// 技能: A008 (divine toll), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 89
+// 技能: A008 (divine toll), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 90
+// 技能: A008 (divine toll), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 91
+// 技能: A008 (divine toll), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
