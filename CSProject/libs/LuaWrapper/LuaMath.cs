@@ -8,6 +8,8 @@ public class math : LuaObject
     public static float abs(float value) => throw null;
     public static float min(float val1, float val2) => throw null;
     public static int min(int val1, int val2) => throw null;
+    public static float max(float val1, float val2) => throw null;
+    public static int max(int val1, int val2) => throw null;
     public static int round(float value) => throw null;
     public static float random() => throw null;
     public static float sin(float radiant) => throw null;
