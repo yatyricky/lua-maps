@@ -105,7 +105,7 @@ public struct Vector2 : IEquatable<Vector2>
         this.y = y;
     }
 
-    public Vector2 SetMagnitude(float mag)
+    public Vector2 ClampMagnitude(float mag)
     {
         return Normalized * mag;
     }

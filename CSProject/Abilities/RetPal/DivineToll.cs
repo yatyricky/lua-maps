@@ -95,42 +95,4 @@ public class DivineToll
         RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1);
         // new BladeOfJustice().StartGroudDamage(data.caster, data.target, ad);
     }
-
-    private float x;
-    private float y;
-
-    private async void StartGroudDamage(unit caster, unit target, IAbilityData ad)
-    {
-        x = GetUnitX(target);
-        y = GetUnitY(target);
-        var eff = ExAddSpecialEffect("Abilities/Spells/Orc/LiquidFire/Liquidfire.mdl", x, y, ad.Duration);
-        var p = GetOwningPlayer(caster);
-
-        for (int i = 0; i < ad.Duration; i++)
-        {
-            await Task.Delay(1000);
-            ExGroupEnumUnitsInRange(x, y, 300f, u =>
-            {
-                if (!IsUnitEnemy(u, p)) return;
-                if (ExIsUnitDead(u)) return;
-
-                var tarAttr = UnitAttribute.GetAttr(u);
-                // var damage = ad.DamagePerSecond * (1 - tarAttr.radiantResistance);
-                EventCenter.Damage.Emit(new IDamageData
-                {
-                    whichUnit = caster,
-                    target = u,
-                    amount = 100f,
-                    attack = false,
-                    ranged = true,
-                    attackType = ATTACK_TYPE_HERO,
-                    damageType = DAMAGE_TYPE_MAGIC,
-                    weaponType = WEAPON_TYPE_WHOKNOWS,
-                    outResult = new IDamageDataResult(),
-                });
-            });
-        }
-
-        DestroyEffect(eff);
-    }
 }

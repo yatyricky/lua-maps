@@ -94,20 +94,16 @@ public class BladeOfJustice
         new BladeOfJustice().StartGroudDamage(data.caster, data.target, ad);
     }
 
-    private float x;
-    private float y;
-
     private async void StartGroudDamage(unit caster, unit target, IAbilityData ad)
     {
-        x = GetUnitX(target);
-        y = GetUnitY(target);
-        var eff = ExAddSpecialEffect("Abilities/Spells/Orc/LiquidFire/Liquidfire.mdl", x, y, ad.Duration);
+        var pos = Vector2.FromUnit(target);
+        var eff = ExAddSpecialEffect("Abilities/Spells/Orc/LiquidFire/Liquidfire.mdl", pos.x, pos.y, ad.Duration);
         var p = GetOwningPlayer(caster);
 
         for (int i = 0; i < ad.Duration; i++)
         {
             await Task.Delay(1000);
-            ExGroupEnumUnitsInRange(x, y, 300f, u =>
+            ExGroupEnumUnitsInRange(pos.x, pos.y, 300f, u =>
             {
                 if (!IsUnitEnemy(u, p)) return;
                 if (ExIsUnitDead(u)) return;
