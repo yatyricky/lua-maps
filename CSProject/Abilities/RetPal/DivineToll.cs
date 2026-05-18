@@ -36,7 +36,7 @@ public class DivineToll
         EventCenter.RegisterPlayerUnitSpellEffect.Emit(new IRegisterSpellEvent
         {
             id = ID,
-            handler = Start
+            handler = async data => await Start(data)
         });
 
         ExTriggerRegisterNewUnit(u =>
@@ -74,25 +74,15 @@ public class DivineToll
         }
     }
 
-    public static void Start(ISpellData data)
+    public static async Task Start(ISpellData data)
     {
-        var level = GetUnitAbilityLevel(data.caster, ID);
-        var ad = GetAbilityData(level);
+        var pos = Vector2.FromUnit(data.caster);
+        var eff = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos.x, pos.y);
 
-        EventCenter.Damage.Emit(new IDamageData
+        while (true)
         {
-            whichUnit = data.caster,
-            target = data.target,
-            amount = ad.Damage,
-            attack = false,
-            ranged = true,
-            attackType = ATTACK_TYPE_HERO,
-            damageType = DAMAGE_TYPE_MAGIC,
-            weaponType = WEAPON_TYPE_WHOKNOWS,
-            outResult = new IDamageDataResult(),
-        });
-
-        RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1);
-        // new BladeOfJustice().StartGroudDamage(data.caster, data.target, ad);
+            await Task.Delay(16);
+            var rotation = Quaternion.Euler(0f, 90f, 0f);
+        }
     }
 }

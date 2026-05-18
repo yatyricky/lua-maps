@@ -69,6 +69,8 @@ public sealed class List<T>
         return default!;
     }
 
+    public int RemoveAll(global::System.Predicate<T> match) => throw null;
+
     public Enumerator GetEnumerator() => default!;
 
     public class Enumerator

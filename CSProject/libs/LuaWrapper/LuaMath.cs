@@ -16,6 +16,9 @@ public class math : LuaObject
     public static float cos(float radiant) => throw null;
     public static float pi => throw null;
     public static float sqrt(float val) => throw null;
+    public static float atan2(float y, float x) => throw null;
+    public static int sign(float value) => throw null;
+    public static float asin(float value) => throw null;
 }
 
 #pragma warning restore CS8597 // Thrown value may be null.
