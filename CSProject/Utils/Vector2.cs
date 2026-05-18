@@ -4,19 +4,9 @@ using SFLib.Contracts;
 #pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
 public struct Vector2 : IEquatable<Vector2>
 {
-    public float x;
-    public float y;
+    public static Vector2 Zero => new(0, 0);
 
-    public Vector2(float x, float y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    public static Vector2 FromUnit(unit u)
-    {
-        return new Vector2(GetUnitX(u), GetUnitY(u));
-    }
+    private static location _loc = Location(0, 0);
 
     public static Vector2 InsideUnitCircle()
     {
@@ -34,9 +24,9 @@ public struct Vector2 : IEquatable<Vector2>
         return a.y * b.x - a.x * b.y;
     }
 
-    public static Vector2 operator -(Vector2 a, Vector2 b)
+    public static Vector2 operator -(Vector2 a)
     {
-        return new Vector2(a.x - b.x, a.y - b.y);
+        return new Vector2(-a.x, -a.y);
     }
 
     public static Vector2 operator +(Vector2 a, Vector2 b)
@@ -44,9 +34,24 @@ public struct Vector2 : IEquatable<Vector2>
         return new Vector2(a.x + b.x, a.y + b.y);
     }
 
-    public static Vector2 operator -(Vector2 a)
+    public static Vector2 operator -(Vector2 a, Vector2 b)
     {
-        return new Vector2(-a.x, -a.y);
+        return new Vector2(a.x - b.x, a.y - b.y);
+    }
+
+    public static Vector2 operator *(Vector2 v, float f)
+    {
+        return new Vector2(v.x * f, v.y * f);
+    }
+
+    public static Vector2 operator *(float f, Vector2 v)
+    {
+        return new Vector2(v.x * f, v.y * f);
+    }
+
+    public static Vector2 operator /(Vector2 v, float f)
+    {
+        return new Vector2(v.x / f, v.y / f);
     }
 
     public static bool operator ==(Vector2 a, Vector2 b)
@@ -66,14 +71,6 @@ public struct Vector2 : IEquatable<Vector2>
         return (v1 - v2).Magnitude;
     }
 
-    public float Magnitude => math.sqrt(SqrMagnitude);
-    public float SqrMagnitude => x * x + y * y;
-
-    public bool Equals(Vector2 other)
-    {
-        return this == other;
-    }
-
     public static float SqrUnitDistance(unit a, unit b)
     {
         var v1 = FromUnit(a);
@@ -81,26 +78,16 @@ public struct Vector2 : IEquatable<Vector2>
         return (v1 - v2).SqrMagnitude;
     }
 
-    public void UnitMoveTo(unit u)
+    public static Vector2 FromUnit(unit u)
     {
-        SetUnitX(u, x);
-        SetUnitY(u, y);
+        return new Vector2(GetUnitX(u), GetUnitY(u));
     }
 
-    public static Vector2 operator *(Vector2 v, float f)
-    {
-        return new Vector2(v.x * f, v.y * f);
-    }
+    public float x;
+    public float y;
 
-    public static Vector2 operator *(float f, Vector2 v)
-    {
-        return new Vector2(v.x * f, v.y * f);
-    }
-
-    public static Vector2 operator /(Vector2 v, float f)
-    {
-        return new Vector2(v.x / f, v.y / f);
-    }
+    public float Magnitude => math.sqrt(SqrMagnitude);
+    public float SqrMagnitude => x * x + y * y;
 
     public Vector2 Normalized
     {
@@ -112,11 +99,25 @@ public struct Vector2 : IEquatable<Vector2>
         }
     }
 
-    public static Vector2 Zero => new(0, 0);
+    public Vector2(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 
     public Vector2 SetMagnitude(float mag)
     {
         return Normalized * mag;
+    }
+
+    public bool Equals(Vector2 other)
+    {
+        return this == other;
+    }
+
+    public override string ToString()
+    {
+        return $"({x}, {y})";
     }
 
     public Vector2 Rotate(float angle)
@@ -126,17 +127,16 @@ public struct Vector2 : IEquatable<Vector2>
         return new Vector2(x * cos - y * sin, x * sin + y * cos);
     }
 
-    private static location _loc = Location(0, 0);
+    public void UnitMoveTo(unit u)
+    {
+        SetUnitX(u, x);
+        SetUnitY(u, y);
+    }
 
     public float GetTerrainZ()
     {
         MoveLocation(_loc, x, y);
         return GetLocationZ(_loc);
-    }
-
-    public override string ToString()
-    {
-        return $"({x}, {y})";
     }
 }
 

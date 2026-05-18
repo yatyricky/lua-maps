@@ -141,13 +141,13 @@ function SF__.BladeOfJustice.UpdateAbilityMeta(u91)
         end
     end
     SF__.Utils.ExSetAbilityResearchTooltip(p92, SF__.BladeOfJustice.ID, "学习公正之剑 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p92, SF__.BladeOfJustice.ID, SF__.StrConcat__("用圣光的利刃刺穿目标，造成法术伤害，在一定时间内对附近敌人每秒造成光辉伤害。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 10秒\r\n\r\n|cffffcc001级|r - 造成|cffff8c00", datas__Damage[(0 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(0 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(0 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。\r\n|cffffcc002级|r - 造成|cffff8c00", datas__Damage[(1 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(1 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(1 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。\r\n|cffffcc003级|r - 造成|cffff8c00", datas__Damage[(2 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(2 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(2 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。"), 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p92, SF__.BladeOfJustice.ID, SF__.StrConcat__("用圣光的利刃刺穿目标，造成法术伤害，在一定时间内对附近敌人每秒造成光辉伤害。产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 10秒\n\n|cffffcc001级|r - 造成|cffff8c00", datas__Damage[(0 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(0 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(0 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。\n|cffffcc002级|r - 造成|cffff8c00", datas__Damage[(1 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(1 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(1 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。\n|cffffcc003级|r - 造成|cffff8c00", datas__Damage[(2 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(2 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(2 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。"), 0)
     do
         local i93 = 0
         while (i93 < 3) do
             local data__Damage, data__Duration, data__DamagePerSecond = datas__Damage[(i93 + 1)], datas__Duration[(i93 + 1)], datas__DamagePerSecond[(i93 + 1)]
             SF__.Utils.ExBlzSetAbilityTooltip(p92, SF__.BladeOfJustice.ID, SF__.StrConcat__("公正之剑 - [|cffffcc00", (i93 + 1), "级|r]"), i93)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p92, SF__.BladeOfJustice.ID, SF__.StrConcat__("用圣光的利刃刺穿目标，造成|cffff8c00", data__Damage, "|r的直接法术伤害，在|cffff8c00", data__Duration, "|r秒内对附近敌人每秒造成|cffff8c00", data__DamagePerSecond, "|r的光辉伤害。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 10秒"), i93)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p92, SF__.BladeOfJustice.ID, SF__.StrConcat__("用圣光的利刃刺穿目标，造成|cffff8c00", data__Damage, "|r的直接法术伤害，在|cffff8c00", data__Duration, "|r秒内对附近敌人每秒造成|cffff8c00", data__DamagePerSecond, "|r的光辉伤害。产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 10秒"), i93)
             ::continue::
             i93 = (i93 + 1)
         end
@@ -260,13 +260,13 @@ function SF__.CrusaderStrike.UpdateAbilityMeta(u108)
         end
     end
     SF__.Utils.ExSetAbilityResearchTooltip(p109, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p109, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害。\r\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(1 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(1 + 1)] * 100)), "%的战争艺术触发几率。\r\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(2 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(2 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p109, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 6秒\n\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害。\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(1 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(1 + 1)] * 100)), "%的战争艺术触发几率。\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(2 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(2 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
     do
         local i111 = 0
         while (i111 < 3) do
             local data__DamageScaling, data__ArtOfWarChance = datas__DamageScaling[(i111 + 1)], datas__ArtOfWarChance[(i111 + 1)]
             SF__.Utils.ExBlzSetAbilityTooltip(p109, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击 - [|cffffcc00", (i111 + 1), "级|r]"), i111)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p109, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling * 100)), "%|r的攻击伤害", SF__.Ternary__((i111 > 0), SF__.StrConcat__("，", string.format("%.0f", (data__ArtOfWarChance * 100)), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒"), i111)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p109, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling * 100)), "%|r的攻击伤害", SF__.Ternary__((i111 > 0), SF__.StrConcat__("，", string.format("%.0f", (data__ArtOfWarChance * 100)), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 6秒"), i111)
             ::continue::
             i111 = (i111 + 1)
         end
@@ -349,13 +349,13 @@ function SF__.DivineToll.UpdateAbilityMeta(u124)
         end
     end
     SF__.Utils.ExSetAbilityResearchTooltip(p125, SF__.DivineToll.ID, "学习圣洁鸣钟 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p125, SF__.DivineToll.ID, SF__.StrConcat__("对附近的多个目标施展审判，造成法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高。每个审判产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 30秒\r\n\r\n|cffffcc001级|r - 审判最多|cffff8c00", datas__TargetCount[(0 + 1)], "|r个目标，造成|cffff8c00", datas__Damage126[(0 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(0 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration127[(0 + 1)], "|r秒。\r\n|cffffcc002级|r - 审判最多|cffff8c00", datas__TargetCount[(1 + 1)], "|r个目标，造成|cffff8c00", datas__Damage126[(1 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(1 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration127[(1 + 1)], "|r秒。\r\n|cffffcc003级|r - 审判最多|cffff8c00", datas__TargetCount[(2 + 1)], "|r个目标，造成|cffff8c00", datas__Damage126[(2 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(2 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration127[(2 + 1)], "|r秒。"), 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p125, SF__.DivineToll.ID, SF__.StrConcat__("对附近的多个目标施展审判，造成法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高。每个审判产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 30秒\n\n|cffffcc001级|r - 审判最多|cffff8c00", datas__TargetCount[(0 + 1)], "|r个目标，造成|cffff8c00", datas__Damage126[(0 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(0 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration127[(0 + 1)], "|r秒。\n|cffffcc002级|r - 审判最多|cffff8c00", datas__TargetCount[(1 + 1)], "|r个目标，造成|cffff8c00", datas__Damage126[(1 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(1 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration127[(1 + 1)], "|r秒。\n|cffffcc003级|r - 审判最多|cffff8c00", datas__TargetCount[(2 + 1)], "|r个目标，造成|cffff8c00", datas__Damage126[(2 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(2 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration127[(2 + 1)], "|r秒。"), 0)
     do
         local i131 = 0
         while (i131 < 3) do
             local data__TargetCount, data__Damage132, data__RadiantDmgAmp, data__Duration133 = datas__TargetCount[(i131 + 1)], datas__Damage126[(i131 + 1)], datas__RadiantDmgAmp[(i131 + 1)], datas__Duration127[(i131 + 1)]
             SF__.Utils.ExBlzSetAbilityTooltip(p125, SF__.DivineToll.ID, SF__.StrConcat__("圣洁鸣钟 - [|cffffcc00", (i131 + 1), "级|r]"), i131)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p125, SF__.DivineToll.ID, SF__.StrConcat__("对附近的最多|cffff8c00", data__TargetCount, "|r个目标施展审判，造成|cffff8c00", data__Damage132, "|r点法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高|cffff8c00", string.format("%.0f", (data__RadiantDmgAmp * 100)), "%|r，持续|cffff8c00", data__Duration133, "|r秒。每个审判产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 30秒"), i131)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p125, SF__.DivineToll.ID, SF__.StrConcat__("对附近的最多|cffff8c00", data__TargetCount, "|r个目标施展审判，造成|cffff8c00", data__Damage132, "|r点法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高|cffff8c00", string.format("%.0f", (data__RadiantDmgAmp * 100)), "%|r，持续|cffff8c00", data__Duration133, "|r秒。每个审判产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 30秒"), i131)
             ::continue::
             i131 = (i131 + 1)
         end
@@ -654,13 +654,13 @@ function SF__.TemplarStrikes.UpdateAbilityMeta(u172)
         end
     end
     SF__.Utils.ExSetAbilityResearchTooltip(p173, SF__.TemplarStrikes.ID, "学习圣殿骑士之击 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p173, SF__.TemplarStrikes.ID, SF__.StrConcat__("快速攻击目标|cffff8c00", datas__AttackCount[(0 + 1)], "|r次，第一次造成普通攻击伤害，第二次造成光辉伤害，有一定几率重置公正之剑的冷却时间，普通攻击也会触发。\r\n\r\n|cff99ccff冷却时间|r - 10秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling174[(0 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(0 + 1)] * 100)), "%|r的几率重置公正之剑。\r\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling174[(1 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(1 + 1)] * 100)), "%|r的几率重置公正之剑。\r\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling174[(2 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(2 + 1)] * 100)), "%|r的几率重置公正之剑。"), 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p173, SF__.TemplarStrikes.ID, SF__.StrConcat__("快速攻击目标|cffff8c00", datas__AttackCount[(0 + 1)], "|r次，第一次造成普通攻击伤害，第二次造成光辉伤害，有一定几率重置公正之剑的冷却时间，普通攻击也会触发。\n\n|cff99ccff冷却时间|r - 10秒\n\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling174[(0 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(0 + 1)] * 100)), "%|r的几率重置公正之剑。\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling174[(1 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(1 + 1)] * 100)), "%|r的几率重置公正之剑。\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling174[(2 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(2 + 1)] * 100)), "%|r的几率重置公正之剑。"), 0)
     do
         local i177 = 0
         while (i177 < SF__.TemplarStrikes.MaxLevel) do
             local data__AttackCount, data__DamageScaling178, data__ResetBOJChance = datas__AttackCount[(i177 + 1)], datas__DamageScaling174[(i177 + 1)], datas__ResetBOJChance[(i177 + 1)]
             SF__.Utils.ExBlzSetAbilityTooltip(p173, SF__.TemplarStrikes.ID, SF__.StrConcat__("圣殿骑士之击 - [|cffffcc00", (i177 + 1), "级|r]"), i177)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p173, SF__.TemplarStrikes.ID, SF__.StrConcat__("快速攻击目标|cffff8c00", data__AttackCount, "|r次，第一次造成普通攻击伤害，第二次造成普通攻击|cffff8c00", string.format("%.0f", (data__DamageScaling178 * 100)), "%|r的光辉伤害，|cffff8c00", string.format("%.0f", (data__ResetBOJChance * 100)), "%|r几率重置公正之剑的冷却时间，普通攻击也会触发。\r\n\r\n|cff99ccff冷却时间|r - 10秒"), i177)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p173, SF__.TemplarStrikes.ID, SF__.StrConcat__("快速攻击目标|cffff8c00", data__AttackCount, "|r次，第一次造成普通攻击伤害，第二次造成普通攻击|cffff8c00", string.format("%.0f", (data__DamageScaling178 * 100)), "%|r的光辉伤害，|cffff8c00", string.format("%.0f", (data__ResetBOJChance * 100)), "%|r几率重置公正之剑的冷却时间，普通攻击也会触发。\n\n|cff99ccff冷却时间|r - 10秒"), i177)
             ::continue::
             i177 = (i177 + 1)
         end
@@ -751,13 +751,13 @@ function SF__.TemplarVerdict.UpdateAbilityMeta(u196)
         end
     end
     SF__.Utils.ExSetAbilityResearchTooltip(p197, SF__.TemplarVerdict.ID, "学习圣殿骑士的裁决 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p197, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 5秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__JudgementDamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ChanceToResetJudgement[(0 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p197, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。\n\n|cff99ccff冷却时间|r - 5秒\n\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__JudgementDamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ChanceToResetJudgement[(0 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
     do
         local i201 = 0
         while (i201 < 1) do
             local data__DamageScaling202, data__JudgementDamageScaling, data__ChanceToResetJudgement = datas__DamageScaling198[(i201 + 1)], datas__JudgementDamageScaling[(i201 + 1)], datas__ChanceToResetJudgement[(i201 + 1)]
             SF__.Utils.ExBlzSetAbilityTooltip(p197, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决 - [|cffffcc00", (i201 + 1), "级|r]"), i201)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p197, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling202 * 100)), "%|r的攻击伤害。消耗|cffff8c003|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 5秒"), i201)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p197, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling202 * 100)), "%|r的攻击伤害。消耗|cffff8c003|r点圣能。\n\n|cff99ccff冷却时间|r - 5秒"), i201)
             ::continue::
             i201 = (i201 + 1)
         end
@@ -840,8 +840,8 @@ function SF__.Utils.New()
 end
 -- Vector2
 SF__.Vector2 = SF__.Vector2 or {}
-function SF__.Vector2.FromUnit(u)
-    return GetUnitX(u), GetUnitY(u)
+function SF__.Vector2.get_Zero()
+    return {x = 0, y = 0}
 end
 
 function SF__.Vector2.InsideUnitCircle()
@@ -857,24 +857,36 @@ function SF__.Vector2.Cross(a__x21, a__y22, b__x23, b__y24)
     return ((a__y22 * b__x23) - (a__x21 * b__y24))
 end
 
-function SF__.Vector2.op_Subtraction(a__x25, a__y26, b__x27, b__y28)
-    return (a__x25 - b__x27), (a__y26 - b__y28)
+function SF__.Vector2.op_UnaryNegation(a__x25, a__y26)
+    return (-a__x25), (-a__y26)
 end
 
-function SF__.Vector2.op_Addition(a__x29, a__y30, b__x31, b__y32)
-    return (a__x29 + b__x31), (a__y30 + b__y32)
+function SF__.Vector2.op_Addition(a__x27, a__y28, b__x29, b__y30)
+    return (a__x27 + b__x29), (a__y28 + b__y30)
 end
 
-function SF__.Vector2.op_UnaryNegation(a__x33, a__y34)
-    return (-a__x33), (-a__y34)
+function SF__.Vector2.op_Subtraction(a__x31, a__y32, b__x33, b__y34)
+    return (a__x31 - b__x33), (a__y32 - b__y34)
 end
 
-function SF__.Vector2.op_Equality(a__x35, a__y36, b__x37, b__y38)
-    return ((math.abs((a__x35 - b__x37)) < 0.0001) and (math.abs((a__y36 - b__y38)) < 0.0001))
+function SF__.Vector2.op_Multiply(v__x, v__y, f)
+    return (v__x * f), (v__y * f)
 end
 
-function SF__.Vector2.op_Inequality(a__x39, a__y40, b__x41, b__y42)
-    return (not SF__.Vector2.op_Equality(a__x39, a__y40, b__x41, b__y42))
+function SF__.Vector2.op_Multiply(f35, v__x36, v__y37)
+    return (v__x36 * f35), (v__y37 * f35)
+end
+
+function SF__.Vector2.op_Division(v__x38, v__y39, f40)
+    return (v__x38 / f40), (v__y39 / f40)
+end
+
+function SF__.Vector2.op_Equality(a__x41, a__y42, b__x43, b__y44)
+    return ((math.abs((a__x41 - b__x43)) < 0.0001) and (math.abs((a__y42 - b__y44)) < 0.0001))
+end
+
+function SF__.Vector2.op_Inequality(a__x45, a__y46, b__x47, b__y48)
+    return (not SF__.Vector2.op_Equality(a__x45, a__y46, b__x47, b__y48))
 end
 
 function SF__.Vector2.UnitDistance(a, b)
@@ -883,70 +895,58 @@ function SF__.Vector2.UnitDistance(a, b)
     return SF__.Vector2.get_Magnitude(SF__.Vector2.op_Subtraction(v1__x, v1__y, v2__x, v2__y))
 end
 
+function SF__.Vector2.SqrUnitDistance(a49, b50)
+    local v1__x51, v1__y52 = SF__.Vector2.FromUnit(a49)
+    local v2__x53, v2__y54 = SF__.Vector2.FromUnit(b50)
+    return SF__.Vector2.get_SqrMagnitude(SF__.Vector2.op_Subtraction(v1__x51, v1__y52, v2__x53, v2__y54))
+end
+
+function SF__.Vector2.FromUnit(u)
+    return GetUnitX(u), GetUnitY(u)
+end
+
 function SF__.Vector2.get_Magnitude(self__x, self__y)
     return math.sqrt(SF__.Vector2.get_SqrMagnitude(self__x, self__y))
 end
 
-function SF__.Vector2.get_SqrMagnitude(self__x43, self__y44)
-    return ((self__x43 * self__x43) + (self__y44 * self__y44))
+function SF__.Vector2.get_SqrMagnitude(self__x55, self__y56)
+    return ((self__x55 * self__x55) + (self__y56 * self__y56))
 end
 
-function SF__.Vector2.Equals(self__x45, self__y46, other__x, other__y)
-    return SF__.Vector2.op_Equality(self__x45, self__y46, other__x, other__y)
-end
-
-function SF__.Vector2.SqrUnitDistance(a47, b48)
-    local v1__x49, v1__y50 = SF__.Vector2.FromUnit(a47)
-    local v2__x51, v2__y52 = SF__.Vector2.FromUnit(b48)
-    return SF__.Vector2.get_SqrMagnitude(SF__.Vector2.op_Subtraction(v1__x49, v1__y50, v2__x51, v2__y52))
-end
-
-function SF__.Vector2.UnitMoveTo(self__x53, self__y54, u55)
-    SetUnitX(u55, self__x53)
-    SetUnitY(u55, self__y54)
-end
-
-function SF__.Vector2.op_Multiply(v__x, v__y, f)
-    return (v__x * f), (v__y * f)
-end
-
-function SF__.Vector2.op_Multiply(f56, v__x57, v__y58)
-    return (v__x57 * f56), (v__y58 * f56)
-end
-
-function SF__.Vector2.op_Division(v__x59, v__y60, f61)
-    return (v__x59 / f61), (v__y60 / f61)
-end
-
-function SF__.Vector2.get_Normalized(self__x62, self__y63)
-    local mag = SF__.Vector2.get_Magnitude(self__x62, self__y63)
+function SF__.Vector2.get_Normalized(self__x57, self__y58)
+    local mag = SF__.Vector2.get_Magnitude(self__x57, self__y58)
     if (mag < 0.0001) then
         return SF__.Vector2.get_Zero()
     end
-    return SF__.Vector2.op_Division(self__x62, self__y63, mag)
+    return SF__.Vector2.op_Division(self__x57, self__y58, mag)
 end
 
-function SF__.Vector2.get_Zero()
-    return {x = 0, y = 0}
+function SF__.Vector2.SetMagnitude(self__x59, self__y60, mag61)
+    return SF__.Vector2.op_Multiply(SF__.Vector2.get_Normalized(self__x59, self__y60).x, SF__.Vector2.get_Normalized(self__x59, self__y60).y, mag61)
 end
 
-function SF__.Vector2.SetMagnitude(self__x64, self__y65, mag66)
-    return SF__.Vector2.op_Multiply(SF__.Vector2.get_Normalized(self__x64, self__y65).x, SF__.Vector2.get_Normalized(self__x64, self__y65).y, mag66)
+function SF__.Vector2.Equals(self__x62, self__y63, other__x, other__y)
+    return SF__.Vector2.op_Equality(self__x62, self__y63, other__x, other__y)
 end
 
-function SF__.Vector2.Rotate(self__x67, self__y68, angle69)
-    local cos = math.cos(angle69)
-    local sin = math.sin(angle69)
-    return ((self__x67 * cos) - (self__y68 * sin)), ((self__x67 * sin) + (self__y68 * cos))
+function SF__.Vector2.ToString(self__x64, self__y65)
+    return SF__.StrConcat__("(", self__x64, ", ", self__y65, ")")
 end
 
-function SF__.Vector2.GetTerrainZ(self__x70, self__y71)
-    MoveLocation(SF__.Vector2._loc, self__x70, self__y71)
+function SF__.Vector2.Rotate(self__x66, self__y67, angle68)
+    local cos = math.cos(angle68)
+    local sin = math.sin(angle68)
+    return ((self__x66 * cos) - (self__y67 * sin)), ((self__x66 * sin) + (self__y67 * cos))
+end
+
+function SF__.Vector2.UnitMoveTo(self__x69, self__y70, u71)
+    SetUnitX(u71, self__x69)
+    SetUnitY(u71, self__y70)
+end
+
+function SF__.Vector2.GetTerrainZ(self__x72, self__y73)
+    MoveLocation(SF__.Vector2._loc, self__x72, self__y73)
     return GetLocationZ(SF__.Vector2._loc)
-end
-
-function SF__.Vector2.ToString(self__x72, self__y73)
-    return SF__.StrConcat__("(", self__x72, ", ", self__y73, ")")
 end
 
 SF__.Vector2._loc = Location(0, 0)
@@ -1019,12 +1019,12 @@ end
 function SF__.WordOfGlory.UpdateAbilityMeta(u217)
     local p218 = GetOwningPlayer(u217)
     SF__.Utils.ExSetAbilityResearchTooltip(p218, SF__.WordOfGlory.ID, "学习圣殿骑士的裁决 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p218, SF__.WordOfGlory.ID, "圣殿骑士的裁决造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 5秒\r\n\r\n|cffffcc001级|r - |cffff8c00100%|r的攻击伤害，100%的战争艺术触发几率。", 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p218, SF__.WordOfGlory.ID, "圣殿骑士的裁决造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。\n\n|cff99ccff冷却时间|r - 5秒\n\n|cffffcc001级|r - |cffff8c00100%|r的攻击伤害，100%的战争艺术触发几率。", 0)
     do
         local i219 = 0
         while (i219 < 1) do
             SF__.Utils.ExBlzSetAbilityTooltip(p218, SF__.WordOfGlory.ID, SF__.StrConcat__("圣殿骑士的裁决 - [|cffffcc00", (i219 + 1), "级|r]"), i219)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p218, SF__.WordOfGlory.ID, "圣殿骑士的裁决造成一次攻击伤害，造成|cffff8c00100%|r的攻击伤害。消耗|cffff8c003|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 5秒", i219)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p218, SF__.WordOfGlory.ID, "圣殿骑士的裁决造成一次攻击伤害，造成|cffff8c00100%|r的攻击伤害。消耗|cffff8c003|r点圣能。\n\n|cff99ccff冷却时间|r - 5秒", i219)
             ::continue::
             i219 = (i219 + 1)
         end
