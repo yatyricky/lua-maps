@@ -4,7 +4,7 @@ public class Transform : Component
 {
     public Vector3 position;
     public Quaternion rotation;
-    public Vector3 scale;
+    public Vector3 localScale;
 
     public List<Transform> children = new List<Transform>();
     public Transform? parent { get; private set; }
@@ -13,10 +13,10 @@ public class Transform : Component
     {
         position = new Vector3(0f, 0f, 0f);
         rotation = Quaternion.Euler(0f, 0f, 0f);
-        scale = new Vector3(1f, 1f, 1f);
+        localScale = new Vector3(1f, 1f, 1f);
     }
 
-    public void SetParent(Transform newParent)
+    public void SetParent(Transform? newParent)
     {
         if (parent != null)
         {

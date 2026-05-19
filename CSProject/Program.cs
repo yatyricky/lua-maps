@@ -63,5 +63,6 @@ public class Program
             }
         }, 1, -1);
         game.Start();
+        Scene.Instance.Run();
     }
 }

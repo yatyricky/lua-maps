@@ -4,6 +4,17 @@ public struct Quaternion : IEquatable<Quaternion>
 {
     public static Quaternion Identity => new(0, 0, 0, 1);
 
+    public static Quaternion operator *(Quaternion a, Quaternion b)
+    {
+        return new Quaternion
+        {
+            w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z,
+            x = a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
+            y = a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x,
+            z = a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w
+        };
+    }
+
     public static Vector3 operator *(Quaternion q, Vector3 v)
     {
         // https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Using_quaternion_as_rotations
@@ -88,6 +99,6 @@ public struct Quaternion : IEquatable<Quaternion>
     public void ApplyToEffect(effect e)
     {
         var angles = EulerAngles;
-        BlzSetSpecialEffectOrientation(e, angles.x, angles.y, angles.z);
+        BlzSetSpecialEffectOrientation(e, angles.y, angles.x, angles.z);
     }
 }
