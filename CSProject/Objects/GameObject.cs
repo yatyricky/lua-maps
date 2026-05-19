@@ -23,6 +23,7 @@ public class GameObject
     public string name { get; private set; }
     public Transform transform { get; private set; }
     private List<Component> _components = new List<Component>();
+    public List<Component> components => _components;
 
     public GameObject(string name)
     {

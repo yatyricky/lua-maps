@@ -16,6 +16,19 @@ public class Transform : Component
         localScale = new Vector3(1f, 1f, 1f);
     }
 
+    public override string GetInspectorName()
+    {
+        return "Transform";
+    }
+
+    public override string GetInspectorText()
+    {
+        return "Position " + position + "\n"
+             + "Rotation " + rotation + "\n"
+             + "Scale " + localScale + "\n"
+             + "Children " + children.Count;
+    }
+
     public void SetParent(Transform? newParent)
     {
         if (parent != null)

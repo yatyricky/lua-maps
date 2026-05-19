@@ -3,6 +3,8 @@
 // </auto-generated>
 namespace SFLib.Collections;
 
+using System;
+
 public sealed class List<T>
 {
     public int Count => 0;
@@ -60,7 +62,7 @@ public sealed class List<T>
     {
     }
 
-    public void Sort(global::System.Func<T, T, bool> less)
+    public void Sort(Func<T, T, bool> less)
     {
     }
 
@@ -69,7 +71,7 @@ public sealed class List<T>
         return default!;
     }
 
-    public int RemoveAll(global::System.Predicate<T> match) => throw null;
+    public int RemoveAll(Predicate<T> match) => throw null;
 
     public Enumerator GetEnumerator() => default!;
 

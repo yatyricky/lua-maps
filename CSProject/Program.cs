@@ -22,6 +22,7 @@ public class Program
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.ProjectileSystem"), "new"));
         
         systems.Add(new InitAbilitiesSystem());
+        systems.Add(new InspectorSystem());
         systems.Add(LuaInterop.Call<LuaObject>(LuaInterop.Require("System.BuffDisplaySystem"), "new"));
 
 #if MAP_NAME_moonglade

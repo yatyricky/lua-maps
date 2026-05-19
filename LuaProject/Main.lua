@@ -94,8 +94,21 @@ function SF__.ListNew__(items)
     return list
 end
 
+function SF__.ListCount__(list)
+    return #list.items
+end
+
+function SF__.ListGet__(list, index)
+    return SF__.ListUnwrap__(list.items[index + 1])
+end
+
 function SF__.ListAdd__(list, value)
     table.insert(list.items, SF__.ListWrap__(value))
+    list.version = list.version + 1
+end
+
+function SF__.ListClear__(list)
+    list.items = {}
     list.version = list.version + 1
 end
 
@@ -125,18 +138,6 @@ function SF__.ListRemove__(list, value, equals)
     return false
 end
 
-function SF__.ListRemoveAll__(list, match)
-    local removed = 0
-    for i = #list.items, 1, -1 do
-        if match(SF__.ListUnwrap__(list.items[i])) then
-            table.remove(list.items, i)
-            removed = removed + 1
-        end
-    end
-    if removed > 0 then list.version = list.version + 1 end
-    return removed
-end
-
 function SF__.ListIterate__(list)
     local version = list.version
     local i = 0
@@ -162,85 +163,167 @@ SF__.UnitVec3Mode.ForceGround = 1
 --
 SF__.UnitVec3Mode.Auto = 2
 
+-- Component
+SF__.Component = SF__.Component or {}
+function SF__.Component:GetInspectorName()
+    return "Component"
+end
+
+function SF__.Component:GetInspectorText()
+    return ""
+end
+
+function SF__.Component:Awake()
+end
+
+function SF__.Component:OnEnable()
+end
+
+function SF__.Component:Start()
+end
+
+function SF__.Component:Update()
+end
+
+function SF__.Component:OnDisable()
+end
+
+function SF__.Component:OnDestroy()
+end
+
+function SF__.Component.__Init(self)
+    self.__sf_type = SF__.Component
+    self.gameObject = nil
+end
+
+function SF__.Component.New()
+    local self = setmetatable({}, { __index = SF__.Component })
+    SF__.Component.__Init(self)
+    return self
+end
+-- AttachEffectComponent
+SF__.AttachEffectComponent = SF__.AttachEffectComponent or {}
+setmetatable(SF__.AttachEffectComponent, { __index = SF__.Component })
+SF__.AttachEffectComponent.__sf_base = SF__.Component
+function SF__.AttachEffectComponent:GetInspectorName()
+    return "AttachEffectComponent"
+end
+
+function SF__.AttachEffectComponent:GetInspectorText()
+    return SF__.StrConcat__("Effect ", SF__.Ternary__((self.eff == nil), "None", "Attached"))
+end
+
+function SF__.AttachEffectComponent:Update()
+    if (self.eff == nil) then
+        return
+    end
+    -- calculate global TRS from transform and ancestor transforms
+    local globalPos__x, globalPos__y, globalPos__z = self.gameObject.transform.position.x, self.gameObject.transform.position.y, self.gameObject.transform.position.z
+    local globalRot__x, globalRot__y, globalRot__z, globalRot__w = self.gameObject.transform.rotation.x, self.gameObject.transform.rotation.y, self.gameObject.transform.rotation.z, self.gameObject.transform.rotation.w
+    local globalScale__x, globalScale__y, globalScale__z = self.gameObject.transform.localScale.x, self.gameObject.transform.localScale.y, self.gameObject.transform.localScale.z
+    local parent = self.gameObject.transform.parent
+    while (parent ~= nil) do
+        globalPos__x, globalPos__y, globalPos__z = SF__.Vector3.op_Addition(parent.position.x, parent.position.y, parent.position.z, SF__.Quaternion.op_Multiply__quaternionvector3(parent.rotation.x, parent.rotation.y, parent.rotation.z, parent.rotation.w, SF__.Vector3.Scale(parent.localScale.x, parent.localScale.y, parent.localScale.z, globalPos__x, globalPos__y, globalPos__z)))
+        globalRot__x, globalRot__y, globalRot__z, globalRot__w = SF__.Quaternion.op_Multiply__quaternionquaternion(parent.rotation.x, parent.rotation.y, parent.rotation.z, parent.rotation.w, globalRot__x, globalRot__y, globalRot__z, globalRot__w)
+        globalScale__x, globalScale__y, globalScale__z = SF__.Vector3.Scale(parent.localScale.x, parent.localScale.y, parent.localScale.z, globalScale__x, globalScale__y, globalScale__z)
+        parent = parent.parent
+        ::continue::
+    end
+    BlzSetSpecialEffectPosition(self.eff, globalPos__x, globalPos__y, globalPos__z)
+    SF__.Quaternion.ApplyToEffect(globalRot__x, globalRot__y, globalRot__z, globalRot__w, self.eff)
+    BlzSetSpecialEffectMatrixScale(self.eff, globalScale__x, globalScale__y, globalScale__z)
+end
+
+function SF__.AttachEffectComponent.__Init(self)
+    SF__.Component.__Init(self)
+    self.__sf_type = SF__.AttachEffectComponent
+    self.eff = nil
+end
+
+function SF__.AttachEffectComponent.New()
+    local self = setmetatable({}, { __index = SF__.AttachEffectComponent })
+    SF__.AttachEffectComponent.__Init(self)
+    return self
+end
 -- BladeOfJustice
 SF__.BladeOfJustice = SF__.BladeOfJustice or {}
-function SF__.BladeOfJustice.GetAbilityData(level193)
-    return (75 * level193), 5, (10 * level193)
+function SF__.BladeOfJustice.GetAbilityData(level206)
+    return (75 * level206), 5, (10 * level206)
 end
 
 function SF__.BladeOfJustice.Init()
     local EventCenter = require("Lib.EventCenter")
     EventCenter.RegisterPlayerUnitSpellEffect:Emit({id = SF__.BladeOfJustice.ID, handler = SF__.BladeOfJustice.Start})
-    ExTriggerRegisterNewUnit(function(u194)
-        if (GetUnitTypeId(u194) == FourCC("Hpal")) then
-            SF__.BladeOfJustice.UpdateAbilityMeta(u194)
+    ExTriggerRegisterNewUnit(function(u207)
+        if (GetUnitTypeId(u207) == FourCC("Hpal")) then
+            SF__.BladeOfJustice.UpdateAbilityMeta(u207)
         end
     end)
 end
 
-function SF__.BladeOfJustice.UpdateAbilityMeta(u195)
-    local p196 = GetOwningPlayer(u195)
+function SF__.BladeOfJustice.UpdateAbilityMeta(u208)
+    local p209 = GetOwningPlayer(u208)
     local datas__Damage, datas__Duration, datas__DamagePerSecond = {}, {}, {}
     do
-        local i = 0
-        while (i < 3) do
+        local i210 = 0
+        while (i210 < 3) do
             do
-                local item__Damage, item__Duration, item__DamagePerSecond = SF__.BladeOfJustice.GetAbilityData((i + 1))
+                local item__Damage, item__Duration, item__DamagePerSecond = SF__.BladeOfJustice.GetAbilityData((i210 + 1))
                 table.insert(datas__Damage, item__Damage)
                 table.insert(datas__Duration, item__Duration)
                 table.insert(datas__DamagePerSecond, item__DamagePerSecond)
             end
             ::continue::
-            i = (i + 1)
+            i210 = (i210 + 1)
         end
     end
-    SF__.Utils.ExSetAbilityResearchTooltip(p196, SF__.BladeOfJustice.ID, "学习公正之剑 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p196, SF__.BladeOfJustice.ID, SF__.StrConcat__("用圣光的利刃刺穿目标，造成法术伤害，在一定时间内对附近敌人每秒造成光辉伤害。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 10秒\r\n\r\n|cffffcc001级|r - 造成|cffff8c00", datas__Damage[(0 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(0 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(0 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。\r\n|cffffcc002级|r - 造成|cffff8c00", datas__Damage[(1 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(1 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(1 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。\r\n|cffffcc003级|r - 造成|cffff8c00", datas__Damage[(2 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(2 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(2 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。"), 0)
+    SF__.Utils.ExSetAbilityResearchTooltip(p209, SF__.BladeOfJustice.ID, "学习公正之剑 - [|cffffcc00%d级|r]", 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p209, SF__.BladeOfJustice.ID, SF__.StrConcat__("用圣光的利刃刺穿目标，造成法术伤害，在一定时间内对附近敌人每秒造成光辉伤害。产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 10秒\n\n|cffffcc001级|r - 造成|cffff8c00", datas__Damage[(0 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(0 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(0 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。\n|cffffcc002级|r - 造成|cffff8c00", datas__Damage[(1 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(1 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(1 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。\n|cffffcc003级|r - 造成|cffff8c00", datas__Damage[(2 + 1)], "|r的直接法术伤害，|cffff8c00", datas__Duration[(2 + 1)], "|r秒内对附近敌人每秒造成|cffff8c00", datas__DamagePerSecond[(2 + 1)], "|r的光辉伤害。产生|cffff8c001|r点圣能。"), 0)
     do
-        local i197 = 0
-        while (i197 < 3) do
-            local data__Damage, data__Duration, data__DamagePerSecond = datas__Damage[(i197 + 1)], datas__Duration[(i197 + 1)], datas__DamagePerSecond[(i197 + 1)]
-            SF__.Utils.ExBlzSetAbilityTooltip(p196, SF__.BladeOfJustice.ID, SF__.StrConcat__("公正之剑 - [|cffffcc00", (i197 + 1), "级|r]"), i197)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p196, SF__.BladeOfJustice.ID, SF__.StrConcat__("用圣光的利刃刺穿目标，造成|cffff8c00", data__Damage, "|r的直接法术伤害，在|cffff8c00", data__Duration, "|r秒内对附近敌人每秒造成|cffff8c00", data__DamagePerSecond, "|r的光辉伤害。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 10秒"), i197)
+        local i211 = 0
+        while (i211 < 3) do
+            local data__Damage, data__Duration, data__DamagePerSecond = datas__Damage[(i211 + 1)], datas__Duration[(i211 + 1)], datas__DamagePerSecond[(i211 + 1)]
+            SF__.Utils.ExBlzSetAbilityTooltip(p209, SF__.BladeOfJustice.ID, SF__.StrConcat__("公正之剑 - [|cffffcc00", (i211 + 1), "级|r]"), i211)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p209, SF__.BladeOfJustice.ID, SF__.StrConcat__("用圣光的利刃刺穿目标，造成|cffff8c00", data__Damage, "|r的直接法术伤害，在|cffff8c00", data__Duration, "|r秒内对附近敌人每秒造成|cffff8c00", data__DamagePerSecond, "|r的光辉伤害。产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 10秒"), i211)
             ::continue::
-            i197 = (i197 + 1)
+            i211 = (i211 + 1)
         end
     end
 end
 
 function SF__.BladeOfJustice.Start(data)
-    local level198 = GetUnitAbilityLevel(data.caster, SF__.BladeOfJustice.ID)
-    local EventCenter199 = require("Lib.EventCenter")
-    local ad__Damage, ad__Duration, ad__DamagePerSecond = SF__.BladeOfJustice.GetAbilityData(level198)
-    EventCenter199.Damage:Emit({whichUnit = data.caster, target = data.target, amount = ad__Damage, attack = false, ranged = true, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_MAGIC, weaponType = WEAPON_TYPE_WHOKNOWS, outResult = {}})
+    local level212 = GetUnitAbilityLevel(data.caster, SF__.BladeOfJustice.ID)
+    local EventCenter213 = require("Lib.EventCenter")
+    local ad__Damage, ad__Duration, ad__DamagePerSecond = SF__.BladeOfJustice.GetAbilityData(level212)
+    EventCenter213.Damage:Emit({whichUnit = data.caster, target = data.target, amount = ad__Damage, attack = false, ranged = true, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_MAGIC, weaponType = WEAPON_TYPE_WHOKNOWS, outResult = {}})
     SF__.RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1)
     SF__.BladeOfJustice.New():StartGroudDamage(data.caster, data.target, ad__Damage, ad__Duration, ad__DamagePerSecond)
 end
 
-function SF__.BladeOfJustice:StartGroudDamage(caster, target, ad__Damage200, ad__Duration201, ad__DamagePerSecond202)
+function SF__.BladeOfJustice:StartGroudDamage(caster, target, ad__Damage214, ad__Duration215, ad__DamagePerSecond216)
     return SF__.CorRun__(function()
         local pos__x, pos__y = SF__.Vector2.FromUnit(target)
         local UnitAttribute = require("Objects.UnitAttribute")
-        local EventCenter206 = require("Lib.EventCenter")
-        local eff = ExAddSpecialEffect("Abilities/Spells/Orc/LiquidFire/Liquidfire.mdl", pos__x, pos__y, ad__Duration201)
-        local p203 = GetOwningPlayer(caster)
+        local EventCenter220 = require("Lib.EventCenter")
+        local eff = ExAddSpecialEffect("Abilities/Spells/Orc/LiquidFire/Liquidfire.mdl", pos__x, pos__y, ad__Duration215)
+        local p217 = GetOwningPlayer(caster)
         do
-            local i204 = 0
-            while (i204 < ad__Duration201) do
+            local i218 = 0
+            while (i218 < ad__Duration215) do
                 SF__.CorWait__(1000)
-                ExGroupEnumUnitsInRange(pos__x, pos__y, 300, function(u205)
-                    if (not IsUnitEnemy(u205, p203)) then
+                ExGroupEnumUnitsInRange(pos__x, pos__y, 300, function(u219)
+                    if (not IsUnitEnemy(u219, p217)) then
                         return
                     end
-                    if ExIsUnitDead(u205) then
+                    if ExIsUnitDead(u219) then
                         return
                     end
-                    local tarAttr = UnitAttribute.GetAttr(u205)
-                    local damage = (ad__DamagePerSecond202 * (1 - tarAttr.radiantResistance))
-                    EventCenter206.Damage:Emit({whichUnit = caster, target = u205, amount = damage, attack = false, ranged = true, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_MAGIC, weaponType = WEAPON_TYPE_WHOKNOWS, outResult = {}})
+                    local tarAttr = UnitAttribute.GetAttr(u219)
+                    local damage = (ad__DamagePerSecond216 * (1 - tarAttr.radiantResistance))
+                    EventCenter220.Damage:Emit({whichUnit = caster, target = u219, amount = damage, attack = false, ranged = true, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_MAGIC, weaponType = WEAPON_TYPE_WHOKNOWS, outResult = {}})
                 end)
                 ::continue::
-                i204 = (i204 + 1)
+                i218 = (i218 + 1)
             end
         end
         DestroyEffect(eff)
@@ -264,17 +347,6 @@ SF__.BladeOfJustice.IAbilityData = SF__.BladeOfJustice.IAbilityData or {}
 function SF__.BladeOfJustice.IAbilityData.Equals(self__Damage, self__Duration, self__DamagePerSecond, other__Damage, other__Duration, other__DamagePerSecond)
     return (((math.abs((self__Damage - other__Damage)) < 0.0001) and (math.abs((self__Duration - other__Duration)) < 0.0001)) and (math.abs((self__DamagePerSecond - other__DamagePerSecond)) < 0.0001))
 end
--- Component
-SF__.Component = SF__.Component or {}
-function SF__.Component.__Init(self)
-    self.__sf_type = SF__.Component
-end
-
-function SF__.Component.New()
-    local self = setmetatable({}, { __index = SF__.Component })
-    SF__.Component.__Init(self)
-    return self
-end
 -- ConstOrderId
 SF__.ConstOrderId = SF__.ConstOrderId or {}
 function SF__.ConstOrderId.__Init(self)
@@ -292,45 +364,45 @@ SF__.ConstOrderId.Smart = 851971
 SF__.ConstOrderId.Attack = 851983
 -- CrusaderStrike
 SF__.CrusaderStrike = SF__.CrusaderStrike or {}
-function SF__.CrusaderStrike.GetAbilityData(level207)
-    return (0.65 + (0.35 * level207)), (0.15 * (level207 - 1))
+function SF__.CrusaderStrike.GetAbilityData(level221)
+    return (0.65 + (0.35 * level221)), (0.15 * (level221 - 1))
 end
 
 function SF__.CrusaderStrike.Init()
-    local EventCenter208 = require("Lib.EventCenter")
-    EventCenter208.RegisterPlayerUnitSpellEffect:Emit({id = SF__.CrusaderStrike.ID, handler = SF__.CrusaderStrike.Start})
-    ExTriggerRegisterNewUnit(function(u209)
-        if (GetUnitTypeId(u209) == FourCC("Hpal")) then
-            SF__.CrusaderStrike.UpdateAbilityMeta(u209)
+    local EventCenter222 = require("Lib.EventCenter")
+    EventCenter222.RegisterPlayerUnitSpellEffect:Emit({id = SF__.CrusaderStrike.ID, handler = SF__.CrusaderStrike.Start})
+    ExTriggerRegisterNewUnit(function(u223)
+        if (GetUnitTypeId(u223) == FourCC("Hpal")) then
+            SF__.CrusaderStrike.UpdateAbilityMeta(u223)
         end
     end)
 end
 
-function SF__.CrusaderStrike.UpdateAbilityMeta(u210)
-    local p211 = GetOwningPlayer(u210)
+function SF__.CrusaderStrike.UpdateAbilityMeta(u224)
+    local p225 = GetOwningPlayer(u224)
     local datas__DamageScaling, datas__ArtOfWarChance = {}, {}
     do
-        local i212 = 0
-        while (i212 < 3) do
+        local i226 = 0
+        while (i226 < 3) do
             do
-                local item__DamageScaling, item__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData((i212 + 1))
+                local item__DamageScaling, item__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData((i226 + 1))
                 table.insert(datas__DamageScaling, item__DamageScaling)
                 table.insert(datas__ArtOfWarChance, item__ArtOfWarChance)
             end
             ::continue::
-            i212 = (i212 + 1)
+            i226 = (i226 + 1)
         end
     end
-    SF__.Utils.ExSetAbilityResearchTooltip(p211, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p211, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害。\r\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(1 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(1 + 1)] * 100)), "%的战争艺术触发几率。\r\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(2 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(2 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
+    SF__.Utils.ExSetAbilityResearchTooltip(p225, SF__.CrusaderStrike.ID, "学习十字军打击 - [|cffffcc00%d级|r]", 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p225, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，伤害系数随技能等级提升。产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 6秒\n\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害。\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(1 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(1 + 1)] * 100)), "%的战争艺术触发几率。\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling[(2 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ArtOfWarChance[(2 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
     do
-        local i213 = 0
-        while (i213 < 3) do
-            local data__DamageScaling, data__ArtOfWarChance = datas__DamageScaling[(i213 + 1)], datas__ArtOfWarChance[(i213 + 1)]
-            SF__.Utils.ExBlzSetAbilityTooltip(p211, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击 - [|cffffcc00", (i213 + 1), "级|r]"), i213)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p211, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling * 100)), "%|r的攻击伤害", SF__.Ternary__((i213 > 0), SF__.StrConcat__("，", string.format("%.0f", (data__ArtOfWarChance * 100)), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒"), i213)
+        local i227 = 0
+        while (i227 < 3) do
+            local data__DamageScaling, data__ArtOfWarChance = datas__DamageScaling[(i227 + 1)], datas__ArtOfWarChance[(i227 + 1)]
+            SF__.Utils.ExBlzSetAbilityTooltip(p225, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击 - [|cffffcc00", (i227 + 1), "级|r]"), i227)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p225, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling * 100)), "%|r的攻击伤害", SF__.Ternary__((i227 > 0), SF__.StrConcat__("，", string.format("%.0f", (data__ArtOfWarChance * 100)), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 6秒"), i227)
             ::continue::
-            i213 = (i213 + 1)
+            i227 = (i227 + 1)
         end
     end
     -- datas.Remove(new IAbilityData { DamageScaling = 0.65f, ArtOfWarChance = 0 });
@@ -341,14 +413,14 @@ function SF__.CrusaderStrike.UpdateAbilityMeta(u210)
     end
 end
 
-function SF__.CrusaderStrike.Start(data214)
-    local level215 = GetUnitAbilityLevel(data214.caster, SF__.CrusaderStrike.ID)
-    local UnitAttribute216 = require("Objects.UnitAttribute")
-    local EventCenter218 = require("Lib.EventCenter")
-    local ad__DamageScaling, ad__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData(level215)
-    local attr = UnitAttribute216.GetAttr(data214.caster)
-    local damage217 = (attr:SimAttack(UnitAttribute216.HeroAttributeType.Strength) * ad__DamageScaling)
-    EventCenter218.Damage:Emit({whichUnit = data214.caster, target = data214.target, amount = damage217, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
+function SF__.CrusaderStrike.Start(data228)
+    local level229 = GetUnitAbilityLevel(data228.caster, SF__.CrusaderStrike.ID)
+    local UnitAttribute230 = require("Objects.UnitAttribute")
+    local EventCenter232 = require("Lib.EventCenter")
+    local ad__DamageScaling, ad__ArtOfWarChance = SF__.CrusaderStrike.GetAbilityData(level229)
+    local attr = UnitAttribute230.GetAttr(data228.caster)
+    local damage231 = (attr:SimAttack(UnitAttribute230.HeroAttributeType.Strength) * ad__DamageScaling)
+    EventCenter232.Damage:Emit({whichUnit = data228.caster, target = data228.target, amount = damage231, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
     attr.retPalHolyEnergy = (attr.retPalHolyEnergy + 1)
 end
 
@@ -370,66 +442,66 @@ function SF__.CrusaderStrike.IAbilityData.Scale(self__DamageScaling, self__ArtOf
     return (self__DamageScaling * scale), (self__ArtOfWarChance * scale)
 end
 
-function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling219, self__ArtOfWarChance220, other__DamageScaling, other__ArtOfWarChance)
-    return ((math.abs((self__DamageScaling219 - other__DamageScaling)) < 0.0001) and (math.abs((self__ArtOfWarChance220 - other__ArtOfWarChance)) < 0.0001))
+function SF__.CrusaderStrike.IAbilityData.Equals(self__DamageScaling233, self__ArtOfWarChance234, other__DamageScaling, other__ArtOfWarChance)
+    return ((math.abs((self__DamageScaling233 - other__DamageScaling)) < 0.0001) and (math.abs((self__ArtOfWarChance234 - other__ArtOfWarChance)) < 0.0001))
 end
 
-function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling221, self__ArtOfWarChance222)
+function SF__.CrusaderStrike.IAbilityData.GetHashValue(self__DamageScaling235, self__ArtOfWarChance236)
     return 0
 end
 -- DivineToll
 SF__.DivineToll = SF__.DivineToll or {}
-function SF__.DivineToll.GetAbilityData(level223)
-    return (2 + level223), (50 * level223), 0.1, 10
+function SF__.DivineToll.GetAbilityData(level237)
+    return (2 + level237), (50 * level237), 0.1, 10
 end
 
 function SF__.DivineToll.Init()
-    local EventCenter225 = require("Lib.EventCenter")
-    EventCenter225.RegisterPlayerUnitSpellEffect:Emit({id = SF__.DivineToll.ID, handler = function(data224)
-        SF__.DivineToll.Start(data224)
+    local EventCenter239 = require("Lib.EventCenter")
+    EventCenter239.RegisterPlayerUnitSpellEffect:Emit({id = SF__.DivineToll.ID, handler = function(data238)
+        SF__.DivineToll.Start(data238)
     end})
-    ExTriggerRegisterNewUnit(function(u226)
-        if (GetUnitTypeId(u226) == FourCC("Hpal")) then
-            SF__.DivineToll.UpdateAbilityMeta(u226)
+    ExTriggerRegisterNewUnit(function(u240)
+        if (GetUnitTypeId(u240) == FourCC("Hpal")) then
+            SF__.DivineToll.UpdateAbilityMeta(u240)
         end
     end)
 end
 
-function SF__.DivineToll.UpdateAbilityMeta(u227)
-    local p228 = GetOwningPlayer(u227)
-    local datas__TargetCount, datas__Damage229, datas__RadiantDmgAmp, datas__Duration230 = {}, {}, {}, {}
+function SF__.DivineToll.UpdateAbilityMeta(u241)
+    local p242 = GetOwningPlayer(u241)
+    local datas__TargetCount, datas__Damage243, datas__RadiantDmgAmp, datas__Duration244 = {}, {}, {}, {}
     do
-        local i231 = 0
-        while (i231 < 3) do
+        local i245 = 0
+        while (i245 < 3) do
             do
-                local item__TargetCount, item__Damage232, item__RadiantDmgAmp, item__Duration233 = SF__.DivineToll.GetAbilityData((i231 + 1))
+                local item__TargetCount, item__Damage246, item__RadiantDmgAmp, item__Duration247 = SF__.DivineToll.GetAbilityData((i245 + 1))
                 table.insert(datas__TargetCount, item__TargetCount)
-                table.insert(datas__Damage229, item__Damage232)
+                table.insert(datas__Damage243, item__Damage246)
                 table.insert(datas__RadiantDmgAmp, item__RadiantDmgAmp)
-                table.insert(datas__Duration230, item__Duration233)
+                table.insert(datas__Duration244, item__Duration247)
             end
             ::continue::
-            i231 = (i231 + 1)
+            i245 = (i245 + 1)
         end
     end
-    SF__.Utils.ExSetAbilityResearchTooltip(p228, SF__.DivineToll.ID, "学习圣洁鸣钟 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p228, SF__.DivineToll.ID, SF__.StrConcat__("对附近的多个目标施展审判，造成法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高。每个审判产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 30秒\r\n\r\n|cffffcc001级|r - 审判最多|cffff8c00", datas__TargetCount[(0 + 1)], "|r个目标，造成|cffff8c00", datas__Damage229[(0 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(0 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration230[(0 + 1)], "|r秒。\r\n|cffffcc002级|r - 审判最多|cffff8c00", datas__TargetCount[(1 + 1)], "|r个目标，造成|cffff8c00", datas__Damage229[(1 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(1 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration230[(1 + 1)], "|r秒。\r\n|cffffcc003级|r - 审判最多|cffff8c00", datas__TargetCount[(2 + 1)], "|r个目标，造成|cffff8c00", datas__Damage229[(2 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(2 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration230[(2 + 1)], "|r秒。"), 0)
+    SF__.Utils.ExSetAbilityResearchTooltip(p242, SF__.DivineToll.ID, "学习圣洁鸣钟 - [|cffffcc00%d级|r]", 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p242, SF__.DivineToll.ID, SF__.StrConcat__("对附近的多个目标施展审判，造成法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高。每个审判产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 30秒\n\n|cffffcc001级|r - 审判最多|cffff8c00", datas__TargetCount[(0 + 1)], "|r个目标，造成|cffff8c00", datas__Damage243[(0 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(0 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration244[(0 + 1)], "|r秒。\n|cffffcc002级|r - 审判最多|cffff8c00", datas__TargetCount[(1 + 1)], "|r个目标，造成|cffff8c00", datas__Damage243[(1 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(1 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration244[(1 + 1)], "|r秒。\n|cffffcc003级|r - 审判最多|cffff8c00", datas__TargetCount[(2 + 1)], "|r个目标，造成|cffff8c00", datas__Damage243[(2 + 1)], "|r点法术伤害，神圣之锤造成|cffff8c00", string.format("%.0f", (datas__RadiantDmgAmp[(2 + 1)] * 100)), "%|r的光辉易伤，持续|cffff8c00", datas__Duration244[(2 + 1)], "|r秒。"), 0)
     do
-        local i234 = 0
-        while (i234 < 3) do
-            local data__TargetCount, data__Damage235, data__RadiantDmgAmp, data__Duration236 = datas__TargetCount[(i234 + 1)], datas__Damage229[(i234 + 1)], datas__RadiantDmgAmp[(i234 + 1)], datas__Duration230[(i234 + 1)]
-            SF__.Utils.ExBlzSetAbilityTooltip(p228, SF__.DivineToll.ID, SF__.StrConcat__("圣洁鸣钟 - [|cffffcc00", (i234 + 1), "级|r]"), i234)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p228, SF__.DivineToll.ID, SF__.StrConcat__("对附近的最多|cffff8c00", data__TargetCount, "|r个目标施展审判，造成|cffff8c00", data__Damage235, "|r点法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高|cffff8c00", string.format("%.0f", (data__RadiantDmgAmp * 100)), "%|r，持续|cffff8c00", data__Duration236, "|r秒。每个审判产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 30秒"), i234)
+        local i248 = 0
+        while (i248 < 3) do
+            local data__TargetCount, data__Damage249, data__RadiantDmgAmp, data__Duration250 = datas__TargetCount[(i248 + 1)], datas__Damage243[(i248 + 1)], datas__RadiantDmgAmp[(i248 + 1)], datas__Duration244[(i248 + 1)]
+            SF__.Utils.ExBlzSetAbilityTooltip(p242, SF__.DivineToll.ID, SF__.StrConcat__("圣洁鸣钟 - [|cffffcc00", (i248 + 1), "级|r]"), i248)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p242, SF__.DivineToll.ID, SF__.StrConcat__("对附近的最多|cffff8c00", data__TargetCount, "|r个目标施展审判，造成|cffff8c00", data__Damage249, "|r点法术伤害，然后神圣之锤环绕圣殿骑士，每次命中敌人使其受到的光辉伤害提高|cffff8c00", string.format("%.0f", (data__RadiantDmgAmp * 100)), "%|r，持续|cffff8c00", data__Duration250, "|r秒。每个审判产生|cffff8c001|r点圣能。\n\n|cff99ccff冷却时间|r - 30秒"), i248)
             ::continue::
-            i234 = (i234 + 1)
+            i248 = (i248 + 1)
         end
     end
 end
 
-function SF__.DivineToll.Start(data237)
+function SF__.DivineToll.Start(data251)
     return SF__.CorRun__(function()
-        local pos__x238, pos__y239 = SF__.Vector2.FromUnit(data237.caster)
-        local eff240 = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos__x238, pos__y239)
+        local pos__x252, pos__y253 = SF__.Vector2.FromUnit(data251.caster)
+        local eff254 = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos__x252, pos__y253)
         while true do
             SF__.CorWait__(16)
             local rotation__x, rotation__y, rotation__z, rotation__w = SF__.Quaternion.Euler(0, 90, 0)
@@ -452,32 +524,70 @@ SF__.DivineToll.ID = FourCC("A008")
 SF__.DivineToll = SF__.DivineToll or {}
 -- DivineToll.IAbilityData
 SF__.DivineToll.IAbilityData = SF__.DivineToll.IAbilityData or {}
-function SF__.DivineToll.IAbilityData.Equals(self__TargetCount, self__Damage241, self__RadiantDmgAmp, self__Duration242, other__TargetCount, other__Damage243, other__RadiantDmgAmp, other__Duration244)
-    return (((math.abs((self__Damage241 - other__Damage243)) < 0.0001) and (math.abs((self__Duration242 - other__Duration244)) < 0.0001)) and (math.abs((self__RadiantDmgAmp - other__RadiantDmgAmp)) < 0.0001))
+function SF__.DivineToll.IAbilityData.Equals(self__TargetCount, self__Damage255, self__RadiantDmgAmp, self__Duration256, other__TargetCount, other__Damage257, other__RadiantDmgAmp, other__Duration258)
+    return (((math.abs((self__Damage255 - other__Damage257)) < 0.0001) and (math.abs((self__Duration256 - other__Duration258)) < 0.0001)) and (math.abs((self__RadiantDmgAmp - other__RadiantDmgAmp)) < 0.0001))
 end
 -- GameObject
 SF__.GameObject = SF__.GameObject or {}
-function SF__.GameObject.__Init(self, name)
+function SF__.GameObject.DestroyDepthFirst(obj)
+    do
+        local collection = obj.transform.children
+        for i1, child in SF__.ListIterate__(collection) do
+            SF__.GameObject.DestroyDepthFirst(child.gameObject)
+        end
+    end
+    do
+        local collection2 = obj._components
+        for i3, comp in SF__.ListIterate__(collection2) do
+            comp:OnDisable()
+            comp:OnDestroy()
+        end
+    end
+    SF__.ListClear__(obj._components)
+    obj.transform:SetParent(nil)
+    SF__.ListRemove__(SF__.Scene.get_Instance().gameObjs, obj)
+end
+
+function SF__.GameObject:get_components()
+    return self._components
+end
+
+function SF__.GameObject.__Init__s(self, name)
     self.__sf_type = SF__.GameObject
     self.name = nil
     self.transform = nil
     self._components = SF__.ListNew__({})
     self.name = name
     self.transform = self:AddComponent(SF__.Transform)
+    SF__.Scene.get_Instance():AddGameObject(self)
 end
 
-function SF__.GameObject.New(name)
+function SF__.GameObject.New__s(name)
     local self = setmetatable({}, { __index = SF__.GameObject })
-    SF__.GameObject.__Init(self, name)
+    SF__.GameObject.__Init__s(self, name)
+    return self
+end
+
+function SF__.GameObject.__Init__sgameobject(self, name3, parent4)
+    self.__sf_type = SF__.GameObject
+    self.name = nil
+    self.transform = nil
+    self._components = SF__.ListNew__({})
+    self.transform:SetParent(parent4.transform)
+end
+
+function SF__.GameObject.New__sgameobject(name3, parent4)
+    local self = setmetatable({}, { __index = SF__.GameObject })
+    SF__.GameObject.__Init__sgameobject(self, name3, parent4)
     return self
 end
 
 function SF__.GameObject:GetComponent(T)
     do
-        local collection = self._components
-        for i1, comp in SF__.ListIterate__(collection) do
+        local collection4 = self._components
+        for i5, comp5 in SF__.ListIterate__(collection4) do
             do
-                local tComp = comp
+                local tComp = comp5
                 if SF__.TypeIs__(tComp, T) then
                     return tComp
                 end
@@ -487,16 +597,41 @@ function SF__.GameObject:GetComponent(T)
     return nil
 end
 
-function SF__.GameObject:AddComponent(T3)
-    local comp4 = T3.New()
-    SF__.ListAdd__(self._components, comp4)
-    return comp4
+function SF__.GameObject:AddComponent(T6)
+    local comp7 = T6.New()
+    SF__.ListAdd__(self._components, comp7)
+    comp7:Awake()
+    comp7:OnEnable()
+    comp7:Start()
+    return comp7
 end
 
-function SF__.GameObject:RemoveComponent(T5)
-    SF__.ListRemoveAll__(self._components, function(c)
-        return SF__.TypeIs__(c, T5)
-    end)
+function SF__.GameObject:RemoveAllComponents(T8)
+    do
+        local i = (SF__.ListCount__(self._components) - 1)
+        while (i >= 0) do
+            if SF__.TypeIs__(SF__.ListGet__(self._components, i), T8) then
+                SF__.ListGet__(self._components, i):OnDisable()
+                SF__.ListGet__(self._components, i):OnDestroy()
+                SF__.ListRemoveAt__(self._components, i)
+            end
+            ::continue::
+            i = (i - 1)
+        end
+    end
+end
+
+function SF__.GameObject:Update()
+    do
+        local collection6 = self._components
+        for i7, comp9 in SF__.ListIterate__(collection6) do
+            comp9:Update()
+        end
+    end
+end
+
+function SF__.GameObject:Destroy()
+    SF__.GameObject.DestroyDepthFirst(self)
 end
 -- Program
 require("Lib.class")
@@ -516,11 +651,12 @@ function SF__.Program.Main(args)
     SF__.ListAdd__(systems, require("System.DamageSystem").new())
     SF__.ListAdd__(systems, require("System.ProjectileSystem").new())
     SF__.ListAdd__(systems, SF__.Systems.InitAbilitiesSystem.New())
+    SF__.ListAdd__(systems, InspectorSystem.new())
     SF__.ListAdd__(systems, require("System.BuffDisplaySystem").new())
     SF__.ListAdd__(systems, SF__.Systems.MeleeGameSystem.New())
     do
-        local collection2 = systems
-        for i3, system in SF__.ListIterate__(collection2) do
+        local collection8 = systems
+        for i9, system in SF__.ListIterate__(collection8) do
             system:Awake()
         end
     end
@@ -531,21 +667,22 @@ function SF__.Program.Main(args)
     end))
     DestroyGroup(group)
     do
-        local collection4 = systems
-        for i5, system1 in SF__.ListIterate__(collection4) do
+        local collection10 = systems
+        for i11, system1 in SF__.ListIterate__(collection10) do
             system1:OnEnable()
         end
     end
     local game = FrameTimer.new(function(dt)
         local now = (MathRound((Time.Time * 100)) * 0.01)
         do
-            local collection6 = systems
-            for i7, system2 in SF__.ListIterate__(collection6) do
+            local collection12 = systems
+            for i13, system2 in SF__.ListIterate__(collection12) do
                 system2:Update(dt, now)
             end
         end
     end, 1, (-1))
     game:Start()
+    SF__.Scene.get_Instance():Run()
 end
 
 function SF__.Program.__Init(self)
@@ -563,7 +700,11 @@ function SF__.Quaternion.get_Identity()
     return 0, 0, 0, 1
 end
 
-function SF__.Quaternion.op_Multiply(q__x, q__y, q__z, q__w, v__x, v__y, v__z)
+function SF__.Quaternion.op_Multiply__quaternionquaternion(a__x, a__y, a__z, a__w, b__x, b__y, b__z, b__w)
+    return ((((a__w * b__x) + (a__x * b__w)) + (a__y * b__z)) - (a__z * b__y)), ((((a__w * b__y) - (a__x * b__z)) + (a__y * b__w)) + (a__z * b__x)), ((((a__w * b__z) + (a__x * b__y)) - (a__y * b__x)) + (a__z * b__w)), ((((a__w * b__w) - (a__x * b__x)) - (a__y * b__y)) - (a__z * b__z))
+end
+
+function SF__.Quaternion.op_Multiply__quaternionvector3(q__x, q__y, q__z, q__w, v__x, v__y, v__z)
     -- https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Using_quaternion_as_rotations
     local u__x, u__y, u__z = q__x, q__y, q__z
     local s = q__w
@@ -588,45 +729,45 @@ function SF__.Quaternion.get_EulerAngles(self__x, self__y, self__z, self__w)
     -- https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Source_Code_2
     local sinr_cosp = (2 * ((self__w * self__x) + (self__y * self__z)))
     local cosr_cosp = (1 - (2 * ((self__x * self__x) + (self__y * self__y))))
-    local roll7 = math.atan2(sinr_cosp, cosr_cosp)
+    local roll13 = math.atan2(sinr_cosp, cosr_cosp)
     local sinp = (2 * ((self__w * self__y) - (self__z * self__x)))
-    local pitch8
+    local pitch14
     if (math.abs(sinp) >= 1) then
-        pitch8 = ((math.sign(sinp) * math.pi) / 2)
+        pitch14 = ((math.sign(sinp) * math.pi) / 2)
         -- use 90 degrees if out of range
     else
-        pitch8 = math.asin(sinp)
+        pitch14 = math.asin(sinp)
     end
     local siny_cosp = (2 * ((self__w * self__z) + (self__x * self__y)))
     local cosy_cosp = (1 - (2 * ((self__y * self__y) + (self__z * self__z))))
-    local yaw9 = math.atan2(siny_cosp, cosy_cosp)
-    return pitch8, yaw9, roll7
+    local yaw15 = math.atan2(siny_cosp, cosy_cosp)
+    return pitch14, yaw15, roll13
 end
 
-function SF__.Quaternion.Equals(self__x10, self__y11, self__z12, self__w13, other__x, other__y, other__z, other__w)
-    return ((((math.abs((self__x10 - other__x)) < 0.0001) and (math.abs((self__y11 - other__y)) < 0.0001)) and (math.abs((self__z12 - other__z)) < 0.0001)) and (math.abs((self__w13 - other__w)) < 0.0001))
+function SF__.Quaternion.Equals(self__x16, self__y17, self__z18, self__w19, other__x, other__y, other__z, other__w)
+    return ((((math.abs((self__x16 - other__x)) < 0.0001) and (math.abs((self__y17 - other__y)) < 0.0001)) and (math.abs((self__z18 - other__z)) < 0.0001)) and (math.abs((self__w19 - other__w)) < 0.0001))
 end
 
-function SF__.Quaternion.ToString(self__x14, self__y15, self__z16, self__w17)
-    return SF__.StrConcat__("(", self__x14, ", ", self__y15, ", ", self__z16, ", ", self__w17, ")")
+function SF__.Quaternion.ToString(self__x20, self__y21, self__z22, self__w23)
+    return SF__.StrConcat__("(", self__x20, ", ", self__y21, ", ", self__z22, ", ", self__w23, ")")
 end
 
-function SF__.Quaternion.ApplyToEffect(self__x18, self__y19, self__z20, self__w21, e)
-    local angles__x, angles__y, angles__z = SF__.Quaternion.get_EulerAngles(self__x18, self__y19, self__z20, self__w21)
-    BlzSetSpecialEffectOrientation(e, angles__x, angles__y, angles__z)
+function SF__.Quaternion.ApplyToEffect(self__x24, self__y25, self__z26, self__w27, e)
+    local angles__x, angles__y, angles__z = SF__.Quaternion.get_EulerAngles(self__x24, self__y25, self__z26, self__w27)
+    BlzSetSpecialEffectOrientation(e, angles__y, angles__x, angles__z)
 end
 -- RetributionPaladinGlobal
 SF__.RetributionPaladinGlobal = SF__.RetributionPaladinGlobal or {}
-function SF__.RetributionPaladinGlobal.IncreaseHolyEnergy(u245, amount)
-    local UnitAttribute247 = require("Objects.UnitAttribute")
-    local attr246 = UnitAttribute247.GetAttr(u245)
-    attr246.retPalHolyEnergy = math.min((attr246.retPalHolyEnergy + amount), 5)
+function SF__.RetributionPaladinGlobal.IncreaseHolyEnergy(u259, amount)
+    local UnitAttribute261 = require("Objects.UnitAttribute")
+    local attr260 = UnitAttribute261.GetAttr(u259)
+    attr260.retPalHolyEnergy = math.min((attr260.retPalHolyEnergy + amount), 5)
 end
 
 function SF__.RetributionPaladinGlobal:Init()
-    ExTriggerRegisterNewUnit(function(u248)
-        if (GetUnitTypeId(u248) == FourCC("Hpal")) then
-            SF__.ListAdd__(self._units, u248)
+    ExTriggerRegisterNewUnit(function(u262)
+        if (GetUnitTypeId(u262) == FourCC("Hpal")) then
+            SF__.ListAdd__(self._units, u262)
         end
     end)
     _ = self:Start()
@@ -634,17 +775,17 @@ end
 
 function SF__.RetributionPaladinGlobal:Start()
     return SF__.CorRun__(function()
-        local UnitAttribute251 = require("Objects.UnitAttribute")
+        local UnitAttribute265 = require("Objects.UnitAttribute")
         while true do
             do
-                local collection8 = self._units
-                for i9, u249 in SF__.ListIterate__(collection8) do
-                    local attr250 = UnitAttribute251.GetAttr(u249)
-                    ExSetUnitMana(u249, ((ExGetUnitMaxMana(u249) * attr250.retPalHolyEnergy) * 0.2))
-                    if (attr250.retPalHolyEnergy >= 3) then
-                        SF__.Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u249), FourCC("A006"), "ReplaceableTextures/CommandButtons/BTNinv_helmet_96.tga")
+                local collection14 = self._units
+                for i15, u263 in SF__.ListIterate__(collection14) do
+                    local attr264 = UnitAttribute265.GetAttr(u263)
+                    ExSetUnitMana(u263, ((ExGetUnitMaxMana(u263) * attr264.retPalHolyEnergy) * 0.2))
+                    if (attr264.retPalHolyEnergy >= 3) then
+                        SF__.Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u263), FourCC("A006"), "ReplaceableTextures/CommandButtons/BTNinv_helmet_96.tga")
                     else
-                        SF__.Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u249), FourCC("A006"), "ReplaceableTextures/PassiveButtons/PASBTNinv_helmet_96.tga")
+                        SF__.Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u263), FourCC("A006"), "ReplaceableTextures/PassiveButtons/PASBTNinv_helmet_96.tga")
                     end
                 end
             end
@@ -666,6 +807,82 @@ function SF__.RetributionPaladinGlobal.New()
 end
 
 SF__.RetributionPaladinGlobal.Instance = SF__.RetributionPaladinGlobal.New()
+-- Scene
+SF__.Scene = SF__.Scene or {}
+function SF__.Scene.get_Instance()
+    return (function()
+        if SF__.Scene._instance ~= nil then
+            return SF__.Scene._instance
+        end
+        SF__.Scene._instance = SF__.Scene.New()
+        return SF__.Scene._instance
+    end)()
+end
+
+function SF__.Scene:AddGameObject(obj10)
+    SF__.ListAdd__(self.gameObjs, obj10)
+end
+
+function SF__.Scene:Run()
+    return SF__.CorRun__(function()
+        do
+            local collection16 = self.gameObjs
+            for i17, obj11 in SF__.ListIterate__(collection16) do
+                SF__.CorWait__(20)
+                obj11:Update()
+            end
+        end
+    end)
+end
+
+function SF__.Scene.__Init(self)
+    self.__sf_type = SF__.Scene
+    self.gameObjs = SF__.ListNew__({})
+end
+
+function SF__.Scene.New()
+    local self = setmetatable({}, { __index = SF__.Scene })
+    SF__.Scene.__Init(self)
+    return self
+end
+
+SF__.Scene._instance = nil
+-- Stack
+SF__.Stack = SF__.Stack or {}
+function SF__.Stack:Push(item)
+    SF__.ListAdd__(self._items, item)
+end
+
+function SF__.Stack:Pop()
+    if (SF__.ListCount__(self._items) == 0) then
+        BJDebugMsg("Stack is empty.")
+    end
+    local item28 = SF__.ListGet__(self._items, (SF__.ListCount__(self._items) - 1))
+    SF__.ListRemoveAt__(self._items, (SF__.ListCount__(self._items) - 1))
+    return item28
+end
+
+function SF__.Stack:Peek()
+    if (SF__.ListCount__(self._items) == 0) then
+        BJDebugMsg("Stack is empty.")
+    end
+    return SF__.ListGet__(self._items, (SF__.ListCount__(self._items) - 1))
+end
+
+function SF__.Stack:get_Count()
+    return SF__.ListCount__(self._items)
+end
+
+function SF__.Stack.__Init(self)
+    self.__sf_type = SF__.Stack
+    self._items = SF__.ListNew__({})
+end
+
+function SF__.Stack.New()
+    local self = setmetatable({}, { __index = SF__.Stack })
+    SF__.Stack.__Init(self)
+    return self
+end
 SF__.Systems = SF__.Systems or {}
 -- Systems.InitAbilitiesSystem
 local SystemBase = require("System.SystemBase")
@@ -688,10 +905,28 @@ function SF__.Systems.InitAbilitiesSystem.New()
     SF__.Systems.InitAbilitiesSystem.__Init(self)
     return self
 end
+SF__.Systems.InspectorSystem = SF__.Systems.InspectorSystem or {}
+-- Systems.InspectorSystem.HierarchyRow
+SF__.Systems.InspectorSystem.HierarchyRow = SF__.Systems.InspectorSystem.HierarchyRow or {}
+function SF__.Systems.InspectorSystem.HierarchyRow.__Init(self, button, label)
+    self.__sf_type = SF__.Systems.InspectorSystem.HierarchyRow
+    self.button = nil
+    self.label = nil
+    self.gameObject = nil
+    self.depth = 0
+    self.button = button
+    self.label = label
+end
+
+function SF__.Systems.InspectorSystem.HierarchyRow.New(button, label)
+    local self = setmetatable({}, { __index = SF__.Systems.InspectorSystem.HierarchyRow })
+    SF__.Systems.InspectorSystem.HierarchyRow.__Init(self, button, label)
+    return self
+end
 -- Systems.MeleeGameSystem
-local SystemBase6 = require("System.SystemBase")
-SF__.Systems.MeleeGameSystem = SF__.Systems.MeleeGameSystem or class("MeleeGameSystem", SystemBase6)
-SF__.Systems.MeleeGameSystem.__sf_base = SystemBase6
+local SystemBase12 = require("System.SystemBase")
+SF__.Systems.MeleeGameSystem = SF__.Systems.MeleeGameSystem or class("MeleeGameSystem", SystemBase12)
+SF__.Systems.MeleeGameSystem.__sf_base = SystemBase12
 function SF__.Systems.MeleeGameSystem.__Init(self)
     self.__sf_type = SF__.Systems.MeleeGameSystem
     MeleeStartingVisibility()
@@ -711,96 +946,96 @@ function SF__.Systems.MeleeGameSystem.New()
 end
 -- TemplarStrikes
 SF__.TemplarStrikes = SF__.TemplarStrikes or {}
-function SF__.TemplarStrikes.GetAbilityData(level252)
-    return 2, (0.5 + (0.25 * level252)), (0.05 * level252)
+function SF__.TemplarStrikes.GetAbilityData(level266)
+    return 2, (0.5 + (0.25 * level266)), (0.05 * level266)
 end
 
 function SF__.TemplarStrikes.Init()
-    local EventCenter253 = require("Lib.EventCenter")
-    EventCenter253.RegisterPlayerUnitSpellEffect:Emit({id = SF__.TemplarStrikes.ID, handler = SF__.TemplarStrikes.Start})
-    ExTriggerRegisterNewUnit(function(u254)
-        if (GetUnitTypeId(u254) == FourCC("Hpal")) then
-            SF__.TemplarStrikes.UpdateAbilityMeta(u254)
-            SetHeroLevel(u254, 10, true)
+    local EventCenter267 = require("Lib.EventCenter")
+    EventCenter267.RegisterPlayerUnitSpellEffect:Emit({id = SF__.TemplarStrikes.ID, handler = SF__.TemplarStrikes.Start})
+    ExTriggerRegisterNewUnit(function(u268)
+        if (GetUnitTypeId(u268) == FourCC("Hpal")) then
+            SF__.TemplarStrikes.UpdateAbilityMeta(u268)
+            SetHeroLevel(u268, 10, true)
         end
     end)
-    EventCenter253.RegisterPlayerUnitDamaged:Emit(function(caster255, target256, damage257, weapType, dmgType, isAttack)
-        if (GetUnitAbilityLevel(caster255, SF__.TemplarStrikes.ID) <= 0) then
+    EventCenter267.RegisterPlayerUnitDamaged:Emit(function(caster269, target270, damage271, weapType, dmgType, isAttack)
+        if (GetUnitAbilityLevel(caster269, SF__.TemplarStrikes.ID) <= 0) then
             return
         end
         if (not isAttack) then
             return
         end
-        if (target256 == nil) then
+        if (target270 == nil) then
             return
         end
-        if ExIsUnitDead(target256) then
+        if ExIsUnitDead(target270) then
             return
         end
-        SF__.TemplarStrikes.TryResetBOJ(caster255)
+        SF__.TemplarStrikes.TryResetBOJ(caster269)
     end)
 end
 
-function SF__.TemplarStrikes.TryResetBOJ(caster258)
-    local level259 = GetUnitAbilityLevel(caster258, SF__.TemplarStrikes.ID)
-    local ad__AttackCount, ad__DamageScaling260, ad__ResetBOJChance = SF__.TemplarStrikes.GetAbilityData(level259)
+function SF__.TemplarStrikes.TryResetBOJ(caster272)
+    local level273 = GetUnitAbilityLevel(caster272, SF__.TemplarStrikes.ID)
+    local ad__AttackCount, ad__DamageScaling274, ad__ResetBOJChance = SF__.TemplarStrikes.GetAbilityData(level273)
     if (math.random() >= ad__ResetBOJChance) then
         return
     end
-    BlzEndUnitAbilityCooldown(caster258, SF__.BladeOfJustice.ID)
-    ExAddSpecialEffectTarget("Abilities/Spells/Items/AIam/AIamTarget.mdl", caster258, "origin", 0.3)
+    BlzEndUnitAbilityCooldown(caster272, SF__.BladeOfJustice.ID)
+    ExAddSpecialEffectTarget("Abilities/Spells/Items/AIam/AIamTarget.mdl", caster272, "origin", 0.3)
 end
 
-function SF__.TemplarStrikes.UpdateAbilityMeta(u261)
-    local p262 = GetOwningPlayer(u261)
-    local datas__AttackCount, datas__DamageScaling263, datas__ResetBOJChance = {}, {}, {}
+function SF__.TemplarStrikes.UpdateAbilityMeta(u275)
+    local p276 = GetOwningPlayer(u275)
+    local datas__AttackCount, datas__DamageScaling277, datas__ResetBOJChance = {}, {}, {}
     do
-        local i264 = 0
-        while (i264 < SF__.TemplarStrikes.MaxLevel) do
+        local i278 = 0
+        while (i278 < SF__.TemplarStrikes.MaxLevel) do
             do
-                local item__AttackCount, item__DamageScaling265, item__ResetBOJChance = SF__.TemplarStrikes.GetAbilityData((i264 + 1))
+                local item__AttackCount, item__DamageScaling279, item__ResetBOJChance = SF__.TemplarStrikes.GetAbilityData((i278 + 1))
                 table.insert(datas__AttackCount, item__AttackCount)
-                table.insert(datas__DamageScaling263, item__DamageScaling265)
+                table.insert(datas__DamageScaling277, item__DamageScaling279)
                 table.insert(datas__ResetBOJChance, item__ResetBOJChance)
             end
             ::continue::
-            i264 = (i264 + 1)
+            i278 = (i278 + 1)
         end
     end
-    SF__.Utils.ExSetAbilityResearchTooltip(p262, SF__.TemplarStrikes.ID, "学习圣殿骑士之击 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p262, SF__.TemplarStrikes.ID, SF__.StrConcat__("快速攻击目标|cffff8c00", datas__AttackCount[(0 + 1)], "|r次，第一次造成普通攻击伤害，第二次造成光辉伤害，有一定几率重置公正之剑的冷却时间，普通攻击也会触发。\r\n\r\n|cff99ccff冷却时间|r - 10秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling263[(0 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(0 + 1)] * 100)), "%|r的几率重置公正之剑。\r\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling263[(1 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(1 + 1)] * 100)), "%|r的几率重置公正之剑。\r\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling263[(2 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(2 + 1)] * 100)), "%|r的几率重置公正之剑。"), 0)
+    SF__.Utils.ExSetAbilityResearchTooltip(p276, SF__.TemplarStrikes.ID, "学习圣殿骑士之击 - [|cffffcc00%d级|r]", 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p276, SF__.TemplarStrikes.ID, SF__.StrConcat__("快速攻击目标|cffff8c00", datas__AttackCount[(0 + 1)], "|r次，第一次造成普通攻击伤害，第二次造成光辉伤害，有一定几率重置公正之剑的冷却时间，普通攻击也会触发。\n\n|cff99ccff冷却时间|r - 10秒\n\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling277[(0 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(0 + 1)] * 100)), "%|r的几率重置公正之剑。\n|cffffcc002级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling277[(1 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(1 + 1)] * 100)), "%|r的几率重置公正之剑。\n|cffffcc003级|r - |cffff8c00", string.format("%.0f", (datas__DamageScaling277[(2 + 1)] * 100)), "%|r的光辉攻击伤害，|cffff8c00", string.format("%.0f", (datas__ResetBOJChance[(2 + 1)] * 100)), "%|r的几率重置公正之剑。"), 0)
     do
-        local i266 = 0
-        while (i266 < SF__.TemplarStrikes.MaxLevel) do
-            local data__AttackCount, data__DamageScaling267, data__ResetBOJChance = datas__AttackCount[(i266 + 1)], datas__DamageScaling263[(i266 + 1)], datas__ResetBOJChance[(i266 + 1)]
-            SF__.Utils.ExBlzSetAbilityTooltip(p262, SF__.TemplarStrikes.ID, SF__.StrConcat__("圣殿骑士之击 - [|cffffcc00", (i266 + 1), "级|r]"), i266)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p262, SF__.TemplarStrikes.ID, SF__.StrConcat__("快速攻击目标|cffff8c00", data__AttackCount, "|r次，第一次造成普通攻击伤害，第二次造成普通攻击|cffff8c00", string.format("%.0f", (data__DamageScaling267 * 100)), "%|r的光辉伤害，|cffff8c00", string.format("%.0f", (data__ResetBOJChance * 100)), "%|r几率重置公正之剑的冷却时间，普通攻击也会触发。\r\n\r\n|cff99ccff冷却时间|r - 10秒"), i266)
+        local i280 = 0
+        while (i280 < SF__.TemplarStrikes.MaxLevel) do
+            local data__AttackCount, data__DamageScaling281, data__ResetBOJChance = datas__AttackCount[(i280 + 1)], datas__DamageScaling277[(i280 + 1)], datas__ResetBOJChance[(i280 + 1)]
+            SF__.Utils.ExBlzSetAbilityTooltip(p276, SF__.TemplarStrikes.ID, SF__.StrConcat__("圣殿骑士之击 - [|cffffcc00", (i280 + 1), "级|r]"), i280)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p276, SF__.TemplarStrikes.ID, SF__.StrConcat__("快速攻击目标|cffff8c00", data__AttackCount, "|r次，第一次造成普通攻击伤害，第二次造成普通攻击|cffff8c00", string.format("%.0f", (data__DamageScaling281 * 100)), "%|r的光辉伤害，|cffff8c00", string.format("%.0f", (data__ResetBOJChance * 100)), "%|r几率重置公正之剑的冷却时间，普通攻击也会触发。\n\n|cff99ccff冷却时间|r - 10秒"), i280)
             ::continue::
-            i266 = (i266 + 1)
+            i280 = (i280 + 1)
         end
     end
 end
 
-function SF__.TemplarStrikes.Start(data268)
+function SF__.TemplarStrikes.Start(data282)
     return SF__.CorRun__(function()
-        local level269 = GetUnitAbilityLevel(data268.caster, SF__.TemplarStrikes.ID)
-        local UnitAttribute271 = require("Objects.UnitAttribute")
-        local EventCenter272 = require("Lib.EventCenter")
-        local attr270 = UnitAttribute271.GetAttr(data268.caster)
-        local normalDamage = attr270:SimMeleeAttack()
-        EventCenter272.Damage:Emit({whichUnit = data268.caster, target = data268.target, amount = normalDamage, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
-        SF__.TemplarStrikes.TryResetBOJ(data268.caster)
-        SetUnitTimeScale(data268.caster, 3)
-        ResetUnitAnimation(data268.caster)
-        SetUnitAnimation(data268.caster, "attack - 2")
+        local level283 = GetUnitAbilityLevel(data282.caster, SF__.TemplarStrikes.ID)
+        local UnitAttribute285 = require("Objects.UnitAttribute")
+        local EventCenter286 = require("Lib.EventCenter")
+        local attr284 = UnitAttribute285.GetAttr(data282.caster)
+        local normalDamage = attr284:SimMeleeAttack()
+        EventCenter286.Damage:Emit({whichUnit = data282.caster, target = data282.target, amount = normalDamage, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
+        SF__.TemplarStrikes.TryResetBOJ(data282.caster)
+        SetUnitTimeScale(data282.caster, 3)
+        ResetUnitAnimation(data282.caster)
+        SetUnitAnimation(data282.caster, "attack - 2")
         SF__.CorWait__(math.round(((1.166 * 0.33) * 1000)))
-        local tarAttr273 = UnitAttribute271.GetAttr(data268.target)
-        local ad__AttackCount274, ad__DamageScaling275, ad__ResetBOJChance276 = SF__.TemplarStrikes.GetAbilityData(level269)
-        local radiantDamage = ((attr270:SimMeleeAttack() * ad__DamageScaling275) * (1 - tarAttr273.radiantResistance))
-        EventCenter272.Damage:Emit({whichUnit = data268.caster, target = data268.target, amount = radiantDamage, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_MAGIC, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
-        SF__.TemplarStrikes.TryResetBOJ(data268.caster)
-        SetUnitTimeScale(data268.caster, 1)
-        ResetUnitAnimation(data268.caster)
+        local tarAttr287 = UnitAttribute285.GetAttr(data282.target)
+        local ad__AttackCount288, ad__DamageScaling289, ad__ResetBOJChance290 = SF__.TemplarStrikes.GetAbilityData(level283)
+        local radiantDamage = ((attr284:SimMeleeAttack() * ad__DamageScaling289) * (1 - tarAttr287.radiantResistance))
+        EventCenter286.Damage:Emit({whichUnit = data282.caster, target = data282.target, amount = radiantDamage, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_MAGIC, weaponType = WEAPON_TYPE_METAL_HEAVY_BASH, outResult = {}})
+        SF__.TemplarStrikes.TryResetBOJ(data282.caster)
+        SetUnitTimeScale(data282.caster, 1)
+        ResetUnitAnimation(data282.caster)
     end)
 end
 
@@ -819,74 +1054,74 @@ SF__.TemplarStrikes.MaxLevel = 3
 SF__.TemplarStrikes = SF__.TemplarStrikes or {}
 -- TemplarStrikes.IAbilityData
 SF__.TemplarStrikes.IAbilityData = SF__.TemplarStrikes.IAbilityData or {}
-function SF__.TemplarStrikes.IAbilityData.Equals(self__AttackCount, self__DamageScaling277, self__ResetBOJChance, other__AttackCount, other__DamageScaling278, other__ResetBOJChance)
-    return ((math.abs((self__DamageScaling277 - other__DamageScaling278)) < 0.0001) and (math.abs((self__ResetBOJChance - other__ResetBOJChance)) < 0.0001))
+function SF__.TemplarStrikes.IAbilityData.Equals(self__AttackCount, self__DamageScaling291, self__ResetBOJChance, other__AttackCount, other__DamageScaling292, other__ResetBOJChance)
+    return ((math.abs((self__DamageScaling291 - other__DamageScaling292)) < 0.0001) and (math.abs((self__ResetBOJChance - other__ResetBOJChance)) < 0.0001))
 end
 -- TemplarVerdict
 SF__.TemplarVerdict = SF__.TemplarVerdict or {}
-function SF__.TemplarVerdict.GetAbilityData(level279)
+function SF__.TemplarVerdict.GetAbilityData(level293)
     return 2.25, 0.3, 0.15
 end
 
 function SF__.TemplarVerdict.Init()
-    local EventCenter280 = require("Lib.EventCenter")
-    EventCenter280.RegisterPlayerUnitSpellChannel:Emit({id = SF__.TemplarVerdict.ID, handler = SF__.TemplarVerdict.Check})
-    EventCenter280.RegisterPlayerUnitSpellEffect:Emit({id = SF__.TemplarVerdict.ID, handler = SF__.TemplarVerdict.Start})
-    ExTriggerRegisterNewUnit(function(u281)
-        if (GetUnitTypeId(u281) == FourCC("Hpal")) then
-            SF__.TemplarVerdict.UpdateAbilityMeta(u281)
+    local EventCenter294 = require("Lib.EventCenter")
+    EventCenter294.RegisterPlayerUnitSpellChannel:Emit({id = SF__.TemplarVerdict.ID, handler = SF__.TemplarVerdict.Check})
+    EventCenter294.RegisterPlayerUnitSpellEffect:Emit({id = SF__.TemplarVerdict.ID, handler = SF__.TemplarVerdict.Start})
+    ExTriggerRegisterNewUnit(function(u295)
+        if (GetUnitTypeId(u295) == FourCC("Hpal")) then
+            SF__.TemplarVerdict.UpdateAbilityMeta(u295)
         end
     end)
 end
 
-function SF__.TemplarVerdict.Check(data282)
-    local UnitAttribute284 = require("Objects.UnitAttribute")
-    local attr283 = UnitAttribute284.GetAttr(data282.caster)
-    if (attr283.retPalHolyEnergy < 3) then
-        IssueImmediateOrderById(data282.caster, SF__.ConstOrderId.Stop)
-        ExTextState(data282.caster, "圣能不足")
+function SF__.TemplarVerdict.Check(data296)
+    local UnitAttribute298 = require("Objects.UnitAttribute")
+    local attr297 = UnitAttribute298.GetAttr(data296.caster)
+    if (attr297.retPalHolyEnergy < 3) then
+        IssueImmediateOrderById(data296.caster, SF__.ConstOrderId.Stop)
+        ExTextState(data296.caster, "圣能不足")
     end
 end
 
-function SF__.TemplarVerdict.UpdateAbilityMeta(u285)
-    local p286 = GetOwningPlayer(u285)
-    local datas__DamageScaling287, datas__JudgementDamageScaling, datas__ChanceToResetJudgement = {}, {}, {}
+function SF__.TemplarVerdict.UpdateAbilityMeta(u299)
+    local p300 = GetOwningPlayer(u299)
+    local datas__DamageScaling301, datas__JudgementDamageScaling, datas__ChanceToResetJudgement = {}, {}, {}
     do
-        local i288 = 0
-        while (i288 < 1) do
+        local i302 = 0
+        while (i302 < 1) do
             do
-                local item__DamageScaling289, item__JudgementDamageScaling, item__ChanceToResetJudgement = SF__.TemplarVerdict.GetAbilityData((i288 + 1))
-                table.insert(datas__DamageScaling287, item__DamageScaling289)
+                local item__DamageScaling303, item__JudgementDamageScaling, item__ChanceToResetJudgement = SF__.TemplarVerdict.GetAbilityData((i302 + 1))
+                table.insert(datas__DamageScaling301, item__DamageScaling303)
                 table.insert(datas__JudgementDamageScaling, item__JudgementDamageScaling)
                 table.insert(datas__ChanceToResetJudgement, item__ChanceToResetJudgement)
             end
             ::continue::
-            i288 = (i288 + 1)
+            i302 = (i302 + 1)
         end
     end
-    SF__.Utils.ExSetAbilityResearchTooltip(p286, SF__.TemplarVerdict.ID, "学习圣殿骑士的裁决 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p286, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 5秒\r\n\r\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__JudgementDamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ChanceToResetJudgement[(0 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
+    SF__.Utils.ExSetAbilityResearchTooltip(p300, SF__.TemplarVerdict.ID, "学习圣殿骑士的裁决 - [|cffffcc00%d级|r]", 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p300, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。\n\n|cff99ccff冷却时间|r - 5秒\n\n|cffffcc001级|r - |cffff8c00", string.format("%.0f", (datas__JudgementDamageScaling[(0 + 1)] * 100)), "%|r的攻击伤害，", string.format("%.0f", (datas__ChanceToResetJudgement[(0 + 1)] * 100)), "%的战争艺术触发几率。"), 0)
     do
-        local i290 = 0
-        while (i290 < 1) do
-            local data__DamageScaling291, data__JudgementDamageScaling, data__ChanceToResetJudgement = datas__DamageScaling287[(i290 + 1)], datas__JudgementDamageScaling[(i290 + 1)], datas__ChanceToResetJudgement[(i290 + 1)]
-            SF__.Utils.ExBlzSetAbilityTooltip(p286, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决 - [|cffffcc00", (i290 + 1), "级|r]"), i290)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p286, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling291 * 100)), "%|r的攻击伤害。消耗|cffff8c003|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 5秒"), i290)
+        local i304 = 0
+        while (i304 < 1) do
+            local data__DamageScaling305, data__JudgementDamageScaling, data__ChanceToResetJudgement = datas__DamageScaling301[(i304 + 1)], datas__JudgementDamageScaling[(i304 + 1)], datas__ChanceToResetJudgement[(i304 + 1)]
+            SF__.Utils.ExBlzSetAbilityTooltip(p300, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决 - [|cffffcc00", (i304 + 1), "级|r]"), i304)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p300, SF__.TemplarVerdict.ID, SF__.StrConcat__("圣殿骑士的裁决造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling305 * 100)), "%|r的攻击伤害。消耗|cffff8c003|r点圣能。\n\n|cff99ccff冷却时间|r - 5秒"), i304)
             ::continue::
-            i290 = (i290 + 1)
+            i304 = (i304 + 1)
         end
     end
 end
 
-function SF__.TemplarVerdict.Start(data292)
-    local level293 = GetUnitAbilityLevel(data292.caster, SF__.TemplarVerdict.ID)
-    local UnitAttribute296 = require("Objects.UnitAttribute")
-    local EventCenter298 = require("Lib.EventCenter")
-    local ad__DamageScaling294, ad__JudgementDamageScaling, ad__ChanceToResetJudgement = SF__.TemplarVerdict.GetAbilityData(level293)
-    local attr295 = UnitAttribute296.GetAttr(data292.caster)
-    local damage297 = (attr295:SimAttack(UnitAttribute296.HeroAttributeType.Strength) * ad__DamageScaling294)
-    EventCenter298.Damage:Emit({whichUnit = data292.caster, target = data292.target, amount = damage297, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_SLICE, outResult = {}})
-    attr295.retPalHolyEnergy = (attr295.retPalHolyEnergy - 3)
+function SF__.TemplarVerdict.Start(data306)
+    local level307 = GetUnitAbilityLevel(data306.caster, SF__.TemplarVerdict.ID)
+    local UnitAttribute310 = require("Objects.UnitAttribute")
+    local EventCenter312 = require("Lib.EventCenter")
+    local ad__DamageScaling308, ad__JudgementDamageScaling, ad__ChanceToResetJudgement = SF__.TemplarVerdict.GetAbilityData(level307)
+    local attr309 = UnitAttribute310.GetAttr(data306.caster)
+    local damage311 = (attr309:SimAttack(UnitAttribute310.HeroAttributeType.Strength) * ad__DamageScaling308)
+    EventCenter312.Damage:Emit({whichUnit = data306.caster, target = data306.target, amount = damage311, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_NORMAL, weaponType = WEAPON_TYPE_METAL_HEAVY_SLICE, outResult = {}})
+    attr309.retPalHolyEnergy = (attr309.retPalHolyEnergy - 3)
 end
 
 function SF__.TemplarVerdict.__Init(self)
@@ -903,7 +1138,7 @@ SF__.TemplarVerdict.ID = FourCC("A004")
 SF__.TemplarVerdict = SF__.TemplarVerdict or {}
 -- TemplarVerdict.IAbilityData
 SF__.TemplarVerdict.IAbilityData = SF__.TemplarVerdict.IAbilityData or {}
-function SF__.TemplarVerdict.IAbilityData.Equals(self__DamageScaling299, self__JudgementDamageScaling, self__ChanceToResetJudgement, other__DamageScaling300, other__JudgementDamageScaling, other__ChanceToResetJudgement)
+function SF__.TemplarVerdict.IAbilityData.Equals(self__DamageScaling313, self__JudgementDamageScaling, self__ChanceToResetJudgement, other__DamageScaling314, other__JudgementDamageScaling, other__ChanceToResetJudgement)
     return ((math.abs((self__JudgementDamageScaling - other__JudgementDamageScaling)) < 0.0001) and (math.abs((self__ChanceToResetJudgement - other__ChanceToResetJudgement)) < 0.0001))
 end
 -- Transform
@@ -920,20 +1155,28 @@ function SF__.Transform.__Init(self)
     self.rotation__y = 0
     self.rotation__z = 0
     self.rotation__w = 0
-    self.scale__x = 0
-    self.scale__y = 0
-    self.scale__z = 0
+    self.localScale__x = 0
+    self.localScale__y = 0
+    self.localScale__z = 0
     self.children = SF__.ListNew__({})
     self.parent = nil
     self.position = {x = 0, y = 0, z = 0}
     self.rotation = SF__.Quaternion.Euler(0, 0, 0)
-    self.scale = {x = 1, y = 1, z = 1}
+    self.localScale = {x = 1, y = 1, z = 1}
 end
 
 function SF__.Transform.New()
     local self = setmetatable({}, { __index = SF__.Transform })
     SF__.Transform.__Init(self)
     return self
+end
+
+function SF__.Transform:GetInspectorName()
+    return "Transform"
+end
+
+function SF__.Transform:GetInspectorText()
+    return SF__.StrConcat__("Position ", self.position, "\n", "Rotation ", self.rotation, "\n", "Scale ", self.localScale, "\n", "Children ", SF__.ListCount__(self.children))
 end
 
 function SF__.Transform:SetParent(newParent)
@@ -954,32 +1197,32 @@ function SF__.Utils.ExSetAbilityResearchTooltip(p, abilCode, researchTooltip, le
     BlzSetAbilityResearchTooltip(abilCode, researchTooltip, level)
 end
 
-function SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p22, abilCode23, researchExtendedTooltip, level24)
-    if (GetLocalPlayer() ~= p22) then
+function SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p29, abilCode30, researchExtendedTooltip, level31)
+    if (GetLocalPlayer() ~= p29) then
         return
     end
-    BlzSetAbilityResearchExtendedTooltip(abilCode23, researchExtendedTooltip, level24)
+    BlzSetAbilityResearchExtendedTooltip(abilCode30, researchExtendedTooltip, level31)
 end
 
-function SF__.Utils.ExBlzSetAbilityTooltip(p25, abilCode26, tooltip, level27)
-    if (GetLocalPlayer() ~= p25) then
+function SF__.Utils.ExBlzSetAbilityTooltip(p32, abilCode33, tooltip, level34)
+    if (GetLocalPlayer() ~= p32) then
         return
     end
-    BlzSetAbilityTooltip(abilCode26, tooltip, level27)
+    BlzSetAbilityTooltip(abilCode33, tooltip, level34)
 end
 
-function SF__.Utils.ExBlzSetAbilityExtendedTooltip(p28, abilCode29, extendedTooltip, level30)
-    if (GetLocalPlayer() ~= p28) then
+function SF__.Utils.ExBlzSetAbilityExtendedTooltip(p35, abilCode36, extendedTooltip, level37)
+    if (GetLocalPlayer() ~= p35) then
         return
     end
-    BlzSetAbilityExtendedTooltip(abilCode29, extendedTooltip, level30)
+    BlzSetAbilityExtendedTooltip(abilCode36, extendedTooltip, level37)
 end
 
-function SF__.Utils.ExBlzSetAbilityIcon(p31, abilCode32, iconPath)
-    if (GetLocalPlayer() ~= p31) then
+function SF__.Utils.ExBlzSetAbilityIcon(p38, abilCode39, iconPath)
+    if (GetLocalPlayer() ~= p38) then
         return
     end
-    BlzSetAbilityIcon(abilCode32, iconPath)
+    BlzSetAbilityIcon(abilCode39, iconPath)
 end
 
 function SF__.Utils.__Init(self)
@@ -1002,44 +1245,44 @@ function SF__.Vector2.InsideUnitCircle()
     return math.cos(angle), math.sin(angle)
 end
 
-function SF__.Vector2.Dot(a__x, a__y, b__x, b__y)
-    return ((a__x * b__x) + (a__y * b__y))
+function SF__.Vector2.Dot(a__x40, a__y41, b__x42, b__y43)
+    return ((a__x40 * b__x42) + (a__y41 * b__y43))
 end
 
-function SF__.Vector2.Cross(a__x33, a__y34, b__x35, b__y36)
-    return ((a__y34 * b__x35) - (a__x33 * b__y36))
+function SF__.Vector2.Cross(a__x44, a__y45, b__x46, b__y47)
+    return ((a__y45 * b__x46) - (a__x44 * b__y47))
 end
 
-function SF__.Vector2.op_UnaryNegation(a__x37, a__y38)
-    return (-a__x37), (-a__y38)
+function SF__.Vector2.op_UnaryNegation(a__x48, a__y49)
+    return (-a__x48), (-a__y49)
 end
 
-function SF__.Vector2.op_Addition(a__x39, a__y40, b__x41, b__y42)
-    return (a__x39 + b__x41), (a__y40 + b__y42)
+function SF__.Vector2.op_Addition(a__x50, a__y51, b__x52, b__y53)
+    return (a__x50 + b__x52), (a__y51 + b__y53)
 end
 
-function SF__.Vector2.op_Subtraction(a__x43, a__y44, b__x45, b__y46)
-    return (a__x43 - b__x45), (a__y44 - b__y46)
+function SF__.Vector2.op_Subtraction(a__x54, a__y55, b__x56, b__y57)
+    return (a__x54 - b__x56), (a__y55 - b__y57)
 end
 
-function SF__.Vector2.op_Multiply__vector2f(v__x47, v__y48, f)
-    return (v__x47 * f), (v__y48 * f)
+function SF__.Vector2.op_Multiply__vector2f(v__x58, v__y59, f)
+    return (v__x58 * f), (v__y59 * f)
 end
 
-function SF__.Vector2.op_Multiply__fvector2(f49, v__x50, v__y51)
-    return (v__x50 * f49), (v__y51 * f49)
+function SF__.Vector2.op_Multiply__fvector2(f60, v__x61, v__y62)
+    return (v__x61 * f60), (v__y62 * f60)
 end
 
-function SF__.Vector2.op_Division(v__x52, v__y53, f54)
-    return (v__x52 / f54), (v__y53 / f54)
+function SF__.Vector2.op_Division(v__x63, v__y64, f65)
+    return (v__x63 / f65), (v__y64 / f65)
 end
 
-function SF__.Vector2.op_Equality(a__x55, a__y56, b__x57, b__y58)
-    return ((math.abs((a__x55 - b__x57)) < 0.0001) and (math.abs((a__y56 - b__y58)) < 0.0001))
+function SF__.Vector2.op_Equality(a__x66, a__y67, b__x68, b__y69)
+    return ((math.abs((a__x66 - b__x68)) < 0.0001) and (math.abs((a__y67 - b__y69)) < 0.0001))
 end
 
-function SF__.Vector2.op_Inequality(a__x59, a__y60, b__x61, b__y62)
-    return (not SF__.Vector2.op_Equality(a__x59, a__y60, b__x61, b__y62))
+function SF__.Vector2.op_Inequality(a__x70, a__y71, b__x72, b__y73)
+    return (not SF__.Vector2.op_Equality(a__x70, a__y71, b__x72, b__y73))
 end
 
 function SF__.Vector2.UnitDistance(a, b)
@@ -1048,57 +1291,57 @@ function SF__.Vector2.UnitDistance(a, b)
     return SF__.Vector2.get_Magnitude(SF__.Vector2.op_Subtraction(v1__x, v1__y, v2__x, v2__y))
 end
 
-function SF__.Vector2.SqrUnitDistance(a63, b64)
-    local v1__x65, v1__y66 = SF__.Vector2.FromUnit(a63)
-    local v2__x67, v2__y68 = SF__.Vector2.FromUnit(b64)
-    return SF__.Vector2.get_SqrMagnitude(SF__.Vector2.op_Subtraction(v1__x65, v1__y66, v2__x67, v2__y68))
+function SF__.Vector2.SqrUnitDistance(a74, b75)
+    local v1__x76, v1__y77 = SF__.Vector2.FromUnit(a74)
+    local v2__x78, v2__y79 = SF__.Vector2.FromUnit(b75)
+    return SF__.Vector2.get_SqrMagnitude(SF__.Vector2.op_Subtraction(v1__x76, v1__y77, v2__x78, v2__y79))
 end
 
 function SF__.Vector2.FromUnit(u)
     return GetUnitX(u), GetUnitY(u)
 end
 
-function SF__.Vector2.get_Magnitude(self__x69, self__y70)
-    return math.sqrt(SF__.Vector2.get_SqrMagnitude(self__x69, self__y70))
+function SF__.Vector2.get_Magnitude(self__x80, self__y81)
+    return math.sqrt(SF__.Vector2.get_SqrMagnitude(self__x80, self__y81))
 end
 
-function SF__.Vector2.get_SqrMagnitude(self__x71, self__y72)
-    return ((self__x71 * self__x71) + (self__y72 * self__y72))
+function SF__.Vector2.get_SqrMagnitude(self__x82, self__y83)
+    return ((self__x82 * self__x82) + (self__y83 * self__y83))
 end
 
-function SF__.Vector2.get_Normalized(self__x73, self__y74)
-    local mag = SF__.Vector2.get_Magnitude(self__x73, self__y74)
+function SF__.Vector2.get_Normalized(self__x84, self__y85)
+    local mag = SF__.Vector2.get_Magnitude(self__x84, self__y85)
     if (mag < 0.0001) then
         return SF__.Vector2.get_Zero()
     end
-    return SF__.Vector2.op_Division(self__x73, self__y74, mag)
+    return SF__.Vector2.op_Division(self__x84, self__y85, mag)
 end
 
-function SF__.Vector2.ClampMagnitude(self__x77, self__y78, mag79)
-    return SF__.Vector2.op_Multiply__vector2f(SF__.Vector2.get_Normalized(self__x77, self__y78), mag79)
+function SF__.Vector2.ClampMagnitude(self__x88, self__y89, mag90)
+    return SF__.Vector2.op_Multiply__vector2f(SF__.Vector2.get_Normalized(self__x88, self__y89), mag90)
 end
 
-function SF__.Vector2.Equals(self__x80, self__y81, other__x82, other__y83)
-    return SF__.Vector2.op_Equality(self__x80, self__y81, other__x82, other__y83)
+function SF__.Vector2.Equals(self__x91, self__y92, other__x93, other__y94)
+    return SF__.Vector2.op_Equality(self__x91, self__y92, other__x93, other__y94)
 end
 
-function SF__.Vector2.ToString(self__x84, self__y85)
-    return SF__.StrConcat__("(", self__x84, ", ", self__y85, ")")
+function SF__.Vector2.ToString(self__x95, self__y96)
+    return SF__.StrConcat__("(", self__x95, ", ", self__y96, ")")
 end
 
-function SF__.Vector2.Rotate(self__x86, self__y87, angle88)
-    local cos = math.cos(angle88)
-    local sin = math.sin(angle88)
-    return ((self__x86 * cos) - (self__y87 * sin)), ((self__x86 * sin) + (self__y87 * cos))
+function SF__.Vector2.Rotate(self__x97, self__y98, angle99)
+    local cos = math.cos(angle99)
+    local sin = math.sin(angle99)
+    return ((self__x97 * cos) - (self__y98 * sin)), ((self__x97 * sin) + (self__y98 * cos))
 end
 
-function SF__.Vector2.UnitMoveTo(self__x89, self__y90, u91)
-    SetUnitX(u91, self__x89)
-    SetUnitY(u91, self__y90)
+function SF__.Vector2.UnitMoveTo(self__x100, self__y101, u102)
+    SetUnitX(u102, self__x100)
+    SetUnitY(u102, self__y101)
 end
 
-function SF__.Vector2.GetTerrainZ(self__x92, self__y93)
-    MoveLocation(SF__.Vector2._loc, self__x92, self__y93)
+function SF__.Vector2.GetTerrainZ(self__x103, self__y104)
+    MoveLocation(SF__.Vector2._loc, self__x103, self__y104)
     return GetLocationZ(SF__.Vector2._loc)
 end
 
@@ -1137,44 +1380,44 @@ function SF__.Vector3.get_One()
     return 1, 1, 1
 end
 
-function SF__.Vector3.op_Addition(a__x94, a__y95, a__z, b__x96, b__y97, b__z)
-    return (a__x94 + b__x96), (a__y95 + b__y97), (a__z + b__z)
+function SF__.Vector3.op_Addition(a__x105, a__y106, a__z107, b__x108, b__y109, b__z110)
+    return (a__x105 + b__x108), (a__y106 + b__y109), (a__z107 + b__z110)
 end
 
-function SF__.Vector3.op_UnaryNegation(a__x98, a__y99, a__z100)
-    return (-a__x98), (-a__y99), (-a__z100)
+function SF__.Vector3.op_UnaryNegation(a__x111, a__y112, a__z113)
+    return (-a__x111), (-a__y112), (-a__z113)
 end
 
-function SF__.Vector3.op_Subtraction(a__x101, a__y102, a__z103, b__x104, b__y105, b__z106)
-    return (a__x101 - b__x104), (a__y102 - b__y105), (a__z103 - b__z106)
+function SF__.Vector3.op_Subtraction(a__x114, a__y115, a__z116, b__x117, b__y118, b__z119)
+    return (a__x114 - b__x117), (a__y115 - b__y118), (a__z116 - b__z119)
 end
 
-function SF__.Vector3.op_Multiply__vector3f(v__x107, v__y108, v__z109, f110)
-    return (v__x107 * f110), (v__y108 * f110), (v__z109 * f110)
+function SF__.Vector3.op_Multiply__vector3f(v__x120, v__y121, v__z122, f123)
+    return (v__x120 * f123), (v__y121 * f123), (v__z122 * f123)
 end
 
-function SF__.Vector3.op_Multiply__fvector3(f111, v__x112, v__y113, v__z114)
-    return (v__x112 * f111), (v__y113 * f111), (v__z114 * f111)
+function SF__.Vector3.op_Multiply__fvector3(f124, v__x125, v__y126, v__z127)
+    return (v__x125 * f124), (v__y126 * f124), (v__z127 * f124)
 end
 
-function SF__.Vector3.op_Division(v__x115, v__y116, v__z117, f118)
-    return (v__x115 / f118), (v__y116 / f118), (v__z117 / f118)
+function SF__.Vector3.op_Division(v__x128, v__y129, v__z130, f131)
+    return (v__x128 / f131), (v__y129 / f131), (v__z130 / f131)
 end
 
-function SF__.Vector3.op_Equality(a__x119, a__y120, a__z121, b__x122, b__y123, b__z124)
-    return (((math.abs((a__x119 - b__x122)) < 0.0001) and (math.abs((a__y120 - b__y123)) < 0.0001)) and (math.abs((a__z121 - b__z124)) < 0.0001))
+function SF__.Vector3.op_Equality(a__x132, a__y133, a__z134, b__x135, b__y136, b__z137)
+    return (((math.abs((a__x132 - b__x135)) < 0.0001) and (math.abs((a__y133 - b__y136)) < 0.0001)) and (math.abs((a__z134 - b__z137)) < 0.0001))
 end
 
-function SF__.Vector3.op_Inequality(a__x125, a__y126, a__z127, b__x128, b__y129, b__z130)
-    return (not SF__.Vector3.op_Equality(a__x125, a__y126, a__z127, b__x128, b__y129, b__z130))
+function SF__.Vector3.op_Inequality(a__x138, a__y139, a__z140, b__x141, b__y142, b__z143)
+    return (not SF__.Vector3.op_Equality(a__x138, a__y139, a__z140, b__x141, b__y142, b__z143))
 end
 
-function SF__.Vector3.Dot(a__x131, a__y132, a__z133, b__x134, b__y135, b__z136)
-    return (((a__x131 * b__x134) + (a__y132 * b__y135)) + (a__z133 * b__z136))
+function SF__.Vector3.Dot(a__x144, a__y145, a__z146, b__x147, b__y148, b__z149)
+    return (((a__x144 * b__x147) + (a__y145 * b__y148)) + (a__z146 * b__z149))
 end
 
-function SF__.Vector3.Scale(a__x137, a__y138, a__z139, b__x140, b__y141, b__z142)
-    return (a__x137 * b__x140), (a__y138 * b__y141), (a__z139 * b__z142)
+function SF__.Vector3.Scale(a__x150, a__y151, a__z152, b__x153, b__y154, b__z155)
+    return (a__x150 * b__x153), (a__y151 * b__y154), (a__z152 * b__z155)
 end
 
 -- <summary>
@@ -1182,137 +1425,137 @@ end
 -- That means Cross((1,0,0), (0,1,0)) == (0,0,1).
 -- </summary>
 --
-function SF__.Vector3.Cross(a__x143, a__y144, a__z145, b__x146, b__y147, b__z148)
-    return ((a__y144 * b__z148) - (a__z145 * b__y147)), ((a__z145 * b__x146) - (a__x143 * b__z148)), ((a__x143 * b__y147) - (a__y144 * b__x146))
+function SF__.Vector3.Cross(a__x156, a__y157, a__z158, b__x159, b__y160, b__z161)
+    return ((a__y157 * b__z161) - (a__z158 * b__y160)), ((a__z158 * b__x159) - (a__x156 * b__z161)), ((a__x156 * b__y160) - (a__y157 * b__x159))
 end
 
-function SF__.Vector3.Project(v__x149, v__y150, v__z151, onNormal__x, onNormal__y, onNormal__z)
+function SF__.Vector3.Project(v__x162, v__y163, v__z164, onNormal__x, onNormal__y, onNormal__z)
     local sqrMag = SF__.Vector3.Dot(onNormal__x, onNormal__y, onNormal__z, onNormal__x, onNormal__y, onNormal__z)
     if (sqrMag < 0.0001) then
         return SF__.Vector3.get_Zero()
     end
-    local dot = SF__.Vector3.Dot(v__x149, v__y150, v__z151, onNormal__x, onNormal__y, onNormal__z)
+    local dot = SF__.Vector3.Dot(v__x162, v__y163, v__z164, onNormal__x, onNormal__y, onNormal__z)
     return SF__.Vector3.op_Multiply__vector3f(onNormal__x, onNormal__y, onNormal__z, (dot / sqrMag))
 end
 
-function SF__.Vector3.ProjectOnPlane(v__x152, v__y153, v__z154, planeNormal__x, planeNormal__y, planeNormal__z)
-    return SF__.Vector3.op_Subtraction(v__x152, v__y153, v__z154, SF__.Vector3.Project(v__x152, v__y153, v__z154, planeNormal__x, planeNormal__y, planeNormal__z))
+function SF__.Vector3.ProjectOnPlane(v__x165, v__y166, v__z167, planeNormal__x, planeNormal__y, planeNormal__z)
+    return SF__.Vector3.op_Subtraction(v__x165, v__y166, v__z167, SF__.Vector3.Project(v__x165, v__y166, v__z167, planeNormal__x, planeNormal__y, planeNormal__z))
 end
 
-function SF__.Vector3._getTerrainZ(x155, y156)
-    MoveLocation(SF__.Vector3._loc, x155, y156)
+function SF__.Vector3._getTerrainZ(x168, y169)
+    MoveLocation(SF__.Vector3._loc, x168, y169)
     return GetLocationZ(SF__.Vector3._loc)
 end
 
-function SF__.Vector3.FromUnit(u157)
-    local x158 = GetUnitX(u157)
-    local y159 = GetUnitY(u157)
-    return x158, y159, (SF__.Vector3._getTerrainZ(x158, y159) + GetUnitFlyHeight(u157))
+function SF__.Vector3.FromUnit(u170)
+    local x171 = GetUnitX(u170)
+    local y172 = GetUnitY(u170)
+    return x171, y172, (SF__.Vector3._getTerrainZ(x171, y172) + GetUnitFlyHeight(u170))
 end
 
-function SF__.Vector3.get_SqrMagnitude(self__x160, self__y161, self__z162)
-    return (((self__x160 * self__x160) + (self__y161 * self__y161)) + (self__z162 * self__z162))
+function SF__.Vector3.get_SqrMagnitude(self__x173, self__y174, self__z175)
+    return (((self__x173 * self__x173) + (self__y174 * self__y174)) + (self__z175 * self__z175))
 end
 
-function SF__.Vector3.get_Magnitude(self__x163, self__y164, self__z165)
-    return math.sqrt(SF__.Vector3.get_SqrMagnitude(self__x163, self__y164, self__z165))
+function SF__.Vector3.get_Magnitude(self__x176, self__y177, self__z178)
+    return math.sqrt(SF__.Vector3.get_SqrMagnitude(self__x176, self__y177, self__z178))
 end
 
-function SF__.Vector3.get_Normalized(self__x166, self__y167, self__z168)
-    local mag169 = SF__.Vector3.get_Magnitude(self__x166, self__y167, self__z168)
-    if (mag169 < 0.0001) then
+function SF__.Vector3.get_Normalized(self__x179, self__y180, self__z181)
+    local mag182 = SF__.Vector3.get_Magnitude(self__x179, self__y180, self__z181)
+    if (mag182 < 0.0001) then
         return SF__.Vector3.get_Zero()
     end
-    return SF__.Vector3.op_Division(self__x166, self__y167, self__z168, mag169)
+    return SF__.Vector3.op_Division(self__x179, self__y180, self__z181, mag182)
 end
 
-function SF__.Vector3.ClampMagnitude(self__x173, self__y174, self__z175, mag176)
-    return SF__.Vector3.op_Multiply__vector3f(SF__.Vector3.get_Normalized(self__x173, self__y174, self__z175), mag176)
+function SF__.Vector3.ClampMagnitude(self__x186, self__y187, self__z188, mag189)
+    return SF__.Vector3.op_Multiply__vector3f(SF__.Vector3.get_Normalized(self__x186, self__y187, self__z188), mag189)
 end
 
-function SF__.Vector3.Equals(self__x177, self__y178, self__z179, other__x180, other__y181, other__z182)
-    return SF__.Vector3.op_Equality(self__x177, self__y178, self__z179, other__x180, other__y181, other__z182)
+function SF__.Vector3.Equals(self__x190, self__y191, self__z192, other__x193, other__y194, other__z195)
+    return SF__.Vector3.op_Equality(self__x190, self__y191, self__z192, other__x193, other__y194, other__z195)
 end
 
-function SF__.Vector3.ToString(self__x183, self__y184, self__z185)
-    return SF__.StrConcat__("(", self__x183, ", ", self__y184, ", ", self__z185, ")")
+function SF__.Vector3.ToString(self__x196, self__y197, self__z198)
+    return SF__.StrConcat__("(", self__x196, ", ", self__y197, ", ", self__z198, ")")
 end
 
-function SF__.Vector3.UnitMoveTo(self__x186, self__y187, self__z188, u189, mode)
+function SF__.Vector3.UnitMoveTo(self__x199, self__y200, self__z201, u202, mode)
     if mode == nil then mode = SF__.UnitVec3Mode.Auto end
-    local tz = SF__.Vector3._getTerrainZ(self__x186, self__y187)
+    local tz = SF__.Vector3._getTerrainZ(self__x199, self__y200)
     local LuaUtils = require("Lib.Utils")
-    local defaultFlyHeight = GetUnitDefaultFlyHeight(u189)
+    local defaultFlyHeight = GetUnitDefaultFlyHeight(u202)
     local minZ = (tz + defaultFlyHeight)
-    SetUnitPosition(u189, self__x186, self__y187)
+    SetUnitPosition(u202, self__x199, self__y200)
     repeat
         local switchValue = mode
         if (switchValue == SF__.UnitVec3Mode.ForceFlying) then
-            LuaUtils.SetUnitFlyable(u189)
-            SetUnitFlyHeight(u189, (math.max(minZ, self__z188) - minZ), 0)
+            LuaUtils.SetUnitFlyable(u202)
+            SetUnitFlyHeight(u202, (math.max(minZ, self__z201) - minZ), 0)
             break
         elseif (switchValue == SF__.UnitVec3Mode.ForceGround) then
-            SetUnitFlyHeight(u189, defaultFlyHeight, 0)
+            SetUnitFlyHeight(u202, defaultFlyHeight, 0)
             break
         elseif (switchValue == SF__.UnitVec3Mode.Auto) then
-            if IsUnitType(u189, UNIT_TYPE_FLYING) then
-                SetUnitFlyHeight(u189, (math.max(minZ, self__z188) - minZ), 0)
+            if IsUnitType(u202, UNIT_TYPE_FLYING) then
+                SetUnitFlyHeight(u202, (math.max(minZ, self__z201) - minZ), 0)
             else
-                SetUnitFlyHeight(u189, defaultFlyHeight, 0)
+                SetUnitFlyHeight(u202, defaultFlyHeight, 0)
             end
             break
         end
     until true
 end
 
-function SF__.Vector3.GetTerrainZ(self__x190, self__y191, self__z192)
-    return SF__.Vector3._getTerrainZ(self__x190, self__y191)
+function SF__.Vector3.GetTerrainZ(self__x203, self__y204, self__z205)
+    return SF__.Vector3._getTerrainZ(self__x203, self__y204)
 end
 
 SF__.Vector3._loc = Location(0, 0)
 -- WordOfGlory
 SF__.WordOfGlory = SF__.WordOfGlory or {}
 function SF__.WordOfGlory.Init()
-    local EventCenter301 = require("Lib.EventCenter")
-    EventCenter301.RegisterPlayerUnitSpellChannel:Emit({id = SF__.WordOfGlory.ID, handler = SF__.WordOfGlory.Check})
-    EventCenter301.RegisterPlayerUnitSpellEffect:Emit({id = SF__.WordOfGlory.ID, handler = SF__.WordOfGlory.Start})
-    ExTriggerRegisterNewUnit(function(u302)
-        if (GetUnitTypeId(u302) == FourCC("Hpal")) then
-            SF__.WordOfGlory.UpdateAbilityMeta(u302)
+    local EventCenter315 = require("Lib.EventCenter")
+    EventCenter315.RegisterPlayerUnitSpellChannel:Emit({id = SF__.WordOfGlory.ID, handler = SF__.WordOfGlory.Check})
+    EventCenter315.RegisterPlayerUnitSpellEffect:Emit({id = SF__.WordOfGlory.ID, handler = SF__.WordOfGlory.Start})
+    ExTriggerRegisterNewUnit(function(u316)
+        if (GetUnitTypeId(u316) == FourCC("Hpal")) then
+            SF__.WordOfGlory.UpdateAbilityMeta(u316)
         end
     end)
 end
 
-function SF__.WordOfGlory.Check(data303)
-    local UnitAttribute305 = require("Objects.UnitAttribute")
-    local attr304 = UnitAttribute305.GetAttr(data303.caster)
-    if (attr304.retPalHolyEnergy < 3) then
-        IssueImmediateOrderById(data303.caster, SF__.ConstOrderId.Stop)
-        ExTextState(data303.caster, "圣能不足")
+function SF__.WordOfGlory.Check(data317)
+    local UnitAttribute319 = require("Objects.UnitAttribute")
+    local attr318 = UnitAttribute319.GetAttr(data317.caster)
+    if (attr318.retPalHolyEnergy < 3) then
+        IssueImmediateOrderById(data317.caster, SF__.ConstOrderId.Stop)
+        ExTextState(data317.caster, "圣能不足")
     end
 end
 
-function SF__.WordOfGlory.UpdateAbilityMeta(u306)
-    local p307 = GetOwningPlayer(u306)
-    SF__.Utils.ExSetAbilityResearchTooltip(p307, SF__.WordOfGlory.ID, "学习圣殿骑士的裁决 - [|cffffcc00%d级|r]", 0)
-    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p307, SF__.WordOfGlory.ID, "圣殿骑士的裁决造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 5秒\r\n\r\n|cffffcc001级|r - |cffff8c00100%|r的攻击伤害，100%的战争艺术触发几率。", 0)
+function SF__.WordOfGlory.UpdateAbilityMeta(u320)
+    local p321 = GetOwningPlayer(u320)
+    SF__.Utils.ExSetAbilityResearchTooltip(p321, SF__.WordOfGlory.ID, "学习圣殿骑士的裁决 - [|cffffcc00%d级|r]", 0)
+    SF__.Utils.ExBlzSetAbilityResearchExtendedTooltip(p321, SF__.WordOfGlory.ID, "圣殿骑士的裁决造成一次攻击伤害，如果目标被审判，造成30%的额外伤害，15%几率重置审判。消耗|cffff8c003|r点圣能。\n\n|cff99ccff冷却时间|r - 5秒\n\n|cffffcc001级|r - |cffff8c00100%|r的攻击伤害，100%的战争艺术触发几率。", 0)
     do
-        local i308 = 0
-        while (i308 < 1) do
-            SF__.Utils.ExBlzSetAbilityTooltip(p307, SF__.WordOfGlory.ID, SF__.StrConcat__("圣殿骑士的裁决 - [|cffffcc00", (i308 + 1), "级|r]"), i308)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p307, SF__.WordOfGlory.ID, "圣殿骑士的裁决造成一次攻击伤害，造成|cffff8c00100%|r的攻击伤害。消耗|cffff8c003|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 5秒", i308)
+        local i322 = 0
+        while (i322 < 1) do
+            SF__.Utils.ExBlzSetAbilityTooltip(p321, SF__.WordOfGlory.ID, SF__.StrConcat__("圣殿骑士的裁决 - [|cffffcc00", (i322 + 1), "级|r]"), i322)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p321, SF__.WordOfGlory.ID, "圣殿骑士的裁决造成一次攻击伤害，造成|cffff8c00100%|r的攻击伤害。消耗|cffff8c003|r点圣能。\n\n|cff99ccff冷却时间|r - 5秒", i322)
             ::continue::
-            i308 = (i308 + 1)
+            i322 = (i322 + 1)
         end
     end
 end
 
-function SF__.WordOfGlory.Start(data309)
-    local UnitAttribute311 = require("Objects.UnitAttribute")
-    local EventCenter312 = require("Lib.EventCenter")
-    local attr310 = UnitAttribute311.GetAttr(data309.caster)
-    EventCenter312.Heal:Emit({caster = data309.caster, target = data309.target, amount = 300})
-    attr310.retPalHolyEnergy = (attr310.retPalHolyEnergy - 3)
+function SF__.WordOfGlory.Start(data323)
+    local UnitAttribute325 = require("Objects.UnitAttribute")
+    local EventCenter326 = require("Lib.EventCenter")
+    local attr324 = UnitAttribute325.GetAttr(data323.caster)
+    EventCenter326.Heal:Emit({caster = data323.caster, target = data323.target, amount = 300})
+    attr324.retPalHolyEnergy = (attr324.retPalHolyEnergy - 3)
 end
 
 function SF__.WordOfGlory.__Init(self)
