@@ -23,13 +23,13 @@ public class AttachEffectComponent : Component
         var parent = gameObject.transform.parent;
         while (parent != null)
         {
-            // globalPos = parent.position + parent.rotation * Vector3.Scale(parent.localScale, globalPos);
+            globalPos = parent.position + parent.rotation * Vector3.Scale(parent.localScale, globalPos);
             globalRot = parent.rotation * globalRot;
             globalScale = Vector3.Scale(parent.localScale, globalScale);
             parent = parent.parent;
         }
 
-        // BlzSetSpecialEffectPosition(eff, globalPos.x, globalPos.y, globalPos.z);
+        BlzSetSpecialEffectPosition(eff, globalPos.x, globalPos.y, globalPos.z);
         globalRot.ApplyToEffect(eff);
         BlzSetSpecialEffectMatrixScale(eff, globalScale.x, globalScale.y, globalScale.z);
     }

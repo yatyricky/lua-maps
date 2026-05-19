@@ -64,13 +64,6 @@ public class Program
             }
         }, 1, -1);
         game.Start();
-        try
-        {
-            Scene.Instance.Run();
-        }
-        catch (System.Exception e)
-        {
-            BJDebugMsg($"Scene err: {e}");
-        }
+        Scene.Instance.Run();
     }
 }

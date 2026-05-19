@@ -76,14 +76,17 @@ public class DivineToll
 
     public static async Task Start(ISpellData data)
     {
-        var pos = Vector2.FromUnit(data.caster);
+        var pos = Vector3.FromUnit(data.caster);
         var eff = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos.x, pos.y);
 
         var bolt = new GameObject("DivineToll_Bolt");
-        var boltMis = new GameObject("dt_mis", bolt);
+        bolt.transform.position = pos + new Vector3(0, 0, 50);
+        var hand = new GameObject("dt_hand", bolt);
+        var boltMis = new GameObject("dt_mis", hand);
+        boltMis.transform.position = new Vector3(25, 0, 0);
         boltMis.AddComponent<AttachEffectComponent>().eff = eff;
-        var trs = boltMis.transform;
-        var rot = Quaternion.Euler(60f / 60, 0, 0);
+        var trs = hand.transform;
+        var rot = Quaternion.Euler(450f / 60, 0, 0);
 
         while (true)
         {

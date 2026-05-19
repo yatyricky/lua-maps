@@ -99,6 +99,6 @@ public struct Quaternion : IEquatable<Quaternion>
     public void ApplyToEffect(effect e)
     {
         var angles = EulerAngles;
-        BlzSetSpecialEffectOrientation(e, angles.y, angles.x, angles.z);
+        BlzSetSpecialEffectOrientation(e, angles.y * bj_DEGTORAD, angles.x * bj_DEGTORAD, angles.z * bj_DEGTORAD);
     }
 }
