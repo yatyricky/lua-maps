@@ -79,10 +79,16 @@ public class DivineToll
         var pos = Vector2.FromUnit(data.caster);
         var eff = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos.x, pos.y);
 
+        var bolt = new GameObject("DivineToll_Bolt");
+        var boltMis = new GameObject("dt_mis", bolt);
+        boltMis.AddComponent<AttachEffectComponent>().eff = eff;
+        var trs = boltMis.transform;
+        var rot = Quaternion.Euler(60f / 60, 0, 0);
+
         while (true)
         {
             await Task.Delay(16);
-            var rotation = Quaternion.Euler(0f, 90f, 0f);
+            trs.rotation = rot * trs.rotation;
         }
     }
 }

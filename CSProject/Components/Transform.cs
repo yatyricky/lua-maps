@@ -23,10 +23,10 @@ public class Transform : Component
 
     public override string GetInspectorText()
     {
-        return "Position " + position + "\n"
-             + "Rotation " + rotation + "\n"
-             + "Scale " + localScale + "\n"
-             + "Children " + children.Count;
+        return "Position: " + position.ToString() + "\n"
+             + "Rotation: " + rotation.EulerAngles.ToString() + "\n"
+             + "Scale: " + localScale.ToString() + "\n"
+             + "Children: " + children.Count;
     }
 
     public void SetParent(Transform? newParent)

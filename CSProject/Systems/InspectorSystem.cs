@@ -1,8 +1,10 @@
 using LuaWrapper;
 using SFLib.Collections;
+using SFLib.Interop;
 
 namespace Systems;
 
+[Lua(Class = "InspectorSystem")]
 public class InspectorSystem : SystemBase
 {
     private const int MaxHierarchyRows = 18;

@@ -20,6 +20,18 @@ public class GameObject
         Scene.Instance.gameObjs.Remove(obj);
     }
 
+    private static void UpdateBFS(GameObject obj)
+    {
+        foreach (var comp in obj._components)
+        {
+            comp.Update();
+        }
+        foreach (var child in obj.transform.children)
+        {
+            UpdateBFS(child.gameObject);
+        }
+    }
+
     public string name { get; private set; }
     public Transform transform { get; private set; }
     private List<Component> _components = new List<Component>();
@@ -78,10 +90,7 @@ public class GameObject
 
     public void Update()
     {
-        foreach (var comp in _components)
-        {
-            comp.Update();
-        }
+        UpdateBFS(this);
     }
 
     public void Destroy()

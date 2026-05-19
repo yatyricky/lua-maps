@@ -15,10 +15,29 @@ public class Scene
 
     public async void Run()
     {
-        foreach (var obj in gameObjs)
+        try
         {
-            await Task.Delay(20);
-            obj.Update();
+            while (true)
+            {
+                await Task.Delay(100);
+                var rootObjs = new List<GameObject>();
+                foreach (var obj in gameObjs)
+                {
+                    if (obj.transform.parent == null)
+                    {
+                        rootObjs.Add(obj);
+                    }
+                }
+                foreach (var obj in rootObjs)
+                {
+                    obj.Update();
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            BJDebugMsg($"{e}");
+            PrintStackTrace();
         }
     }
 }

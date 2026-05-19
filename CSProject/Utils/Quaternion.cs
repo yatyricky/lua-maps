@@ -74,7 +74,7 @@ public struct Quaternion : IEquatable<Quaternion>
             var cosy_cosp = 1 - 2 * (y * y + z * z);
             var yaw = math.atan2(siny_cosp, cosy_cosp);
 
-            return new Vector3(pitch, yaw, roll);
+            return new Vector3(pitch * bj_RADTODEG, yaw * bj_RADTODEG, roll * bj_RADTODEG);
         }
     }
 
