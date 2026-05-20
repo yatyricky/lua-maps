@@ -5,6 +5,8 @@ using SFLib.Interop;
 
 public class math : LuaObject
 { 
+    public static float pi => throw null;
+    public static float huge => throw null;
     public static float abs(float value) => throw null;
     public static float min(float val1, float val2) => throw null;
     public static int min(int val1, int val2) => throw null;
@@ -14,11 +16,17 @@ public class math : LuaObject
     public static float random() => throw null;
     public static float sin(float radiant) => throw null;
     public static float cos(float radiant) => throw null;
-    public static float pi => throw null;
     public static float sqrt(float val) => throw null;
     public static float atan2(float y, float x) => throw null;
     public static int sign(float value) => throw null;
     public static float asin(float value) => throw null;
+    public static float clamp(float value, float min, float max) => throw null;
+    public static float acos(float value) => throw null;
+    public static float clamp01(float value) => throw null;
+    public static float floor(float value) => throw null;
+    public static float ceil(float value) => throw null;
+    public static float lerp(float a, float b, float t) => throw null;
+    public static float moveTowards(float current, float target, float maxDelta) => throw null;
 }
 
 #pragma warning restore CS8597 // Thrown value may be null.

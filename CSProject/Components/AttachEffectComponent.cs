@@ -2,11 +2,6 @@ public class AttachEffectComponent : Component
 {
     public effect? eff;
 
-    public override string GetInspectorName()
-    {
-        return "AttachEffectComponent";
-    }
-
     public override string GetInspectorText()
     {
         return "Effect: " + (eff == null ? "None" : "Attached");

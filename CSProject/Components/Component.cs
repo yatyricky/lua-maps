@@ -2,11 +2,6 @@ public class Component
 {
     public GameObject gameObject { get; internal set; } = null!;
 
-    public virtual string GetInspectorName()
-    {
-        return "Component";
-    }
-
     public virtual string GetInspectorText()
     {
         return string.Empty;

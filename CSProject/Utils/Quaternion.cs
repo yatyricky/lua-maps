@@ -49,12 +49,97 @@ public struct Quaternion : IEquatable<Quaternion>
         };
     }
 
+    public static Quaternion LookRotation(Vector3 forward, Vector3 upwards)
+    {
+        var worldForward = forward.normalized;
+        if (worldForward.sqrMagnitude < 0.0001f)
+        {
+            return Identity;
+        }
+
+        var worldUp = Vector3.ProjectOnPlane(upwards, worldForward).normalized;
+        if (worldUp.sqrMagnitude < 0.0001f)
+        {
+            var fallbackUp = math.abs(worldForward.z) < 0.999f ? Vector3.up : Vector3.right;
+            worldUp = Vector3.ProjectOnPlane(fallbackUp, worldForward).normalized;
+        }
+
+        var worldRight = Vector3.Cross(worldForward, worldUp).normalized;
+        worldUp = Vector3.Cross(worldRight, worldForward);
+
+        var m00 = worldRight.x;
+        var m01 = worldForward.x;
+        var m02 = worldUp.x;
+        var m10 = worldRight.y;
+        var m11 = worldForward.y;
+        var m12 = worldUp.y;
+        var m20 = worldRight.z;
+        var m21 = worldForward.z;
+        var m22 = worldUp.z;
+
+        float x;
+        float y;
+        float z;
+        float w;
+        var trace = m00 + m11 + m22;
+        if (trace > 0f)
+        {
+            var s = math.sqrt(trace + 1f) * 2f;
+            w = 0.25f * s;
+            x = (m21 - m12) / s;
+            y = (m02 - m20) / s;
+            z = (m10 - m01) / s;
+        }
+        else if (m00 > m11 && m00 > m22)
+        {
+            var s = math.sqrt(1f + m00 - m11 - m22) * 2f;
+            w = (m21 - m12) / s;
+            x = 0.25f * s;
+            y = (m01 + m10) / s;
+            z = (m02 + m20) / s;
+        }
+        else if (m11 > m22)
+        {
+            var s = math.sqrt(1f + m11 - m00 - m22) * 2f;
+            w = (m02 - m20) / s;
+            x = (m01 + m10) / s;
+            y = 0.25f * s;
+            z = (m12 + m21) / s;
+        }
+        else
+        {
+            var s = math.sqrt(1f + m22 - m00 - m11) * 2f;
+            w = (m10 - m01) / s;
+            x = (m02 + m20) / s;
+            y = (m12 + m21) / s;
+            z = 0.25f * s;
+        }
+
+        return Normalize(new Quaternion(x, y, z, w));
+    }
+
+    public static Quaternion LookRotation(Vector3 forward)
+    {
+        return LookRotation(forward, Vector3.up);
+    }
+
+    private static Quaternion Normalize(Quaternion q)
+    {
+        var magnitude = math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+        if (magnitude < 0.0001f)
+        {
+            return Identity;
+        }
+
+        return new Quaternion(q.x / magnitude, q.y / magnitude, q.z / magnitude, q.w / magnitude);
+    }
+
     public float x;
     public float y;
     public float z;
     public float w;
 
-    public Vector3 EulerAngles
+    public Vector3 eulerAngles
     {
         get
         {
@@ -78,6 +163,8 @@ public struct Quaternion : IEquatable<Quaternion>
         }
     }
 
+    public Quaternion normalized => Normalize(this);
+
     public Quaternion(float x, float y, float z, float w)
     {
         this.x = x;
@@ -98,7 +185,7 @@ public struct Quaternion : IEquatable<Quaternion>
 
     public void ApplyToEffect(effect e)
     {
-        var angles = EulerAngles;
+        var angles = eulerAngles;
         BlzSetSpecialEffectOrientation(e, angles.y * bj_DEGTORAD, angles.x * bj_DEGTORAD, angles.z * bj_DEGTORAD);
     }
 }

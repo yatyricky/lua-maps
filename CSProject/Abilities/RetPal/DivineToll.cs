@@ -77,20 +77,44 @@ public class DivineToll
     public static async Task Start(ISpellData data)
     {
         var pos = Vector3.FromUnit(data.caster);
-        var eff = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos.x, pos.y);
+        var targets = Utils.CsGroupGetUnitsInRange(pos.x, pos.y, 1600, u =>
+        {
+            if (!IsUnitEnemy(u, GetOwningPlayer(data.caster))) return false;
+            if (IsUnitType(u, UNIT_TYPE_STRUCTURE)) return false;
+            if (ExIsUnitDead(u)) return false;
+            return true;
+        });
+        if (targets.Count == 0)
+        {
+            return;
+        }
 
-        var bolt = new GameObject("DivineToll_Bolt");
-        bolt.transform.position = pos + new Vector3(0, 0, 50);
+        var outer = new GameObject("DivineToll_Outer");
+        outer.transform.position = new Vector3(0, 0, 80);
+
+        var bolt = new GameObject("DivineToll_Bolt", outer);
+        bolt.transform.position = pos;
+        bolt.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+        var mtc = bolt.AddComponent<MoveTowardsComponent>();
+        mtc.targetType = TargetType.Unit;
+        mtc.unitTarget = targets[0];
+        mtc.speed = 120;
+        mtc.lookAtTarget = true;
+
         var hand = new GameObject("dt_hand", bolt);
-        var boltMis = new GameObject("dt_mis", hand);
-        boltMis.transform.position = new Vector3(25, 0, 0);
-        boltMis.AddComponent<AttachEffectComponent>().eff = eff;
         var trs = hand.transform;
         var rot = Quaternion.Euler(450f / 60, 0, 0);
 
+        var boltMis = new GameObject("dt_mis", hand);
+        boltMis.transform.rotation = Quaternion.Euler(0, 90, 0);
+        boltMis.transform.position = new Vector3(25, 0, 0);
+        var eff = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos.x, pos.y);
+        boltMis.AddComponent<AttachEffectComponent>().eff = eff;
+
         while (true)
         {
-            await Task.Delay(16);
+            await Task.Delay(Scene.DT);
             trs.rotation = rot * trs.rotation;
         }
     }

@@ -3,6 +3,8 @@ using SFLib.Collections;
 
 public class Scene
 {
+    public const int DT = 20;
+
     private static Scene? _instance;
     public static Scene Instance => _instance ??= new Scene();
 
@@ -15,29 +17,21 @@ public class Scene
 
     public async void Run()
     {
-        try
+        while (true)
         {
-            while (true)
+            await Task.Delay(DT);
+            var rootObjs = new List<GameObject>();
+            foreach (var obj in gameObjs)
             {
-                await Task.Delay(100);
-                var rootObjs = new List<GameObject>();
-                foreach (var obj in gameObjs)
+                if (obj.transform.parent == null)
                 {
-                    if (obj.transform.parent == null)
-                    {
-                        rootObjs.Add(obj);
-                    }
-                }
-                foreach (var obj in rootObjs)
-                {
-                    obj.Update();
+                    rootObjs.Add(obj);
                 }
             }
-        }
-        catch (System.Exception e)
-        {
-            BJDebugMsg($"{e}");
-            PrintStackTrace();
+            foreach (var obj in rootObjs)
+            {
+                obj.Update();
+            }
         }
     }
 }

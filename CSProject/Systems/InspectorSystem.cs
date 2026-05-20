@@ -277,7 +277,7 @@ public class InspectorSystem : SystemBase
         var text = _selectedGameObject.name + "\n";
         foreach (var component in _selectedGameObject.components)
         {
-            text += "\n[" + component.GetInspectorName() + "]";
+            text += "\n[" + component.GetType().Name + "]";
             var inspectorText = component.GetInspectorText();
             if (inspectorText != string.Empty)
             {

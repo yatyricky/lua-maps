@@ -17,14 +17,20 @@ public struct Vector3 : IEquatable<Vector3>
 {
     private static location _loc = Location(0, 0);
 
-    public static Vector3 Zero => new(0, 0, 0);
-    public static Vector3 Up => new(0, 0, 1);
-    public static Vector3 Down => new(0, 0, -1);
-    public static Vector3 Right => new(1, 0, 0);
-    public static Vector3 Left => new(-1, 0, 0);
-    public static Vector3 Forward => new(0, 1, 0);
-    public static Vector3 Back => new(0, -1, 0);
-    public static Vector3 One => new(1, 1, 1);
+#region Static Properties
+
+    public static Vector3 zero => new(0, 0, 0);
+    public static Vector3 up => new(0, 0, 1);
+    public static Vector3 down => new(0, 0, -1);
+    public static Vector3 right => new(1, 0, 0);
+    public static Vector3 left => new(-1, 0, 0);
+    public static Vector3 forward => new(0, 1, 0);
+    public static Vector3 back => new(0, -1, 0);
+    public static Vector3 one => new(1, 1, 1);
+
+#endregion
+
+#region Operators
 
     public static Vector3 operator +(Vector3 a, Vector3 b)
     {
@@ -66,15 +72,7 @@ public struct Vector3 : IEquatable<Vector3>
         return !(a == b);
     }
 
-    public static float Dot(Vector3 a, Vector3 b)
-    {
-        return a.x * b.x + a.y * b.y + a.z * b.z;
-    }
-
-    public static Vector3 Scale(Vector3 a, Vector3 b)
-    {
-        return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
-    }
+#endregion
 
     /// <summary>
     /// Warcraft III world space here is right-handed: +x points right, +y points away, +z points up.
@@ -85,12 +83,33 @@ public struct Vector3 : IEquatable<Vector3>
         return new Vector3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
     }
 
+    public static float Distance(Vector3 a, Vector3 b)
+    {
+        return (a - b).magnitude;
+    }
+
+    public static float Dot(Vector3 a, Vector3 b)
+    {
+        return a.x * b.x + a.y * b.y + a.z * b.z;
+    }
+
+    public static Vector3 MoveTowards(Vector3 current, Vector3 target, float maxDistanceDelta)
+    {
+        var toVector = target - current;
+        var dist = toVector.magnitude;
+        if (dist <= maxDistanceDelta || dist == 0f)
+        {
+            return target;
+        }
+        return current + toVector / (dist / maxDistanceDelta);
+    }
+
     public static Vector3 Project(Vector3 v, Vector3 onNormal)
     {
         var sqrMag = Dot(onNormal, onNormal);
         if (sqrMag < 0.0001f)
         {
-            return Zero;
+            return zero;
         }
         var dot = Dot(v, onNormal);
         return onNormal * (dot / sqrMag);
@@ -99,6 +118,74 @@ public struct Vector3 : IEquatable<Vector3>
     public static Vector3 ProjectOnPlane(Vector3 v, Vector3 planeNormal)
     {
         return v - Project(v, planeNormal);
+    }
+
+    public static Vector3 Reflect(Vector3 inDirection, Vector3 inNormal)
+    {
+        return inDirection - 2 * Dot(inDirection, inNormal) * inNormal;
+    }
+
+    public static Vector3 RotateTowards(Vector3 current, Vector3 target, float maxRadiansDelta, float maxMagnitudeDelta)
+    {
+        var currentMag = current.magnitude;
+        var targetMag = target.magnitude;
+
+        if (currentMag == 0f || targetMag == 0f)
+        {
+            return MoveTowards(current, target, maxMagnitudeDelta);
+        }
+
+        var currentNorm = current / currentMag;
+        var targetNorm = target / targetMag;
+
+        var dot = math.clamp(Dot(currentNorm, targetNorm), -1f, 1f);
+        var angle = math.acos(dot);
+
+        if (angle == 0f)
+        {
+            return MoveTowards(current, target, maxMagnitudeDelta);
+        }
+
+        var t = math.min(1f, maxRadiansDelta / angle);
+        var newDir = Slerp(currentNorm, targetNorm, t);
+        var newMag = math.moveTowards(currentMag, targetMag, maxMagnitudeDelta);
+        return newDir * newMag;
+    }
+
+    public static Vector3 Scale(Vector3 a, Vector3 b)
+    {
+        return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+    }
+
+    public static Vector3 Slerp(Vector3 a, Vector3 b, float t)
+    {
+        var magA = a.magnitude;
+        var magB = b.magnitude;
+
+        if (magA == 0f || magB == 0f)
+        {
+            return MoveTowards(a, b, math.huge);
+        }
+
+        var normA = a / magA;
+        var normB = b / magB;
+
+        var dot = math.clamp(Dot(normA, normB), -1f, 1f);
+        var angle = math.acos(dot);
+        var sinAngle = math.sin(angle);
+
+        if (sinAngle < 0.0001f)
+        {
+            return MoveTowards(a, b, math.huge);
+        }
+
+        var tAngle = angle * t;
+        var sinTA = math.sin(tAngle);
+        var sinTOneMinusA = math.sin(angle - tAngle);
+
+        var newDir = (normA * sinTOneMinusA + normB * sinTA) / sinAngle;
+        var newMag = math.lerp(magA, magB, t);
+        return newDir * newMag;
     }
 
     private static float _getTerrainZ(float x, float y)
@@ -118,17 +205,17 @@ public struct Vector3 : IEquatable<Vector3>
     public float y;
     public float z;
 
-    public float SqrMagnitude => x * x + y * y + z * z;
-    public float Magnitude => math.sqrt(SqrMagnitude);
+    public float sqrMagnitude => x * x + y * y + z * z;
+    public float magnitude => math.sqrt(sqrMagnitude);
 
-    public Vector3 Normalized
+    public Vector3 normalized
     {
         get
         {
-            var mag = Magnitude;
+            var mag = magnitude;
             if (mag < 0.0001f)
             {
-                return Zero;
+                return zero;
             }
             return this / mag;
         }
@@ -143,7 +230,7 @@ public struct Vector3 : IEquatable<Vector3>
 
     public Vector3 ClampMagnitude(float mag)
     {
-        return Normalized * mag;
+        return normalized * mag;
     }
 
     public bool Equals(Vector3 other)

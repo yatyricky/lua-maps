@@ -16,15 +16,10 @@ public class Transform : Component
         localScale = new Vector3(1f, 1f, 1f);
     }
 
-    public override string GetInspectorName()
-    {
-        return "Transform";
-    }
-
     public override string GetInspectorText()
     {
         return "Position: " + position.ToString() + "\n"
-             + "Rotation: " + rotation.EulerAngles.ToString() + "\n"
+             + "Rotation: " + rotation.eulerAngles.ToString() + "\n"
              + "Scale: " + localScale.ToString() + "\n"
              + "Children: " + children.Count;
     }

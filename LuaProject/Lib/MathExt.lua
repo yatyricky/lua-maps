@@ -37,3 +37,15 @@ function math.sign(value)
         return -1
     end
 end
+
+function math.lerp(a, b, t)
+    return a + (b - a) * math.clamp01(t)
+end
+
+function math.moveTowards(current, target, maxDelta)
+    if math.abs(target - current) <= maxDelta then
+        return target
+    end
+    return current + math.sign(target - current) * maxDelta
+end
+
