@@ -2,13 +2,35 @@ using SFLib.Collections;
 
 public class GameObject
 {
-    private static void DestroyDepthFirst(GameObject obj)
+    private static void MarkDestroyQueuedDepthFirst(GameObject obj)
     {
-        foreach (var child in obj.transform.children)
+        if (obj.isDestroyQueued || obj.isDestroyed)
         {
-            DestroyDepthFirst(child.gameObject);
+            return;
         }
 
+        obj.isDestroyQueued = true;
+
+        foreach (var child in obj.transform.children)
+        {
+            MarkDestroyQueuedDepthFirst(child.gameObject);
+        }
+    }
+
+    private static void DestroyDepthFirst(GameObject obj)
+    {
+        if (obj.isDestroyed)
+        {
+            return;
+        }
+
+        var children = obj.transform.children;
+        for (int i = children.Count - 1; i >= 0; i--)
+        {
+            DestroyDepthFirst(children[i].gameObject);
+        }
+
+        obj.transform.SetParent(null);
         foreach (var comp in obj._components)
         {
             comp.OnDisable();
@@ -16,12 +38,17 @@ public class GameObject
         }
 
         obj._components.Clear();
-        obj.transform.SetParent(null);
         Scene.Instance.gameObjs.Remove(obj);
+        obj.isDestroyed = true;
     }
 
     private static void UpdateBFS(GameObject obj)
     {
+        if (obj.isDestroyQueued || obj.isDestroyed)
+        {
+            return;
+        }
+
         foreach (var comp in obj._components)
         {
             comp.Update();
@@ -36,6 +63,8 @@ public class GameObject
     public Transform transform { get; private set; }
     private List<Component> _components = new List<Component>();
     public List<Component> components => _components;
+    public bool isDestroyQueued { get; private set; }
+    public bool isDestroyed { get; private set; }
 
     public GameObject(string name)
     {
@@ -95,6 +124,17 @@ public class GameObject
 
     public void Destroy()
     {
-        DestroyDepthFirst(this);
+        if (isDestroyQueued || isDestroyed)
+        {
+            return;
+        }
+
+        MarkDestroyQueuedDepthFirst(this);
+        Scene.Instance.QueueDestroy(this);
+    }
+
+    internal static void DestroyQueued(GameObject obj)
+    {
+        DestroyDepthFirst(obj);
     }
 }

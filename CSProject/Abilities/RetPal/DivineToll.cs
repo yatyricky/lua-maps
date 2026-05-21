@@ -104,8 +104,8 @@ public class DivineToll
                 attack = true,
                 ranged = false,
                 attackType = ATTACK_TYPE_HERO,
-                damageType = DAMAGE_TYPE_NORMAL,
-                weaponType = WEAPON_TYPE_METAL_HEAVY_BASH,
+                damageType = DAMAGE_TYPE_MAGIC,
+                weaponType = WEAPON_TYPE_WHOKNOWS,
                 outResult = new IDamageDataResult(),
             });
 

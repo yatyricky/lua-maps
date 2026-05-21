@@ -44,6 +44,10 @@ public class MoveTowardsComponent : Component
 unitTarget: {(unitTarget == null ? "None" : GetUnitName(unitTarget))}
 pointTarget: {pointTarget}
 speed: {speed}
+lookAtTarget: {lookAtTarget}
+colliderSize: {colliderSize}
+onArrived: {(onArrived == null ? "None" : "Set")}
+hasArrived: {hasArrived}
 ";
     }
 }
