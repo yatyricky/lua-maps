@@ -92,25 +92,36 @@ public class DivineToll
         var outer = new GameObject("DivineToll_Outer");
         outer.transform.position = new Vector3(0, 0, 80);
 
-        var bolt = new GameObject("DivineToll_Bolt", outer);
-        bolt.transform.position = pos;
-        bolt.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-
-        var mtc = bolt.AddComponent<MoveTowardsComponent>();
+        var moveLayer = new GameObject("MoveLayer", outer);
+        moveLayer.transform.position = pos;
+        var mtc = moveLayer.AddComponent<MoveTowardsComponent>();
         mtc.targetType = TargetType.Unit;
         mtc.unitTarget = targets[0];
-        mtc.speed = 120;
+        mtc.speed = 900;
         mtc.lookAtTarget = true;
 
-        var hand = new GameObject("dt_hand", bolt);
-        var trs = hand.transform;
+        // var attachedHoly2 = new GameObject("DivineToll_Holy", moveLayer);
+        // attachedHoly2.transform.position = new Vector3(20, 0, 0);
+        // var effHoly2 = AddSpecialEffect("Abilities/Weapons/FaerieDragonMissile/FaerieDragonMissile.mdl", pos.x, pos.y);
+        // attachedHoly2.AddComponent<AttachEffectComponent>().eff = effHoly2;
+
+        var orientationFixLayer = new GameObject("DivineToll_Bolt", moveLayer);
+        orientationFixLayer.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+        var selfRotLayer = new GameObject("dt_hand", orientationFixLayer);
+        var trs = selfRotLayer.transform;
         var rot = Quaternion.Euler(450f / 60, 0, 0);
 
-        var boltMis = new GameObject("dt_mis", hand);
-        boltMis.transform.rotation = Quaternion.Euler(0, 90, 0);
-        boltMis.transform.position = new Vector3(25, 0, 0);
+        var boltMis = new GameObject("dt_mis", selfRotLayer);
+        boltMis.transform.position = new Vector3(30, 0, 0);
+        boltMis.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         var eff = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos.x, pos.y);
         boltMis.AddComponent<AttachEffectComponent>().eff = eff;
+
+        var attachedHoly = new GameObject("DivineToll_Holy", boltMis);
+        attachedHoly.transform.position = new Vector3(0, 0, 0);
+        var effHoly = AddSpecialEffect("Abilities/Weapons/FaerieDragonMissile/FaerieDragonMissile.mdl", pos.x, pos.y);
+        attachedHoly.AddComponent<AttachEffectComponent>().eff = effHoly;
 
         while (true)
         {
