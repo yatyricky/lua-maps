@@ -14,22 +14,23 @@ public class MoveTowardsComponent : Component
     public float speed;
     public bool lookAtTarget = false;
     public Action? onArrived;
+    public float colliderSize;
     private bool hasArrived = false;
 
     public override void Update()
     {
         if (hasArrived) return;
 
-        var currentPosition = gameObject.transform.position;
+        var currentPosition = gameObject.transform.localPosition;
         var targetPosition = targetType == TargetType.Unit ? Vector3.FromUnit(unitTarget!) : pointTarget;
         var moved = Vector3.MoveTowards(currentPosition, targetPosition, speed * Scene.DT / 1000f);
-        gameObject.transform.position = moved;
+        gameObject.transform.localPosition = moved;
         if (lookAtTarget)
         {
-            gameObject.transform.rotation = Quaternion.LookRotation(targetPosition - currentPosition);
+            gameObject.transform.localRotation = Quaternion.LookRotation(targetPosition - currentPosition);
         }
 
-        if (moved == targetPosition && !hasArrived)
+        if (Vector3.Distance(moved, targetPosition) <= colliderSize && !hasArrived)
         {
             hasArrived = true;
             onArrived?.Invoke();

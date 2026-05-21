@@ -2,24 +2,44 @@ using System.Collections.Generic;
 
 public class Transform : Component
 {
-    public Vector3 position;
-    public Quaternion rotation;
+    public Vector3 localPosition;
+    public Quaternion localRotation;
     public Vector3 localScale;
 
     public List<Transform> children = new List<Transform>();
     public Transform? parent { get; private set; }
 
+    public Vector3 position
+    {
+        get
+        {
+            if (parent == null) return localPosition;
+            var globalPos = localPosition;
+            var globalRot = localRotation;
+            var globalScale = localScale;
+            var myParent = parent;
+            while (myParent != null)
+            {
+                globalPos = myParent.localPosition + myParent.localRotation * Vector3.Scale(myParent.localScale, globalPos);
+                globalRot = myParent.localRotation * globalRot;
+                globalScale = Vector3.Scale(myParent.localScale, globalScale);
+                myParent = myParent.parent;
+            }
+            return globalPos;
+        }
+    }
+
     public Transform()
     {
-        position = new Vector3(0f, 0f, 0f);
-        rotation = Quaternion.Euler(0f, 0f, 0f);
+        localPosition = new Vector3(0f, 0f, 0f);
+        localRotation = Quaternion.Euler(0f, 0f, 0f);
         localScale = new Vector3(1f, 1f, 1f);
     }
 
     public override string GetInspectorText()
     {
-        return "Position: " + position.ToString() + "\n"
-             + "Rotation: " + rotation.eulerAngles.ToString() + "\n"
+        return "Position: " + localPosition.ToString() + "\n"
+             + "Rotation: " + localRotation.eulerAngles.ToString() + "\n"
              + "Scale: " + localScale.ToString() + "\n"
              + "Children: " + children.Count;
     }

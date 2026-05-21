@@ -2,7 +2,7 @@ using SFLib.Contracts;
 
 public struct Quaternion : IEquatable<Quaternion>
 {
-    public static Quaternion Identity => new(0, 0, 0, 1);
+    public static Quaternion identity => new(0, 0, 0, 1);
 
     public static Quaternion operator *(Quaternion a, Quaternion b)
     {
@@ -54,7 +54,7 @@ public struct Quaternion : IEquatable<Quaternion>
         var worldForward = forward.normalized;
         if (worldForward.sqrMagnitude < 0.0001f)
         {
-            return Identity;
+            return identity;
         }
 
         var worldUp = Vector3.ProjectOnPlane(upwards, worldForward).normalized;
@@ -128,7 +128,7 @@ public struct Quaternion : IEquatable<Quaternion>
         var magnitude = math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
         if (magnitude < 0.0001f)
         {
-            return Identity;
+            return identity;
         }
 
         return new Quaternion(q.x / magnitude, q.y / magnitude, q.z / magnitude, q.w / magnitude);
