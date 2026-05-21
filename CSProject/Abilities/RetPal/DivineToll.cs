@@ -77,7 +77,7 @@ public class DivineToll
     public static async Task Start(ISpellData data)
     {
         var pos = Vector3.FromUnit(data.caster);
-        var targets = Utils.CsGroupGetUnitsInRange(pos.x, pos.y, 1600, u =>
+        var targets = Utils.CsGroupGetUnitsInRange(pos.x, pos.y, 600, u =>
         {
             if (!IsUnitEnemy(u, GetOwningPlayer(data.caster))) return false;
             if (IsUnitType(u, UNIT_TYPE_STRUCTURE)) return false;
@@ -88,6 +88,13 @@ public class DivineToll
         {
             return;
         }
+
+        targets.Sort((a, b) =>
+        {
+            var distA = Vector3.Distance(pos, Vector3.FromUnit(a));
+            var distB = Vector3.Distance(pos, Vector3.FromUnit(b));
+            return distA == distB ? 0 : distA < distB ? -1 : 1;
+        });
 
         var outer = new GameObject("DivineToll_Outer");
         outer.transform.position = new Vector3(0, 0, 80);

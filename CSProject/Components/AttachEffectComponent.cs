@@ -28,4 +28,13 @@ public class AttachEffectComponent : Component
         globalRot.ApplyToEffect(eff);
         BlzSetSpecialEffectMatrixScale(eff, globalScale.x, globalScale.y, globalScale.z);
     }
+
+    public override void OnDestroy()
+    {
+        if (eff != null)
+        {
+            DestroyEffect(eff);
+            eff = null;
+        }
+    }
 }

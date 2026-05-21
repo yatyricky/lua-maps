@@ -62,7 +62,7 @@ public sealed class List<T>
     {
     }
 
-    public void Sort(Func<T, T, bool> less)
+    public void Sort(Func<T, T, int> comparison)
     {
     }
 
