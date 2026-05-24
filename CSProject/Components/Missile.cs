@@ -6,7 +6,7 @@ public enum TargetType
     Point,
 }
 
-public class MoveTowardsComponent : Component
+public class Missile : Component
 {
     public TargetType targetType;
     public unit? unitTarget;

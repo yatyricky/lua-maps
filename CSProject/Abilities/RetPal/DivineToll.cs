@@ -81,15 +81,15 @@ public class DivineToll
 
         var moveLayer = new GameObject("MoveLayer", outer);
         moveLayer.transform.localPosition = pos;
-        var mtc = moveLayer.AddComponent<MoveTowardsComponent>();
-        mtc.targetType = TargetType.Unit;
-        mtc.unitTarget = target;
-        mtc.speed = 900;
-        mtc.lookAtTarget = true;
-        mtc.colliderSize = 32f;
-        mtc.onArrived = () =>
+        var mis = moveLayer.AddComponent<Missile>();
+        mis.targetType = TargetType.Unit;
+        mis.unitTarget = target;
+        mis.speed = 900;
+        mis.lookAtTarget = true;
+        mis.colliderSize = 32f;
+        mis.onArrived = () =>
         {
-            var cPos = mtc.gameObject.transform.position;
+            var cPos = mis.gameObject.transform.position;
             var eff = ExAddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltCaster.mdl", cPos.x, cPos.y, 0.1f);
             BlzSetSpecialEffectTimeScale(eff, 0.5f);
             BlzSetSpecialEffectColor(eff, 255, 255, 0);
@@ -111,25 +111,26 @@ public class DivineToll
 
             RetributionPaladinGlobal.IncreaseHolyEnergy(caster, 1);
 
-            outer.Destroy();
+            moveLayer.RemoveAllComponents<Missile>();
         };
 
         var orientationFixLayer = new GameObject("DivineToll_Bolt", moveLayer);
         orientationFixLayer.transform.localRotation = Quaternion.Euler(0, 90, 0);
 
         var selfRotLayer = new GameObject("dt_hand", orientationFixLayer);
-        selfRotLayer.AddComponent<AutoTRSComponent>().rotation = Quaternion.Euler(450 * Scene.DT / 1000f, 0, 0);
+        selfRotLayer.AddComponent<AutoTRSComponent>().rotation = Quaternion.Euler(1800 * Scene.DT / 1000f, 0, 0);
 
         var boltMis = new GameObject("dt_mis", selfRotLayer);
-        boltMis.transform.localPosition = new Vector3(30, 0, 0);
+        boltMis.transform.localPosition = new Vector3(15, 0, 0);
         boltMis.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         var eff = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos.x, pos.y);
         boltMis.AddComponent<AttachEffectComponent>().eff = eff;
 
         var attachedHoly = new GameObject("DivineToll_Holy", boltMis);
-        attachedHoly.transform.localPosition = new Vector3(0, 0, 0);
+        attachedHoly.transform.localPosition = new Vector3(15, 0, 0);
         var effHoly = AddSpecialEffect("Abilities/Weapons/FaerieDragonMissile/FaerieDragonMissile.mdl", pos.x, pos.y);
         attachedHoly.AddComponent<AttachEffectComponent>().eff = effHoly;
+        BlzSetSpecialEffectColor(effHoly, 20, 20, 20);
     }
 
     public static async Task Start(ISpellData data)

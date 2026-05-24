@@ -1,4 +1,4 @@
---sf-builder:000174854/97e2099d85bdfbfa
+--sf-builder:000174906/8cc5d98f6bcfab5e
 function SF__Bundle()
 local __sf_modules = {}
 local require = function(path)
@@ -3068,16 +3068,17 @@ function SF__.DivineToll.HurlToTarget(caster362, target363, pos__x364, pos__y365
     orientationFixLayer.transform.localRotation__x, orientationFixLayer.transform.localRotation__y, orientationFixLayer.transform.localRotation__z, orientationFixLayer.transform.localRotation__w = SF__.Quaternion.Euler(0, 90, 0)
     local selfRotLayer = SF__.GameObject.New__sgameobject("dt_hand", orientationFixLayer)
     local receiver = selfRotLayer:AddComponent(SF__.AutoTRSComponent)
-    receiver.rotation__x, receiver.rotation__y, receiver.rotation__z, receiver.rotation__w = SF__.Quaternion.Euler(((450 * SF__.Scene.DT) / 1000), 0, 0)
+    receiver.rotation__x, receiver.rotation__y, receiver.rotation__z, receiver.rotation__w = SF__.Quaternion.Euler(((1800 * SF__.Scene.DT) / 1000), 0, 0)
     local boltMis = SF__.GameObject.New__sgameobject("dt_mis", selfRotLayer)
-    boltMis.transform.localPosition__x, boltMis.transform.localPosition__y, boltMis.transform.localPosition__z = 30, 0, 0
+    boltMis.transform.localPosition__x, boltMis.transform.localPosition__y, boltMis.transform.localPosition__z = 15, 0, 0
     boltMis.transform.localScale__x, boltMis.transform.localScale__y, boltMis.transform.localScale__z = 0.5, 0.5, 0.5
     local eff370 = AddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", pos__x364, pos__y365)
     boltMis:AddComponent(SF__.AttachEffectComponent).eff = eff370
     local attachedHoly = SF__.GameObject.New__sgameobject("DivineToll_Holy", boltMis)
-    attachedHoly.transform.localPosition__x, attachedHoly.transform.localPosition__y, attachedHoly.transform.localPosition__z = 0, 0, 0
+    attachedHoly.transform.localPosition__x, attachedHoly.transform.localPosition__y, attachedHoly.transform.localPosition__z = 15, 0, 0
     local effHoly = AddSpecialEffect("Abilities/Weapons/FaerieDragonMissile/FaerieDragonMissile.mdl", pos__x364, pos__y365)
     attachedHoly:AddComponent(SF__.AttachEffectComponent).eff = effHoly
+    BlzSetSpecialEffectColor(effHoly, 20, 20, 20)
 end
 
 function SF__.DivineToll.Start(data371)
@@ -4807,7 +4808,7 @@ end}
 
 require("Main")
 end
---sf-builder:000174854/97e2099d85bdfbfa
+--sf-builder:000174906/8cc5d98f6bcfab5e
 function InitGlobals()
 end
 
