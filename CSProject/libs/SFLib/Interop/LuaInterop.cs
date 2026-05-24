@@ -2,9 +2,9 @@
 //   Do not edit by hand.
 // </auto-generated>
 #nullable enable
-namespace SFLib.Interop;
-
 using System;
+
+namespace SFLib.Interop;
 
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 public sealed class LuaAttribute : Attribute
@@ -37,11 +37,11 @@ public static class LuaInterop
 
     public static T Require<T>(string moduleName) => default!;
 
-    public static T Get<T>(LuaObject target, string name) => default!;
+    public static T Get<T>(LuaObject target, object key) => default!;
 
     public static T GetGlobal<T>(string name) => default!;
 
-    public static void Set(LuaObject target, string name, object? value)
+    public static void Set(LuaObject target, object key, object? value)
     {
     }
 
@@ -66,4 +66,6 @@ public static class LuaInterop
     }
 
     public static T CallGlobal<T>(string functionName, params object?[] arguments) => default!;
+
+    public static bool Equals<T>(T a, T b) => default!;
 }
