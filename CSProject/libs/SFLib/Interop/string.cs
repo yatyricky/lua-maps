@@ -22,20 +22,20 @@ public partial class @string : LuaObject
     /// </summary>
     /// <param name="s">The input string.</param>
     /// <returns>An array of byte values for each character.</returns>
-    public static int[] @byte(string s) => throw null;
+    public static int[] @byte(string s) => throw null!;
 
     /// <inheritdoc cref="byte(string)"/>
     /// <param name="s">The input string.</param>
     /// <param name="i">The start index (1-based).</param>
     /// <returns>An array of byte values for each character in the range.</returns>
-    public static int[] @byte(string s, int i) => throw null;
+    public static int[] @byte(string s, int i) => throw null!;
 
     /// <inheritdoc cref="byte(string)"/>
     /// <param name="s">The input string.</param>
     /// <param name="i">The start index (1-based).</param>
     /// <param name="j">The end index (1-based, inclusive).</param>
     /// <returns>An array of byte values for each character in the range.</returns>
-    public static int[] @byte(string s, int i, int j) => throw null;
+    public static int[] @byte(string s, int i, int j) => throw null!;
 
     /// <summary>
     /// Receives zero or more integers. Returns a string with length equal to the number of arguments,
@@ -43,7 +43,7 @@ public partial class @string : LuaObject
     /// </summary>
     /// <param name="values">The byte values to convert to characters.</param>
     /// <returns>A string composed of the given byte values.</returns>
-    public static string @char(params int[] values) => throw null;
+    public static string @char(params int[] values) => throw null!;
 
     /// <summary>
     /// Looks for the first match of the pattern (see §6.4.1) in the string s.
@@ -57,14 +57,14 @@ public partial class @string : LuaObject
     /// <param name="s">The string to search in.</param>
     /// <param name="pattern">The pattern to search for.</param>
     /// <returns>A tuple of (start, end) indices, or <c>null</c> if not found.</returns>
-    public static (int start, int end)? find(string s, string pattern) => throw null;
+    public static (int start, int end)? find(string s, string pattern) => throw null!;
 
     /// <inheritdoc cref="find(string, string)"/>
     /// <param name="s">The string to search in.</param>
     /// <param name="pattern">The pattern to search for.</param>
     /// <param name="init">The start index (1-based, can be negative).</param>
     /// <returns>A tuple of (start, end) indices, or <c>null</c> if not found.</returns>
-    public static (int start, int end)? find(string s, string pattern, int init) => throw null;
+    public static (int start, int end)? find(string s, string pattern, int init) => throw null!;
 
     /// <inheritdoc cref="find(string, string)"/>
     /// <param name="s">The string to search in.</param>
@@ -72,7 +72,7 @@ public partial class @string : LuaObject
     /// <param name="init">The start index (1-based, can be negative).</param>
     /// <param name="plain">If true, disables pattern matching and does plain substring search.</param>
     /// <returns>A tuple of (start, end) indices, or <c>null</c> if not found.</returns>
-    public static (int start, int end)? find(string s, string pattern, int init, bool plain) => throw null;
+    public static (int start, int end)? find(string s, string pattern, int init, bool plain) => throw null!;
 
     /// <summary>
     /// Returns a formatted version of its variable number of arguments following the description given in its first argument.
@@ -81,7 +81,7 @@ public partial class @string : LuaObject
     /// <param name="format">The format string (e.g., "%s %d", "%.2f").</param>
     /// <param name="values">The values to format.</param>
     /// <returns>The formatted string.</returns>
-    public static string format(string format, params object?[] values) => throw null;
+    public static string format(string format, params object?[] values) => throw null!;
 
     /// <summary>
     /// Returns an iterator function that, each time it is called, returns the next captures from pattern
@@ -90,7 +90,7 @@ public partial class @string : LuaObject
     /// <param name="s">The string to iterate over.</param>
     /// <param name="pattern">The pattern with captures.</param>
     /// <returns>An iterator function.</returns>
-    public static LuaObject gmatch(string s, string pattern) => throw null;
+    public static LuaObject gmatch(string s, string pattern) => throw null!;
 
     /// <summary>
     /// Returns a copy of s in which all (or the first n, if given) occurrences of the pattern
@@ -100,7 +100,7 @@ public partial class @string : LuaObject
     /// <param name="pattern">The pattern to search for.</param>
     /// <param name="repl">The replacement string or function.</param>
     /// <returns>A tuple of (result, count) where count is the number of substitutions.</returns>
-    public static (string result, int count) gsub(string s, string pattern, string repl) => throw null;
+    public static (string result, int count) gsub(string s, string pattern, string repl) => throw null!;
 
     /// <inheritdoc cref="gsub(string, string, string)"/>
     /// <param name="s">The input string.</param>
@@ -108,7 +108,7 @@ public partial class @string : LuaObject
     /// <param name="repl">The replacement string or function.</param>
     /// <param name="n">Maximum number of replacements.</param>
     /// <returns>A tuple of (result, count) where count is the number of substitutions.</returns>
-    public static (string result, int count) gsub(string s, string pattern, string repl, int n) => throw null;
+    public static (string result, int count) gsub(string s, string pattern, string repl, int n) => throw null!;
 
     /// <summary>
     /// Returns its length. The empty string "" has length 0.
@@ -116,7 +116,7 @@ public partial class @string : LuaObject
     /// </summary>
     /// <param name="s">The input string.</param>
     /// <returns>The length of the string.</returns>
-    public static int len(string s) => throw null;
+    public static int len(string s) => throw null!;
 
     /// <summary>
     /// Receives a string and returns a copy of this string with all uppercase letters changed to lowercase.
@@ -124,7 +124,7 @@ public partial class @string : LuaObject
     /// </summary>
     /// <param name="s">The input string.</param>
     /// <returns>The lowercase copy.</returns>
-    public static string lower(string s) => throw null;
+    public static string lower(string s) => throw null!;
 
     /// <summary>
     /// Looks for the first match of the pattern (see §6.4.1) in the string s.
@@ -133,14 +133,14 @@ public partial class @string : LuaObject
     /// <param name="s">The string to search in.</param>
     /// <param name="pattern">The pattern to search for.</param>
     /// <returns>The captured substrings, or <c>null</c> if no match.</returns>
-    public static string? match(string s, string pattern) => throw null;
+    public static string? match(string s, string pattern) => throw null!;
 
     /// <inheritdoc cref="match(string, string)"/>
     /// <param name="s">The string to search in.</param>
     /// <param name="pattern">The pattern to search for.</param>
     /// <param name="init">The start index (1-based, can be negative).</param>
     /// <returns>The captured substrings, or <c>null</c> if no match.</returns>
-    public static string? match(string s, string pattern, int init) => throw null;
+    public static string? match(string s, string pattern, int init) => throw null!;
 
     /// <summary>
     /// Returns a string that is the concatenation of n copies of the string s separated by the string sep.
@@ -148,21 +148,21 @@ public partial class @string : LuaObject
     /// <param name="s">The string to repeat.</param>
     /// <param name="n">The number of repetitions.</param>
     /// <returns>The repeated string.</returns>
-    public static string rep(string s, int n) => throw null;
+    public static string rep(string s, int n) => throw null!;
 
     /// <inheritdoc cref="rep(string, int)"/>
     /// <param name="s">The string to repeat.</param>
     /// <param name="n">The number of repetitions.</param>
     /// <param name="sep">The separator string between repetitions.</param>
     /// <returns>The repeated string with separators.</returns>
-    public static string rep(string s, int n, string sep) => throw null;
+    public static string rep(string s, int n, string sep) => throw null!;
 
     /// <summary>
     /// Returns a string that is the string s reversed.
     /// </summary>
     /// <param name="s">The input string.</param>
     /// <returns>The reversed string.</returns>
-    public static string reverse(string s) => throw null;
+    public static string reverse(string s) => throw null!;
 
     /// <summary>
     /// Returns the substring of the string s that starts at i and continues until j.
@@ -171,14 +171,14 @@ public partial class @string : LuaObject
     /// <param name="s">The input string.</param>
     /// <param name="i">The start index (1-based, can be negative).</param>
     /// <returns>The substring from i to the end.</returns>
-    public static string sub(string s, int i) => throw null;
+    public static string sub(string s, int i) => throw null!;
 
     /// <inheritdoc cref="sub(string, int)"/>
     /// <param name="s">The input string.</param>
     /// <param name="i">The start index (1-based, can be negative).</param>
     /// <param name="j">The end index (1-based, inclusive, can be negative).</param>
     /// <returns>The substring from i to j.</returns>
-    public static string sub(string s, int i, int j) => throw null;
+    public static string sub(string s, int i, int j) => throw null!;
 
     /// <summary>
     /// Receives a string and returns a copy of this string with all lowercase letters changed to uppercase.
@@ -186,7 +186,7 @@ public partial class @string : LuaObject
     /// </summary>
     /// <param name="s">The input string.</param>
     /// <returns>The uppercase copy.</returns>
-    public static string upper(string s) => throw null;
+    public static string upper(string s) => throw null!;
 
     /// <summary>
     /// Returns a binary string containing the values v1, v2, etc. packed in binary form
@@ -195,7 +195,7 @@ public partial class @string : LuaObject
     /// <param name="fmt">The format string describing the binary layout.</param>
     /// <param name="values">The values to pack.</param>
     /// <returns>The packed binary string.</returns>
-    public static string pack(string fmt, params object?[] values) => throw null;
+    public static string pack(string fmt, params object?[] values) => throw null!;
 
     /// <summary>
     /// Returns the size of a string resulting from string.pack with the given format string fmt.
@@ -203,7 +203,7 @@ public partial class @string : LuaObject
     /// </summary>
     /// <param name="fmt">The format string.</param>
     /// <returns>The size in bytes.</returns>
-    public static int packsize(string fmt) => throw null;
+    public static int packsize(string fmt) => throw null!;
 
     /// <summary>
     /// Returns the values packed in string s (see string.pack) according to the format string fmt.
@@ -213,12 +213,12 @@ public partial class @string : LuaObject
     /// <param name="fmt">The format string describing the binary layout.</param>
     /// <param name="s">The packed binary string to unpack.</param>
     /// <returns>A tuple of (values, position).</returns>
-    public static (object?[] values, int position) unpack(string fmt, string s) => throw null;
+    public static (object?[] values, int position) unpack(string fmt, string s) => throw null!;
 
     /// <inheritdoc cref="unpack(string, string)"/>
     /// <param name="fmt">The format string describing the binary layout.</param>
     /// <param name="s">The packed binary string to unpack.</param>
     /// <param name="pos">The position to start reading (1-based).</param>
     /// <returns>A tuple of (values, position).</returns>
-    public static (object?[] values, int position) unpack(string fmt, string s, int pos) => throw null;
+    public static (object?[] values, int position) unpack(string fmt, string s, int pos) => throw null!;
 }

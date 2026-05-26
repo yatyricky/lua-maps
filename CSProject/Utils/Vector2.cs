@@ -1,8 +1,6 @@
-using SFLib.Contracts;
+using SFLib.Interop;
 
-#pragma warning disable CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)
-#pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
-public struct Vector2 : IEquatable<Vector2>
+public struct Vector2
 {
     public static Vector2 Zero => new(0, 0);
 
@@ -54,16 +52,6 @@ public struct Vector2 : IEquatable<Vector2>
         return new Vector2(v.x / f, v.y / f);
     }
 
-    public static bool operator ==(Vector2 a, Vector2 b)
-    {
-        return math.abs(a.x - b.x) < 0.0001f && math.abs(a.y - b.y) < 0.0001f;
-    }
-
-    public static bool operator !=(Vector2 a, Vector2 b)
-    {
-        return !(a == b);
-    }
-
     public static float UnitDistance(unit a, unit b)
     {
         var v1 = FromUnit(a);
@@ -110,11 +98,6 @@ public struct Vector2 : IEquatable<Vector2>
         return Normalized * mag;
     }
 
-    public bool Equals(Vector2 other)
-    {
-        return this == other;
-    }
-
     public override string ToString()
     {
         return $"({x}, {y})";
@@ -139,6 +122,3 @@ public struct Vector2 : IEquatable<Vector2>
         return GetLocationZ(_loc);
     }
 }
-
-#pragma warning restore CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
-#pragma warning restore CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)

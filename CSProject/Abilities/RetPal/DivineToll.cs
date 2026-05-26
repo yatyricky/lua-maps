@@ -1,23 +1,18 @@
 using LuaWrapper;
-using SFLib.Contracts;
-using SFLib.Collections;
+using StdLib;
 using System.Threading.Tasks;
+using SFLib.Interop;
 
 public class DivineToll
 {
     public static readonly int ID = FourCC("A008");
 
-    public struct IAbilityData : IEquatable<IAbilityData>
+    public struct IAbilityData
     {
         public int TargetCount;
         public float Damage;
         public float RadiantDmgAmp;
         public float Duration;
-
-        public bool Equals(IAbilityData other)
-        {
-            return math.abs(Damage - other.Damage) < 0.0001f && math.abs(Duration - other.Duration) < 0.0001f && math.abs(RadiantDmgAmp - other.RadiantDmgAmp) < 0.0001f;
-        }
     }
 
     public static IAbilityData GetAbilityData(int level)

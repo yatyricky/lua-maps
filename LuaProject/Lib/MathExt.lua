@@ -21,8 +21,6 @@ function math.clamp01(value)
     return math.clamp(value, 0, 1)
 end
 
-math.atan2 = Atan2
-
 local m_floor = math.floor
 local MathRound = MathRound
 

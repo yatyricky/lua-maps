@@ -1,3 +1,5 @@
+using SFLib.Interop;
+
 public class Easing
 {
     public static float Linear(float t)

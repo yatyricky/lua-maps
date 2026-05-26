@@ -1,5 +1,5 @@
 using LuaWrapper;
-using SFLib.Contracts;
+using SFLib.Interop;
 
 public enum UnitVec3Mode
 {
@@ -11,9 +11,7 @@ public enum UnitVec3Mode
     Auto,
 }
 
-#pragma warning disable CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)
-#pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
-public struct Vector3 : IEquatable<Vector3>
+public struct Vector3
 {
     private static location _loc = Location(0, 0);
 
@@ -60,16 +58,6 @@ public struct Vector3 : IEquatable<Vector3>
     public static Vector3 operator /(Vector3 v, float f)
     {
         return new Vector3(v.x / f, v.y / f, v.z / f);
-    }
-
-    public static bool operator ==(Vector3 a, Vector3 b)
-    {
-        return math.abs(a.x - b.x) < 0.0001f && math.abs(a.y - b.y) < 0.0001f && math.abs(a.z - b.z) < 0.0001f;
-    }
-
-    public static bool operator !=(Vector3 a, Vector3 b)
-    {
-        return !(a == b);
     }
 
 #endregion
@@ -233,11 +221,6 @@ public struct Vector3 : IEquatable<Vector3>
         return normalized * mag;
     }
 
-    public bool Equals(Vector3 other)
-    {
-        return this == other;
-    }
-
     public override string ToString()
     {
         return $"({x}, {y}, {z})";
@@ -276,6 +259,3 @@ public struct Vector3 : IEquatable<Vector3>
         return _getTerrainZ(x, y);
     }
 }
-
-#pragma warning restore CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
-#pragma warning restore CS0660 // Type defines operator == or operator != but does not override Object.Equals(object o)

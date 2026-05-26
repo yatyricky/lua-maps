@@ -23,20 +23,20 @@ public partial class table : LuaObject
     /// </summary>
     /// <param name="list">The table to concatenate.</param>
     /// <returns>The concatenated string.</returns>
-    public static string concat(LuaObject list) => throw null;
+    public static string concat(LuaObject list) => throw null!;
 
     /// <inheritdoc cref="concat(LuaObject)"/>
     /// <param name="list">The table to concatenate.</param>
     /// <param name="sep">The separator string.</param>
     /// <returns>The concatenated string.</returns>
-    public static string concat(LuaObject list, string sep) => throw null;
+    public static string concat(LuaObject list, string sep) => throw null!;
 
     /// <inheritdoc cref="concat(LuaObject)"/>
     /// <param name="list">The table to concatenate.</param>
     /// <param name="sep">The separator string.</param>
     /// <param name="i">The start index (1-based).</param>
     /// <returns>The concatenated string.</returns>
-    public static string concat(LuaObject list, string sep, int i) => throw null;
+    public static string concat(LuaObject list, string sep, int i) => throw null!;
 
     /// <inheritdoc cref="concat(LuaObject)"/>
     /// <param name="list">The table to concatenate.</param>
@@ -44,7 +44,7 @@ public partial class table : LuaObject
     /// <param name="i">The start index (1-based).</param>
     /// <param name="j">The end index (1-based, inclusive).</param>
     /// <returns>The concatenated string.</returns>
-    public static string concat(LuaObject list, string sep, int i, int j) => throw null;
+    public static string concat(LuaObject list, string sep, int i, int j) => throw null!;
 
     /// <summary>
     /// Inserts element value at position pos in list, shifting up the elements
@@ -54,13 +54,13 @@ public partial class table : LuaObject
     /// </summary>
     /// <param name="list">The table to insert into.</param>
     /// <param name="value">The value to insert.</param>
-    public static void insert(LuaObject list, object? value) => throw null;
+    public static void insert(LuaObject list, object? value) => throw null!;
 
     /// <inheritdoc cref="insert(LuaObject, object?)"/>
     /// <param name="list">The table to insert into.</param>
     /// <param name="pos">The position to insert at (1-based).</param>
     /// <param name="value">The value to insert.</param>
-    public static void insert(LuaObject list, int pos, object? value) => throw null;
+    public static void insert(LuaObject list, int pos, object? value) => throw null!;
 
     /// <summary>
     /// Moves elements from table a1 to table a2.
@@ -72,7 +72,7 @@ public partial class table : LuaObject
     /// <param name="e">The last element index in the source (inclusive).</param>
     /// <param name="t">The destination position in a2.</param>
     /// <returns>The destination table.</returns>
-    public static LuaObject move(LuaObject a1, int f, int e, int t) => throw null;
+    public static LuaObject move(LuaObject a1, int f, int e, int t) => throw null!;
 
     /// <inheritdoc cref="move(LuaObject, int, int, int)"/>
     /// <param name="a1">The source table.</param>
@@ -81,7 +81,7 @@ public partial class table : LuaObject
     /// <param name="t">The destination position in a2.</param>
     /// <param name="a2">The destination table (defaults to a1).</param>
     /// <returns>The destination table.</returns>
-    public static LuaObject move(LuaObject a1, int f, int e, int t, LuaObject a2) => throw null;
+    public static LuaObject move(LuaObject a1, int f, int e, int t, LuaObject a2) => throw null!;
 
     /// <summary>
     /// Returns a new table with all arguments stored into keys 1, 2, etc.
@@ -90,7 +90,7 @@ public partial class table : LuaObject
     /// </summary>
     /// <param name="values">The values to pack into a table.</param>
     /// <returns>A new table with the packed values.</returns>
-    public static LuaObject pack(params object?[] values) => throw null;
+    public static LuaObject pack(params object?[] values) => throw null!;
 
     /// <summary>
     /// Removes from list the element at position pos, shifting down the elements
@@ -101,13 +101,13 @@ public partial class table : LuaObject
     /// </summary>
     /// <param name="list">The table to remove from.</param>
     /// <returns>The removed value.</returns>
-    public static object? remove(LuaObject list) => throw null;
+    public static object? remove(LuaObject list) => throw null!;
 
     /// <inheritdoc cref="remove(LuaObject)"/>
     /// <param name="list">The table to remove from.</param>
     /// <param name="pos">The position to remove from (1-based).</param>
     /// <returns>The removed value.</returns>
-    public static object? remove(LuaObject list, int pos) => throw null;
+    public static object? remove(LuaObject list, int pos) => throw null!;
 
     /// <summary>
     /// Sorts list elements in a given order, in-place, from <c>list[1]</c> to <c>list[#list]</c>.
@@ -116,12 +116,12 @@ public partial class table : LuaObject
     /// If comp is not given, then the standard Lua operator &lt; is used instead.
     /// </summary>
     /// <param name="list">The table to sort.</param>
-    public static void sort(LuaObject list) => throw null;
+    public static void sort(LuaObject list) => throw null!;
 
     /// <inheritdoc cref="sort(LuaObject)"/>
     /// <param name="list">The table to sort.</param>
     /// <param name="comp">The comparison function.</param>
-    public static void sort(LuaObject list, LuaObject comp) => throw null;
+    public static void sort(LuaObject list, LuaObject comp) => throw null!;
 
     /// <summary>
     /// Returns the elements from the given table.
@@ -130,18 +130,18 @@ public partial class table : LuaObject
     /// </summary>
     /// <param name="list">The table to unpack.</param>
     /// <returns>The values from the table.</returns>
-    public static object?[] unpack(LuaObject list) => throw null;
+    public static object?[] unpack(LuaObject list) => throw null!;
 
     /// <inheritdoc cref="unpack(LuaObject)"/>
     /// <param name="list">The table to unpack.</param>
     /// <param name="i">The start index (1-based).</param>
     /// <returns>The values from the table.</returns>
-    public static object?[] unpack(LuaObject list, int i) => throw null;
+    public static object?[] unpack(LuaObject list, int i) => throw null!;
 
     /// <inheritdoc cref="unpack(LuaObject)"/>
     /// <param name="list">The table to unpack.</param>
     /// <param name="i">The start index (1-based).</param>
     /// <param name="j">The end index (1-based, inclusive).</param>
     /// <returns>The values from the table.</returns>
-    public static object?[] unpack(LuaObject list, int i, int j) => throw null;
+    public static object?[] unpack(LuaObject list, int i, int j) => throw null!;
 }

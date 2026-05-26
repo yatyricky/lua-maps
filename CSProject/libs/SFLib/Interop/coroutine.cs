@@ -20,7 +20,7 @@ public partial class coroutine : LuaObject
     /// </summary>
     /// <param name="f">The coroutine body function.</param>
     /// <returns>A new coroutine thread.</returns>
-    public static LuaObject create(LuaObject f) => throw null;
+    public static LuaObject create(LuaObject f) => throw null!;
 
     /// <summary>
     /// Starts or continues the execution of coroutine co.
@@ -34,7 +34,7 @@ public partial class coroutine : LuaObject
     /// <param name="co">The coroutine to resume.</param>
     /// <param name="values">Values to pass to the coroutine body or as yield results.</param>
     /// <returns>A tuple of (success, results). In Lua: status, val1, val2, ...</returns>
-    public static (bool status, object?[] results) resume(LuaObject co, params object?[] values) => throw null;
+    public static (bool status, object?[] results) resume(LuaObject co, params object?[] values) => throw null!;
 
     /// <summary>
     /// Suspends the execution of the calling coroutine.
@@ -42,7 +42,7 @@ public partial class coroutine : LuaObject
     /// </summary>
     /// <param name="values">Values to return to the coroutine's caller.</param>
     /// <returns>Values passed to the next resume call.</returns>
-    public static object?[] yield(params object?[] values) => throw null;
+    public static object?[] yield(params object?[] values) => throw null!;
 
     /// <summary>
     /// Returns the status of coroutine co, as a string:
@@ -53,14 +53,14 @@ public partial class coroutine : LuaObject
     /// </summary>
     /// <param name="co">The coroutine to query.</param>
     /// <returns>A string describing the coroutine status.</returns>
-    public static string status(LuaObject co) => throw null;
+    public static string status(LuaObject co) => throw null!;
 
     /// <summary>
     /// Returns the running coroutine, plus a boolean that is true when the running coroutine is the main one.
     /// In Lua: coroutine, isMain = coroutine.running()
     /// </summary>
     /// <returns>A tuple of (coroutine, isMain).</returns>
-    public static (LuaObject coroutine, bool isMain) running() => throw null;
+    public static (LuaObject coroutine, bool isMain) running() => throw null!;
 
     /// <summary>
     /// Creates a new coroutine, with body f.
@@ -72,7 +72,7 @@ public partial class coroutine : LuaObject
     /// </summary>
     /// <param name="f">The coroutine body function.</param>
     /// <returns>A function that resumes the coroutine.</returns>
-    public static LuaObject wrap(LuaObject f) => throw null;
+    public static LuaObject wrap(LuaObject f) => throw null!;
 
     /// <summary>
     /// Returns true when the running coroutine can yield.
@@ -80,5 +80,5 @@ public partial class coroutine : LuaObject
     /// In the main thread, isyieldable always returns false.
     /// </summary>
     /// <returns><c>true</c> if the running coroutine can yield.</returns>
-    public static bool isyieldable() => throw null;
+    public static bool isyieldable() => throw null!;
 }

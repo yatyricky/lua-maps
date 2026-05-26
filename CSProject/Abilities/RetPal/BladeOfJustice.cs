@@ -1,22 +1,16 @@
 using LuaWrapper;
-using SFLib.Contracts;
-using SFLib.Collections;
+using StdLib;
 using System.Threading.Tasks;
 
 public class BladeOfJustice
 {
     public static readonly int ID = FourCC("A001");
 
-    public struct IAbilityData : IEquatable<IAbilityData>
+    public struct IAbilityData
     {
         public float Damage;
         public float Duration;
         public float DamagePerSecond;
-
-        public bool Equals(IAbilityData other)
-        {
-            return math.abs(Damage - other.Damage) < 0.0001f && math.abs(Duration - other.Duration) < 0.0001f && math.abs(DamagePerSecond - other.DamagePerSecond) < 0.0001f;
-        }
     }
 
     public static IAbilityData GetAbilityData(int level)

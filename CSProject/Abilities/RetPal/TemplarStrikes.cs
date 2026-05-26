@@ -1,20 +1,15 @@
+using SFLib.Interop;
+using System.Threading.Tasks;
 using LuaWrapper;
-using SFLib.Contracts;
-using SFLib.Collections;
-using SFLib.Async;
+using StdLib;
 
 public class TemplarStrikes
 {
-    public struct IAbilityData : IEquatable<IAbilityData>
+    public struct IAbilityData
     {
         public int AttackCount;
         public float DamageScaling;
         public float ResetBOJChance;
-
-        public bool Equals(IAbilityData other)
-        {
-            return math.abs(DamageScaling - other.DamageScaling) < 0.0001f && math.abs(ResetBOJChance - other.ResetBOJChance) < 0.0001f;
-        }
     }
 
     public static readonly int ID = FourCC("A007");

@@ -10,18 +10,12 @@ namespace StdLib;
 /// Uses table.insert/table.remove for array operations.
 /// C# indexer (0-based) maps to Lua table (1-based) via get_Item/set_Item.
 /// </summary>
-public class List<T>
+public class List<T> : IIpairs<T>
 {
     private LuaObject _items;
     private int _version;
 
     public int Count { get; private set; }
-
-    /// <summary>
-    /// Sentinel value representing nil in the Lua table.
-    /// Lua tables cannot store nil, so nil values are replaced with this placeholder.
-    /// </summary>
-    public static T Nil = (T)(object)LuaInterop.CreateTable();
 
     public List()
     {
@@ -34,7 +28,7 @@ public class List<T>
     {
         foreach (var item in collection)
         {
-            table.insert(_items, Wrap(item));
+            table.insert(_items, item);
             Count++;
         }
     }
@@ -44,18 +38,18 @@ public class List<T>
         get
         {
             if (index < 0 || index >= Count) throw new Exception("Index out of range");
-            return Unwrap(LuaInterop.Get<T>(_items, index + 1));
+            return LuaInterop.Get<T>(_items, index + 1);
         }
         set
         {
             if (index < 0 || index >= Count) throw new Exception("Index out of range");
-            LuaInterop.Set(_items, index + 1, Wrap(value));
+            LuaInterop.Set(_items, index + 1, value);
         }
     }
 
     public void Add(T item)
     {
-        table.insert(_items, Wrap(item));
+        table.insert(_items, item);
         Count++;
         _version++;
     }
@@ -84,35 +78,26 @@ public class List<T>
 
     public int IndexOf(T item)
     {
-        return IndexOf(item, null);
-    }
-
-    public int IndexOf(T item, Func<T, T, bool>? equals)
-    {
-        var wrapped = Wrap(item);
         for (var i = 0; i < Count; i++)
         {
             var current = LuaInterop.Get<T>(_items, i + 1);
-            if (equals != null)
-            {
-                if (equals(Unwrap(current), item)) return i;
-            }
-            else
-            {
-                if (LuaInterop.Equals(current, wrapped)) return i;
-            }
+            if (LuaInterop.Eq(current, item)) return i;
         }
 
         return -1;
     }
 
-    public void Sort()
+    private static int DefaultCompare(T a, T b)
     {
-        Sort(null);
+        if (LuaInterop.Eq(a, b)) return 0;
+        if (LuaInterop.Lt(a, b)) return -1;
+        return 1;
     }
 
     public void Sort(Func<T, T, int>? comparison)
     {
+        comparison ??= DefaultCompare;
+
         for (var i = 1; i < Count; i++)
         {
             var value = LuaInterop.Get<T>(_items, i + 1);
@@ -120,9 +105,7 @@ public class List<T>
             while (j >= 0)
             {
                 var current = LuaInterop.Get<T>(_items, j + 1);
-                var cmp = comparison != null
-                    ? comparison(Unwrap(value), Unwrap(current))
-                    : DefaultCompare(Unwrap(value), Unwrap(current));
+                var cmp = comparison(value, current);
                 if (cmp >= 0) break;
                 LuaInterop.Set(_items, j + 2, current);
                 j--;
@@ -132,22 +115,18 @@ public class List<T>
         _version++;
     }
 
-    private static T Wrap(T value)
+    public Func<(int, T)> IpairsNext(LuaObject table)
     {
-        return LuaInterop.Equals(value, default!) ? Nil : value;
-    }
-
-    private static T Unwrap(T value)
-    {
-        return LuaInterop.Equals(value, Nil) ? default! : value;
-    }
-
-    private static int DefaultCompare(T a, T b)
-    {
-        if (LuaInterop.Equals(a, b)) return 0;
-        var comparable = a as IComparable<T>;
-        if (comparable != null) return comparable.CompareTo(b);
-        throw new Exception("No comparison defined for type");
+        var version = _version;
+        var index = 0;
+        return () =>
+        {
+            if (version != _version) throw new Exception("Collection was modified");
+            index++;
+            var value = LuaInterop.Get<T>(table, index);
+            if (value == null) return (0, default!);
+            return (index, value);
+        };
     }
 
     public Enumerator GetEnumerator() => default!;

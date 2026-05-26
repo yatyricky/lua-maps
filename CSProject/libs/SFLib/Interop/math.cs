@@ -20,21 +20,21 @@ public partial class math : LuaObject
     /// </summary>
     /// <param name="x">The input value.</param>
     /// <returns>The absolute value of x.</returns>
-    public static float abs(float x) => throw null;
+    public static float abs(float x) => throw null!;
 
     /// <summary>
     /// Returns the arc cosine of x (in radians).
     /// </summary>
     /// <param name="x">A value in the range [-1, 1].</param>
     /// <returns>The arc cosine in radians.</returns>
-    public static float acos(float x) => throw null;
+    public static float acos(float x) => throw null!;
 
     /// <summary>
     /// Returns the arc sine of x (in radians).
     /// </summary>
     /// <param name="x">A value in the range [-1, 1].</param>
     /// <returns>The arc sine in radians.</returns>
-    public static float asin(float x) => throw null;
+    public static float asin(float x) => throw null!;
 
     /// <summary>
     /// Returns the arc tangent of y/x (in radians), using the signs of both arguments
@@ -43,49 +43,49 @@ public partial class math : LuaObject
     /// <param name="y">The numerator.</param>
     /// <param name="x">The denominator. Defaults to 1.</param>
     /// <returns>The arc tangent in radians in the range [-π, π].</returns>
-    public static float atan(float y, float x) => throw null;
+    public static float atan(float y, float x) => throw null!;
 
     /// <summary>
     /// Returns the arc tangent of y (in radians). Equivalent to <c>math.atan(y, 1)</c>.
     /// </summary>
     /// <param name="y">The input value.</param>
     /// <returns>The arc tangent in radians in the range [-π/2, π/2].</returns>
-    public static float atan(float y) => throw null;
+    public static float atan(float y) => throw null!;
 
     /// <summary>
     /// Returns the smallest integral value larger than or equal to x.
     /// </summary>
     /// <param name="x">The input value.</param>
     /// <returns>The ceiling of x as a float.</returns>
-    public static float ceil(float x) => throw null;
+    public static float ceil(float x) => throw null!;
 
     /// <summary>
     /// Returns the cosine of x (assumed to be in radians).
     /// </summary>
     /// <param name="x">Angle in radians.</param>
     /// <returns>The cosine of x.</returns>
-    public static float cos(float x) => throw null;
+    public static float cos(float x) => throw null!;
 
     /// <summary>
     /// Converts the angle x from radians to degrees.
     /// </summary>
     /// <param name="x">Angle in radians.</param>
     /// <returns>The angle in degrees.</returns>
-    public static float deg(float x) => throw null;
+    public static float deg(float x) => throw null!;
 
     /// <summary>
     /// Returns the value e^x (where e is the base of natural logarithms).
     /// </summary>
     /// <param name="x">The exponent.</param>
     /// <returns>The value e raised to the power x.</returns>
-    public static float exp(float x) => throw null;
+    public static float exp(float x) => throw null!;
 
     /// <summary>
     /// Returns the largest integral value smaller than or equal to x.
     /// </summary>
     /// <param name="x">The input value.</param>
     /// <returns>The floor of x as a float.</returns>
-    public static float floor(float x) => throw null;
+    public static float floor(float x) => throw null!;
 
     /// <summary>
     /// Returns the remainder of the division of x by y that rounds the quotient towards zero.
@@ -94,13 +94,13 @@ public partial class math : LuaObject
     /// <param name="x">The dividend.</param>
     /// <param name="y">The divisor.</param>
     /// <returns>The floating-point remainder of x/y.</returns>
-    public static float fmod(float x, float y) => throw null;
+    public static float fmod(float x, float y) => throw null!;
 
     /// <summary>
     /// The float value HUGE_VAL, a value larger than any other numeric value.
     /// In Lua, <c>math.huge</c> is used to represent positive infinity.
     /// </summary>
-    public static float huge => throw null;
+    public static float huge => throw null!;
 
     /// <summary>
     /// Returns the logarithm of x in the given base.
@@ -108,7 +108,7 @@ public partial class math : LuaObject
     /// </summary>
     /// <param name="x">The input value (must be positive).</param>
     /// <returns>The logarithm of x in the specified base.</returns>
-    public static float log(float x) => throw null;
+    public static float log(float x) => throw null!;
 
     /// <summary>
     /// Returns the logarithm of x in the given base.
@@ -116,7 +116,7 @@ public partial class math : LuaObject
     /// <param name="x">The input value (must be positive).</param>
     /// <param name="base">The logarithm base.</param>
     /// <returns>The logarithm of x in the specified base.</returns>
-    public static float log(float x, float @base) => throw null;
+    public static float log(float x, float @base) => throw null!;
 
     /// <summary>
     /// Returns the argument with the maximum value, according to the Lua operator &lt;.
@@ -124,13 +124,13 @@ public partial class math : LuaObject
     /// </summary>
     /// <param name="values">The values to compare.</param>
     /// <returns>The maximum value.</returns>
-    public static float max(params float[] values) => throw null;
+    public static float max(params float[] values) => throw null!;
 
     /// <summary>
     /// An integer with the maximum value for an integer.
     /// In Lua 5.3, this is <c>2^63 - 1</c> (9223372036854775807 for 64-bit integers).
     /// </summary>
-    public static int maxinteger => throw null;
+    public static int maxinteger => throw null!;
 
     /// <summary>
     /// Returns the argument with the minimum value, according to the Lua operator &lt;.
@@ -138,13 +138,21 @@ public partial class math : LuaObject
     /// </summary>
     /// <param name="values">The values to compare.</param>
     /// <returns>The minimum value.</returns>
-    public static float min(params float[] values) => throw null;
+    public static float min(params float[] values) => throw null!;
+
+    /// <summary>
+    /// Returns the argument with the minimum value, according to the Lua operator &lt;.
+    /// In Lua, this function accepts both integers and floats.
+    /// </summary>
+    /// <param name="values">The values to compare.</param>
+    /// <returns>The minimum value.</returns>
+    public static int min(params int[] values) => throw null!;
 
     /// <summary>
     /// An integer with the minimum value for an integer.
     /// In Lua 5.3, this is <c>-2^63</c> (-9223372036854775808 for 64-bit integers).
     /// </summary>
-    public static int mininteger => throw null;
+    public static int mininteger => throw null!;
 
     /// <summary>
     /// Returns the integral part of x and the fractional part of x.
@@ -153,19 +161,19 @@ public partial class math : LuaObject
     /// </summary>
     /// <param name="x">The input value.</param>
     /// <returns>A tuple of (integral, fractional) parts.</returns>
-    public static (int integral, float fractional) modf(float x) => throw null;
+    public static (int integral, float fractional) modf(float x) => throw null!;
 
     /// <summary>
     /// The value of π (approximately 3.14159265358979).
     /// </summary>
-    public static float pi => throw null;
+    public static float pi => throw null!;
 
     /// <summary>
     /// Converts the angle x from degrees to radians.
     /// </summary>
     /// <param name="x">Angle in degrees.</param>
     /// <returns>The angle in radians.</returns>
-    public static float rad(float x) => throw null;
+    public static float rad(float x) => throw null!;
 
     /// <summary>
     /// When called without arguments, returns a pseudo-random float with uniform distribution
@@ -175,45 +183,45 @@ public partial class math : LuaObject
     /// This function is an interface to the underlying pseudo-random generator function provided by C.
     /// </summary>
     /// <returns>A pseudo-random float in [0, 1).</returns>
-    public static float random() => throw null;
+    public static float random() => throw null!;
 
     /// <inheritdoc cref="random()"/>
     /// <param name="n">The upper bound (inclusive). Lower bound defaults to 1.</param>
     /// <returns>A pseudo-random integer in [1, n].</returns>
-    public static int random(int n) => throw null;
+    public static int random(int n) => throw null!;
 
     /// <inheritdoc cref="random()"/>
     /// <param name="m">The lower bound (inclusive).</param>
     /// <param name="n">The upper bound (inclusive).</param>
     /// <returns>A pseudo-random integer in [m, n].</returns>
-    public static int random(int m, int n) => throw null;
+    public static int random(int m, int n) => throw null!;
 
     /// <summary>
     /// Sets x as the "seed" for the pseudo-random generator: equal seeds produce equal sequences of numbers.
     /// </summary>
     /// <param name="x">The seed value.</param>
-    public static void randomseed(float x) => throw null;
+    public static void randomseed(float x) => throw null!;
 
     /// <summary>
     /// Returns the sine of x (assumed to be in radians).
     /// </summary>
     /// <param name="x">Angle in radians.</param>
     /// <returns>The sine of x.</returns>
-    public static float sin(float x) => throw null;
+    public static float sin(float x) => throw null!;
 
     /// <summary>
     /// Returns the square root of x. (You can also use the expression <c>x^0.5</c> to compute this value.)
     /// </summary>
     /// <param name="x">The input value (must be non-negative).</param>
     /// <returns>The square root of x.</returns>
-    public static float sqrt(float x) => throw null;
+    public static float sqrt(float x) => throw null!;
 
     /// <summary>
     /// Returns the tangent of x (assumed to be in radians).
     /// </summary>
     /// <param name="x">Angle in radians.</param>
     /// <returns>The tangent of x.</returns>
-    public static float tan(float x) => throw null;
+    public static float tan(float x) => throw null!;
 
     /// <summary>
     /// If the value x is convertible to an integer, returns that integer. Otherwise, returns nil.
@@ -221,14 +229,14 @@ public partial class math : LuaObject
     /// </summary>
     /// <param name="x">The input value.</param>
     /// <returns>The integer value, or <c>null</c> if not convertible.</returns>
-    public static int? tointeger(float x) => throw null;
+    public static int? tointeger(float x) => throw null!;
 
     /// <summary>
     /// Returns "integer" if x is an integer, "float" if it is a float, or nil if x is not a number.
     /// </summary>
     /// <param name="x">The input value.</param>
     /// <returns>"integer", "float", or <c>null</c>.</returns>
-    public static string? type(float x) => throw null;
+    public static string? type(float x) => throw null!;
 
     /// <summary>
     /// Returns a boolean, true if and only if integer m is below integer n
@@ -238,5 +246,13 @@ public partial class math : LuaObject
     /// <param name="m">The first integer.</param>
     /// <param name="n">The second integer.</param>
     /// <returns><c>true</c> if m &lt; n when treated as unsigned.</returns>
-    public static bool ult(int m, int n) => throw null;
+    public static bool ult(int m, int n) => throw null!;
+
+    /// <summary>
+    /// Lowered to x ^ y in Lua, which computes x raised to the power of y.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public static float pow(float x, float y) => throw null!;
 }

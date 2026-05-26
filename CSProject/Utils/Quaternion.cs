@@ -1,6 +1,6 @@
-using SFLib.Contracts;
+using SFLib.Interop;
 
-public struct Quaternion : IEquatable<Quaternion>
+public struct Quaternion
 {
     public static Quaternion identity => new(0, 0, 0, 1);
 
@@ -146,7 +146,7 @@ public struct Quaternion : IEquatable<Quaternion>
             // https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Source_Code_2
             var sinr_cosp = 2 * (w * x + y * z);
             var cosr_cosp = 1 - 2 * (x * x + y * y);
-            var roll = math.atan2(sinr_cosp, cosr_cosp);
+            var roll = math.atan(sinr_cosp, cosr_cosp);
 
             var sinp = 2 * (w * y - z * x);
             float pitch;
@@ -157,7 +157,7 @@ public struct Quaternion : IEquatable<Quaternion>
 
             var siny_cosp = 2 * (w * z + x * y);
             var cosy_cosp = 1 - 2 * (y * y + z * z);
-            var yaw = math.atan2(siny_cosp, cosy_cosp);
+            var yaw = math.atan(siny_cosp, cosy_cosp);
 
             return new Vector3(pitch * bj_RADTODEG, yaw * bj_RADTODEG, roll * bj_RADTODEG);
         }
@@ -171,11 +171,6 @@ public struct Quaternion : IEquatable<Quaternion>
         this.y = y;
         this.z = z;
         this.w = w;
-    }
-
-    public bool Equals(Quaternion other)
-    {
-        return math.abs(x - other.x) < 0.0001f && math.abs(y - other.y) < 0.0001f && math.abs(z - other.z) < 0.0001f && math.abs(w - other.w) < 0.0001f;
     }
 
     public override string ToString()

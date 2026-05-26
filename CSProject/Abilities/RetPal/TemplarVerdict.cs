@@ -1,19 +1,13 @@
 using LuaWrapper;
-using SFLib.Contracts;
-using SFLib.Collections;
+using StdLib;
 
 public class TemplarVerdict
 {
-    public struct IAbilityData : IEquatable<IAbilityData>
+    public struct IAbilityData
     {
         public float DamageScaling;
         public float JudgementDamageScaling;
         public float ChanceToResetJudgement;
-
-        public bool Equals(IAbilityData other)
-        {
-            return math.abs(JudgementDamageScaling - other.JudgementDamageScaling) < 0.0001f && math.abs(ChanceToResetJudgement - other.ChanceToResetJudgement) < 0.0001f;
-        }
     }
 
 

@@ -21,7 +21,7 @@ public partial class os : LuaObject
     /// In Warcraft III, this measures time within the Lua runtime.
     /// </summary>
     /// <returns>CPU time in seconds.</returns>
-    public static float clock() => throw null;
+    public static float clock() => throw null!;
 
     /// <summary>
     /// If the time argument is present, this is the time to be formatted
@@ -29,7 +29,7 @@ public partial class os : LuaObject
     /// Otherwise, date formats the current time.
     /// </summary>
     /// <returns>A string representing the current date and time in "%c" format.</returns>
-    public static string date() => throw null;
+    public static string date() => throw null!;
 
     /// <summary>
     /// If the time argument is present, this is the time to be formatted
@@ -38,13 +38,13 @@ public partial class os : LuaObject
     /// </summary>
     /// <param name="format">The format string (e.g., "%Y-%m-%d", "*t" for table).</param>
     /// <returns>A formatted date string, or a table if format is "*t".</returns>
-    public static object date(string format) => throw null;
+    public static object date(string format) => throw null!;
 
     /// <inheritdoc cref="date(string)"/>
     /// <param name="format">The format string.</param>
     /// <param name="time">The time value to format (from os.time).</param>
     /// <returns>A formatted date string, or a table if format is "*t".</returns>
-    public static object date(string format, int time) => throw null;
+    public static object date(string format, int time) => throw null!;
 
     /// <summary>
     /// Returns the difference, in seconds, from time t1 to time t2.
@@ -53,7 +53,7 @@ public partial class os : LuaObject
     /// <param name="t2">The later time.</param>
     /// <param name="t1">The earlier time.</param>
     /// <returns>The difference in seconds.</returns>
-    public static int difftime(int t2, int t1) => throw null;
+    public static int difftime(int t2, int t1) => throw null!;
 
     /// <summary>
     /// Returns the current time when called without arguments, or a time representing the
@@ -61,10 +61,10 @@ public partial class os : LuaObject
     /// and day, and may have fields hour, min, sec, and isdst.
     /// </summary>
     /// <returns>The current time as a Unix timestamp (seconds since epoch).</returns>
-    public static int time() => throw null;
+    public static int time() => throw null!;
 
     /// <inheritdoc cref="time()"/>
     /// <param name="table">A table with fields: year, month, day, and optionally hour, min, sec, isdst.</param>
     /// <returns>A Unix timestamp for the specified date/time.</returns>
-    public static int time(LuaObject table) => throw null;
+    public static int time(LuaObject table) => throw null!;
 }

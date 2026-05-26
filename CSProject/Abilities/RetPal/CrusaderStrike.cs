@@ -1,10 +1,9 @@
 using LuaWrapper;
-using SFLib.Contracts;
-using SFLib.Collections;
+using StdLib;
 
 public class CrusaderStrike
 {
-    public struct IAbilityData : IEquatable<IAbilityData>
+    public struct IAbilityData
     {
         public float DamageScaling;
         public float ArtOfWarChance;
@@ -16,16 +15,6 @@ public class CrusaderStrike
                 DamageScaling = DamageScaling * scale,
                 ArtOfWarChance = ArtOfWarChance * scale
             };
-        }
-
-        public bool Equals(IAbilityData other)
-        {
-            return math.abs(DamageScaling - other.DamageScaling) < 0.0001f && math.abs(ArtOfWarChance - other.ArtOfWarChance) < 0.0001f;
-        }
-
-        public int GetHashValue()
-        {
-            return 0;
         }
     }
 

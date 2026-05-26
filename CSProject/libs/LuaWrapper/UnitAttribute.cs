@@ -1,4 +1,4 @@
-using SFLib.Collections;
+using StdLib;
 using SFLib.Interop;
 
 namespace LuaWrapper;

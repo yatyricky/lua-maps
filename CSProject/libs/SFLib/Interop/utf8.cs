@@ -20,7 +20,7 @@ public partial class utf8 : LuaObject
     /// </summary>
     /// <param name="values">Unicode code points.</param>
     /// <returns>A UTF-8 encoded string.</returns>
-    public static string @char(params int[] values) => throw null;
+    public static string @char(params int[] values) => throw null!;
 
     /// <summary>
     /// Returns the code points (as integers) from all characters in s that start between byte position i and j.
@@ -28,20 +28,20 @@ public partial class utf8 : LuaObject
     /// </summary>
     /// <param name="s">The UTF-8 string.</param>
     /// <returns>An array of Unicode code points.</returns>
-    public static int[] codepoint(string s) => throw null;
+    public static int[] codepoint(string s) => throw null!;
 
     /// <inheritdoc cref="codepoint(string)"/>
     /// <param name="s">The UTF-8 string.</param>
     /// <param name="i">The start byte position (1-based).</param>
     /// <returns>An array of Unicode code points.</returns>
-    public static int[] codepoint(string s, int i) => throw null;
+    public static int[] codepoint(string s, int i) => throw null!;
 
     /// <inheritdoc cref="codepoint(string)"/>
     /// <param name="s">The UTF-8 string.</param>
     /// <param name="i">The start byte position (1-based).</param>
     /// <param name="j">The end byte position (1-based, inclusive).</param>
     /// <returns>An array of Unicode code points.</returns>
-    public static int[] codepoint(string s, int i, int j) => throw null;
+    public static int[] codepoint(string s, int i, int j) => throw null!;
 
     /// <summary>
     /// Returns an iterator function that traverses the string s, yielding the position and code point of each character.
@@ -49,7 +49,7 @@ public partial class utf8 : LuaObject
     /// </summary>
     /// <param name="s">The UTF-8 string.</param>
     /// <returns>An iterator function yielding (position, codepoint) pairs.</returns>
-    public static LuaObject codes(string s) => throw null;
+    public static LuaObject codes(string s) => throw null!;
 
     /// <summary>
     /// Returns the number of UTF-8 characters in the string s that start between positions i and j.
@@ -58,20 +58,20 @@ public partial class utf8 : LuaObject
     /// </summary>
     /// <param name="s">The UTF-8 string.</param>
     /// <returns>The number of UTF-8 characters, or (nil, position) on error.</returns>
-    public static int? len(string s) => throw null;
+    public static int? len(string s) => throw null!;
 
     /// <inheritdoc cref="len(string)"/>
     /// <param name="s">The UTF-8 string.</param>
     /// <param name="i">The start byte position (1-based).</param>
     /// <returns>The number of UTF-8 characters, or (nil, position) on error.</returns>
-    public static int? len(string s, int i) => throw null;
+    public static int? len(string s, int i) => throw null!;
 
     /// <inheritdoc cref="len(string)"/>
     /// <param name="s">The UTF-8 string.</param>
     /// <param name="i">The start byte position (1-based).</param>
     /// <param name="j">The end byte position (1-based, inclusive).</param>
     /// <returns>The number of UTF-8 characters, or (nil, position) on error.</returns>
-    public static int? len(string s, int i, int j) => throw null;
+    public static int? len(string s, int i, int j) => throw null!;
 
     /// <summary>
     /// Returns the position (in bytes) where the encoding of the n-th character of s
@@ -82,18 +82,18 @@ public partial class utf8 : LuaObject
     /// <param name="s">The UTF-8 string.</param>
     /// <param name="n">The character index (1-based, can be negative).</param>
     /// <returns>The byte position of the n-th character, or nil if out of range.</returns>
-    public static int? offset(string s, int n) => throw null;
+    public static int? offset(string s, int n) => throw null!;
 
     /// <inheritdoc cref="offset(string, int)"/>
     /// <param name="s">The UTF-8 string.</param>
     /// <param name="n">The character index (1-based, can be negative).</param>
     /// <param name="i">The byte position to start from (1-based).</param>
     /// <returns>The byte position of the n-th character, or nil if out of range.</returns>
-    public static int? offset(string s, int n, int i) => throw null;
+    public static int? offset(string s, int n, int i) => throw null!;
 
     /// <summary>
     /// The pattern (a string, not a function) "[\0-\x7F\xC2-\xF4][\x80-\xBF]*",
     /// which matches exactly one UTF-8 byte sequence, assuming that the subject is a valid UTF-8 string.
     /// </summary>
-    public static string charpattern => throw null;
+    public static string charpattern => throw null!;
 }

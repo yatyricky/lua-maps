@@ -6,22 +6,6 @@ using System;
 
 namespace SFLib.Interop;
 
-[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-public sealed class LuaAttribute : Attribute
-{
-    public string? Name;
-    public string? StaticMethod;
-    public string? Method;
-    public string? Module;
-    public string? Class;
-    public string? Require;
-    public bool TableLiteral;
-
-    public LuaAttribute()
-    {
-    }
-}
-
 public class LuaObject
 {
     public LuaObject()
@@ -67,5 +51,9 @@ public static class LuaInterop
 
     public static T CallGlobal<T>(string functionName, params object?[] arguments) => default!;
 
-    public static bool Equals<T>(T a, T b) => default!;
+    public static bool Eq<T>(T a, T b) => default!;
+
+    public static bool Lt<T>(T a, T b) => default!;
+
+    public static bool Gt<T>(T a, T b) => default!;
 }

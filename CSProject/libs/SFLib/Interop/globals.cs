@@ -23,7 +23,7 @@ public static class globals
     /// <param name="f">The function to call.</param>
     /// <param name="args">Arguments to pass to the function.</param>
     /// <returns>A tuple of (success, results). In Lua: status, val1, val2, ...</returns>
-    public static (bool status, object?[] results) pcall(LuaObject f, params object?[] args) => throw null;
+    public static (bool status, object?[] results) pcall(LuaObject f, params object?[] args) => throw null!;
 
     /// <summary>
     /// Receives any number of arguments and prints their values to stdout.
@@ -31,7 +31,7 @@ public static class globals
     /// In Warcraft III, output goes to the game's message log.
     /// </summary>
     /// <param name="values">The values to print.</param>
-    public static void print(params object?[] values) => throw null;
+    public static void print(params object?[] values) => throw null!;
 
     /// <summary>
     /// Calls function f with the given arguments in protected mode.
@@ -41,19 +41,19 @@ public static class globals
     /// <param name="msgh">The error handler function.</param>
     /// <param name="args">Arguments to pass to the function.</param>
     /// <returns>A tuple of (success, results).</returns>
-    public static (bool status, object?[] results) xpcall(LuaObject f, LuaObject msgh, params object?[] args) => throw null;
+    public static (bool status, object?[] results) xpcall(LuaObject f, LuaObject msgh, params object?[] args) => throw null!;
 
     /// <summary>
     /// Raises an error message. The error message can be any Lua value.
     /// If level is 1 (the default), the error position is the position of the call to error.
     /// </summary>
     /// <param name="message">The error message.</param>
-    public static void error(object message) => throw null;
+    public static void error(object message) => throw null!;
 
     /// <inheritdoc cref="error(object)"/>
     /// <param name="message">The error message.</param>
     /// <param name="level">The error level (1 = caller's position).</param>
-    public static void error(object message, int level) => throw null;
+    public static void error(object message, int level) => throw null!;
 
     /// <summary>
     /// If the value of its argument v is false or nil, raises an error with message.
@@ -61,13 +61,13 @@ public static class globals
     /// </summary>
     /// <param name="v">The value to assert.</param>
     /// <returns>The value v if truthy.</returns>
-    public static object assert(object v) => throw null;
+    public static object assert(object v) => throw null!;
 
     /// <inheritdoc cref="assert(object)"/>
     /// <param name="v">The value to assert.</param>
     /// <param name="message">The error message if v is false or nil.</param>
     /// <returns>The value v if truthy.</returns>
-    public static object assert(object v, object message) => throw null;
+    public static object assert(object v, object message) => throw null!;
 
     /// <summary>
     /// Returns the type of its only argument, coded as a string.
@@ -75,14 +75,14 @@ public static class globals
     /// </summary>
     /// <param name="v">The value to check.</param>
     /// <returns>The type name as a string.</returns>
-    public static string type(object v) => throw null;
+    public static string type(object v) => throw null!;
 
     /// <summary>
     /// Receives an argument of any type and converts it to a string in a human-readable format.
     /// </summary>
     /// <param name="v">The value to convert.</param>
     /// <returns>The string representation.</returns>
-    public static string tostring(object v) => throw null;
+    public static string tostring(object v) => throw null!;
 
     /// <summary>
     /// When called with no base, tonumber tries to convert its argument to a number.
@@ -91,20 +91,20 @@ public static class globals
     /// </summary>
     /// <param name="v">The value to convert.</param>
     /// <returns>The numeric value, or nil.</returns>
-    public static object? tonumber(object v) => throw null;
+    public static object? tonumber(object v) => throw null!;
 
     /// <inheritdoc cref="tonumber(object)"/>
     /// <param name="v">The value to convert.</param>
     /// <param name="base">The base for the conversion (2-36).</param>
     /// <returns>The numeric value, or nil.</returns>
-    public static object? tonumber(object v, int @base) => throw null;
+    public static object? tonumber(object v, int @base) => throw null!;
 
     /// <summary>
     /// Returns the metatable of the given object. If the object does not have a metatable, returns nil.
     /// </summary>
     /// <param name="v">The object to query.</param>
     /// <returns>The metatable, or nil.</returns>
-    public static LuaObject? getmetatable(object v) => throw null;
+    public static LuaObject? getmetatable(object v) => throw null!;
 
     /// <summary>
     /// Sets the metatable for the given table. (To change the metatable of other types,
@@ -113,7 +113,7 @@ public static class globals
     /// <param name="table">The table to modify.</param>
     /// <param name="metatable">The new metatable (or nil to remove).</param>
     /// <returns>The modified table.</returns>
-    public static LuaObject setmetatable(LuaObject table, LuaObject? metatable) => throw null;
+    public static LuaObject setmetatable(LuaObject table, LuaObject? metatable) => throw null!;
 
     /// <summary>
     /// Returns the "length" of the object.
@@ -121,7 +121,7 @@ public static class globals
     /// </summary>
     /// <param name="v">The object to measure.</param>
     /// <returns>The length.</returns>
-    public static int rawlen(object v) => throw null;
+    public static int rawlen(object v) => throw null!;
 
     /// <summary>
     /// Checks whether v1 is equal to v2, without invoking the __eq metamethod.
@@ -129,7 +129,7 @@ public static class globals
     /// <param name="v1">The first value.</param>
     /// <param name="v2">The second value.</param>
     /// <returns><c>true</c> if the values are raw-equal.</returns>
-    public static bool rawequal(object v1, object v2) => throw null;
+    public static bool rawequal(object v1, object v2) => throw null!;
 
     /// <summary>
     /// Gets the real value of table[index], without invoking the __index metamethod.
@@ -137,7 +137,7 @@ public static class globals
     /// <param name="table">The table to query.</param>
     /// <param name="index">The key.</param>
     /// <returns>The raw value.</returns>
-    public static object? rawget(LuaObject table, object index) => throw null;
+    public static object? rawget(LuaObject table, object index) => throw null!;
 
     /// <summary>
     /// Sets the real value of table[index] to value, without invoking the __newindex metamethod.
@@ -145,7 +145,7 @@ public static class globals
     /// <param name="table">The table to modify.</param>
     /// <param name="index">The key.</param>
     /// <param name="value">The value to set.</param>
-    public static void rawset(LuaObject table, object index, object? value) => throw null;
+    public static void rawset(LuaObject table, object index, object? value) => throw null!;
 
     /// <summary>
     /// Returns the values starting from the given index.
@@ -154,7 +154,7 @@ public static class globals
     /// <param name="index">The start index (1-based, can be negative).</param>
     /// <param name="values">The values to select from.</param>
     /// <returns>The selected values.</returns>
-    public static object?[] select(int index, params object?[] values) => throw null;
+    public static object?[] select(int index, params object?[] values) => throw null!;
 
     /// <summary>
     /// If index is the string "#", returns the total number of extra arguments.
@@ -163,21 +163,21 @@ public static class globals
     /// <param name="index">The string "#" to get argument count.</param>
     /// <param name="values">The values to count.</param>
     /// <returns>The count of extra arguments.</returns>
-    public static int select(string index, params object?[] values) => throw null;
+    public static int select(string index, params object?[] values) => throw null!;
 
     /// <summary>
     /// Returns an iterator over the key-value pairs of the table.
     /// </summary>
     /// <param name="table">The table to iterate.</param>
     /// <returns>An iterator function.</returns>
-    public static LuaObject pairs(LuaObject table) => throw null;
+    public static LuaObject pairs(LuaObject table) => throw null!;
 
     /// <summary>
     /// Returns an iterator over the integer-keyed entries of the table.
     /// </summary>
     /// <param name="table">The table to iterate.</param>
     /// <returns>An iterator function yielding (index, value) pairs.</returns>
-    public static LuaObject ipairs(LuaObject table) => throw null;
+    public static LuaObject ipairs(LuaObject table) => throw null!;
 
     /// <summary>
     /// Allows a program to traverse all fields of a table.
@@ -185,13 +185,13 @@ public static class globals
     /// </summary>
     /// <param name="table">The table to traverse.</param>
     /// <returns>The first key-value pair.</returns>
-    public static (object? key, object? value)? next(LuaObject table) => throw null;
+    public static (object? key, object? value)? next(LuaObject table) => throw null!;
 
     /// <inheritdoc cref="next(LuaObject)"/>
     /// <param name="table">The table to traverse.</param>
     /// <param name="key">The previous key (nil for the first pair).</param>
     /// <returns>The next key-value pair, or nil.</returns>
-    public static (object? key, object? value)? next(LuaObject table, object? key) => throw null;
+    public static (object? key, object? value)? next(LuaObject table, object? key) => throw null!;
 
     /// <summary>
     /// Loads a chunk. If chunk is a string, the chunk is this string.
@@ -200,20 +200,20 @@ public static class globals
     /// </summary>
     /// <param name="chunk">The chunk to load (string or function).</param>
     /// <returns>A tuple of (function, error). The function is nil on error.</returns>
-    public static (LuaObject? func, string? err) load(object chunk) => throw null;
+    public static (LuaObject? func, string? err) load(object chunk) => throw null!;
 
     /// <inheritdoc cref="load(object)"/>
     /// <param name="chunk">The chunk to load (string or function).</param>
     /// <param name="chunkname">The name for the chunk (used in error messages).</param>
     /// <returns>A tuple of (function, error).</returns>
-    public static (LuaObject? func, string? err) load(object chunk, string chunkname) => throw null;
+    public static (LuaObject? func, string? err) load(object chunk, string chunkname) => throw null!;
 
     /// <inheritdoc cref="load(object)"/>
     /// <param name="chunk">The chunk to load (string or function).</param>
     /// <param name="chunkname">The name for the chunk.</param>
     /// <param name="mode">The mode: "b" (binary), "t" (text), or "bt" (both).</param>
     /// <returns>A tuple of (function, error).</returns>
-    public static (LuaObject? func, string? err) load(object chunk, string chunkname, string mode) => throw null;
+    public static (LuaObject? func, string? err) load(object chunk, string chunkname, string mode) => throw null!;
 
     /// <inheritdoc cref="load(object)"/>
     /// <param name="chunk">The chunk to load (string or function).</param>
@@ -221,15 +221,15 @@ public static class globals
     /// <param name="mode">The mode: "b", "t", or "bt".</param>
     /// <param name="env">The environment table for the loaded chunk.</param>
     /// <returns>A tuple of (function, error).</returns>
-    public static (LuaObject? func, string? err) load(object chunk, string chunkname, string mode, LuaObject env) => throw null;
+    public static (LuaObject? func, string? err) load(object chunk, string chunkname, string mode, LuaObject env) => throw null!;
 
     /// <summary>
     /// The global table (global variables). _G._G = _G.
     /// </summary>
-    public static LuaObject _G => throw null;
+    public static LuaObject _G => throw null!;
 
     /// <summary>
     /// A string containing the current interpreter version (e.g., "Lua 5.3").
     /// </summary>
-    public static string _VERSION => throw null;
+    public static string _VERSION => throw null!;
 }
