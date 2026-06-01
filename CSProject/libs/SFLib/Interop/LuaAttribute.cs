@@ -34,6 +34,11 @@ public sealed class LuaAttribute : Attribute
     /// If true, indicates that this class should be treated as a Lua table literal. When lowering, this type will become `local tbl = { ... }` instead of `local cls = class("...")`.
     /// </summary>
     public bool TableLiteral;
+    /// <summary>
+    /// If true, struct values crossing this type's boundary are packed into tables on entry
+    /// and unpacked from tables on exit. The type acts as a black box for struct values.
+    /// </summary>
+    public bool PackStruct;
 
     public LuaAttribute()
     {
