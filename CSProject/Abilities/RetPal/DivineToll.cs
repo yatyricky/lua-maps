@@ -106,7 +106,8 @@ public class DivineToll
 
             RetributionPaladinGlobal.IncreaseHolyEnergy(caster, 1);
 
-            moveLayer.RemoveAllComponents<Missile>();
+            // outer.Destroy();
+            // moveLayer.RemoveAllComponents<Missile>();
         };
 
         var orientationFixLayer = new GameObject("DivineToll_Bolt", moveLayer);

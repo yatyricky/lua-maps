@@ -74,10 +74,6 @@ function SF__.CorWait__(milliseconds)
     return coroutine.yield()
 end
 
-function SF__.Ternary__(cond, a, b)
-    if cond then return a else return b end
-end
-
 require("Lib.class")
 SF__.LuaWrapper = SF__.LuaWrapper or {}
 -- LuaWrapper.HitResult
@@ -513,7 +509,7 @@ SF__.AttachEffectComponent.FullName = "AttachEffectComponent"
 setmetatable(SF__.AttachEffectComponent, { __index = SF__.Component })
 SF__.AttachEffectComponent.__sf_base = SF__.Component
 function SF__.AttachEffectComponent:GetInspectorText()
-    return SF__.StrConcat__("Effect: ", SF__.Ternary__((self.eff == nil), "None", "Attached"))
+    return SF__.StrConcat__("Effect: ", (function() if (self.eff == nil) then return "None" else return "Attached" end end)())
 end
 
 function SF__.AttachEffectComponent:Update()
@@ -622,21 +618,21 @@ function SF__.StdLib.List.New__listt(collection)
 end
 
 function SF__.StdLib.List:get_Item(index433)
+    if ((index433 < 0) or (index433 >= self.Count)) then
+        error(SF__.StrConcat__("SF__E2e5944b8", "Index out of range"))
+    end
+    return self._items[(index433 + 1)]
+end
+
+function SF__.StdLib.List:set_Item(index434, value)
     if ((index434 < 0) or (index434 >= self.Count)) then
         error(SF__.StrConcat__("SF__E2e5944b8", "Index out of range"))
     end
-    return self._items[(index434 + 1)]
+    self._items[(index434 + 1)] = value
 end
 
-function SF__.StdLib.List:set_Item(index435, value)
-    if ((index436 < 0) or (index436 >= self.Count)) then
-        error(SF__.StrConcat__("SF__E2e5944b8", "Index out of range"))
-    end
-    self._items[(index436 + 1)] = value
-end
-
-function SF__.StdLib.List:Add(item437)
-    table.insert(self._items, item437)
+function SF__.StdLib.List:Add(item435)
+    table.insert(self._items, item435)
     self.Count = (self.Count + 1)
     self._version = (self._version + 1)
 end
@@ -647,41 +643,41 @@ function SF__.StdLib.List:Clear()
     self._version = (self._version + 1)
 end
 
-function SF__.StdLib.List:Remove(item438)
-    local index439 = self:IndexOf(item438)
-    if (index439 < 0) then
+function SF__.StdLib.List:Remove(item436)
+    local index437 = self:IndexOf(item436)
+    if (index437 < 0) then
         return false
     end
-    self:RemoveAt(index439)
+    self:RemoveAt(index437)
     return true
 end
 
-function SF__.StdLib.List:RemoveAt(index440)
-    table.remove(self._items, (index440 + 1))
+function SF__.StdLib.List:RemoveAt(index438)
+    table.remove(self._items, (index438 + 1))
     self.Count = (self.Count - 1)
     self._version = (self._version + 1)
 end
 
-function SF__.StdLib.List:IndexOf(item441)
+function SF__.StdLib.List:IndexOf(item439)
     do
-        local i442 = 0
-        while (i442 < self.Count) do
-            local current = self._items[(i442 + 1)]
-            if (current == item441) then
-                return i442
+        local i440 = 0
+        while (i440 < self.Count) do
+            local current = self._items[(i440 + 1)]
+            if (current == item439) then
+                return i440
             end
             ::continue::
-            i442 = (i442 + 1)
+            i440 = (i440 + 1)
         end
     end
     return (-1)
 end
 
-function SF__.StdLib.List.DefaultCompare(a443, b444)
-    if (a443 == b444) then
+function SF__.StdLib.List.DefaultCompare(a441, b442)
+    if (a441 == b442) then
         return 0
     end
-    if (a443 < b444) then
+    if (a441 < b442) then
         return (-1)
     end
     return 1
@@ -692,8 +688,8 @@ function SF__.StdLib.List:Sort(comparison)
         comparison = SF__.StdLib.List.DefaultCompare
     end
     local version = self._version
-    table.sort(self._items, function(a447, b448)
-        return (comparison(a447, b448) < 0)
+    table.sort(self._items, function(a445, b446)
+        return (comparison(a445, b446) < 0)
     end)
     if (version ~= self._version) then
         error(SF__.StrConcat__("SF__E2e5944b8", "Collection was modified"))
@@ -702,18 +698,18 @@ function SF__.StdLib.List:Sort(comparison)
 end
 
 function SF__.StdLib.List:IpairsNext()
-    local version449 = self._version
-    local index450 = 0
+    local version447 = self._version
+    local index448 = 0
     return function()
-        if (version449 ~= self._version) then
+        if (version447 ~= self._version) then
             error(SF__.StrConcat__("SF__E2e5944b8", "Collection was modified"))
         end
-        index450 = (index450 + 1)
-        local value451 = self._items[index450]
-        if (value451 == nil) then
+        index448 = (index448 + 1)
+        local value449 = self._items[index448]
+        if (value449 == nil) then
             return nil
         end
-        return index450, value451
+        return index448, value449
     end
 end
 
@@ -981,7 +977,7 @@ function SF__.CrusaderStrike.UpdateAbilityMeta(u308)
             local __unpack_tmp313 = datas310:get_Item(i312)
             local data__DamageScaling, data__ArtOfWarChance = __unpack_tmp313.DamageScaling, __unpack_tmp313.ArtOfWarChance
             SF__.Utils.ExBlzSetAbilityTooltip(p309, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击 - [|cffffcc00", (i312 + 1), "级|r]"), i312)
-            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p309, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling * 100)), "%|r的攻击伤害", SF__.Ternary__((i312 > 0), SF__.StrConcat__("，", string.format("%.0f", (data__ArtOfWarChance * 100)), "%的战争艺术触发几率"), ""), "。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒"), i312)
+            SF__.Utils.ExBlzSetAbilityExtendedTooltip(p309, SF__.CrusaderStrike.ID, SF__.StrConcat__("十字军打击造成一次攻击伤害，造成|cffff8c00", string.format("%.0f", (data__DamageScaling * 100)), "%|r的攻击伤害", (function() if (i312 > 0) then return SF__.StrConcat__("，", string.format("%.0f", (data__ArtOfWarChance * 100)), "%的战争艺术触发几率") else return "" end end)(), "。产生|cffff8c001|r点圣能。\r\n\r\n|cff99ccff冷却时间|r - 6秒"), i312)
             ::continue::
             i312 = (i312 + 1)
         end
@@ -1130,7 +1126,7 @@ function SF__.Transform.__Init(self)
     self.localScale__x = 0
     self.localScale__y = 0
     self.localScale__z = 0
-    self.children = SF__.System.Collections.Generic.List.New__0()
+    self.children = SF__.StdLib.List.New__0()
     self.parent = nil
     self.localPosition__x, self.localPosition__y, self.localPosition__z = 0, 0, 0
     self.localRotation__x, self.localRotation__y, self.localRotation__z, self.localRotation__w = SF__.Quaternion.Euler(0, 0, 0)
@@ -1144,7 +1140,7 @@ function SF__.Transform.New()
 end
 
 function SF__.Transform:GetInspectorText()
-    return SF__.StrConcat__("Position: ", SF__.Vector3.ToString(self.localPosition__x, self.localPosition__y, self.localPosition__z), "\n", "Rotation: ", SF__.Vector3.ToString(SF__.Quaternion.get_eulerAngles(self.localRotation__x, self.localRotation__y, self.localRotation__z, self.localRotation__w)), "\n", "Scale: ", SF__.Vector3.ToString(self.localScale__x, self.localScale__y, self.localScale__z), "\n", "Children: ", self.children:get_Count())
+    return SF__.StrConcat__("Position: ", SF__.Vector3.ToString(self.localPosition__x, self.localPosition__y, self.localPosition__z), "\n", "Rotation: ", SF__.Vector3.ToString(SF__.Quaternion.get_eulerAngles(self.localRotation__x, self.localRotation__y, self.localRotation__z, self.localRotation__w)), "\n", "Scale: ", SF__.Vector3.ToString(self.localScale__x, self.localScale__y, self.localScale__z), "\n", "Children: ", self.children.Count)
 end
 
 function SF__.Transform:SetParent(newParent)
@@ -1167,7 +1163,7 @@ function SF__.GameObject.MarkDestroyQueuedDepthFirst(obj)
     obj.isDestroyQueued = true
     do
         local collection5 = obj.transform.children
-        for i6, child in ipairs(collection5) do
+        for _, child in (SF__.StdLib.List.IpairsNext)(collection5) do
             SF__.GameObject.MarkDestroyQueuedDepthFirst(child.gameObject)
         end
     end
@@ -1179,7 +1175,7 @@ function SF__.GameObject.DestroyDepthFirst(obj13)
     end
     local children = obj13.transform.children
     do
-        local i = (children:get_Count() - 1)
+        local i = (children.Count - 1)
         while (i >= 0) do
             SF__.GameObject.DestroyDepthFirst(children:get_Item(i).gameObject)
             ::continue::
@@ -1188,8 +1184,8 @@ function SF__.GameObject.DestroyDepthFirst(obj13)
     end
     obj13.transform:SetParent(nil)
     do
-        local collection7 = obj13._components
-        for _, comp in (SF__.StdLib.List.IpairsNext)(collection7) do
+        local collection6 = obj13._components
+        for _, comp in (SF__.StdLib.List.IpairsNext)(collection6) do
             comp:OnDisable()
             comp:OnDestroy()
         end
@@ -1204,14 +1200,14 @@ function SF__.GameObject.UpdateBFS(obj14)
         return
     end
     do
-        local collection8 = obj14._components
-        for _, comp15 in (SF__.StdLib.List.IpairsNext)(collection8) do
+        local collection7 = obj14._components
+        for _, comp15 in (SF__.StdLib.List.IpairsNext)(collection7) do
             comp15:Update()
         end
     end
     do
-        local collection9 = obj14.transform.children
-        for i10, child16 in ipairs(collection9) do
+        local collection8 = obj14.transform.children
+        for _, child16 in (SF__.StdLib.List.IpairsNext)(collection8) do
             SF__.GameObject.UpdateBFS(child16.gameObject)
         end
     end
@@ -1252,8 +1248,8 @@ end
 
 function SF__.GameObject:GetComponent(T)
     do
-        local collection11 = self._components
-        for _, comp19 in (SF__.StdLib.List.IpairsNext)(collection11) do
+        local collection9 = self._components
+        for _, comp19 in (SF__.StdLib.List.IpairsNext)(collection9) do
             do
                 local tComp = comp19
                 if SF__.TypeIs__(tComp, T) then
@@ -1343,7 +1339,7 @@ function SF__.Missile:Update()
 end
 
 function SF__.Missile:GetInspectorText()
-    return SF__.StrConcat__("targetType: ", self.targetType, "\r\nunitTarget: ", SF__.Ternary__((self.unitTarget == nil), "None", GetUnitName(self.unitTarget)), "\r\npointTarget: ", SF__.Vector3.ToString(self.pointTarget__x, self.pointTarget__y, self.pointTarget__z), "\r\nspeed: ", self.speed, "\r\nlookAtTarget: ", self.lookAtTarget, "\r\ncolliderSize: ", self.colliderSize, "\r\nonArrived: ", SF__.Ternary__((self.onArrived == nil), "None", "Set"), "\r\nhasArrived: ", self.hasArrived, "\r\n")
+    return SF__.StrConcat__("targetType: ", self.targetType, "\r\nunitTarget: ", (function() if (self.unitTarget == nil) then return "None" else return GetUnitName(self.unitTarget) end end)(), "\r\npointTarget: ", SF__.Vector3.ToString(self.pointTarget__x, self.pointTarget__y, self.pointTarget__z), "\r\nspeed: ", self.speed, "\r\nlookAtTarget: ", self.lookAtTarget, "\r\ncolliderSize: ", self.colliderSize, "\r\nonArrived: ", (function() if (self.onArrived == nil) then return "None" else return "Set" end end)(), "\r\nhasArrived: ", self.hasArrived, "\r\n")
 end
 
 function SF__.Missile.__Init(self)
@@ -1433,7 +1429,8 @@ function SF__.DivineToll.HurlToTarget(caster335, target336, pos__x337, pos__y338
         local ad__TargetCount, ad__Damage340, ad__RadiantDmgAmp, ad__Duration341 = SF__.DivineToll.GetAbilityData(GetUnitAbilityLevel(caster335, SF__.DivineToll.ID))
         EventCenter342.Damage:Emit({whichUnit = caster335, target = target336, amount = ad__Damage340, attack = true, ranged = false, attackType = ATTACK_TYPE_HERO, damageType = DAMAGE_TYPE_MAGIC, weaponType = WEAPON_TYPE_WHOKNOWS, outResult = {}})
         SF__.RetributionPaladinGlobal.IncreaseHolyEnergy(caster335, 1)
-        moveLayer:RemoveAllComponents(SF__.Missile)
+        outer:Destroy()
+        -- moveLayer.RemoveAllComponents<Missile>();
     end
     local orientationFixLayer = SF__.GameObject.New__sgameobject("DivineToll_Bolt", moveLayer)
     orientationFixLayer.transform.localRotation__x, orientationFixLayer.transform.localRotation__y, orientationFixLayer.transform.localRotation__z, orientationFixLayer.transform.localRotation__w = SF__.Quaternion.Euler(0, 90, 0)
@@ -1473,7 +1470,7 @@ function SF__.DivineToll.Start(data344)
         targets:Sort(function(a351, b352)
             local distA353 = SF__.Vector3.Distance(pos__x345, pos__y346, pos__z347, SF__.Vector3.FromUnit(a351))
             local distB354 = SF__.Vector3.Distance(pos__x345, pos__y346, pos__z347, SF__.Vector3.FromUnit(b352))
-            return SF__.Ternary__((distA353 == distB354), 0, SF__.Ternary__((distA353 < distB354), (-1), 1))
+            return (function() if (distA353 == distB354) then return 0 else return (function() if (distA353 < distB354) then return (-1) else return 1 end end)() end end)()
         end)
         do
             local i355 = 0
@@ -1863,7 +1860,7 @@ end
 function SF__.Systems.InspectorSystem:SetPanelVisible(visible)
     self._isVisible = visible
     BlzFrameSetVisible(self._panel, visible)
-    BlzFrameSetText(self._toggleText, SF__.Ternary__(visible, "X", "IN"))
+    BlzFrameSetText(self._toggleText, (function() if visible then return "X" else return "IN" end end)())
     if visible then
         self:RefreshHierarchy()
         if (self._selectedGameObject == nil) then
@@ -1883,7 +1880,7 @@ function SF__.Systems.InspectorSystem:SelectRow(row36)
 end
 
 function SF__.Systems.InspectorSystem:SelectFirstVisibleObject()
-    self._selectedGameObject = SF__.Ternary__((self._visibleObjects.Count > 0), self._visibleObjects:get_Item(0), nil)
+    self._selectedGameObject = (function() if (self._visibleObjects.Count > 0) then return self._visibleObjects:get_Item(0) else return nil end end)()
     self:RefreshHierarchySelection()
     self:RefreshInspectorText()
 end
@@ -1891,8 +1888,8 @@ end
 function SF__.Systems.InspectorSystem:RefreshHierarchy()
     self._visibleObjects:Clear()
     do
-        local collection12 = SF__.Scene.get_Instance().gameObjs
-        for _, obj37 in (SF__.StdLib.List.IpairsNext)(collection12) do
+        local collection10 = SF__.Scene.get_Instance().gameObjs
+        for _, obj37 in (SF__.StdLib.List.IpairsNext)(collection10) do
             if (obj37.transform.parent == nil) then
                 self:AddHierarchyObject(obj37, 0)
             end
@@ -1927,8 +1924,8 @@ function SF__.Systems.InspectorSystem:AddHierarchyObject(obj41, depth)
     end
     self._visibleObjects:Add(obj41)
     do
-        local collection13 = obj41.transform.children
-        for i14, child42 in ipairs(collection13) do
+        local collection11 = obj41.transform.children
+        for _, child42 in (SF__.StdLib.List.IpairsNext)(collection11) do
             self:AddHierarchyObject(child42.gameObject, (depth + 1))
         end
     end
@@ -1954,10 +1951,10 @@ end
 
 function SF__.Systems.InspectorSystem:RefreshHierarchySelection()
     do
-        local collection15 = self._hierarchyRows
-        for _, row49 in (SF__.StdLib.List.IpairsNext)(collection15) do
+        local collection12 = self._hierarchyRows
+        for _, row49 in (SF__.StdLib.List.IpairsNext)(collection12) do
             local isSelected = ((row49.gameObject ~= nil) and (row49.gameObject == self._selectedGameObject))
-            BlzFrameSetTextColor(row49.label, SF__.Ternary__(isSelected, BlzConvertColor(255, 255, 220, 80), BlzConvertColor(255, 230, 230, 230)))
+            BlzFrameSetTextColor(row49.label, (function() if isSelected then return BlzConvertColor(255, 255, 220, 80) else return BlzConvertColor(255, 230, 230, 230) end end)())
         end
     end
 end
@@ -1969,8 +1966,8 @@ function SF__.Systems.InspectorSystem:RefreshInspectorText()
     end
     local text50 = SF__.StrConcat__(self._selectedGameObject.name, "\n")
     do
-        local collection16 = self._selectedGameObject:get_components()
-        for _, component in (SF__.StdLib.List.IpairsNext)(collection16) do
+        local collection13 = self._selectedGameObject:get_components()
+        for _, component in (SF__.StdLib.List.IpairsNext)(collection13) do
             text50 = SF__.StrConcat__(text50, "\n[", component.__sf_type.Name, "]")
             local inspectorText = component:GetInspectorText()
             if (inspectorText ~= "") then
@@ -1983,8 +1980,8 @@ end
 
 function SF__.Systems.InspectorSystem:SceneContains(gameObject)
     do
-        local collection17 = SF__.Scene.get_Instance().gameObjs
-        for _, obj51 in (SF__.StdLib.List.IpairsNext)(collection17) do
+        local collection14 = SF__.Scene.get_Instance().gameObjs
+        for _, obj51 in (SF__.StdLib.List.IpairsNext)(collection14) do
             if (obj51 == gameObject) then
                 return true
             end
@@ -2088,8 +2085,8 @@ function SF__.Program.Main(args)
     systems:Add(require("System.BuffDisplaySystem").new())
     systems:Add(SF__.Systems.MeleeGameSystem.New())
     do
-        local collection18 = systems
-        for _, system in (SF__.StdLib.List.IpairsNext)(collection18) do
+        local collection15 = systems
+        for _, system in (SF__.StdLib.List.IpairsNext)(collection15) do
             system:Awake()
         end
     end
@@ -2100,16 +2097,16 @@ function SF__.Program.Main(args)
     end))
     DestroyGroup(group)
     do
-        local collection19 = systems
-        for _, system1 in (SF__.StdLib.List.IpairsNext)(collection19) do
+        local collection16 = systems
+        for _, system1 in (SF__.StdLib.List.IpairsNext)(collection16) do
             system1:OnEnable()
         end
     end
     local game = FrameTimer.new(function(dt)
         local now = (MathRound((Time.Time * 100)) * 0.01)
         do
-            local collection20 = systems
-            for _, system2 in (SF__.StdLib.List.IpairsNext)(collection20) do
+            local collection17 = systems
+            for _, system2 in (SF__.StdLib.List.IpairsNext)(collection17) do
                 system2:Update(dt, now)
             end
         end
