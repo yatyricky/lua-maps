@@ -4,6 +4,7 @@ public enum TargetType
 {
     Unit,
     Point,
+    Pierce,
 }
 
 public class Missile : Component

@@ -112,7 +112,8 @@ public class DivineToll
             var circulator = new GameObject("Circulator", outer);
             circulator.transform.localPosition = casterPos;
             var rot = circulator.AddComponent<AutoTRSComponent>();
-            rot.rotation = Quaternion.Euler(0, 0, 360 * Scene.DT / 1000f);
+            rot.rotation = Quaternion.Euler(0, 360 * Scene.DT / 1000f, 0);
+            rot.followUnit = caster;
 
             moveLayer.transform.SetParent(circulator.transform);
             moveLayer.transform.localPosition = new Vector3(250, 0, 0);
