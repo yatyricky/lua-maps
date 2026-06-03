@@ -23,6 +23,10 @@ public class Component
     {
     }
 
+    public virtual void LateUpdate()
+    {
+    }
+
     public virtual void OnDisable()
     {
     }

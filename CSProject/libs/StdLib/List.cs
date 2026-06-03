@@ -46,6 +46,16 @@ public class List<T> : IIpairs<T>
         }
     }
 
+    public void AddRange(List<T> collection)
+    {
+        foreach (var item in collection)
+        {
+            table.insert(_items, item);
+            Count++;
+        }
+        _version++;
+    }
+
     public void Add(T item)
     {
         table.insert(_items, item);

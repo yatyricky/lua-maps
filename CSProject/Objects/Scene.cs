@@ -36,17 +36,14 @@ public class Scene
         while (true)
         {
             await Task.Delay(DT);
-            var rootObjs = new List<GameObject>();
-            foreach (var obj in gameObjs)
+            var count = gameObjs.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (obj.transform.parent == null)
-                {
-                    rootObjs.Add(obj);
-                }
+                gameObjs[i].Update();
             }
-            foreach (var obj in rootObjs)
+            for (int i = 0; i < count; i++)
             {
-                obj.Update();
+                gameObjs[i].LateUpdate();
             }
 
             FlushDestroyQueue();

@@ -42,22 +42,6 @@ public class GameObject
         obj.isDestroyed = true;
     }
 
-    private static void UpdateBFS(GameObject obj)
-    {
-        if (obj.isDestroyQueued || obj.isDestroyed)
-        {
-            return;
-        }
-
-        foreach (var comp in obj._components)
-        {
-            comp.Update();
-        }
-        foreach (var child in obj.transform.children)
-        {
-            UpdateBFS(child.gameObject);
-        }
-    }
 
     public string name { get; private set; }
     public Transform transform { get; private set; }
@@ -119,7 +103,16 @@ public class GameObject
 
     public void Update()
     {
-        UpdateBFS(this);
+        if (isDestroyQueued || isDestroyed) return;
+        var snapshot = new List<Component>(_components);
+        foreach (var comp in snapshot) comp.Update();
+    }
+
+    public void LateUpdate()
+    {
+        if (isDestroyQueued || isDestroyed) return;
+        var snapshot = new List<Component>(_components);
+        foreach (var comp in snapshot) comp.LateUpdate();
     }
 
     public void Destroy()
