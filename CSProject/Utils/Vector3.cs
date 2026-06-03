@@ -81,6 +81,12 @@ public struct Vector3
         return a.x * b.x + a.y * b.y + a.z * b.z;
     }
 
+    public static Vector3 Lerp(Vector3 a, Vector3 b, float t)
+    {
+        t = math.clamp01(t);
+        return a + (b - a) * t;
+    }
+
     public static Vector3 MoveTowards(Vector3 current, Vector3 target, float maxDistanceDelta)
     {
         var toVector = target - current;

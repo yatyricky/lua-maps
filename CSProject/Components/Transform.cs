@@ -58,4 +58,30 @@ public class Transform : Component
             parent.children.Add(this);
         }
     }
+
+    private static Transform? _Find(Transform current, string[] parts, int index)
+    {
+        if (index >= parts.Length) return current;
+        foreach (var child in current.children)
+        {
+            if (child.gameObject.name == parts[index])
+            {
+                var found = _Find(child, parts, index + 1);
+                if (found != null) return found;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Finds a child by name n and returns it.
+    /// If no child with name n can be found, null is returned. If n contains a '/' character it will access the Transform in the hierarchy like a path name.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public Transform? Find(string name)
+    {
+        var parts = name.Split('/');
+        return _Find(this, parts, 0);
+    }
 }
