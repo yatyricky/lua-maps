@@ -114,11 +114,12 @@ end
 ---@param attachPoint string
 ---@param duration real
 function ExAddSpecialEffectTarget(modelName, target, attachPoint, duration)
+    local sfx = AddSpecialEffectTarget(modelName, target, attachPoint)
     c_start(function()
-        local sfx = AddSpecialEffectTarget(modelName, target, attachPoint)
         c_wait(duration)
         DestroyEffect(sfx)
     end)
+    return sfx
 end
 
 function ExAddSpecialEffect(modelName, x, y, duration, color)

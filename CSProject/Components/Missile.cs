@@ -1,4 +1,6 @@
 using System;
+using StdLib;
+using SFLib.Interop;
 
 public enum TargetType
 {
@@ -10,77 +12,99 @@ public enum TargetType
     /// Move towards a point.
     /// </summary>
     Point,
-    /// <summary>
-    /// No movement.
-    /// </summary>
-    Passive,
-}
-
-public enum CollisionType
-{
-    /// <summary>
-    /// Invoke onArrived when the missile reaches the target point or unit.
-    /// </summary>
-    WhenArrived,
-    /// <summary>
-    /// Invoke onArrived when the missile collides with any unit within colliderSize, regardless of whether it has reached the target point or unit. If the missile is set to lookAtTarget, it will be destroyed upon collision. Otherwise, it will continue moving until it reaches the target point or unit, but onArrived will only be invoked once. If you want to invoke onArrived multiple times for each collision, you can set onArrived to null after the first invocation and handle subsequent collisions in the Update method. Note that if the missile is set to lookAtTarget, it will be destroyed upon collision and will not continue moving or invoking onArrived for subsequent collisions.
-    /// </summary>
-    WhenMoving,
+    None,
 }
 
 public class Missile : Component
 {
     public TargetType targetType;
-    public CollisionType collisionType = CollisionType.WhenArrived;
     public unit? unitTarget;
     public Vector3 pointTarget;
     public float speed;
     public bool lookAtTarget = false;
-    public Action? onCollision;
     public float colliderSize;
+    public Action<Missile, unit>? onArrivedUnit;
+    public Action<Missile, Vector3>? onArrivedPoint;
+    public Action<Missile, unit>? onThrough;
+    public Predicate<unit>? onThroughFilter;
+    public Action? onLostTarget;
     public int collisionCount = 1;
     /// <summary>
+    /// unit: s
     /// The delay between each hit when colliding with the same unit.
     /// Lower this value to hit the same unit multiple times in a short period.
     /// </summary>
-    public float nextHitDelay = 9999f;
-    private bool hasArrived = false;
+    public double nextHitDelay = 9999f;
+    private Dictionary<unit, double> _hitUnits = new();
+    private bool hasArrived = true;
 
     public override void Update()
     {
         if (hasArrived) return;
 
-        var currentPosition = gameObject.transform.position;
-        var targetPosition = pointTarget;
+        // Move
+        var cPos = gameObject.transform.position;
+        var tPos = pointTarget;
         if (targetType == TargetType.Unit || targetType == TargetType.Point)
         {
             if (targetType == TargetType.Unit)
             {
-                if (unitTarget == null) return;
-                if (ExIsUnitDead(unitTarget))
+                if (unitTarget == null || ExIsUnitDead(unitTarget))
                 {
                     OnDisappear();
                     return;
                 }
-                targetPosition = Vector3.FromUnit(unitTarget);
+                tPos = Vector3.FromUnit(unitTarget);
             }
             if (lookAtTarget)
             {
-                gameObject.transform.localRotation = Quaternion.LookRotation(targetPosition - currentPosition);
+                gameObject.transform.localRotation = Quaternion.LookRotation(tPos - cPos);
             }
-            currentPosition = Vector3.MoveTowards(currentPosition, targetPosition, speed * Scene.DT / 1000f);
-            gameObject.transform.position = currentPosition;
+            cPos = Vector3.MoveTowards(cPos, tPos, speed * Scene.DT / 1000f);
+            gameObject.transform.position = cPos;
         }
 
-        if (collisionType == CollisionType.WhenMoving)
+        // Collision
+        var now = os.clock();
+        if (onThrough != null)
         {
-
-        }
-        else if (collisionType == CollisionType.WhenArrived)
-        {
-            if (Vector3.Distance(currentPosition, targetPosition) <= colliderSize && !hasArrived)
+            ExGroupEnumUnitsInRange(cPos.x, cPos.y, colliderSize, u =>
             {
-                OnCollision(true);
+                if (onThroughFilter != null && !onThroughFilter(u)) return;
+                if (collisionCount <= 0) return;
+
+                bool nhdPass;
+                if (_hitUnits.TryGetValue(u, out var lastHitTime))
+                {
+                    nhdPass = now - lastHitTime >= nextHitDelay;
+                }
+                else
+                {
+                    nhdPass = true;
+                }
+                if (!nhdPass) return;
+
+                _hitUnits[u] = now;
+                collisionCount--;
+                onThrough.Invoke(this, u);
+            });
+        }
+
+        if (targetType != TargetType.None)
+        {
+            if (Vector3.Distance(cPos, tPos) <= 0.001f)
+            {
+                hasArrived = true;
+                if (onArrivedUnit != null && targetType == TargetType.Unit)
+                {
+                    _hitUnits[unitTarget!] = now;
+                    collisionCount--;
+                    onArrivedUnit.Invoke(this, unitTarget!);
+                }
+                if (onArrivedPoint != null && targetType == TargetType.Point)
+                {
+                    onArrivedPoint.Invoke(this, pointTarget);
+                }
             }
         }
     }
@@ -93,24 +117,37 @@ pointTarget: {pointTarget}
 speed: {speed}
 lookAtTarget: {lookAtTarget}
 colliderSize: {colliderSize}
-onArrived: {(onCollision == null ? "None" : "Set")}
+onArrived: {(onArrivedUnit == null ? "None" : "Set")}
 hasArrived: {hasArrived}
 ";
     }
 
-    private void OnCollision(bool arrived)
+    public void SetupUnitTarget(unit target, float speed, Action<Missile, unit> onArrived, float colliderSize = 32f, bool lookAtTarget = true)
     {
-        hasArrived = arrived;
-        onCollision?.Invoke();
-        if (arrived)
-        {
-            onCollision = null;
-        }
+        targetType = TargetType.Unit;
+        unitTarget = target;
+        this.speed = speed;
+        this.lookAtTarget = lookAtTarget;
+        this.colliderSize = colliderSize;
+        onArrivedUnit = onArrived;
+        hasArrived = false;
+    }
+
+    public void SetupPiercer(Action<Missile, unit> onThrough, Predicate<unit> onThroughFilter, float colliderSize, int collisionCount, double nextHitDelay)
+    {
+        targetType = TargetType.None;
+        unitTarget = null;
+        this.colliderSize = colliderSize;
+        this.onThrough = onThrough;
+        this.onThroughFilter = onThroughFilter;
+        this.collisionCount = collisionCount;
+        this.nextHitDelay = nextHitDelay;
+        hasArrived = false;
     }
 
     private void OnDisappear()
     {
         hasArrived = true;
-        onCollision = null;
+        onLostTarget?.Invoke();
     }
 }

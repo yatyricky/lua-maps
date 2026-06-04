@@ -13,6 +13,7 @@ public class DivineToll
         public float Damage;
         public float RadiantDmgAmp;
         public float Duration;
+        public float BHDamage;
     }
 
     public static IAbilityData GetAbilityData(int level)
@@ -23,6 +24,7 @@ public class DivineToll
             Damage = 50f * level,
             RadiantDmgAmp = 0.1f,
             Duration = 10f,
+            BHDamage = 20f * level,
         };
     }
 
@@ -76,13 +78,8 @@ public class DivineToll
 
         var moveLayer = new GameObject("MoveLayer", outer);
         moveLayer.transform.localPosition = pos;
-        var mis = moveLayer.AddComponent<Missile>();
-        mis.targetType = TargetType.Unit;
-        mis.unitTarget = target;
-        mis.speed = 900;
-        mis.lookAtTarget = true;
-        mis.colliderSize = 32f;
-        mis.onCollision = () =>
+        var missile = moveLayer.AddComponent<Missile>();
+        missile.SetupUnitTarget(target, 900f, (mis, tar) =>
         {
             var cPos = mis.gameObject.transform.position;
             var eff = ExAddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", cPos.x, cPos.y, 0.1f);
@@ -93,10 +90,10 @@ public class DivineToll
             EventCenter.Damage.Emit(new IDamageData
             {
                 whichUnit = caster,
-                target = target,
+                target = tar,
                 amount = ad.Damage,
-                attack = true,
-                ranged = false,
+                attack = false,
+                ranged = true,
                 attackType = ATTACK_TYPE_HERO,
                 damageType = DAMAGE_TYPE_MAGIC,
                 weaponType = WEAPON_TYPE_WHOKNOWS,
@@ -105,8 +102,34 @@ public class DivineToll
 
             RetributionPaladinGlobal.IncreaseHolyEnergy(caster, 1);
 
-            moveLayer.RemoveAllComponents<Missile>();
+            // setup new missile
+            mis.SetupPiercer((m, u) =>
+            {
+                var cPos = m.gameObject.transform.position;
+                ExAddSpecialEffectTarget("Abilities/Weapons/FaerieDragonMissile/FaerieDragonMissile.mdl", u, "origin", 0.1f);
+                var tarAttr = UnitAttribute.GetAttr(u);
+                var damage = ad.BHDamage * (1 - tarAttr.radiantResistance);
+                EventCenter.Damage.Emit(new IDamageData
+                {
+                    whichUnit = caster,
+                    target = u,
+                    amount = damage,
+                    attack = false,
+                    ranged = true,
+                    attackType = ATTACK_TYPE_HERO,
+                    damageType = DAMAGE_TYPE_MAGIC,
+                    weaponType = WEAPON_TYPE_WHOKNOWS,
+                    outResult = new IDamageDataResult(),
+                });
+            }, u =>
+            {
+                if (!IsUnitEnemy(u, GetOwningPlayer(caster))) return false;
+                if (IsUnitType(u, UNIT_TYPE_STRUCTURE)) return false;
+                if (ExIsUnitDead(u)) return false;
+                return true;
+            }, 50f, 9999, 0.3f);
 
+            // change movement behaviour
             var aec1 = moveLayer.transform.Find("DivineToll_Bolt/dt_hand/dt_mis")!.gameObject.GetComponent<AttachEffectComponent>()!;
             aec1.LerpIn(1300);
             var aec2 = aec1.gameObject.transform.Find("DivineToll_Holy")!.gameObject.GetComponent<AttachEffectComponent>()!;
@@ -121,6 +144,10 @@ public class DivineToll
 
             moveLayer.transform.SetParent(circulator.transform);
             moveLayer.transform.localPosition = new Vector3(200, 0, 0);
+        });
+        missile.onLostTarget = () =>
+        {
+            outer.Destroy();
         };
 
         var orientationFixLayer = new GameObject("DivineToll_Bolt", moveLayer);
