@@ -165,6 +165,11 @@ public struct Quaternion
 
     public Quaternion normalized => Normalize(this);
 
+    public static Quaternion Inverse(Quaternion rotation)
+    {
+        return new Quaternion(-rotation.x, -rotation.y, -rotation.z, rotation.w);
+    }
+
     public Quaternion(float x, float y, float z, float w)
     {
         this.x = x;

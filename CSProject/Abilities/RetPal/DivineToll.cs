@@ -82,7 +82,7 @@ public class DivineToll
         mis.speed = 900;
         mis.lookAtTarget = true;
         mis.colliderSize = 32f;
-        mis.onArrived = () =>
+        mis.onCollision = () =>
         {
             var cPos = mis.gameObject.transform.position;
             var eff = ExAddSpecialEffect("Abilities/Spells/Human/StormBolt/StormBoltMissile.mdl", cPos.x, cPos.y, 0.1f);

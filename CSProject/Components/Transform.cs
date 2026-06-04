@@ -27,6 +27,24 @@ public class Transform : Component
             }
             return globalPos;
         }
+        set
+        {
+            if (parent == null)
+            {
+                localPosition = value;
+                return;
+            }
+            var pos = value;
+            var myParent = parent;
+            while (myParent != null)
+            {
+                pos = pos - myParent.localPosition;
+                pos = Vector3.Scale(new Vector3(1f / myParent.localScale.x, 1f / myParent.localScale.y, 1f / myParent.localScale.z), pos);
+                pos = Quaternion.Inverse(myParent.localRotation) * pos;
+                myParent = myParent.parent;
+            }
+            localPosition = pos;
+        }
     }
 
     public Transform()
