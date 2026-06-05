@@ -31,11 +31,11 @@ public class BuffBase : LuaObject
     public IAwakeData awakeData;
 
     public BuffBase(unit caster, unit target, float duration, float interval, IAwakeData awakeData) => throw null;
-    public void Awake() => throw null;
-    public void OnEnable() => throw null;
-    public void Update() => throw null;
-    public void OnDisable() => throw null;
-    public void OnDestroy() => throw null;
+    public virtual void Awake() => throw null;
+    public virtual void OnEnable() => throw null;
+    public virtual void Update() => throw null;
+    public virtual void OnDisable() => throw null;
+    public virtual void OnDestroy() => throw null;
     public void ResetDuration(float exprTime) => throw null;
     public float GetTimeLeft() => throw null;
     public float GetTimeNorm() => throw null;

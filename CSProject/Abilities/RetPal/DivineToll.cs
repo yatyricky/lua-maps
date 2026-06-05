@@ -14,6 +14,7 @@ public class DivineToll
         public float RadiantDmgAmp;
         public float Duration;
         public float BHDamage;
+        public float DebuffDuration;
     }
 
     public static IAbilityData GetAbilityData(int level)
@@ -121,6 +122,12 @@ public class DivineToll
                     weaponType = WEAPON_TYPE_WHOKNOWS,
                     outResult = new IDamageDataResult(),
                 });
+
+                var debuff = new RadiantVulnerability(caster, u, ad.DebuffDuration, 0.5f, new IAwakeData
+                {
+                    level = 1,
+                    charged = 0,
+                });
             }, u =>
             {
                 if (!IsUnitEnemy(u, GetOwningPlayer(caster))) return false;
@@ -195,6 +202,24 @@ public class DivineToll
         {
             HurlToTarget(data.caster, targets[i], pos);
             await Task.Delay(200);
+        }
+    }
+
+    [Lua(Class = "RadiantVulnerability")]
+    public class RadiantVulnerability : BuffBase
+    {
+        private float _spec;
+
+        public RadiantVulnerability(unit caster, unit target, float duration, float interval, IAwakeData awakeData) : base(caster, target, duration, interval, awakeData)
+        {
+            _spec = 15;
+        }
+
+        public override void Awake()
+        {
+            base.Awake();
+            var ad = GetAbilityData(GetUnitAbilityLevel(caster, ID));
+            _spec = ad.RadiantDmgAmp;
         }
     }
 }
