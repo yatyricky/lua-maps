@@ -15,7 +15,7 @@ public class BuffBase : LuaObject
 {
 #pragma warning disable CS8597 // Thrown value may be null.
     public static Dictionary<unit, List<BuffBase>> unitBuffs => throw null;
-    public static T? FindBuffByClassName<T>(unit unit, string name) where T : BuffBase => throw null;
+    public static BuffBase? FindBuffByClassName(unit unit, string name) => throw null;
 
     public unit caster;
     public unit target;
@@ -29,7 +29,7 @@ public class BuffBase : LuaObject
     public string buffName;
     public string description;
     public IAwakeData awakeData;
-
+    [Lua(StaticMethod = "new")]
     public BuffBase(unit caster, unit target, float duration, float interval, IAwakeData awakeData) => throw null;
     public virtual void Awake() => throw null;
     public virtual void OnEnable() => throw null;
@@ -37,6 +37,7 @@ public class BuffBase : LuaObject
     public virtual void OnDisable() => throw null;
     public virtual void OnDestroy() => throw null;
     public void ResetDuration(float exprTime) => throw null;
+    public void ResetDuration() => throw null;
     public float GetTimeLeft() => throw null;
     public float GetTimeNorm() => throw null;
     /// <summary>

@@ -26,6 +26,7 @@ public class DivineToll
             RadiantDmgAmp = 0.1f,
             Duration = 10f,
             BHDamage = 20f * level,
+            DebuffDuration = 10f,
         };
     }
 
@@ -123,11 +124,7 @@ public class DivineToll
                     outResult = new IDamageDataResult(),
                 });
 
-                var debuff = new RadiantVulnerability(caster, u, ad.DebuffDuration, 0.5f, new IAwakeData
-                {
-                    level = 1,
-                    charged = 0,
-                });
+                ApplyDebuff(caster, u);
             }, u =>
             {
                 if (!IsUnitEnemy(u, GetOwningPlayer(caster))) return false;
@@ -205,21 +202,49 @@ public class DivineToll
         }
     }
 
+    private static void ApplyDebuff(unit caster, unit target)
+    {
+        var buff = BuffBase.FindBuffByClassName(target, "RadiantVulnerability");
+        if (buff != null)
+        {
+            buff.ResetDuration();
+        }
+        else
+        {
+            var ad = GetAbilityData(GetUnitAbilityLevel(caster, ID));
+            new RadiantVulnerability(caster, target, ad.DebuffDuration, 99999f, new IAwakeData
+            {
+                level = 0,
+                charged = 0,
+            });
+        }
+    }
+
     [Lua(Class = "RadiantVulnerability")]
     public class RadiantVulnerability : BuffBase
     {
-        private float _spec;
+        private float _vulVal;
 
         public RadiantVulnerability(unit caster, unit target, float duration, float interval, IAwakeData awakeData) : base(caster, target, duration, interval, awakeData)
         {
-            _spec = 15;
         }
 
         public override void Awake()
         {
-            base.Awake();
             var ad = GetAbilityData(GetUnitAbilityLevel(caster, ID));
-            _spec = ad.RadiantDmgAmp;
+            _vulVal = ad.RadiantDmgAmp;
+        }
+
+        public override void OnEnable()
+        {
+            var attr = UnitAttribute.GetAttr(target);
+            attr.radiantResistance -= _vulVal;
+        }
+
+        public override void OnDisable()
+        {
+            var attr = UnitAttribute.GetAttr(target);
+            attr.radiantResistance += _vulVal;
         }
     }
 }
