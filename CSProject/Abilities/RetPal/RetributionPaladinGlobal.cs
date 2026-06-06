@@ -16,7 +16,27 @@ public class RetributionPaladinGlobal
     public static void ConsumeHolyEnergy(unit u, int amount)
     {
         var attr = UnitAttribute.GetAttr(u);
+        var before = attr.retPalHolyEnergy;
         attr.retPalHolyEnergy = math.max(attr.retPalHolyEnergy - amount, 0);
+        var consumed = before - attr.retPalHolyEnergy;
+
+        // wake of ashes
+        var buff = BuffBase.FindBuffByClassName(u, "WakeOfAshesBuff");
+        if (buff != null)
+        {
+            var quickness = BuffBase.FindBuffByClassName(u, "QuicknessBuff");
+            if (quickness == null)
+            {
+                quickness = new WakeOfAshes.QuicknessBuff(u, u, 9999f, 9999f, new IAwakeData());
+            }
+            quickness.IncreaseStack(consumed);
+            var cd = math.max(10 * (1 - 0.1f * quickness.stack), 1);
+            for (int i = 0; i < 3; i++)
+            {
+                BlzSetUnitAbilityCooldown(u, BladeOfJustice.ID, i, cd);
+                BlzSetUnitAbilityCooldown(u, TemplarStrikes.ID, i, cd);
+            }
+        }
     }
 
     private List<unit> _units = new();

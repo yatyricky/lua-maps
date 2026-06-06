@@ -74,6 +74,7 @@ public class InitAbilitiesSystem : SystemBase
         DivineToll.Init();
         WordOfGlory.Init();
         DivineStorm.Init();
+        WakeOfAshes.Init();
 #endif
     }
 }

@@ -466,3 +466,75 @@ STRING 91
 1
 }
 
+STRING 92
+// 技能: A009 (wake of ashes), Name (名字)
+{
+wake of ashes
+}
+
+STRING 93
+// 技能: A009 (wake of ashes), Researchtip (提示工具 - 学习)
+{
+1
+}
+
+STRING 94
+// 技能: A009 (wake of ashes), Researchubertip (提示工具 - 学习 - 扩展)
+{
+1
+}
+
+STRING 95
+// 技能: A009 (wake of ashes), Researchhotkey (热键 - 学习)
+{
+R
+}
+
+STRING 96
+// 技能: A009 (wake of ashes), Hotkey (热键 - 普通)
+{
+R
+}
+
+STRING 97
+// 技能: A009 (wake of ashes), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 98
+// 技能: A009 (wake of ashes), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 99
+// 技能: A009 (wake of ashes), Tip (提示工具 - 普通)
+{
+1
+}
+
+STRING 100
+// 技能: A009 (wake of ashes), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 101
+// 技能: A009 (wake of ashes), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 102
+// 技能: A009 (wake of ashes), Ubertip (提示工具 - 普通 - 扩展)
+{
+1
+}
+
+STRING 103
+// 单位: e000 (靶子), Name (名字)
+{
+靶子
+}
+

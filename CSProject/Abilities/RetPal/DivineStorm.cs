@@ -58,7 +58,7 @@ public class DivineStorm
             if (!IsUnitEnemy(u, GetOwningPlayer(data.caster))) return;
             if (ExIsUnitDead(u)) return;
 
-            var attr = UnitAttribute.GetAttr(data.caster);
+            var attr = UnitAttribute.GetAttr(u);
             EventCenter.Damage.Emit(new IDamageData
             {
                 whichUnit = data.caster,
