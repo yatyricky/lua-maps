@@ -125,6 +125,7 @@ public partial class math : LuaObject
     /// <param name="values">The values to compare.</param>
     /// <returns>The maximum value.</returns>
     public static float max(params float[] values) => throw null!;
+    public static int max(params int[] values) => throw null!;
 
     /// <summary>
     /// An integer with the maximum value for an integer.

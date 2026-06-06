@@ -130,4 +130,22 @@ public class GameObject
     {
         DestroyDepthFirst(obj);
     }
+
+    public T? GetComponentInChildren<T>() where T : Component
+    {
+        foreach (var child in transform.children)
+        {
+            var comp = child.gameObject.GetComponent<T>();
+            if (comp != null)
+            {
+                return comp;
+            }
+            comp = child.gameObject.GetComponentInChildren<T>();
+            if (comp != null)
+            {
+                return comp;
+            }
+        }
+        return null;
+    }
 }

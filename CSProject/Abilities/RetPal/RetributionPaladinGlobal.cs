@@ -13,6 +13,12 @@ public class RetributionPaladinGlobal
         attr.retPalHolyEnergy = math.min(attr.retPalHolyEnergy + amount, 5);
     }
 
+    public static void ConsumeHolyEnergy(unit u, int amount)
+    {
+        var attr = UnitAttribute.GetAttr(u);
+        attr.retPalHolyEnergy = math.max(attr.retPalHolyEnergy - amount, 0);
+    }
+
     private List<unit> _units = new();
 
     public void Init()

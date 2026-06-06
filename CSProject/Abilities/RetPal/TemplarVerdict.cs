@@ -100,6 +100,6 @@ public class TemplarVerdict
             outResult = new IDamageDataResult(),
         });
 
-        attr.retPalHolyEnergy -= 3;
+        RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1);
     }
 }

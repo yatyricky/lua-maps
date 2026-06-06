@@ -65,5 +65,7 @@ public class Program
         }, 1, -1);
         game.Start();
         Scene.Instance.Run();
+
+        new GameObject("UnitManager").AddComponent<UnitManager>();
     }
 }

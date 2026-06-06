@@ -25,7 +25,7 @@ public class DivineToll
             Damage = 50f * level,
             RadiantDmgAmp = 0.1f,
             Duration = 10f,
-            BHDamage = 20f * level,
+            BHDamage = 5f + 5f * level,
             DebuffDuration = 10f,
         };
     }
@@ -148,6 +148,26 @@ public class DivineToll
 
             moveLayer.transform.SetParent(circulator.transform);
             moveLayer.transform.localPosition = new Vector3(200, 0, 0);
+
+            // set timeout
+            var umo = UnitManager.GetGameObjectByUnit(caster);
+            var dtData = umo.GetComponentInChildren<DivineTollUnitData>();
+            TimerComponent dtTimer;
+            if (dtData == null)
+            {
+                var dtObj = new GameObject("DivineTollData", umo);
+                dtData = dtObj.AddComponent<DivineTollUnitData>();
+                dtTimer = dtObj.AddComponent<TimerComponent>();
+            }
+            else
+            {
+                dtTimer = dtData.gameObject.GetComponent<TimerComponent>()!;
+            }
+            dtData.SetData(outer);
+            dtTimer.StartTimer(ad.Duration, () =>
+            {
+                dtData.TimesUp();
+            });
         });
         missile.onLostTarget = () =>
         {
@@ -245,6 +265,25 @@ public class DivineToll
         {
             var attr = UnitAttribute.GetAttr(target);
             attr.radiantResistance += _vulVal;
+        }
+    }
+
+    public class DivineTollUnitData : Component
+    {
+        private List<GameObject> _missiles = new List<GameObject>();
+
+        public void SetData(GameObject missile)
+        {
+            _missiles.Add(missile);
+        }
+
+        public void TimesUp()
+        {
+            foreach (var mis in _missiles)
+            {
+                mis.Destroy();
+            }
+            _missiles.Clear();
         }
     }
 }

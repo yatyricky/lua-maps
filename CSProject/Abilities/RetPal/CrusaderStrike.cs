@@ -95,6 +95,6 @@ public class CrusaderStrike
             outResult = new IDamageDataResult(),
         });
 
-        attr.retPalHolyEnergy++;
+        RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1);
     }
 }
