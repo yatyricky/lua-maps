@@ -1312,8 +1312,10 @@ function SF__.RetributionPaladinGlobal:Start()
                             ExSetUnitMana(u508, ((ExGetUnitMaxMana(u508) * attr509.retPalHolyEnergy) * 0.2))
                             if (attr509.retPalHolyEnergy >= 3) then
                                 SF__.Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u508), FourCC("A006"), "ReplaceableTextures/CommandButtons/BTNinv_helmet_96.tga")
+                                SF__.Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u508), FourCC("A005"), "ReplaceableTextures/CommandButtons/BTNability_paladin_divinestorm.tga")
                             else
                                 SF__.Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u508), FourCC("A006"), "ReplaceableTextures/PassiveButtons/PASBTNinv_helmet_96.tga")
+                                SF__.Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u508), FourCC("A005"), "ReplaceableTextures/PassiveButtons/PASBTNability_paladin_divinestorm.tga")
                             end
                         until true
                     end

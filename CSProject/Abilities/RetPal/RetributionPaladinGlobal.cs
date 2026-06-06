@@ -44,10 +44,12 @@ public class RetributionPaladinGlobal
                 if (attr.retPalHolyEnergy >= 3)
                 {
                     Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A006"), "ReplaceableTextures/CommandButtons/BTNinv_helmet_96.tga");
+                    Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A005"), "ReplaceableTextures/CommandButtons/BTNability_paladin_divinestorm.tga");
                 }
                 else
                 {
                     Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A006"), "ReplaceableTextures/PassiveButtons/PASBTNinv_helmet_96.tga");
+                    Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A005"), "ReplaceableTextures/PassiveButtons/PASBTNability_paladin_divinestorm.tga");
                 }
             }
 
