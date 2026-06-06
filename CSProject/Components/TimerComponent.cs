@@ -7,6 +7,11 @@ public class TimerComponent : Component
     private Action? onComplete;
     private bool _running = false;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="duration">seconds</param>
+    /// <param name="onComplete"></param>
     public void StartTimer(float duration, Action onComplete)
     {
         this.duration = duration * 1000f;

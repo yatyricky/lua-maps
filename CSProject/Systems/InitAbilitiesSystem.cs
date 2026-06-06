@@ -73,6 +73,7 @@ public class InitAbilitiesSystem : SystemBase
         BladeOfJustice.Init();
         DivineToll.Init();
         WordOfGlory.Init();
+        DivineStorm.Init();
 #endif
     }
 }
