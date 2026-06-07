@@ -3,11 +3,13 @@ public class AttachEffectComponent : Component
     private Vector3 _lastPos;
     private float _lerpDuration;
     private float _lerpElapsed;
+    private Vector3 _tarPos;
     public effect? eff;
 
     public override string GetInspectorText()
     {
-        return "Effect: " + (eff == null ? "None" : "Attached");
+        return @$"Effect: {(eff == null ? "None" : "Attached")}
+_tarPos: {_tarPos}";
     }
 
     public override void Update()
@@ -28,13 +30,13 @@ public class AttachEffectComponent : Component
         }
 
         _lerpElapsed += Scene.DT;
-        var tarPos = globalPos;
+        _tarPos = globalPos;
         if (_lerpElapsed < _lerpDuration)
         {
-            tarPos = Vector3.Lerp(_lastPos, globalPos, _lerpElapsed / _lerpDuration);
+            _tarPos = Vector3.Lerp(_lastPos, globalPos, _lerpElapsed / _lerpDuration);
         }
-        BlzSetSpecialEffectPosition(eff, tarPos.x, tarPos.y, tarPos.z);
-        _lastPos = tarPos;
+        BlzSetSpecialEffectPosition(eff, _tarPos.x, _tarPos.y, _tarPos.z);
+        _lastPos = _tarPos;
         globalRot.ApplyToEffect(eff);
         BlzSetSpecialEffectMatrixScale(eff, globalScale.x, globalScale.y, globalScale.z);
     }

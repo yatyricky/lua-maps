@@ -95,6 +95,7 @@ public class TemplarStrikes
         var level = GetUnitAbilityLevel(data.caster, ID);
         var attr = UnitAttribute.GetAttr(data.caster);
         var normalDamage = attr.SimMeleeAttack();
+        var hasWoa = BuffBase.FindBuffByClassName(data.caster, "WakeOfAshesBuff") != null;
 
         EventCenter.Damage.Emit(new IDamageData
         {
@@ -109,6 +110,10 @@ public class TemplarStrikes
             outResult = new IDamageDataResult(),
         });
         TryResetBOJ(data.caster);
+        if (hasWoa)
+        {
+            RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1);
+        }
 
         SetUnitTimeScale(data.caster, 3f);
         ResetUnitAnimation(data.caster);
@@ -131,6 +136,10 @@ public class TemplarStrikes
             outResult = new IDamageDataResult(),
         });
         TryResetBOJ(data.caster);
+        if (hasWoa)
+        {
+            RetributionPaladinGlobal.IncreaseHolyEnergy(data.caster, 1);
+        }
 
         SetUnitTimeScale(data.caster, 1f);
         ResetUnitAnimation(data.caster);

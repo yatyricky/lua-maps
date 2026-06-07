@@ -133,6 +133,17 @@ hasArrived: {hasArrived}
         hasArrived = false;
     }
 
+    public void SetupPointTarget(Vector3 target, float speed, Action<Missile, Vector3>? onArrived, float colliderSize = 32f, bool lookAtTarget = true)
+    {
+        targetType = TargetType.Point;
+        pointTarget = target;
+        this.speed = speed;
+        this.lookAtTarget = lookAtTarget;
+        this.colliderSize = colliderSize;
+        onArrivedPoint = onArrived;
+        hasArrived = false;
+    }
+
     public void SetupPiercer(Action<Missile, unit> onThrough, Predicate<unit> onThroughFilter, float colliderSize, int collisionCount, double nextHitDelay)
     {
         targetType = TargetType.None;

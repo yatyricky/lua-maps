@@ -30,7 +30,7 @@ public class RetributionPaladinGlobal
                 quickness = new WakeOfAshes.QuicknessBuff(u, u, 9999f, 9999f, new IAwakeData());
             }
             quickness.IncreaseStack(consumed);
-            var cd = math.max(10 * (1 - 0.1f * quickness.stack), 1);
+            var cd = math.max(10 * (1 - 0.05f * quickness.stack), 1);
             for (int i = 0; i < 3; i++)
             {
                 BlzSetUnitAbilityCooldown(u, BladeOfJustice.ID, i, cd);

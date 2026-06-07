@@ -51,11 +51,13 @@ public class WordOfGlory
 
     public static void Start(ISpellData data)
     {
+        var hasWoa = BuffBase.FindBuffByClassName(data.caster, "WakeOfAshesBuff") != null;
+
         EventCenter.Heal.Emit(new IHealData
         {
             caster = data.caster,
             target = data.target,
-            amount = 300f,
+            amount = 300f * (hasWoa ? 2f : 1f),
         });
 
         RetributionPaladinGlobal.ConsumeHolyEnergy(data.caster, 3);

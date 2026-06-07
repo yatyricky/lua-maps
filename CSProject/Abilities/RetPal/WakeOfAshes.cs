@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using LuaWrapper;
 using SFLib.Interop;
 
@@ -75,6 +76,24 @@ public class WakeOfAshes
             });
         });
 
+        // fire breath visual
+
+        var eff = AddSpecialEffect("Abilities/Spells/Other/BreathOfFire/BreathOfFireMissile.mdl", pos.x, pos.y);
+        var rotation = Quaternion.Euler(0, facing, 0);
+        var effPos = new Vector3(pos.x, pos.y, 0);
+        var effStart = effPos + rotation * Vector3.right * 200f;
+        var dest = effPos + rotation * Vector3.right * 800f;
+        var fireRoot = new GameObject("fire_breath");
+        fireRoot.transform.localPosition = new Vector3(effStart.x, effStart.y, pos.z);
+        fireRoot.AddComponent<Missile>().SetupPointTarget(new Vector3(dest.x, dest.y, pos.z), 900f, (mis, arrivedAt) =>
+        {
+            mis.gameObject.Destroy();
+        });
+        var rotOffset = new GameObject("rot_offset", fireRoot);
+        rotOffset.transform.localRotation = Quaternion.Euler(0, 90, 0);
+        rotOffset.AddComponent<AttachEffectComponent>().AttachEffect(eff);
+
+        // buffs
         var buff = BuffBase.FindBuffByClassName(data.caster, "WakeOfAshesBuff");
         if (buff != null)
         {
@@ -82,7 +101,7 @@ public class WakeOfAshes
         }
         else
         {
-            new WakeOfAshesBuff(data.caster, data.caster, 30, 99999f, new IAwakeData
+            new WakeOfAshesBuff(data.caster, data.caster, 30, 0.5f, new IAwakeData
             {
                 level = 0,
                 charged = 0,
@@ -93,16 +112,44 @@ public class WakeOfAshes
     [Lua(Class = "WakeOfAshesBuff")]
     public class WakeOfAshesBuff : BuffBase
     {
+        private effect? _eff;
+        private float _kf;
+        private bool _effLooping;
+
         public WakeOfAshesBuff(unit caster, unit target, float duration, float interval, IAwakeData awakeData) : base(caster, target, duration, interval, awakeData)
         {
         }
 
-        public override void OnDisable()
+        public async override void OnEnable()
+        {
+            await Task.Delay(1);
+            _eff = AddSpecialEffectTarget("Abilities/Spells/Human/Resurrect/ResurrectCaster.mdl", caster, "origin");
+            _kf = 0f;
+            _effLooping = true;
+        }
+
+        public override void Update()
+        {
+            _kf += interval;
+            if (_kf > 0.9f && _effLooping)
+            {
+                BlzSetSpecialEffectTime(_eff!, 0.9f);
+            }
+        }
+
+        public async override void OnDisable()
         {
             var quickness = BuffBase.FindBuffByClassName(target, "QuicknessBuff");
             if (quickness != null)
             {
                 quickness.DecreaseStack(quickness.stack);
+            }
+            if (_eff != null)
+            {
+                _effLooping = false;
+                await Task.Delay(3000);
+                DestroyEffect(_eff);
+                _eff = null;
             }
         }
     }
@@ -112,7 +159,7 @@ public class WakeOfAshes
     {
         public QuicknessBuff(unit caster, unit target, float duration, float interval, IAwakeData awakeData) : base(caster, target, duration, interval, awakeData)
         {
-            
+
         }
 
         public override void OnDisable()
