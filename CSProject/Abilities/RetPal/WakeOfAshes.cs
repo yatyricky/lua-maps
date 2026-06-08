@@ -28,7 +28,8 @@ public class WakeOfAshes
         var p = GetOwningPlayer(u);
         Utils.ExSetAbilityResearchTooltip(p, ID, "学习灰烬觉醒 - [|cffffcc00%d级|r]", 0);
         Utils.ExBlzSetAbilityResearchExtendedTooltip(p, ID, @$"对你前方敌人造成|cffff8c00300|r点光辉伤害，并激活复仇之怒效果，在复仇之怒效果期间：
-· 每消耗|cffff8c001|r点神圣能量，圣殿骑士之击与公正之剑的冷却时间缩短|cffff8c0010%|r。
+· 每消耗|cffff8c001|r点神圣能量，圣殿骑士之击与公正之剑的冷却时间缩短|cffff8c005%|r。
+· 每产生|cffff8c001|r点神圣能量，治疗自己|cffff8c00100|r生命值，享受智力加成。
 · 圣殿骑士之击的攻击会获得神圣能量。
 · 荣耀圣令的治疗效果提高|cffff8c00100%|r。
 · 神圣风暴被替换为圣光之锤。
@@ -36,12 +37,13 @@ public class WakeOfAshes
 |cff99ccff冷却时间|r - 60秒
 
 |cffffcc00圣光之锤|r
-对当前目标造成|cffff8c00450|r点光辉伤害，另外对附近所有目标造成|cffff8c00350|r点光辉伤害。使神圣之锤的持续时间延长|cffff8c004|r秒。消耗|cffff8c005|r神圣能量", 0);
+对当前目标造成|cffff8c00450|r点光辉伤害，另外对附近所有目标造成|cffff8c00350|r点光辉伤害。使神圣之锤的持续时间延长|cffff8c008|r秒。消耗|cffff8c003|r神圣能量", 0);
         for (int i = 0; i < 1; i++)
         {
             Utils.ExBlzSetAbilityTooltip(p, ID, $"灰烬觉醒 - [|cffffcc00{i + 1}级|r]", i);
             Utils.ExBlzSetAbilityExtendedTooltip(p, ID, @$"对你前方敌人造成|cffff8c00300|r点光辉伤害，并激活复仇之怒效果，在复仇之怒效果期间：
-· 每消耗|cffff8c001|r点神圣能量，圣殿骑士之击与公正之剑的冷却时间缩短|cffff8c0010%|r。
+· 每消耗|cffff8c001|r点神圣能量，圣殿骑士之击与公正之剑的冷却时间缩短|cffff8c005%|r。
+· 每产生|cffff8c001|r点神圣能量，治疗自己|cffff8c00100|r生命值，享受智力加成。
 · 圣殿骑士之击的攻击会获得神圣能量。
 · 荣耀圣令的治疗效果提高|cffff8c00100%|r。
 · 神圣风暴被替换为圣光之锤。
@@ -49,7 +51,7 @@ public class WakeOfAshes
 |cff99ccff冷却时间|r - 60秒
 
 |cffffcc00圣光之锤|r
-神圣能量重击地面，对附近所有目标造成|cffff8c00350|r点光辉伤害。使神圣之锤的持续时间延长|cffff8c004|r秒。消耗|cffff8c003|r神圣能量", i);
+神圣能量重击地面，对附近所有目标造成|cffff8c00350|r点光辉伤害。使神圣之锤的持续时间延长|cffff8c008|r秒。消耗|cffff8c003|r神圣能量", i);
         }
     }
 

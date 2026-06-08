@@ -10,7 +10,22 @@ public class RetributionPaladinGlobal
     public static void IncreaseHolyEnergy(unit u, int amount)
     {
         var attr = UnitAttribute.GetAttr(u);
+        var before = attr.retPalHolyEnergy;
         attr.retPalHolyEnergy = math.min(attr.retPalHolyEnergy + amount, 5);
+        var increased = attr.retPalHolyEnergy - before;
+        // wake of ashes
+        var buff = BuffBase.FindBuffByClassName(u, "WakeOfAshesBuff");
+        if (buff != null)
+        {
+            var heal = (100 + GetHeroInt(u, true)) * increased;
+            EventCenter.Heal.Emit(new IHealData
+            {
+                caster = u,
+                target = u,
+                amount = heal,
+            });
+            ExAddSpecialEffectTarget("Abilities/Spells/Items/AIhe/AIheTarget.mdl", u, "origin", 0.2f);
+        }
     }
 
     public static void ConsumeHolyEnergy(unit u, int amount)
