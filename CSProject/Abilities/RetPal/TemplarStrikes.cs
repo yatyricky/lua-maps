@@ -38,8 +38,6 @@ public class TemplarStrikes
             if (GetUnitTypeId(u) == FourCC("Hpal"))
             {
                 UpdateAbilityMeta(u);
-
-                SetHeroLevel(u, 10, true);
             }
         });
 

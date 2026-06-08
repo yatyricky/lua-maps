@@ -61,15 +61,38 @@ public class RetributionPaladinGlobal
             {
                 var attr = UnitAttribute.GetAttr(u);
                 ExSetUnitMana(u, ExGetUnitMaxMana(u) * attr.retPalHolyEnergy * 0.2f);
+                // set word of glory
                 if (attr.retPalHolyEnergy >= 3)
                 {
                     Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A006"), "ReplaceableTextures/CommandButtons/BTNinv_helmet_96.tga");
-                    Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A005"), "ReplaceableTextures/CommandButtons/BTNability_paladin_divinestorm.tga");
                 }
                 else
                 {
                     Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A006"), "ReplaceableTextures/PassiveButtons/PASBTNinv_helmet_96.tga");
-                    Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A005"), "ReplaceableTextures/PassiveButtons/PASBTNability_paladin_divinestorm.tga");
+                }
+                // set divine storm
+                var hasWoa = BuffBase.FindBuffByClassName(u, "WakeOfAshesBuff") != null;
+                if (hasWoa)
+                {
+                    if (attr.retPalHolyEnergy >= 3)
+                    {
+                        Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A005"), "ReplaceableTextures/CommandButtons/BTNinv_mace_1h_gryphonrider_d_02_silver.tga");
+                    }
+                    else
+                    {
+                        Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A005"), "ReplaceableTextures/PassiveButtons/PASBTNinv_mace_1h_gryphonrider_d_02_silver.tga");
+                    }
+                }
+                else
+                {
+                    if (attr.retPalHolyEnergy >= 3)
+                    {
+                        Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A005"), "ReplaceableTextures/CommandButtons/BTNability_paladin_divinestorm.tga");
+                    }
+                    else
+                    {
+                        Utils.ExBlzSetAbilityIcon(GetOwningPlayer(u), FourCC("A005"), "ReplaceableTextures/PassiveButtons/PASBTNability_paladin_divinestorm.tga");
+                    }
                 }
             }
 

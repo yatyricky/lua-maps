@@ -33,6 +33,8 @@ public class WakeOfAshes
 · 荣耀圣令的治疗效果提高|cffff8c00100%|r。
 · 神圣风暴被替换为圣光之锤。
 
+|cff99ccff冷却时间|r - 60秒
+
 |cffffcc00圣光之锤|r
 对当前目标造成|cffff8c00450|r点光辉伤害，另外对附近所有目标造成|cffff8c00350|r点光辉伤害。使神圣之锤的持续时间延长|cffff8c004|r秒。消耗|cffff8c005|r神圣能量", 0);
         for (int i = 0; i < 1; i++)
@@ -44,8 +46,10 @@ public class WakeOfAshes
 · 荣耀圣令的治疗效果提高|cffff8c00100%|r。
 · 神圣风暴被替换为圣光之锤。
 
+|cff99ccff冷却时间|r - 60秒
+
 |cffffcc00圣光之锤|r
-对当前目标造成|cffff8c00450|r点光辉伤害，另外对附近所有目标造成|cffff8c00350|r点光辉伤害。使神圣之锤的持续时间延长|cffff8c004|r秒。消耗|cffff8c005|r神圣能量", i);
+神圣能量重击地面，对附近所有目标造成|cffff8c00350|r点光辉伤害。使神圣之锤的持续时间延长|cffff8c004|r秒。消耗|cffff8c003|r神圣能量", i);
         }
     }
 
@@ -101,7 +105,7 @@ public class WakeOfAshes
         }
         else
         {
-            new WakeOfAshesBuff(data.caster, data.caster, 30, 0.5f, new IAwakeData
+            new WakeOfAshesBuff(data.caster, data.caster, 30, 1f, new IAwakeData
             {
                 level = 0,
                 charged = 0,
@@ -131,9 +135,9 @@ public class WakeOfAshes
         public override void Update()
         {
             _kf += interval;
-            if (_kf > 0.9f && _effLooping)
+            if (_kf > 1f && _effLooping)
             {
-                BlzSetSpecialEffectTime(_eff!, 0.9f);
+                BlzSetSpecialEffectTime(_eff!, 1f);
             }
         }
 

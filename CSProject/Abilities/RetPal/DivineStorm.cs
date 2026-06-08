@@ -53,6 +53,7 @@ public class DivineStorm
     public static void Start(ISpellData data)
     {
         var pos = Vector3.FromUnit(data.caster);
+        var hasWoa = BuffBase.FindBuffByClassName(data.caster, "WakeOfAshesBuff") != null;
         ExGroupEnumUnitsInRange(pos.x, pos.y, 250f, (u) =>
         {
             if (!IsUnitEnemy(u, GetOwningPlayer(data.caster))) return;
@@ -63,7 +64,7 @@ public class DivineStorm
             {
                 whichUnit = data.caster,
                 target = u,
-                amount = 200f * (1 - attr.radiantResistance),
+                amount = (hasWoa ? 350f : 200f) * (1 - attr.radiantResistance),
                 attack = false,
                 ranged = true,
                 attackType = ATTACK_TYPE_HERO,
@@ -75,6 +76,7 @@ public class DivineStorm
 
         RetributionPaladinGlobal.ConsumeHolyEnergy(data.caster, 3);
 
+        // visuals
         var leviation = new GameObject("ds_leviation");
         leviation.transform.localPosition = new Vector3(0, 0, 50f);
         leviation.AddComponent<TimerComponent>().StartTimer(0.6f, () => leviation.Destroy());
@@ -94,6 +96,14 @@ public class DivineStorm
             var effC = arm.AddComponent<AttachEffectComponent>();
             effC.AttachEffect(effHoly);
             effC.LerpIn(700);
+        }
+
+        if (hasWoa)
+        {
+            var eff = ExAddSpecialEffect("Abilities/Spells/Human/Thunderclap/ThunderClapCaster.mdl", pos.x, pos.y, 1f);
+            BlzSetSpecialEffectColor(eff, 255, 255, 0);
+
+            DivineToll.ExtendBlessedHammer(data.caster);
         }
     }
 }

@@ -193,6 +193,15 @@ public class DivineToll
         BlzSetSpecialEffectColor(effHoly, 20, 20, 20);
     }
 
+    public static void ExtendBlessedHammer(unit caster)
+    {
+        var umo = UnitManager.GetGameObjectByUnit(caster);
+        var dtData = umo.GetComponentInChildren<DivineTollUnitData>();
+        if (dtData == null) return;
+        var dtTimer = dtData.gameObject.GetComponent<TimerComponent>()!;
+        dtTimer.ExtendTime(4f);
+    }
+
     public static async Task Start(ISpellData data)
     {
         var pos = Vector3.FromUnit(data.caster);

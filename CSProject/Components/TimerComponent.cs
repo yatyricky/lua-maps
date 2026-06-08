@@ -2,7 +2,7 @@ using System;
 
 public class TimerComponent : Component
 {
-    private float duration = -1f;
+    public float duration { get; private set; }
     private float elapsed;
     private Action? onComplete;
     private bool _running = false;
@@ -30,5 +30,14 @@ public class TimerComponent : Component
             onComplete?.Invoke();
             _running = false;
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="duration"> seconds</param>
+    public void ExtendTime(float duration)
+    {
+        this.duration += duration * 1000f;
     }
 }
