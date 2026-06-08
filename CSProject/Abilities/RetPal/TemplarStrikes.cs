@@ -21,7 +21,7 @@ public class TemplarStrikes
         {
             AttackCount = 2,
             DamageScaling = 0.5f + 0.25f * level,
-            ResetBOJChance = 0.05f * level,
+            ResetBOJChance = 0.1f * level,
         };
     }
 

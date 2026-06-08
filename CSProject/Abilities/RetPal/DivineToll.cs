@@ -199,7 +199,7 @@ public class DivineToll
         var dtData = umo.GetComponentInChildren<DivineTollUnitData>();
         if (dtData == null) return;
         var dtTimer = dtData.gameObject.GetComponent<TimerComponent>()!;
-        dtTimer.ExtendTime(4f);
+        dtTimer.ExtendTime(8f);
     }
 
     public static async Task Start(ISpellData data)

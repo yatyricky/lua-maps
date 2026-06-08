@@ -54,7 +54,8 @@ public class DivineStorm
     {
         var pos = Vector3.FromUnit(data.caster);
         var hasWoa = BuffBase.FindBuffByClassName(data.caster, "WakeOfAshesBuff") != null;
-        ExGroupEnumUnitsInRange(pos.x, pos.y, 250f, (u) =>
+        var range = hasWoa ? 350f : 250f;
+        ExGroupEnumUnitsInRange(pos.x, pos.y, range, (u) =>
         {
             if (!IsUnitEnemy(u, GetOwningPlayer(data.caster))) return;
             if (ExIsUnitDead(u)) return;
@@ -91,7 +92,7 @@ public class DivineStorm
             att.rotation = Quaternion.Euler(0, math.sign(i) * (math.random() * 200 + 700) * Scene.DT / 1000f, 0);
 
             var arm = new GameObject("ds_arm", attach);
-            arm.transform.localPosition = new Vector3(250f, 0, 0);
+            arm.transform.localPosition = new Vector3(range, 0, 0);
             var effHoly = AddSpecialEffect("Abilities/Weapons/FaerieDragonMissile/FaerieDragonMissile.mdl", pos.x, pos.y);
             var effC = arm.AddComponent<AttachEffectComponent>();
             effC.AttachEffect(effHoly);

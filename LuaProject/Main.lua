@@ -1282,7 +1282,7 @@ SF__.TemplarStrikes = SF__.TemplarStrikes or {}
 SF__.TemplarStrikes.Name = "TemplarStrikes"
 SF__.TemplarStrikes.FullName = "TemplarStrikes"
 function SF__.TemplarStrikes.GetAbilityData(level530)
-    return 2, (0.5 + (0.25 * level530)), (0.05 * level530)
+    return 2, (0.5 + (0.25 * level530)), (0.1 * level530)
 end
 
 function SF__.TemplarStrikes.Init()
@@ -2373,7 +2373,7 @@ function SF__.DivineStorm.Start(data375)
     local UnitAttribute381 = require("Objects.UnitAttribute")
     local EventCenter382 = require("Lib.EventCenter")
     local hasWoa = (BuffBase.FindBuffByClassName(data375.caster, "WakeOfAshesBuff") ~= nil)
-    ExGroupEnumUnitsInRange(pos__x376, pos__y377, 250, function(u383)
+    ExGroupEnumUnitsInRange(pos__x376, pos__y377, (function() if hasWoa then return 350 else return 250 end end)(), function(u383)
         if (not IsUnitEnemy(u383, GetOwningPlayer(data375.caster))) then
             return
         end
