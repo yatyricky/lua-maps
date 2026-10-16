@@ -9,6 +9,12 @@ public static partial class JASS
 {
     /// <summary>JASS function <c>BJDebugMsg</c>.</summary>
     public static void BJDebugMsg(string msg) => throw null!;
+    /// <summary>JASS function <c>SetWantDestroyGroupBJ</c>.</summary>
+    public static void SetWantDestroyGroupBJ() => throw null!;
+    /// <summary>JASS function <c>ClearWantDestroyGroupBJ</c>.</summary>
+    public static void ClearWantDestroyGroupBJ() => throw null!;
+    /// <summary>JASS function <c>GetWantDestroyGroupBJ</c>.</summary>
+    public static bool GetWantDestroyGroupBJ() => throw null!;
     /// <summary>JASS function <c>RMinBJ</c>.</summary>
     public static float RMinBJ(float a, float b) => throw null!;
     /// <summary>JASS function <c>RMaxBJ</c>.</summary>
@@ -151,6 +157,8 @@ public static partial class JASS
     public static float CameraSetupGetFieldSwap(camerafield whichField, camerasetup whichSetup) => throw null!;
     /// <summary>JASS function <c>SetCameraFieldForPlayer</c>.</summary>
     public static void SetCameraFieldForPlayer(player whichPlayer, camerafield whichField, float value, float duration) => throw null!;
+    /// <summary>JASS function <c>SetCameraFieldControlledByInputForPlayer</c>.</summary>
+    public static void SetCameraFieldControlledByInputForPlayer(player whichPlayer, camerafield whichField, bool controlled) => throw null!;
     /// <summary>JASS function <c>SetCameraTargetControllerNoZForPlayer</c>.</summary>
     public static void SetCameraTargetControllerNoZForPlayer(player whichPlayer, unit whichUnit, float xoffset, float yoffset, bool inheritOrientation) => throw null!;
     /// <summary>JASS function <c>SetCameraPositionForPlayer</c>.</summary>
@@ -241,6 +249,12 @@ public static partial class JASS
     public static @event TriggerRegisterPlayerKeyEventBJ(trigger trig, player whichPlayer, int keType, int keKey) => throw null!;
     /// <summary>JASS function <c>TriggerRegisterPlayerMouseEventBJ</c>.</summary>
     public static @event TriggerRegisterPlayerMouseEventBJ(trigger trig, player whichPlayer, int meType) => throw null!;
+    /// <summary>JASS function <c>IsMouseButtonPressedBJ</c>.</summary>
+    public static bool IsMouseButtonPressedBJ(mousebuttontype mouseButtonType) => throw null!;
+    /// <summary>JASS function <c>IsMetaKeyPressedBJ</c>.</summary>
+    public static bool IsMetaKeyPressedBJ(int metakey) => throw null!;
+    /// <summary>JASS function <c>IsKeyPressedBJ</c>.</summary>
+    public static bool IsKeyPressedBJ(oskeytype key) => throw null!;
     /// <summary>JASS function <c>TriggerRegisterPlayerEventVictory</c>.</summary>
     public static @event TriggerRegisterPlayerEventVictory(trigger trig, player whichPlayer) => throw null!;
     /// <summary>JASS function <c>TriggerRegisterPlayerEventDefeat</c>.</summary>
@@ -345,6 +359,30 @@ public static partial class JASS
     public static void SetTerrainPathableBJ(location where, pathingtype t, bool flag) => throw null!;
     /// <summary>JASS function <c>SetWaterBaseColorBJ</c>.</summary>
     public static void SetWaterBaseColorBJ(float red, float green, float blue, float transparency) => throw null!;
+    /// <summary>JASS function <c>SetHDWaterParamsExBJ</c>.</summary>
+    public static void SetHDWaterParamsExBJ(float red, float green, float blue, bool @override, int vertexDisplacement, int minOpacity, int maxOpacity, int reflectivity, int emissivity, int edgeSoftness, int waveStrength, int envMapStrength) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterColorBJ</c>.</summary>
+    public static void BlzSetHDWaterColorBJ(float red, float green, float blue) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterColorOverrideBJ</c>.</summary>
+    public static void BlzSetHDWaterColorOverrideBJ() => throw null!;
+    /// <summary>JASS function <c>BlzClearHDWaterColorOverrideBJ</c>.</summary>
+    public static void BlzClearHDWaterColorOverrideBJ() => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterVertexDisplacementBJ</c>.</summary>
+    public static void BlzSetHDWaterVertexDisplacementBJ(int vertexDisplacement) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterMinOpacityBJ</c>.</summary>
+    public static void BlzSetHDWaterMinOpacityBJ(int minOpacity) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterMaxOpacityBJ</c>.</summary>
+    public static void BlzSetHDWaterMaxOpacityBJ(int maxOpacity) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterReflectivityBJ</c>.</summary>
+    public static void BlzSetHDWaterReflectivityBJ(int reflectivity) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterEmissivityBJ</c>.</summary>
+    public static void BlzSetHDWaterEmissivityBJ(int emissivity) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterEdgeSoftnessBJ</c>.</summary>
+    public static void BlzSetHDWaterEdgeSoftnessBJ(int edgeSoftness) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterWaveStrengthBJ</c>.</summary>
+    public static void BlzSetHDWaterWaveStrengthBJ(int waveStrength) => throw null!;
+    /// <summary>JASS function <c>BlzSetHDWaterEnvMapStrengthBJ</c>.</summary>
+    public static void BlzSetHDWaterEnvMapStrengthBJ(int envMapStrengthy) => throw null!;
     /// <summary>JASS function <c>CreateFogModifierRectSimple</c>.</summary>
     public static fogmodifier CreateFogModifierRectSimple(player whichPlayer, fogstate whichFogState, rect r, bool afterUnits) => throw null!;
     /// <summary>JASS function <c>CreateFogModifierRadiusLocSimple</c>.</summary>
@@ -367,14 +405,60 @@ public static partial class JASS
     public static void UseTimeOfDayBJ(bool flag) => throw null!;
     /// <summary>JASS function <c>SetTerrainFogExBJ</c>.</summary>
     public static void SetTerrainFogExBJ(int style, float zstart, float zend, float density, float red, float green, float blue) => throw null!;
+    /// <summary>JASS function <c>SetTerrainFogExVBJ</c>.</summary>
+    public static void SetTerrainFogExVBJ(int style, float zstart, float zend, float density, float heightStart, float heightEnd, float linearStart, float linearEnd, float red, float green, float blue) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogStyleBJ</c>.</summary>
+    public static void BlzSetTerrainFogStyleBJ(fogstyle style) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogZStartBJ</c>.</summary>
+    public static void BlzSetTerrainFogZStartBJ(float zStart) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogZEndBJ</c>.</summary>
+    public static void BlzSetTerrainFogZEndBJ(float zEnd) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogDensityBJ</c>.</summary>
+    public static void BlzSetTerrainFogDensityBJ(float density) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogHeightStartBJ</c>.</summary>
+    public static void BlzSetTerrainFogHeightStartBJ(float heightStart) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogHeightEndBJ</c>.</summary>
+    public static void BlzSetTerrainFogHeightEndBJ(float heightEnd) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogLinearStartBJ</c>.</summary>
+    public static void BlzSetTerrainFogLinearStartBJ(float linearStart) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogLinearEndBJ</c>.</summary>
+    public static void BlzSetTerrainFogLinearEndBJ(float linearEnd) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogMaxLinearDensityBJ</c>.</summary>
+    public static void BlzSetTerrainFogMaxLinearDensityBJ(float maxLinearDensity) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogDrawOverSkyBJ</c>.</summary>
+    public static void BlzSetTerrainFogDrawOverSkyBJ(bool drawOverSky) => throw null!;
+    /// <summary>JASS function <c>BlzSetTerrainFogColorBJ</c>.</summary>
+    public static void BlzSetTerrainFogColorBJ(float red, float green, float blue) => throw null!;
     /// <summary>JASS function <c>ResetTerrainFogBJ</c>.</summary>
     public static void ResetTerrainFogBJ() => throw null!;
     /// <summary>JASS function <c>SetDoodadAnimationBJ</c>.</summary>
     public static void SetDoodadAnimationBJ(string animName, int doodadID, float radius, location center) => throw null!;
     /// <summary>JASS function <c>SetDoodadAnimationRectBJ</c>.</summary>
     public static void SetDoodadAnimationRectBJ(string animName, int doodadID, rect r) => throw null!;
+    /// <summary>JASS function <c>BlzSetSingleDoodadAnimationBJ</c>.</summary>
+    public static void BlzSetSingleDoodadAnimationBJ(string animName, int index) => throw null!;
     /// <summary>JASS function <c>AddUnitAnimationPropertiesBJ</c>.</summary>
     public static void AddUnitAnimationPropertiesBJ(bool add, string animProperties, unit whichUnit) => throw null!;
+    /// <summary>JASS function <c>SetDoodadColorBJ</c>.</summary>
+    public static void SetDoodadColorBJ(playercolor color, int doodadID, float radius, location center) => throw null!;
+    /// <summary>JASS function <c>SetDoodadColorRectBJ</c>.</summary>
+    public static void SetDoodadColorRectBJ(playercolor color, int doodadID, rect r) => throw null!;
+    /// <summary>JASS function <c>BlzSetSingleDoodadColorBJ</c>.</summary>
+    public static void BlzSetSingleDoodadColorBJ(playercolor color, int index) => throw null!;
+    /// <summary>JASS function <c>AllowHeroGlowOnUnitBJ</c>.</summary>
+    public static void AllowHeroGlowOnUnitBJ(unit whichUnit) => throw null!;
+    /// <summary>JASS function <c>DisallowHeroGlowOnUnitBJ</c>.</summary>
+    public static void DisallowHeroGlowOnUnitBJ(unit whichUnit) => throw null!;
+    /// <summary>JASS function <c>ToggleHeroGlowOnAllUnitsBJEnum</c>.</summary>
+    public static void ToggleHeroGlowOnAllUnitsBJEnum() => throw null!;
+    /// <summary>JASS function <c>ToggleHeroGlowOnAllUnitsBJ</c>.</summary>
+    public static void ToggleHeroGlowOnAllUnitsBJ(bool allow) => throw null!;
+    /// <summary>JASS function <c>AllowHeroGlowOnAllUnitsBJ</c>.</summary>
+    public static void AllowHeroGlowOnAllUnitsBJ() => throw null!;
+    /// <summary>JASS function <c>DisallowHeroGlowOnAllUnitsBJ</c>.</summary>
+    public static void DisallowHeroGlowOnAllUnitsBJ() => throw null!;
+    /// <summary>JASS function <c>HeroGlowIsAllowedOnUnitBJ</c>.</summary>
+    public static bool HeroGlowIsAllowedOnUnitBJ(unit whichUnit) => throw null!;
     /// <summary>JASS function <c>CreateImageBJ</c>.</summary>
     public static image CreateImageBJ(string file, float size, location where, float zOffset, int imageType) => throw null!;
     /// <summary>JASS function <c>ShowImageBJ</c>.</summary>
@@ -505,6 +589,10 @@ public static partial class JASS
     public static void DestroyEffectBJ(effect whichEffect) => throw null!;
     /// <summary>JASS function <c>GetLastCreatedEffectBJ</c>.</summary>
     public static effect GetLastCreatedEffectBJ() => throw null!;
+    /// <summary>JASS function <c>DestroyEffectAsyncBJ</c>.</summary>
+    public static void DestroyEffectAsyncBJ() => throw null!;
+    /// <summary>JASS function <c>DestroyEffectAfterTimeBJ</c>.</summary>
+    public static void DestroyEffectAfterTimeBJ(effect whichEffect, float time) => throw null!;
     /// <summary>JASS function <c>CreateCommandButtonEffectBJ</c>.</summary>
     public static commandbuttoneffect CreateCommandButtonEffectBJ(int abilityId, string order) => throw null!;
     /// <summary>JASS function <c>CreateTrainCommandButtonEffectBJ</c>.</summary>
@@ -547,14 +635,26 @@ public static partial class JASS
     public static item UnitAddItemByIdSwapped(int itemId, unit whichHero) => throw null!;
     /// <summary>JASS function <c>UnitRemoveItemSwapped</c>.</summary>
     public static void UnitRemoveItemSwapped(item whichItem, unit whichHero) => throw null!;
+    /// <summary>JASS function <c>UnitEquipItemSwapped</c>.</summary>
+    public static bool UnitEquipItemSwapped(item whichItem, unit whichHero) => throw null!;
+    /// <summary>JASS function <c>UnitEquipItemByIdSwapped</c>.</summary>
+    public static item UnitEquipItemByIdSwapped(int itemId, unit whichHero) => throw null!;
     /// <summary>JASS function <c>UnitRemoveItemFromSlotSwapped</c>.</summary>
     public static item UnitRemoveItemFromSlotSwapped(int itemSlot, unit whichHero) => throw null!;
+    /// <summary>JASS function <c>UnitUnequipItemSwapped</c>.</summary>
+    public static void UnitUnequipItemSwapped(unit whichHero, item whichItem) => throw null!;
+    /// <summary>JASS function <c>UnitUnequipItemFromSlotSwapped</c>.</summary>
+    public static item UnitUnequipItemFromSlotSwapped(unit whichHero, loadoutslot slot) => throw null!;
     /// <summary>JASS function <c>CreateItemLoc</c>.</summary>
     public static item CreateItemLoc(int itemId, location loc) => throw null!;
     /// <summary>JASS function <c>GetLastCreatedItem</c>.</summary>
     public static item GetLastCreatedItem() => throw null!;
     /// <summary>JASS function <c>GetLastRemovedItem</c>.</summary>
     public static item GetLastRemovedItem() => throw null!;
+    /// <summary>JASS function <c>GetLastEquippedItem</c>.</summary>
+    public static item GetLastEquippedItem() => throw null!;
+    /// <summary>JASS function <c>GetLastUnequippedItem</c>.</summary>
+    public static item GetLastUnequippedItem() => throw null!;
     /// <summary>JASS function <c>SetItemPositionLoc</c>.</summary>
     public static void SetItemPositionLoc(item whichItem, location loc) => throw null!;
     /// <summary>JASS function <c>GetLearnedSkillBJ</c>.</summary>
@@ -599,16 +699,46 @@ public static partial class JASS
     public static bool UnitUseItemPointLoc(unit whichUnit, item whichItem, location loc) => throw null!;
     /// <summary>JASS function <c>UnitItemInSlotBJ</c>.</summary>
     public static item UnitItemInSlotBJ(unit whichUnit, int itemSlot) => throw null!;
+    /// <summary>JASS function <c>UnitItemInBagSlotBJ</c>.</summary>
+    public static item UnitItemInBagSlotBJ(unit whichUnit, int itemSlot) => throw null!;
+    /// <summary>JASS function <c>UnitItemInEquipmentSlotBJ</c>.</summary>
+    public static item UnitItemInEquipmentSlotBJ(unit whichUnit, loadoutslot slot) => throw null!;
     /// <summary>JASS function <c>GetInventoryIndexOfItemTypeBJ</c>.</summary>
     public static int GetInventoryIndexOfItemTypeBJ(unit whichUnit, int itemId) => throw null!;
     /// <summary>JASS function <c>GetItemOfTypeFromUnitBJ</c>.</summary>
     public static item GetItemOfTypeFromUnitBJ(unit whichUnit, int itemId) => throw null!;
     /// <summary>JASS function <c>UnitHasItemOfTypeBJ</c>.</summary>
     public static bool UnitHasItemOfTypeBJ(unit whichUnit, int itemId) => throw null!;
+    /// <summary>JASS function <c>GetInventoryBagIndexOfItemTypeBJ</c>.</summary>
+    public static int GetInventoryBagIndexOfItemTypeBJ(unit whichUnit, int itemId) => throw null!;
+    /// <summary>JASS function <c>GetItemOfTypeFromUnitBagBJ</c>.</summary>
+    public static item GetItemOfTypeFromUnitBagBJ(unit whichUnit, int itemId) => throw null!;
+    /// <summary>JASS function <c>UnitHasItemOfTypeBaggedBJ</c>.</summary>
+    public static bool UnitHasItemOfTypeBaggedBJ(unit whichUnit, int itemId) => throw null!;
+    /// <summary>JASS function <c>GetInventoryBagIndexOfEquipmentTypeBJ</c>.</summary>
+    public static int GetInventoryBagIndexOfEquipmentTypeBJ(unit whichUnit, equipmentType whichEquipmentType) => throw null!;
+    /// <summary>JASS function <c>GetItemOfEquipmentTypeFromUnitBagBJ</c>.</summary>
+    public static item GetItemOfEquipmentTypeFromUnitBagBJ(unit whichUnit, equipmentType whichEquipmentType) => throw null!;
+    /// <summary>JASS function <c>GetEquipmentInventoryIndexOfItemTypeBJ</c>.</summary>
+    public static int GetEquipmentInventoryIndexOfItemTypeBJ(unit whichUnit, int itemId) => throw null!;
+    /// <summary>JASS function <c>GetEquipmentInventoryIndexOfEquipmentTypeBJ</c>.</summary>
+    public static int GetEquipmentInventoryIndexOfEquipmentTypeBJ(unit whichUnit, equipmentType whichEquipmentType) => throw null!;
+    /// <summary>JASS function <c>GetItemEquippedByHeroOfTypeBJ</c>.</summary>
+    public static item GetItemEquippedByHeroOfTypeBJ(unit whichUnit, int itemId) => throw null!;
+    /// <summary>JASS function <c>GetItemEquippedByHeroOfEquipmentTypeBJ</c>.</summary>
+    public static item GetItemEquippedByHeroOfEquipmentTypeBJ(unit whichUnit, equipmentType whichEquipmentType) => throw null!;
+    /// <summary>JASS function <c>UnitHasItemOfTypeEquippedBJ</c>.</summary>
+    public static bool UnitHasItemOfTypeEquippedBJ(unit whichUnit, int itemId) => throw null!;
     /// <summary>JASS function <c>UnitInventoryCount</c>.</summary>
     public static int UnitInventoryCount(unit whichUnit) => throw null!;
     /// <summary>JASS function <c>UnitInventorySizeBJ</c>.</summary>
     public static int UnitInventorySizeBJ(unit whichUnit) => throw null!;
+    /// <summary>JASS function <c>UnitExtendedInventoryCount</c>.</summary>
+    public static int UnitExtendedInventoryCount(unit whichUnit) => throw null!;
+    /// <summary>JASS function <c>UnitExtendedInventorySizeBJ</c>.</summary>
+    public static int UnitExtendedInventorySizeBJ(unit whichUnit) => throw null!;
+    /// <summary>JASS function <c>UnitEquipmentCount</c>.</summary>
+    public static int UnitEquipmentCount(unit whichUnit) => throw null!;
     /// <summary>JASS function <c>SetItemInvulnerableBJ</c>.</summary>
     public static void SetItemInvulnerableBJ(item whichItem, bool flag) => throw null!;
     /// <summary>JASS function <c>SetItemDropOnDeathBJ</c>.</summary>
@@ -625,6 +755,8 @@ public static partial class JASS
     public static int ChooseRandomItemBJ(int level) => throw null!;
     /// <summary>JASS function <c>ChooseRandomItemExBJ</c>.</summary>
     public static int ChooseRandomItemExBJ(int level, itemtype whichType) => throw null!;
+    /// <summary>JASS function <c>ChooseRandomItemExWithFilterBJ</c>.</summary>
+    public static int ChooseRandomItemExWithFilterBJ(int level, itemtype whichType, equipmentType whichEquipmentType, itemTag whichTag) => throw null!;
     /// <summary>JASS function <c>ChooseRandomNPBuildingBJ</c>.</summary>
     public static int ChooseRandomNPBuildingBJ() => throw null!;
     /// <summary>JASS function <c>ChooseRandomCreepBJ</c>.</summary>
@@ -795,6 +927,10 @@ public static partial class JASS
     public static void PauseUnitBJ(bool pause, unit whichUnit) => throw null!;
     /// <summary>JASS function <c>IsUnitPausedBJ</c>.</summary>
     public static bool IsUnitPausedBJ(unit whichUnit) => throw null!;
+    /// <summary>JASS function <c>BlzAllUnitsEnableAurasBJEnum</c>.</summary>
+    public static void BlzAllUnitsEnableAurasBJEnum() => throw null!;
+    /// <summary>JASS function <c>BlzAllUnitsEnableAurasBJ</c>.</summary>
+    public static void BlzAllUnitsEnableAurasBJ(bool enable, bool affectsUI) => throw null!;
     /// <summary>JASS function <c>UnitPauseTimedLifeBJ</c>.</summary>
     public static void UnitPauseTimedLifeBJ(bool flag, unit whichUnit) => throw null!;
     /// <summary>JASS function <c>UnitApplyTimedLifeBJ</c>.</summary>
@@ -1025,6 +1161,8 @@ public static partial class JASS
     public static void SetUnitFacingToFaceUnitTimed(unit whichUnit, unit target, float duration) => throw null!;
     /// <summary>JASS function <c>QueueUnitAnimationBJ</c>.</summary>
     public static void QueueUnitAnimationBJ(unit whichUnit, string whichAnimation) => throw null!;
+    /// <summary>JASS function <c>SetDestructableVertexColorBJ</c>.</summary>
+    public static void SetDestructableVertexColorBJ(destructable whichDestructable, float red, float green, float blue, float transparency) => throw null!;
     /// <summary>JASS function <c>SetDestructableAnimationBJ</c>.</summary>
     public static void SetDestructableAnimationBJ(destructable d, string whichAnimation) => throw null!;
     /// <summary>JASS function <c>QueueDestructableAnimationBJ</c>.</summary>
@@ -1337,6 +1475,8 @@ public static partial class JASS
     public static void TransmissionFromUnitTypeWithNameBJ(force toForce, player fromPlayer, int unitId, string unitName, location loc, sound soundHandle, string message, int timeType, float timeVal, bool wait) => throw null!;
     /// <summary>JASS function <c>GetLastTransmissionDurationBJ</c>.</summary>
     public static float GetLastTransmissionDurationBJ() => throw null!;
+    /// <summary>JASS function <c>SetCameraBlockerForPlayerBJ</c>.</summary>
+    public static void SetCameraBlockerForPlayerBJ(rect r, bool flag, player whichPlayer) => throw null!;
     /// <summary>JASS function <c>ForceCinematicSubtitlesBJ</c>.</summary>
     public static void ForceCinematicSubtitlesBJ(bool flag) => throw null!;
     /// <summary>JASS function <c>CinematicModeExBJ</c>.</summary>
@@ -1977,6 +2117,8 @@ public static partial class JASS
     public static void BlzSetUnitWeaponRealFieldBJ(unit whichUnit, unitweaponrealfield whichField, int index, float value) => throw null!;
     /// <summary>JASS function <c>BlzSetUnitWeaponStringFieldBJ</c>.</summary>
     public static void BlzSetUnitWeaponStringFieldBJ(unit whichUnit, unitweaponstringfield whichField, int index, string value) => throw null!;
+    /// <summary>JASS function <c>BlzEnableAuras</c>.</summary>
+    public static void BlzEnableAuras(unit whichUnit, bool enable) => throw null!;
     /// <summary>JASS native <c>ConvertRace</c>.</summary>
     public static race ConvertRace(int i) => throw null!;
     /// <summary>JASS native <c>ConvertAllianceType</c>.</summary>
@@ -2145,6 +2287,14 @@ public static partial class JASS
     public static unitcategory ConvertUnitCategory(int i) => throw null!;
     /// <summary>JASS native <c>ConvertPathingFlag</c>.</summary>
     public static pathingflag ConvertPathingFlag(int i) => throw null!;
+    /// <summary>JASS native <c>ConvertFogStyle</c>.</summary>
+    public static fogstyle ConvertFogStyle(int i) => throw null!;
+    /// <summary>JASS native <c>ConvertEquipmentType</c>.</summary>
+    public static equipmentType ConvertEquipmentType(int i) => throw null!;
+    /// <summary>JASS native <c>ConvertItemTag</c>.</summary>
+    public static itemTag ConvertItemTag(int i) => throw null!;
+    /// <summary>JASS native <c>ConvertLoadoutSlot</c>.</summary>
+    public static loadoutslot ConvertLoadoutSlot(int i) => throw null!;
     /// <summary>JASS native <c>OrderId</c>.</summary>
     public static int OrderId(string orderIdString) => throw null!;
     /// <summary>JASS native <c>OrderId2String</c>.</summary>
@@ -2301,6 +2451,8 @@ public static partial class JASS
     public static void SetPlayerTaxRate(player sourcePlayer, player otherPlayer, playerstate whichResource, int rate) => throw null!;
     /// <summary>JASS native <c>SetPlayerRacePreference</c>.</summary>
     public static void SetPlayerRacePreference(player whichPlayer, racepreference whichRacePreference) => throw null!;
+    /// <summary>JASS native <c>SetPlayerRaceSkin</c>.</summary>
+    public static void SetPlayerRaceSkin(player whichPlayer, racepreference whichRacePreference) => throw null!;
     /// <summary>JASS native <c>SetPlayerRaceSelectable</c>.</summary>
     public static void SetPlayerRaceSelectable(player whichPlayer, bool value) => throw null!;
     /// <summary>JASS native <c>SetPlayerController</c>.</summary>
@@ -2667,6 +2819,10 @@ public static partial class JASS
     public static unit GetManipulatingUnit() => throw null!;
     /// <summary>JASS native <c>GetManipulatedItem</c>.</summary>
     public static item GetManipulatedItem() => throw null!;
+    /// <summary>JASS native <c>GetEquippedItem</c>.</summary>
+    public static item GetEquippedItem() => throw null!;
+    /// <summary>JASS native <c>GetUnequippedItem</c>.</summary>
+    public static item GetUnequippedItem() => throw null!;
     /// <summary>JASS native <c>BlzGetAbsorbingItem</c>.</summary>
     public static item BlzGetAbsorbingItem() => throw null!;
     /// <summary>JASS native <c>BlzGetManipulatedItemWasAbsorbed</c>.</summary>
@@ -2773,6 +2929,10 @@ public static partial class JASS
     public static void TriggerSyncStart() => throw null!;
     /// <summary>JASS native <c>TriggerSyncReady</c>.</summary>
     public static void TriggerSyncReady() => throw null!;
+    /// <summary>JASS native <c>BlzTriggerIsRunning</c>.</summary>
+    public static bool BlzTriggerIsRunning(trigger whichTrigger) => throw null!;
+    /// <summary>JASS native <c>BlzTriggerInterrupt</c>.</summary>
+    public static void BlzTriggerInterrupt(trigger whichTrigger) => throw null!;
     /// <summary>JASS native <c>GetWidgetLife</c>.</summary>
     public static float GetWidgetLife(widget whichWidget) => throw null!;
     /// <summary>JASS native <c>SetWidgetLife</c>.</summary>
@@ -2823,6 +2983,8 @@ public static partial class JASS
     public static void SetDestructableAnimation(destructable d, string whichAnimation) => throw null!;
     /// <summary>JASS native <c>SetDestructableAnimationSpeed</c>.</summary>
     public static void SetDestructableAnimationSpeed(destructable d, float speedFactor) => throw null!;
+    /// <summary>JASS native <c>SetDestructableColor</c>.</summary>
+    public static void SetDestructableColor(destructable d, playercolor color) => throw null!;
     /// <summary>JASS native <c>ShowDestructable</c>.</summary>
     public static void ShowDestructable(destructable d, bool flag) => throw null!;
     /// <summary>JASS native <c>GetDestructableOccluderHeight</c>.</summary>
@@ -2847,6 +3009,8 @@ public static partial class JASS
     public static float GetItemY(item i) => throw null!;
     /// <summary>JASS native <c>SetItemPosition</c>.</summary>
     public static void SetItemPosition(item i, float x, float y) => throw null!;
+    /// <summary>JASS native <c>SetItemColor</c>.</summary>
+    public static void SetItemColor(item whichItem, playercolor whichColor) => throw null!;
     /// <summary>JASS native <c>SetItemDropOnDeath</c>.</summary>
     public static void SetItemDropOnDeath(item whichItem, bool flag) => throw null!;
     /// <summary>JASS native <c>SetItemDroppable</c>.</summary>
@@ -2859,6 +3023,10 @@ public static partial class JASS
     public static void SetItemInvulnerable(item whichItem, bool flag) => throw null!;
     /// <summary>JASS native <c>IsItemInvulnerable</c>.</summary>
     public static bool IsItemInvulnerable(item whichItem) => throw null!;
+    /// <summary>JASS native <c>IsItemEquipped</c>.</summary>
+    public static bool IsItemEquipped(item whichItem) => throw null!;
+    /// <summary>JASS native <c>IsItemInBag</c>.</summary>
+    public static bool IsItemInBag(item whichItem) => throw null!;
     /// <summary>JASS native <c>SetItemVisible</c>.</summary>
     public static void SetItemVisible(item whichItem, bool show) => throw null!;
     /// <summary>JASS native <c>IsItemVisible</c>.</summary>
@@ -2895,6 +3063,10 @@ public static partial class JASS
     public static int GetItemUserData(item whichItem) => throw null!;
     /// <summary>JASS native <c>SetItemUserData</c>.</summary>
     public static void SetItemUserData(item whichItem, int data) => throw null!;
+    /// <summary>JASS native <c>GetItemEquipmentType</c>.</summary>
+    public static equipmentType GetItemEquipmentType(item whichItem) => throw null!;
+    /// <summary>JASS native <c>GetItemTag</c>.</summary>
+    public static itemTag GetItemTag(item whichItem) => throw null!;
     /// <summary>JASS native <c>CreateUnit</c>.</summary>
     public static unit CreateUnit(player id, int unitid, float x, float y, float face) => throw null!;
     /// <summary>JASS native <c>CreateUnitByName</c>.</summary>
@@ -2975,6 +3147,16 @@ public static partial class JASS
     public static void SetUnitAnimationWithRarity(unit whichUnit, string whichAnimation, raritycontrol rarity) => throw null!;
     /// <summary>JASS native <c>AddUnitAnimationProperties</c>.</summary>
     public static void AddUnitAnimationProperties(unit whichUnit, string animProperties, bool add) => throw null!;
+    /// <summary>JASS native <c>AllowHeroGlowOnUnit</c>.</summary>
+    public static void AllowHeroGlowOnUnit(unit whichUnit) => throw null!;
+    /// <summary>JASS native <c>DisallowHeroGlowOnUnit</c>.</summary>
+    public static void DisallowHeroGlowOnUnit(unit whichUnit) => throw null!;
+    /// <summary>JASS native <c>HeroGlowIsAllowedOnUnit</c>.</summary>
+    public static bool HeroGlowIsAllowedOnUnit(unit whichUnit) => throw null!;
+    /// <summary>JASS native <c>BlzGetUnitAnimationDuration</c>.</summary>
+    public static float BlzGetUnitAnimationDuration(unit whichUnit, string whichAnimation) => throw null!;
+    /// <summary>JASS native <c>BlzGetUnitAnimationDurationByIndex</c>.</summary>
+    public static float BlzGetUnitAnimationDurationByIndex(unit whichUnit, int index) => throw null!;
     /// <summary>JASS native <c>SetUnitLookAt</c>.</summary>
     public static void SetUnitLookAt(unit whichUnit, string whichBone, unit lookAtTarget, float offsetX, float offsetY, float offsetZ) => throw null!;
     /// <summary>JASS native <c>ResetUnitLookAt</c>.</summary>
@@ -3053,6 +3235,8 @@ public static partial class JASS
     public static int GetUnitPointValueByType(int unitType) => throw null!;
     /// <summary>JASS native <c>UnitAddItem</c>.</summary>
     public static bool UnitAddItem(unit whichUnit, item whichItem) => throw null!;
+    /// <summary>JASS native <c>UnitEquipItem</c>.</summary>
+    public static bool UnitEquipItem(unit whichUnit, item whichItem) => throw null!;
     /// <summary>JASS native <c>UnitAddItemById</c>.</summary>
     public static item UnitAddItemById(unit whichUnit, int itemId) => throw null!;
     /// <summary>JASS native <c>UnitAddItemToSlotById</c>.</summary>
@@ -3061,12 +3245,34 @@ public static partial class JASS
     public static void UnitRemoveItem(unit whichUnit, item whichItem) => throw null!;
     /// <summary>JASS native <c>UnitRemoveItemFromSlot</c>.</summary>
     public static item UnitRemoveItemFromSlot(unit whichUnit, int itemSlot) => throw null!;
+    /// <summary>JASS native <c>UnitUnequipItem</c>.</summary>
+    public static void UnitUnequipItem(unit whichUnit, item whichItem) => throw null!;
+    /// <summary>JASS native <c>UnitUnequipItemFromSlot</c>.</summary>
+    public static item UnitUnequipItemFromSlot(unit whichUnit, loadoutslot slot) => throw null!;
     /// <summary>JASS native <c>UnitHasItem</c>.</summary>
     public static bool UnitHasItem(unit whichUnit, item whichItem) => throw null!;
+    /// <summary>JASS native <c>UnitHasItemBagged</c>.</summary>
+    public static bool UnitHasItemBagged(unit whichUnit, item whichItem) => throw null!;
     /// <summary>JASS native <c>UnitItemInSlot</c>.</summary>
     public static item UnitItemInSlot(unit whichUnit, int itemSlot) => throw null!;
     /// <summary>JASS native <c>UnitInventorySize</c>.</summary>
     public static int UnitInventorySize(unit whichUnit) => throw null!;
+    /// <summary>JASS native <c>UnitExtendedInventorySize</c>.</summary>
+    public static int UnitExtendedInventorySize(unit whichUnit) => throw null!;
+    /// <summary>JASS native <c>UnitItemInBagSlot</c>.</summary>
+    public static item UnitItemInBagSlot(unit whichUnit, int itemSlot) => throw null!;
+    /// <summary>JASS native <c>UnitItemInEquipmentSlot</c>.</summary>
+    public static item UnitItemInEquipmentSlot(unit whichUnit, loadoutslot itemSlot) => throw null!;
+    /// <summary>JASS native <c>UnitHasItemEquipped</c>.</summary>
+    public static bool UnitHasItemEquipped(unit whichUnit, item whichItem) => throw null!;
+    /// <summary>JASS native <c>UnitHasLoadoutSlotEmpty</c>.</summary>
+    public static bool UnitHasLoadoutSlotEmpty(unit whichUnit, loadoutslot itemSlot) => throw null!;
+    /// <summary>JASS native <c>UnitHasAnyItemEquiped</c>.</summary>
+    public static bool UnitHasAnyItemEquiped(unit whichUnit) => throw null!;
+    /// <summary>JASS native <c>UnitHasItemEquipmentOfType</c>.</summary>
+    public static bool UnitHasItemEquipmentOfType(unit whichUnit, equipmentType equipmentId) => throw null!;
+    /// <summary>JASS native <c>UnitCanEquipItemOfEquipmentType</c>.</summary>
+    public static bool UnitCanEquipItemOfEquipmentType(unit whichUnit, equipmentType equipmentId) => throw null!;
     /// <summary>JASS native <c>UnitDropItemPoint</c>.</summary>
     public static bool UnitDropItemPoint(unit whichUnit, item whichItem, float x, float y) => throw null!;
     /// <summary>JASS native <c>UnitDropItemSlot</c>.</summary>
@@ -3781,6 +3987,8 @@ public static partial class JASS
     public static int ChooseRandomItem(int level) => throw null!;
     /// <summary>JASS native <c>ChooseRandomItemEx</c>.</summary>
     public static int ChooseRandomItemEx(itemtype whichType, int level) => throw null!;
+    /// <summary>JASS native <c>ChooseRandomItemExWithFilter</c>.</summary>
+    public static int ChooseRandomItemExWithFilter(itemtype whichType, int level, equipmentType whichEquipmentType, itemTag whichTag) => throw null!;
     /// <summary>JASS native <c>SetRandomSeed</c>.</summary>
     public static void SetRandomSeed(int seed) => throw null!;
     /// <summary>JASS native <c>SetTerrainFog</c>.</summary>
@@ -3791,6 +3999,30 @@ public static partial class JASS
     public static void SetUnitFog(float a, float b, float c, float d, float e) => throw null!;
     /// <summary>JASS native <c>SetTerrainFogEx</c>.</summary>
     public static void SetTerrainFogEx(int style, float zstart, float zend, float density, float red, float green, float blue) => throw null!;
+    /// <summary>JASS native <c>SetTerrainFogExV</c>.</summary>
+    public static void SetTerrainFogExV(int style, float zstart, float zend, float density, float heightStart, float heightEnd, float linearStart, float linearEnd, float red, float green, float blue) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogStyle</c>.</summary>
+    public static void BlzSetTerrainFogStyle(fogstyle style) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogZStart</c>.</summary>
+    public static void BlzSetTerrainFogZStart(float zStart) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogZEnd</c>.</summary>
+    public static void BlzSetTerrainFogZEnd(float ZEnd) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogDensity</c>.</summary>
+    public static void BlzSetTerrainFogDensity(float density) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogHeightStart</c>.</summary>
+    public static void BlzSetTerrainFogHeightStart(float heightStart) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogHeightEnd</c>.</summary>
+    public static void BlzSetTerrainFogHeightEnd(float heightEnd) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogLinearStart</c>.</summary>
+    public static void BlzSetTerrainFogLinearStart(float linearStart) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogLinearEnd</c>.</summary>
+    public static void BlzSetTerrainFogLinearEnd(float linearEnd) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogMaxLinearDensity</c>.</summary>
+    public static void BlzSetTerrainFogMaxLinearDensity(float maxLinearDensity) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogDrawOverSky</c>.</summary>
+    public static void BlzSetTerrainFogDrawOverSky(bool drawOverSky) => throw null!;
+    /// <summary>JASS native <c>BlzSetTerrainFogColor</c>.</summary>
+    public static void BlzSetTerrainFogColor(float red, float green, float blue) => throw null!;
     /// <summary>JASS native <c>DisplayTextToPlayer</c>.</summary>
     public static void DisplayTextToPlayer(player toPlayer, float x, float y, string message) => throw null!;
     /// <summary>JASS native <c>DisplayTimedTextToPlayer</c>.</summary>
@@ -3851,6 +4083,22 @@ public static partial class JASS
     public static void EnableWorldFogBoundary(bool b) => throw null!;
     /// <summary>JASS native <c>PlayModelCinematic</c>.</summary>
     public static void PlayModelCinematic(string modelName) => throw null!;
+    /// <summary>JASS native <c>BlzPreloadModelCinematicGame</c>.</summary>
+    public static bool BlzPreloadModelCinematicGame(string modelName) => throw null!;
+    /// <summary>JASS native <c>BlzGetModelCinematicGameShotCount</c>.</summary>
+    public static int BlzGetModelCinematicGameShotCount() => throw null!;
+    /// <summary>JASS native <c>BlzGetModelCinematicGameCurrentShot</c>.</summary>
+    public static int BlzGetModelCinematicGameCurrentShot() => throw null!;
+    /// <summary>JASS native <c>BlzGetModelCinematicGameRemainingTime</c>.</summary>
+    public static float BlzGetModelCinematicGameRemainingTime() => throw null!;
+    /// <summary>JASS native <c>BlzPlayModelCinematicGameAtPosition</c>.</summary>
+    public static void BlzPlayModelCinematicGameAtPosition(string modelName, float posX, float posY, float posZ, float RotZ) => throw null!;
+    /// <summary>JASS native <c>BlzSetCinematicEnabledDE</c>.</summary>
+    public static void BlzSetCinematicEnabledDE(bool enable) => throw null!;
+    /// <summary>JASS native <c>BlzSetMinShadowCastingPointLightCount</c>.</summary>
+    public static void BlzSetMinShadowCastingPointLightCount(int count) => throw null!;
+    /// <summary>JASS native <c>BlzGetMinShadowCastingPointLightCount</c>.</summary>
+    public static int BlzGetMinShadowCastingPointLightCount() => throw null!;
     /// <summary>JASS native <c>PlayCinematic</c>.</summary>
     public static void PlayCinematic(string movieName) => throw null!;
     /// <summary>JASS native <c>ForceUIKey</c>.</summary>
@@ -4109,10 +4357,18 @@ public static partial class JASS
     public static void SetCameraField(camerafield whichField, float value, float duration) => throw null!;
     /// <summary>JASS native <c>AdjustCameraField</c>.</summary>
     public static void AdjustCameraField(camerafield whichField, float offset, float duration) => throw null!;
+    /// <summary>JASS native <c>SetCameraFieldControlledByInput</c>.</summary>
+    public static void SetCameraFieldControlledByInput(camerafield whichField, bool controlled) => throw null!;
+    /// <summary>JASS native <c>GetCameraFieldControlledByInput</c>.</summary>
+    public static bool GetCameraFieldControlledByInput(camerafield whichField) => throw null!;
     /// <summary>JASS native <c>SetCameraTargetController</c>.</summary>
     public static void SetCameraTargetController(unit whichUnit, float xoffset, float yoffset, bool inheritOrientation) => throw null!;
     /// <summary>JASS native <c>SetCameraOrientController</c>.</summary>
     public static void SetCameraOrientController(unit whichUnit, float xoffset, float yoffset) => throw null!;
+    /// <summary>JASS native <c>BlzCameraSetCameraType</c>.</summary>
+    public static void BlzCameraSetCameraType(int cameraType) => throw null!;
+    /// <summary>JASS native <c>BlzCameraGetCameraType</c>.</summary>
+    public static int BlzCameraGetCameraType() => throw null!;
     /// <summary>JASS native <c>CreateCameraSetup</c>.</summary>
     public static camerasetup CreateCameraSetup() => throw null!;
     /// <summary>JASS native <c>CameraSetupSetField</c>.</summary>
@@ -4139,6 +4395,10 @@ public static partial class JASS
     public static void BlzCameraSetupSetLabel(camerasetup whichSetup, string label) => throw null!;
     /// <summary>JASS native <c>BlzCameraSetupGetLabel</c>.</summary>
     public static string BlzCameraSetupGetLabel(camerasetup whichSetup) => throw null!;
+    /// <summary>JASS native <c>BlzCameraSetupSetCameraType</c>.</summary>
+    public static void BlzCameraSetupSetCameraType(camerasetup whichSetup, int cameraType) => throw null!;
+    /// <summary>JASS native <c>BlzCameraSetupGetCameraType</c>.</summary>
+    public static int BlzCameraSetupGetCameraType(camerasetup whichSetup) => throw null!;
     /// <summary>JASS native <c>CameraSetTargetNoise</c>.</summary>
     public static void CameraSetTargetNoise(float mag, float velocity) => throw null!;
     /// <summary>JASS native <c>CameraSetSourceNoise</c>.</summary>
@@ -4183,6 +4443,10 @@ public static partial class JASS
     public static void SetCinematicAudio(bool cinematicAudio) => throw null!;
     /// <summary>JASS native <c>GetCameraMargin</c>.</summary>
     public static float GetCameraMargin(int whichMargin) => throw null!;
+    /// <summary>JASS native <c>EnableCameraBlocker</c>.</summary>
+    public static void EnableCameraBlocker(rect r, bool flag) => throw null!;
+    /// <summary>JASS native <c>AddCameraBlocker</c>.</summary>
+    public static void AddCameraBlocker(rect where) => throw null!;
     /// <summary>JASS native <c>GetCameraBoundMinX</c>.</summary>
     public static float GetCameraBoundMinX() => throw null!;
     /// <summary>JASS native <c>GetCameraBoundMinY</c>.</summary>
@@ -4267,6 +4531,8 @@ public static partial class JASS
     public static void PlayThematicMusic(string musicFileName) => throw null!;
     /// <summary>JASS native <c>PlayThematicMusicEx</c>.</summary>
     public static void PlayThematicMusicEx(string musicFileName, int frommsecs) => throw null!;
+    /// <summary>JASS native <c>BlzPauseThematicMusicOnFocusLost</c>.</summary>
+    public static void BlzPauseThematicMusicOnFocusLost(bool pause) => throw null!;
     /// <summary>JASS native <c>EndThematicMusic</c>.</summary>
     public static void EndThematicMusic() => throw null!;
     /// <summary>JASS native <c>SetMusicVolume</c>.</summary>
@@ -4379,6 +4645,30 @@ public static partial class JASS
     public static int GetTerrainCliffLevel(float x, float y) => throw null!;
     /// <summary>JASS native <c>SetWaterBaseColor</c>.</summary>
     public static void SetWaterBaseColor(int red, int green, int blue, int alpha) => throw null!;
+    /// <summary>JASS native <c>SetHDWaterParams</c>.</summary>
+    public static void SetHDWaterParams(int red, int green, int blue, bool useColor, int vertexDisplacement, int minOpacity, int maxOpacity, int reflectivity, int emissivity, int edgeSoftness, int waveStrength) => throw null!;
+    /// <summary>JASS native <c>SetHDWaterParamsEx</c>.</summary>
+    public static void SetHDWaterParamsEx(int red, int green, int blue, bool @override, int vertexDisplacement, int minOpacity, int maxOpacity, int reflectivity, int emissivity, int edgeSoftness, int waveStrength, int envMapStrength) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterColor</c>.</summary>
+    public static void BlzSetHDWaterColor(int red, int green, int blue) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterColorOverride</c>.</summary>
+    public static void BlzSetHDWaterColorOverride(bool @override) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterVertexDisplacement</c>.</summary>
+    public static void BlzSetHDWaterVertexDisplacement(int vertexDisplacement) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterMinOpacity</c>.</summary>
+    public static void BlzSetHDWaterMinOpacity(int minOpacity) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterMaxOpacity</c>.</summary>
+    public static void BlzSetHDWaterMaxOpacity(int maxOpacity) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterReflectivity</c>.</summary>
+    public static void BlzSetHDWaterReflectivity(int reflectivity) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterEmissivity</c>.</summary>
+    public static void BlzSetHDWaterEmissivity(int emissivity) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterEdgeSoftness</c>.</summary>
+    public static void BlzSetHDWaterEdgeSoftness(int edgeSoftness) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterWaveStrength</c>.</summary>
+    public static void BlzSetHDWaterWaveStrength(int waveStrength) => throw null!;
+    /// <summary>JASS native <c>BlzSetHDWaterEnvMapStrength</c>.</summary>
+    public static void BlzSetHDWaterEnvMapStrength(int envMapStrengthy) => throw null!;
     /// <summary>JASS native <c>SetWaterDeforms</c>.</summary>
     public static void SetWaterDeforms(bool val) => throw null!;
     /// <summary>JASS native <c>GetTerrainType</c>.</summary>
@@ -4389,6 +4679,8 @@ public static partial class JASS
     public static void SetTerrainType(float x, float y, int terrainType, int variation, int area, int shape) => throw null!;
     /// <summary>JASS native <c>IsTerrainPathable</c>.</summary>
     public static bool IsTerrainPathable(float x, float y, pathingtype t) => throw null!;
+    /// <summary>JASS native <c>BlzIsTerrainPathableEx</c>.</summary>
+    public static bool BlzIsTerrainPathableEx(float x, float y, pathingtype t) => throw null!;
     /// <summary>JASS native <c>SetTerrainPathable</c>.</summary>
     public static void SetTerrainPathable(float x, float y, pathingtype t, bool flag) => throw null!;
     /// <summary>JASS native <c>CreateImage</c>.</summary>
@@ -4441,6 +4733,40 @@ public static partial class JASS
     public static void SetDoodadAnimation(float x, float y, float radius, int doodadID, bool nearestOnly, string animName, bool animRandom) => throw null!;
     /// <summary>JASS native <c>SetDoodadAnimationRect</c>.</summary>
     public static void SetDoodadAnimationRect(rect r, int doodadID, string animName, bool animRandom) => throw null!;
+    /// <summary>JASS native <c>BlzSetSingleDoodadAnimation</c>.</summary>
+    public static void BlzSetSingleDoodadAnimation(int index, string animName, bool animRandom) => throw null!;
+    /// <summary>JASS native <c>SetDoodadColor</c>.</summary>
+    public static void SetDoodadColor(float x, float y, float radius, int doodadID, bool nearestOnly, playercolor whichColor) => throw null!;
+    /// <summary>JASS native <c>SetDoodadColorRect</c>.</summary>
+    public static void SetDoodadColorRect(rect r, int doodadID, playercolor whichColor) => throw null!;
+    /// <summary>JASS native <c>BlzSetSingleDoodadColor</c>.</summary>
+    public static void BlzSetSingleDoodadColor(int index, playercolor whichColor) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadX</c>.</summary>
+    public static float BlzGetDoodadX(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadY</c>.</summary>
+    public static float BlzGetDoodadY(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadZ</c>.</summary>
+    public static float BlzGetDoodadZ(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadScaleX</c>.</summary>
+    public static float BlzGetDoodadScaleX(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadScaleY</c>.</summary>
+    public static float BlzGetDoodadScaleY(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadScaleZ</c>.</summary>
+    public static float BlzGetDoodadScaleZ(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadIsUsingModelAxes</c>.</summary>
+    public static bool BlzGetDoodadIsUsingModelAxes(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadYaw</c>.</summary>
+    public static float BlzGetDoodadYaw(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadPitch</c>.</summary>
+    public static float BlzGetDoodadPitch(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadRoll</c>.</summary>
+    public static float BlzGetDoodadRoll(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadVariation</c>.</summary>
+    public static int BlzGetDoodadVariation(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetDoodadId</c>.</summary>
+    public static int BlzGetDoodadId(int index) => throw null!;
+    /// <summary>JASS native <c>BlzGetNumDoodads</c>.</summary>
+    public static int BlzGetNumDoodads() => throw null!;
     /// <summary>JASS native <c>StartMeleeAI</c>.</summary>
     public static void StartMeleeAI(player num, string script) => throw null!;
     /// <summary>JASS native <c>StartCampaignAI</c>.</summary>
@@ -4593,6 +4919,8 @@ public static partial class JASS
     public static float BlzGetUnitAttackCooldown(unit whichUnit, int weaponIndex) => throw null!;
     /// <summary>JASS native <c>BlzSetUnitAttackCooldown</c>.</summary>
     public static void BlzSetUnitAttackCooldown(unit whichUnit, float cooldown, int weaponIndex) => throw null!;
+    /// <summary>JASS native <c>BlzResetUnitAttack</c>.</summary>
+    public static void BlzResetUnitAttack(unit whichUnit, int weaponIndex) => throw null!;
     /// <summary>JASS native <c>BlzSetSpecialEffectColorByPlayer</c>.</summary>
     public static void BlzSetSpecialEffectColorByPlayer(effect whichEffect, player whichPlayer) => throw null!;
     /// <summary>JASS native <c>BlzSetSpecialEffectColor</c>.</summary>
@@ -4641,6 +4969,12 @@ public static partial class JASS
     public static void BlzPlaySpecialEffect(effect whichEffect, animtype whichAnim) => throw null!;
     /// <summary>JASS native <c>BlzPlaySpecialEffectWithTimeScale</c>.</summary>
     public static void BlzPlaySpecialEffectWithTimeScale(effect whichEffect, animtype whichAnim, float timeScale) => throw null!;
+    /// <summary>JASS native <c>BlzSetSpecialEffectAnimationBlendTime</c>.</summary>
+    public static void BlzSetSpecialEffectAnimationBlendTime(effect whichEffect, float blendTime) => throw null!;
+    /// <summary>JASS native <c>BlzQueueSpecialEffectAnimation</c>.</summary>
+    public static void BlzQueueSpecialEffectAnimation(effect whichEffect, string whichAnimation) => throw null!;
+    /// <summary>JASS native <c>BlzSetSpecialEffectAnimation</c>.</summary>
+    public static void BlzSetSpecialEffectAnimation(effect whichEffect, string whichAnimation) => throw null!;
     /// <summary>JASS native <c>BlzGetAnimName</c>.</summary>
     public static string BlzGetAnimName(animtype whichAnim) => throw null!;
     /// <summary>JASS native <c>BlzGetUnitArmor</c>.</summary>
@@ -4651,6 +4985,8 @@ public static partial class JASS
     public static void BlzUnitHideAbility(unit whichUnit, int abilId, bool flag) => throw null!;
     /// <summary>JASS native <c>BlzUnitDisableAbility</c>.</summary>
     public static void BlzUnitDisableAbility(unit whichUnit, int abilId, bool flag, bool hideUI) => throw null!;
+    /// <summary>JASS native <c>BlzUnitEnableAuras</c>.</summary>
+    public static void BlzUnitEnableAuras(unit whichUnit, bool enable, bool affectsUI) => throw null!;
     /// <summary>JASS native <c>BlzUnitCancelTimedLife</c>.</summary>
     public static void BlzUnitCancelTimedLife(unit whichUnit) => throw null!;
     /// <summary>JASS native <c>BlzIsUnitSelectable</c>.</summary>
@@ -4671,6 +5007,16 @@ public static partial class JASS
     public static float BlzGetUnitAbilityCooldown(unit whichUnit, int abilId, int level) => throw null!;
     /// <summary>JASS native <c>BlzGetUnitAbilityCooldownRemaining</c>.</summary>
     public static float BlzGetUnitAbilityCooldownRemaining(unit whichUnit, int abilId) => throw null!;
+    /// <summary>JASS native <c>BlzGetUnitAbilityCooldownPercent</c>.</summary>
+    public static float BlzGetUnitAbilityCooldownPercent(unit whichUnit, int abilId) => throw null!;
+    /// <summary>JASS native <c>BlzSetUnitAbilityCooldownRemaining</c>.</summary>
+    public static void BlzSetUnitAbilityCooldownRemaining(unit whichUnit, int abilId, float duration) => throw null!;
+    /// <summary>JASS native <c>BlzSetUnitAbilityCooldownPercent</c>.</summary>
+    public static void BlzSetUnitAbilityCooldownPercent(unit whichUnit, int abilId, float percent) => throw null!;
+    /// <summary>JASS native <c>BlzAdjustUnitAbilityCooldownRemaining</c>.</summary>
+    public static void BlzAdjustUnitAbilityCooldownRemaining(unit whichUnit, int abilId, float duration) => throw null!;
+    /// <summary>JASS native <c>BlzAdjustUnitAbilityCooldownPercent</c>.</summary>
+    public static void BlzAdjustUnitAbilityCooldownPercent(unit whichUnit, int abilId, float percent) => throw null!;
     /// <summary>JASS native <c>BlzEndUnitAbilityCooldown</c>.</summary>
     public static void BlzEndUnitAbilityCooldown(unit whichUnit, int abilCode) => throw null!;
     /// <summary>JASS native <c>BlzStartUnitAbilityCooldown</c>.</summary>
@@ -4799,6 +5145,8 @@ public static partial class JASS
     public static void BlzFrameSetValue(framehandle frame, float value) => throw null!;
     /// <summary>JASS native <c>BlzFrameGetValue</c>.</summary>
     public static float BlzFrameGetValue(framehandle frame) => throw null!;
+    /// <summary>JASS native <c>BlzTextAreaFrameSetAutoScroll</c>.</summary>
+    public static void BlzTextAreaFrameSetAutoScroll(framehandle frame, bool value) => throw null!;
     /// <summary>JASS native <c>BlzFrameSetMinMaxValue</c>.</summary>
     public static void BlzFrameSetMinMaxValue(framehandle frame, float minValue, float maxValue) => throw null!;
     /// <summary>JASS native <c>BlzFrameSetStepSize</c>.</summary>
@@ -4851,6 +5199,16 @@ public static partial class JASS
     public static int BlzGetTriggerPlayerMetaKey() => throw null!;
     /// <summary>JASS native <c>BlzGetTriggerPlayerIsKeyDown</c>.</summary>
     public static bool BlzGetTriggerPlayerIsKeyDown() => throw null!;
+    /// <summary>JASS native <c>BlzIsMetaKeyPressed</c>.</summary>
+    public static bool BlzIsMetaKeyPressed(int metakey) => throw null!;
+    /// <summary>JASS native <c>BlzIsKeyPressed</c>.</summary>
+    public static bool BlzIsKeyPressed(oskeytype key) => throw null!;
+    /// <summary>JASS native <c>BlzIsMouseButtonPressed</c>.</summary>
+    public static bool BlzIsMouseButtonPressed(mousebuttontype mouseButtonType) => throw null!;
+    /// <summary>JASS native <c>BlzGetMouseScreenPosX</c>.</summary>
+    public static int BlzGetMouseScreenPosX() => throw null!;
+    /// <summary>JASS native <c>BlzGetMouseScreenPosY</c>.</summary>
+    public static int BlzGetMouseScreenPosY() => throw null!;
     /// <summary>JASS native <c>BlzEnableCursor</c>.</summary>
     public static void BlzEnableCursor(bool enable) => throw null!;
     /// <summary>JASS native <c>BlzSetMousePos</c>.</summary>
@@ -4863,6 +5221,14 @@ public static partial class JASS
     public static bool BlzIsLocalClientActive() => throw null!;
     /// <summary>JASS native <c>BlzGetMouseFocusUnit</c>.</summary>
     public static unit BlzGetMouseFocusUnit() => throw null!;
+    /// <summary>JASS native <c>BlzPixelToFrameX</c>.</summary>
+    public static float BlzPixelToFrameX(int pixelX) => throw null!;
+    /// <summary>JASS native <c>BlzPixelToFrameY</c>.</summary>
+    public static float BlzPixelToFrameY(int pixelY) => throw null!;
+    /// <summary>JASS native <c>BlzFrameToPixelX</c>.</summary>
+    public static int BlzFrameToPixelX(float frameX) => throw null!;
+    /// <summary>JASS native <c>BlzFrameToPixelY</c>.</summary>
+    public static int BlzFrameToPixelY(float frameY) => throw null!;
     /// <summary>JASS native <c>BlzChangeMinimapTerrainTex</c>.</summary>
     public static bool BlzChangeMinimapTerrainTex(string texFile) => throw null!;
     /// <summary>JASS native <c>BlzGetLocale</c>.</summary>
@@ -5065,4 +5431,54 @@ public static partial class JASS
     public static void BlzUnitClearOrders(unit whichUnit, bool onlyQueued) => throw null!;
     /// <summary>JASS native <c>BlzUnitForceStopOrder</c>.</summary>
     public static void BlzUnitForceStopOrder(unit whichUnit, bool clearQueue) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructablePitchRoll</c>.</summary>
+    public static destructable BlzCreateDestructablePitchRoll(int objectid, float x, float y, float face, float roll, float pitch, float scale, int variation) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableZPitchRoll</c>.</summary>
+    public static destructable BlzCreateDestructableZPitchRoll(int objectid, float x, float y, float z, float face, float roll, float pitch, float scale, int variation) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructablePitchRoll</c>.</summary>
+    public static destructable BlzCreateDeadDestructablePitchRoll(int objectid, float x, float y, float face, float roll, float pitch, float scale, int variation) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableZPitchRoll</c>.</summary>
+    public static destructable BlzCreateDeadDestructableZPitchRoll(int objectid, float x, float y, float z, float face, float roll, float pitch, float scale, int variation) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableWithSkinPitchRoll</c>.</summary>
+    public static destructable BlzCreateDestructableWithSkinPitchRoll(int objectid, float x, float y, float face, float roll, float pitch, float scale, int variation, int skinId) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableZWithSkinPitchRoll</c>.</summary>
+    public static destructable BlzCreateDestructableZWithSkinPitchRoll(int objectid, float x, float y, float z, float face, float roll, float pitch, float scale, int variation, int skinId) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableWithSkinPitchRoll</c>.</summary>
+    public static destructable BlzCreateDeadDestructableWithSkinPitchRoll(int objectid, float x, float y, float face, float roll, float pitch, float scale, int variation, int skinId) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableZWithSkinPitchRoll</c>.</summary>
+    public static destructable BlzCreateDeadDestructableZWithSkinPitchRoll(int objectid, float x, float y, float z, float face, float roll, float pitch, float scale, int variation, int skinId) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableWithColor</c>.</summary>
+    public static destructable BlzCreateDestructableWithColor(int objectid, float x, float y, float face, float scale, int variation, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableZWithColor</c>.</summary>
+    public static destructable BlzCreateDestructableZWithColor(int objectid, float x, float y, float z, float face, float scale, int variation, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableWithColor</c>.</summary>
+    public static destructable BlzCreateDeadDestructableWithColor(int objectid, float x, float y, float face, float scale, int variation, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableZWithColor</c>.</summary>
+    public static destructable BlzCreateDeadDestructableZWithColor(int objectid, float x, float y, float z, float face, float scale, int variation, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableWithSkinColor</c>.</summary>
+    public static destructable BlzCreateDestructableWithSkinColor(int objectid, float x, float y, float face, float scale, int variation, int skinId, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableZWithSkinColor</c>.</summary>
+    public static destructable BlzCreateDestructableZWithSkinColor(int objectid, float x, float y, float z, float face, float scale, int variation, int skinId, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableWithSkinColor</c>.</summary>
+    public static destructable BlzCreateDeadDestructableWithSkinColor(int objectid, float x, float y, float face, float scale, int variation, int skinId, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableZWithSkinColor</c>.</summary>
+    public static destructable BlzCreateDeadDestructableZWithSkinColor(int objectid, float x, float y, float z, float face, float scale, int variation, int skinId, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructablePitchRollWithColor</c>.</summary>
+    public static destructable BlzCreateDestructablePitchRollWithColor(int objectid, float x, float y, float face, float roll, float pitch, float scale, int variation, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableZPitchRollWithColor</c>.</summary>
+    public static destructable BlzCreateDestructableZPitchRollWithColor(int objectid, float x, float y, float z, float face, float roll, float pitch, float scale, int variation, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructablePitchRollWithColor</c>.</summary>
+    public static destructable BlzCreateDeadDestructablePitchRollWithColor(int objectid, float x, float y, float face, float roll, float pitch, float scale, int variation, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableZPitchRollWithColor</c>.</summary>
+    public static destructable BlzCreateDeadDestructableZPitchRollWithColor(int objectid, float x, float y, float z, float face, float roll, float pitch, float scale, int variation, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableWithSkinPitchRollColor</c>.</summary>
+    public static destructable BlzCreateDestructableWithSkinPitchRollColor(int objectid, float x, float y, float face, float roll, float pitch, float scale, int variation, int skinId, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDestructableZWithSkinPitchRollColor</c>.</summary>
+    public static destructable BlzCreateDestructableZWithSkinPitchRollColor(int objectid, float x, float y, float z, float face, float roll, float pitch, float scale, int variation, int skinId, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableWithSkinPitchRollColor</c>.</summary>
+    public static destructable BlzCreateDeadDestructableWithSkinPitchRollColor(int objectid, float x, float y, float face, float roll, float pitch, float scale, int variation, int skinId, playercolor color) => throw null!;
+    /// <summary>JASS native <c>BlzCreateDeadDestructableZWithSkinPitchRollColor</c>.</summary>
+    public static destructable BlzCreateDeadDestructableZWithSkinPitchRollColor(int objectid, float x, float y, float z, float face, float roll, float pitch, float scale, int variation, int skinId, playercolor color) => throw null!;
+    /// <summary>JASS native <c>SetDestructableVertexColor</c>.</summary>
+    public static void SetDestructableVertexColor(destructable whichDestructable, int red, int green, int blue, int alpha) => throw null!;
 }

@@ -73,7 +73,7 @@ public class InspectorSystem : SystemBase
 
         var toggleTrigger = CreateTrigger();
         BlzTriggerRegisterFrameEvent(toggleTrigger, _toggleButton, FRAMEEVENT_CONTROL_CLICK);
-        TriggerAddAction(toggleTrigger, TogglePanel);
+        TriggerAddAction(toggleTrigger, () => TogglePanel());
 
         _panel = BlzCreateFrameByType("FRAME", "FdfInspectorPanel", _root, "", 0);
         BlzFrameSetAbsPoint(_panel, FRAMEPOINT_BOTTOMLEFT, 0.006f, 0.048f);

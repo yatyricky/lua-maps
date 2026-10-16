@@ -8,7 +8,7 @@ namespace StdLib;
 /// C# indexer (dict[key]) maps to direct table field access via get_Item/set_Item.
 /// </summary>
 [Lua(PackStruct = true)]
-public class Dictionary<K, V> : IPairs<K, V>
+public class Dictionary<K, V> : IPairs<K, V>, System.Collections.IEnumerable
 {
     private LuaObject _table;
     private int _version;
@@ -28,7 +28,7 @@ public class Dictionary<K, V> : IPairs<K, V>
         get
         {
             if (key == null) throw new Exception("Key cannot be null");
-            return LuaInterop.Get<V>(_table, key) ?? throw new Exception("Key not found");
+            return LuaInterop.Get<V>(_table, key) ?? throw new Exception(Diagnostics.Fail("Key not found: " + key));
         }
         set
         {
@@ -50,7 +50,7 @@ public class Dictionary<K, V> : IPairs<K, V>
         var index = 0;
         return () =>
         {
-            if (version != _version) throw new Exception("Collection was modified");
+            if (version != _version) throw new Exception(Diagnostics.Fail("Collection was modified"));
             index++;
             if (index > _keys.Count) return default;
             var key = _keys[index - 1];
@@ -78,7 +78,25 @@ public class Dictionary<K, V> : IPairs<K, V>
         return false;
     }
 
+    public bool Remove(K key)
+    {
+        if (key == null) throw new Exception("Key cannot be null");
+        if (LuaInterop.Get<V>(_table, key) == null) return false;
+        LuaInterop.Set(_table, key, null);
+        Count--;
+        _keys.Remove(key);
+        _version++;
+        return true;
+    }
+
+    public void Add(K key, V value)
+    {
+        this[key] = value;
+    }
+
     public Enumerator GetEnumerator() => default!;
+
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => default!;
 
     public class Enumerator
     {

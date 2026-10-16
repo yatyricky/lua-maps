@@ -9,7 +9,7 @@ namespace StdLib;
 /// C# indexer (0-based) maps to Lua table (1-based) via get_Item/set_Item.
 /// </summary>
 [Lua(PackStruct = true)]
-public class List<T> : IIpairs<T>
+public class List<T> : IIpairs<T>, System.Collections.Generic.IEnumerable<T>
 {
     private LuaObject _items;
     private int _version;
@@ -36,12 +36,12 @@ public class List<T> : IIpairs<T>
     {
         get
         {
-            if (index < 0 || index >= Count) throw new Exception("Index out of range");
+            if (index < 0 || index >= Count) throw new Exception(Diagnostics.Fail("Index out of range: index=" + index + " count=" + Count));
             return LuaInterop.Get<T>(_items, index + 1);
         }
         set
         {
-            if (index < 0 || index >= Count) throw new Exception("Index out of range");
+            if (index < 0 || index >= Count) throw new Exception(Diagnostics.Fail("Index out of range: index=" + index + " count=" + Count));
             LuaInterop.Set(_items, index + 1, value);
         }
     }
@@ -96,6 +96,11 @@ public class List<T> : IIpairs<T>
         return -1;
     }
 
+    public bool Contains(T item)
+    {
+        return IndexOf(item) != -1;
+    }
+
     private static int DefaultCompare(T a, T b)
     {
         if (LuaInterop.Eq(a, b)) return 0;
@@ -126,11 +131,7 @@ public class List<T> : IIpairs<T>
         };
     }
 
-    public Enumerator GetEnumerator() => default!;
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator() => default!;
 
-    public class Enumerator
-    {
-        public T Current => default!;
-        public bool MoveNext() => default!;
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => default!;
 }

@@ -60,12 +60,12 @@ public class animtype : handle { protected animtype() { } }
 public class subanimtype : handle { protected subanimtype() { } }
 public class image : handle { protected image() { } }
 public class ubersplat : handle { protected ubersplat() { } }
-public class framehandle : handle { protected framehandle() { } }
 public class originframetype : handle { protected originframetype() { } }
 public class framepointtype : handle { protected framepointtype() { } }
 public class textaligntype : handle { protected textaligntype() { } }
 public class frameeventtype : handle { protected frameeventtype() { } }
 public class oskeytype : handle { protected oskeytype() { } }
+public class metakeytype : handle { protected metakeytype() { } }
 public class abilityintegerfield : handle { protected abilityintegerfield() { } }
 public class abilityrealfield : handle { protected abilityrealfield() { } }
 public class abilitybooleanfield : handle { protected abilitybooleanfield() { } }
@@ -99,6 +99,10 @@ public class regentype : handle { protected regentype() { } }
 public class unitcategory : handle { protected unitcategory() { } }
 public class pathingflag : handle { protected pathingflag() { } }
 public class commandbuttoneffect : handle { protected commandbuttoneffect() { } }
+public class fogstyle : handle { protected fogstyle() { } }
+public class equipmentType : handle { protected equipmentType() { } }
+public class itemTag : handle { protected itemTag() { } }
+public class loadoutslot : handle { protected loadoutslot() { } }
 public class @event : agent { protected @event() { } }
 public class player : agent { protected player() { } }
 public class widget : agent { protected widget() { } }
@@ -136,6 +140,7 @@ public class multiboarditem : agent { protected multiboarditem() { } }
 public class trackable : agent { protected trackable() { } }
 public class gamecache : agent { protected gamecache() { } }
 public class hashtable : agent { protected hashtable() { } }
+public class framehandle : agent { protected framehandle() { } }
 public class unit : widget { protected unit() { } }
 public class destructable : widget { protected destructable() { } }
 public class item : widget { protected item() { } }

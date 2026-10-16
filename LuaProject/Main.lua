@@ -397,8 +397,6 @@ end
 function SF__.Vector3.GetTerrainZ(self__x325, self__y326, self__z327)
     return SF__.Vector3._getTerrainZ(self__x325, self__y326)
 end
-
-SF__.Vector3._loc = Location(0, 0)
 -- Quaternion
 SF__.Quaternion = SF__.Quaternion or {}
 SF__.Quaternion.Name = "Quaternion"
@@ -549,12 +547,49 @@ function SF__.Quaternion.ApplyToEffect(self__x119, self__y120, self__z121, self_
     BlzSetSpecialEffectOrientation(e, (angles__y * bj_DEGTORAD), (angles__x * bj_DEGTORAD), (angles__z * bj_DEGTORAD))
 end
 -- <summary>
+-- Debug helpers shared by StdLib assertions. Fail enriches an assertion message with the
+-- transpiler's shadow call stack (--trace-calls builds) and writes the report to disk via
+-- the PreloadGen natives, so WC3's single on-screen error line never has to be retyped.
+-- Reports are capped (see Report); after the cap the screen message is unchanged but no
+-- further files are written.
+-- </summary>
+--
+SF__.StdLib = SF__.StdLib or {}
+-- StdLib.Diagnostics
+SF__.StdLib.Diagnostics = SF__.StdLib.Diagnostics or {}
+SF__.StdLib.Diagnostics.Name = "Diagnostics"
+SF__.StdLib.Diagnostics.FullName = "StdLib.Diagnostics"
+function SF__.StdLib.Diagnostics.Fail(message)
+    local enriched = SF__.StrConcat__(message, SF__.StdLib.Diagnostics.TraceSuffix())
+    SF__.StdLib.Diagnostics.Report(enriched)
+    return enriched
+end
+
+function SF__.StdLib.Diagnostics.Report(message665)
+    if (SF__.StdLib.Diagnostics._reportIndex >= SF__.StdLib.Diagnostics.MaxReports) then
+        return
+    end
+    SF__.StdLib.Diagnostics._reportIndex = (SF__.StdLib.Diagnostics._reportIndex + 1)
+    local path = SF__.StrConcat__("sf-error-", SF__.StdLib.Diagnostics._reportIndex, ".pld")
+    PreloadGenClear()
+    PreloadGenStart()
+    Preload(message665)
+    PreloadGenEnd(path)
+end
+
+function SF__.StdLib.Diagnostics.TraceSuffix()
+    local trace666 = SF__TRACE__
+    if (trace666 == nil) then
+        return ""
+    end
+    return SF__.StrConcat__(" | at ", table.concat(trace666, " -> "))
+end
+-- <summary>
 -- A basic list backed by a Lua sequential table.
 -- Uses table.insert/table.remove for array operations.
 -- C# indexer (0-based) maps to Lua table (1-based) via get_Item/set_Item.
 -- </summary>
 --
-SF__.StdLib = SF__.StdLib or {}
 -- StdLib.List
 SF__.StdLib.List = SF__.StdLib.List or {}
 SF__.StdLib.List.Name = "List"
@@ -579,9 +614,9 @@ function SF__.StdLib.List.__Init__xqm20z(self, collection)
     SF__.StdLib.List.__Init__0(self)
     do
         local collection1 = collection
-        for _, item673 in (SF__.StdLib.List.IpairsNext)(collection1) do
+        for _, item678 in (SF__.StdLib.List.IpairsNext)(collection1) do
             repeat
-                table.insert(self._items, item673)
+                table.insert(self._items, item678)
                 self.Count = (self.Count + 1)
             until true
         end
@@ -594,26 +629,26 @@ function SF__.StdLib.List.New__xqm20z(collection)
     return self
 end
 
-function SF__.StdLib.List:get_Item(index674)
-    if ((index674 < 0) or (index674 >= self.Count)) then
-        error(SF__.StrConcat__("SF__E2e5944b8", "Index out of range"))
+function SF__.StdLib.List:get_Item(index679)
+    if ((index679 < 0) or (index679 >= self.Count)) then
+        error(SF__.StrConcat__("SF__E2e5944b8", SF__.StdLib.Diagnostics.Fail(SF__.StrConcat__("Index out of range: index=", index679, " count=", self.Count))))
     end
-    return self._items[(index674 + 1)]
+    return self._items[(index679 + 1)]
 end
 
-function SF__.StdLib.List:set_Item(index675, value676)
-    if ((index675 < 0) or (index675 >= self.Count)) then
-        error(SF__.StrConcat__("SF__E2e5944b8", "Index out of range"))
+function SF__.StdLib.List:set_Item(index680, value681)
+    if ((index680 < 0) or (index680 >= self.Count)) then
+        error(SF__.StrConcat__("SF__E2e5944b8", SF__.StdLib.Diagnostics.Fail(SF__.StrConcat__("Index out of range: index=", index680, " count=", self.Count))))
     end
-    self._items[(index675 + 1)] = value676
+    self._items[(index680 + 1)] = value681
 end
 
-function SF__.StdLib.List:AddRange(collection677)
+function SF__.StdLib.List:AddRange(collection682)
     do
-        local collection2 = collection677
-        for _, item678 in (SF__.StdLib.List.IpairsNext)(collection2) do
+        local collection2 = collection682
+        for _, item683 in (SF__.StdLib.List.IpairsNext)(collection2) do
             repeat
-                table.insert(self._items, item678)
+                table.insert(self._items, item683)
                 self.Count = (self.Count + 1)
             until true
         end
@@ -621,8 +656,8 @@ function SF__.StdLib.List:AddRange(collection677)
     self._version = (self._version + 1)
 end
 
-function SF__.StdLib.List:Add(item679)
-    table.insert(self._items, item679)
+function SF__.StdLib.List:Add(item684)
+    table.insert(self._items, item684)
     self.Count = (self.Count + 1)
     self._version = (self._version + 1)
 end
@@ -633,42 +668,46 @@ function SF__.StdLib.List:Clear()
     self._version = (self._version + 1)
 end
 
-function SF__.StdLib.List:Remove(item680)
-    local index681 = self:IndexOf(item680)
-    if (index681 < 0) then
+function SF__.StdLib.List:Remove(item685)
+    local index686 = self:IndexOf(item685)
+    if (index686 < 0) then
         return false
     end
-    self:RemoveAt(index681)
+    self:RemoveAt(index686)
     return true
 end
 
-function SF__.StdLib.List:RemoveAt(index682)
-    table.remove(self._items, (index682 + 1))
+function SF__.StdLib.List:RemoveAt(index687)
+    table.remove(self._items, (index687 + 1))
     self.Count = (self.Count - 1)
     self._version = (self._version + 1)
 end
 
-function SF__.StdLib.List:IndexOf(item683)
+function SF__.StdLib.List:IndexOf(item688)
     do
-        local i684 = 0
-        while (i684 < self.Count) do
+        local i689 = 0
+        while (i689 < self.Count) do
             repeat
-                local current685 = self._items[(i684 + 1)]
-                if (current685 == item683) then
-                    return i684
+                local current690 = self._items[(i689 + 1)]
+                if (current690 == item688) then
+                    return i689
                 end
             until true
-            i684 = (i684 + 1)
+            i689 = (i689 + 1)
         end
     end
     return (-1)
 end
 
-function SF__.StdLib.List.DefaultCompare(a686, b687)
-    if (a686 == b687) then
+function SF__.StdLib.List:Contains(item691)
+    return (self:IndexOf(item691) ~= (-1))
+end
+
+function SF__.StdLib.List.DefaultCompare(a692, b693)
+    if (a692 == b693) then
         return 0
     end
-    if (a686 < b687) then
+    if (a692 < b693) then
         return (-1)
     end
     return 1
@@ -678,29 +717,29 @@ function SF__.StdLib.List:Sort(comparison)
     if (comparison == nil) then
         comparison = SF__.StdLib.List.DefaultCompare
     end
-    local version688 = self._version
-    table.sort(self._items, function(a691, b692)
-        return (comparison(a691, b692) < 0)
+    local version694 = self._version
+    table.sort(self._items, function(a697, b698)
+        return (comparison(a697, b698) < 0)
     end)
-    if (version688 ~= self._version) then
+    if (version694 ~= self._version) then
         error(SF__.StrConcat__("SF__E2e5944b8", "Collection was modified"))
     end
     self._version = (self._version + 1)
 end
 
 function SF__.StdLib.List:IpairsNext()
-    local version693 = self._version
-    local index694 = 0
+    local version699 = self._version
+    local index700 = 0
     return function()
-        if (version693 ~= self._version) then
+        if (version699 ~= self._version) then
             error(SF__.StrConcat__("SF__E2e5944b8", "Collection was modified"))
         end
-        index694 = (index694 + 1)
-        local value695 = self._items[index694]
-        if (value695 == nil) then
+        index700 = (index700 + 1)
+        local value701 = self._items[index700]
+        if (value701 == nil) then
             return nil
         end
-        return index694, value695
+        return index700, value701
     end
 end
 
@@ -1087,9 +1126,6 @@ function SF__.Scene.New()
     SF__.Scene.__Init(self)
     return self
 end
-
-SF__.Scene.DT = 20
-SF__.Scene._instance = nil
 -- AttachEffectComponent
 SF__.AttachEffectComponent = SF__.AttachEffectComponent or {}
 SF__.AttachEffectComponent.Name = "AttachEffectComponent"
@@ -1389,9 +1425,6 @@ function SF__.TemplarStrikes.New()
     SF__.TemplarStrikes.__Init(self)
     return self
 end
-
-SF__.TemplarStrikes.ID = FourCC("A007")
-SF__.TemplarStrikes.MaxLevel = 3
 -- WakeOfAshes
 SF__.WakeOfAshes = SF__.WakeOfAshes or {}
 SF__.WakeOfAshes.Name = "WakeOfAshes"
@@ -1484,8 +1517,6 @@ function SF__.WakeOfAshes.New()
     SF__.WakeOfAshes.__Init(self)
     return self
 end
-
-SF__.WakeOfAshes.ID = FourCC("A009")
 SF__.WakeOfAshes = SF__.WakeOfAshes or {}
 -- WakeOfAshes.QuicknessBuff
 local BuffBase645 = require("Objects.BuffBase")
@@ -1624,8 +1655,6 @@ function SF__.RetributionPaladinGlobal.New()
     SF__.RetributionPaladinGlobal.__Init(self)
     return self
 end
-
-SF__.RetributionPaladinGlobal.Instance = SF__.RetributionPaladinGlobal.New()
 -- BladeOfJustice
 SF__.BladeOfJustice = SF__.BladeOfJustice or {}
 SF__.BladeOfJustice.Name = "BladeOfJustice"
@@ -1722,8 +1751,6 @@ function SF__.BladeOfJustice.New()
     SF__.BladeOfJustice.__Init(self)
     return self
 end
-
-SF__.BladeOfJustice.ID = FourCC("A001")
 -- ConstOrderId
 SF__.ConstOrderId = SF__.ConstOrderId or {}
 SF__.ConstOrderId.Name = "ConstOrderId"
@@ -1737,10 +1764,6 @@ function SF__.ConstOrderId.New()
     SF__.ConstOrderId.__Init(self)
     return self
 end
-
-SF__.ConstOrderId.Stop = 851972
-SF__.ConstOrderId.Smart = 851971
-SF__.ConstOrderId.Attack = 851983
 -- CrusaderStrike
 SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 SF__.CrusaderStrike.Name = "CrusaderStrike"
@@ -1810,8 +1833,6 @@ function SF__.CrusaderStrike.New()
     SF__.CrusaderStrike.__Init(self)
     return self
 end
-
-SF__.CrusaderStrike.ID = FourCC("A000")
 SF__.CrusaderStrike = SF__.CrusaderStrike or {}
 -- CrusaderStrike.IAbilityData
 SF__.CrusaderStrike.IAbilityData = SF__.CrusaderStrike.IAbilityData or {}
@@ -2022,8 +2043,6 @@ function SF__.DivineToll.New()
     SF__.DivineToll.__Init(self)
     return self
 end
-
-SF__.DivineToll.ID = FourCC("A008")
 SF__.DivineToll = SF__.DivineToll or {}
 -- DivineToll.DivineTollUnitData
 SF__.DivineToll.DivineTollUnitData = SF__.DivineToll.DivineTollUnitData or {}
@@ -2335,9 +2354,6 @@ function SF__.UnitManager.New()
     SF__.UnitManager.__Init(self)
     return self
 end
-
-SF__.UnitManager.Instance = nil
-SF__.UnitManager.unitCounter = 0
 -- DivineStorm
 SF__.DivineStorm = SF__.DivineStorm or {}
 SF__.DivineStorm.Name = "DivineStorm"
@@ -2441,8 +2457,6 @@ function SF__.DivineStorm.New()
     SF__.DivineStorm.__Init(self)
     return self
 end
-
-SF__.DivineStorm.ID = FourCC("A005")
 -- Easing
 SF__.Easing = SF__.Easing or {}
 SF__.Easing.Name = "Easing"
@@ -2610,8 +2624,6 @@ function SF__.WordOfGlory.New()
     SF__.WordOfGlory.__Init(self)
     return self
 end
-
-SF__.WordOfGlory.ID = FourCC("A006")
 SF__.Systems = SF__.Systems or {}
 -- Systems.InitAbilitiesSystem
 local SystemBase = require("System.SystemBase")
@@ -2915,16 +2927,6 @@ function SF__.Systems.InspectorSystem.New()
     SF__.Systems.InspectorSystem.__Init(self)
     return self
 end
-
-SF__.Systems.InspectorSystem.MaxHierarchyRows = 18
-SF__.Systems.InspectorSystem.ToggleSize = 0.036
-SF__.Systems.InspectorSystem.PanelWidth = 0.48
-SF__.Systems.InspectorSystem.PanelHeight = 0.34
-SF__.Systems.InspectorSystem.RowHeight = 0.016
-SF__.Systems.InspectorSystem.RowGap = 0.002
-SF__.Systems.InspectorSystem.LeftWidth = 0.18
-SF__.Systems.InspectorSystem.Padding = 0.008
-SF__.Systems.InspectorSystem.IndentWidth = 0.012
 -- Systems.InspectorSystem.HierarchyRow
 SF__.Systems.InspectorSystem.HierarchyRow = SF__.Systems.InspectorSystem.HierarchyRow or {}
 SF__.Systems.InspectorSystem.HierarchyRow.Name = "HierarchyRow"
@@ -3108,60 +3110,78 @@ function SF__.StdLib.Dictionary:get_Item(key)
     return (function()
         local __coalesce = self._table[key]
         if (__coalesce == nil) then
-            error(SF__.StrConcat__("SF__E2e5944b8", "Key not found"))
+            error(SF__.StrConcat__("SF__E2e5944b8", SF__.StdLib.Diagnostics.Fail(SF__.StrConcat__("Key not found: ", key))))
         end
         return __coalesce
     end)()
 end
 
-function SF__.StdLib.Dictionary:set_Item(key665, value)
-    if (key665 == nil) then
+function SF__.StdLib.Dictionary:set_Item(key667, value)
+    if (key667 == nil) then
         error(SF__.StrConcat__("SF__E2e5944b8", "Key cannot be null"))
     end
-    local existing = self._table[key665]
-    self._table[key665] = value
+    local existing = self._table[key667]
+    self._table[key667] = value
     if (existing == nil) then
         self.Count = (self.Count + 1)
-        self._keys:Add(key665)
+        self._keys:Add(key667)
     end
     self._version = (self._version + 1)
 end
 
 function SF__.StdLib.Dictionary:PairsNext()
     local version = self._version
-    local index666 = 0
+    local index668 = 0
     return function()
         if (version ~= self._version) then
-            error(SF__.StrConcat__("SF__E2e5944b8", "Collection was modified"))
+            error(SF__.StrConcat__("SF__E2e5944b8", SF__.StdLib.Diagnostics.Fail("Collection was modified")))
         end
-        index666 = (index666 + 1)
-        if (index666 > self._keys.Count) then
+        index668 = (index668 + 1)
+        if (index668 > self._keys.Count) then
             return nil
         end
-        local key667 = self._keys:get_Item((index666 - 1))
-        local value668 = self._table[key667]
-        return key667, value668
+        local key669 = self._keys:get_Item((index668 - 1))
+        local value670 = self._table[key669]
+        return key669, value670
     end
 end
 
-function SF__.StdLib.Dictionary:ContainsKey(key669)
-    if (key669 == nil) then
+function SF__.StdLib.Dictionary:ContainsKey(key671)
+    if (key671 == nil) then
         error(SF__.StrConcat__("SF__E2e5944b8", "Key cannot be null"))
     end
-    return (self._table[key669] ~= nil)
+    return (self._table[key671] ~= nil)
 end
 
-function SF__.StdLib.Dictionary:TryGetValue(key670)
-    if (key670 == nil) then
+function SF__.StdLib.Dictionary:TryGetValue(key672)
+    if (key672 == nil) then
         error(SF__.StrConcat__("SF__E2e5944b8", "Key cannot be null"))
     end
-    local result672 = self._table[key670]
-    if (result672 ~= nil) then
-        value671 = result672
-        return true, value671
+    local result674 = self._table[key672]
+    if (result674 ~= nil) then
+        value673 = result674
+        return true, value673
     end
-    value671 = nil
-    return false, value671
+    value673 = nil
+    return false, value673
+end
+
+function SF__.StdLib.Dictionary:Remove(key675)
+    if (key675 == nil) then
+        error(SF__.StrConcat__("SF__E2e5944b8", "Key cannot be null"))
+    end
+    if (self._table[key675] == nil) then
+        return false
+    end
+    self._table[key675] = nil
+    self.Count = (self.Count - 1)
+    self._keys:Remove(key675)
+    self._version = (self._version + 1)
+    return true
+end
+
+function SF__.StdLib.Dictionary:Add(key676, value677)
+    self:set_Item(key676, value677)
 end
 
 function SF__.StdLib.Dictionary:GetEnumerator()
@@ -3187,28 +3207,6 @@ end
 function SF__.StdLib.Dictionary.Enumerator.New()
     local self = setmetatable({}, { __index = SF__.StdLib.Dictionary.Enumerator })
     SF__.StdLib.Dictionary.Enumerator.__Init(self)
-    return self
-end
-SF__.StdLib.List = SF__.StdLib.List or {}
--- StdLib.List.Enumerator
-SF__.StdLib.List.Enumerator = SF__.StdLib.List.Enumerator or {}
-SF__.StdLib.List.Enumerator.Name = "Enumerator"
-SF__.StdLib.List.Enumerator.FullName = "StdLib.List.Enumerator"
-function SF__.StdLib.List.Enumerator:get_Current()
-    return nil
-end
-
-function SF__.StdLib.List.Enumerator:MoveNext()
-    return nil
-end
-
-function SF__.StdLib.List.Enumerator.__Init(self)
-    self.__sf_type = SF__.StdLib.List.Enumerator
-end
-
-function SF__.StdLib.List.Enumerator.New()
-    local self = setmetatable({}, { __index = SF__.StdLib.List.Enumerator })
-    SF__.StdLib.List.Enumerator.__Init(self)
     return self
 end
 -- TemplarVerdict
@@ -3288,8 +3286,6 @@ function SF__.TemplarVerdict.New()
     SF__.TemplarVerdict.__Init(self)
     return self
 end
-
-SF__.TemplarVerdict.ID = FourCC("A004")
 -- Vector2
 SF__.Vector2 = SF__.Vector2 or {}
 SF__.Vector2.Name = "Vector2"
@@ -3393,6 +3389,51 @@ function SF__.Vector2.GetTerrainZ(self__x193, self__y194)
     MoveLocation(SF__.Vector2._loc, self__x193, self__y194)
     return GetLocationZ(SF__.Vector2._loc)
 end
+
+-- static initialization
+SF__.Vector3._loc = Location(0, 0)
+
+SF__.StdLib.Diagnostics.MaxReports = 50
+SF__.StdLib.Diagnostics._reportIndex = 0
+
+SF__.Scene.DT = 20
+SF__.Scene._instance = nil
+
+SF__.TemplarStrikes.ID = FourCC("A007")
+SF__.TemplarStrikes.MaxLevel = 3
+
+SF__.WakeOfAshes.ID = FourCC("A009")
+
+SF__.RetributionPaladinGlobal.Instance = SF__.RetributionPaladinGlobal.New()
+
+SF__.BladeOfJustice.ID = FourCC("A001")
+
+SF__.ConstOrderId.Stop = 851972
+SF__.ConstOrderId.Smart = 851971
+SF__.ConstOrderId.Attack = 851983
+
+SF__.CrusaderStrike.ID = FourCC("A000")
+
+SF__.DivineToll.ID = FourCC("A008")
+
+SF__.UnitManager.Instance = nil
+SF__.UnitManager.unitCounter = 0
+
+SF__.DivineStorm.ID = FourCC("A005")
+
+SF__.WordOfGlory.ID = FourCC("A006")
+
+SF__.Systems.InspectorSystem.MaxHierarchyRows = 18
+SF__.Systems.InspectorSystem.ToggleSize = 0.036
+SF__.Systems.InspectorSystem.PanelWidth = 0.48
+SF__.Systems.InspectorSystem.PanelHeight = 0.34
+SF__.Systems.InspectorSystem.RowHeight = 0.016
+SF__.Systems.InspectorSystem.RowGap = 0.002
+SF__.Systems.InspectorSystem.LeftWidth = 0.18
+SF__.Systems.InspectorSystem.Padding = 0.008
+SF__.Systems.InspectorSystem.IndentWidth = 0.012
+
+SF__.TemplarVerdict.ID = FourCC("A004")
 
 SF__.Vector2._loc = Location(0, 0)
 
